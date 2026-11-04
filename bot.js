@@ -61,7 +61,7 @@ function markUsed(state, id) {
   state.postedMaterialIds = state.postedMaterialIds.slice(-200);
 }
 
-async function fetchJson(url, opts = {}, timeoutMs = 20000) {
+async function fetchJson(url, opts = {}, timeoutMs = 10000) {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
@@ -75,55 +75,57 @@ async function fetchJson(url, opts = {}, timeoutMs = 20000) {
 
 // ---------- 素材抓取 ----------
 
-// 行情异动:对比 N 分钟前的价格 + 成交量放大
+// 行情异动:对比 N 分钟前的价格 + 成交量放大(各币种并行拉)
 async function fetchMarketMove(cfg) {
   const { symbols, priceChangePct, windowMinutes, volSpikeMultiple } = cfg.market;
   const state = loadState();
   const moves = [];
 
-  for (const symbol of symbols) {
-    try {
-      const t0 = Date.now() - windowMinutes * 60000;
-      const data = await fetchJson(
-        `${BINANCE_API}/api/v3/klines?symbol=${symbol}&interval=1m&limit=${Math.min(windowMinutes, 1000)}`
-      );
-      if (!Array.isArray(data) || data.length < 30) continue;
+  await Promise.all(
+    symbols.map(async (symbol) => {
+      try {
+        const t0 = Date.now() - windowMinutes * 60000;
+        const data = await fetchJson(
+          `${BINANCE_API}/api/v3/klines?symbol=${symbol}&interval=1m&limit=${Math.min(windowMinutes, 1000)}`
+        );
+        if (!Array.isArray(data) || data.length < 30) return;
 
-      // 窗口内最早一根 vs 最新一根
-      const base = data[0];
-      const last = data[data.length - 1];
-      const openPrice = parseFloat(base[1]);
-      const closePrice = parseFloat(last[4]);
-      const pct = ((closePrice - openPrice) / openPrice) * 100;
+        // 窗口内最早一根 vs 最新一根
+        const base = data[0];
+        const last = data[data.length - 1];
+        const openPrice = parseFloat(base[1]);
+        const closePrice = parseFloat(last[4]);
+        const pct = ((closePrice - openPrice) / openPrice) * 100;
 
-      // 成交量:最近 5 分钟均量 vs 之前均量
-      const volAll = data.map((k) => parseFloat(k[5]));
-      const recentVol = volAll.slice(-5);
-      const priorVol = volAll.slice(0, -5);
-      const avgRecent = recentVol.reduce((a, b) => a + b, 0) / recentVol.length;
-      const avgPrior = priorVol.length
-        ? priorVol.reduce((a, b) => a + b, 0) / priorVol.length
-        : avgRecent;
-      const volMultiple = avgPrior > 0 ? avgRecent / avgPrior : 1;
+        // 成交量:最近 5 分钟均量 vs 之前均量
+        const volAll = data.map((k) => parseFloat(k[5]));
+        const recentVol = volAll.slice(-5);
+        const priorVol = volAll.slice(0, -5);
+        const avgRecent = recentVol.reduce((a, b) => a + b, 0) / recentVol.length;
+        const avgPrior = priorVol.length
+          ? priorVol.reduce((a, b) => a + b, 0) / priorVol.length
+          : avgRecent;
+        const volMultiple = avgPrior > 0 ? avgRecent / avgPrior : 1;
 
-      if (Math.abs(pct) >= priceChangePct && volMultiple >= volSpikeMultiple) {
-        moves.push({
-          id: `market_${symbol}_${new Date(t0).toISOString().slice(0, 10)}`,
-          kind: "market",
-          symbol,
-          baseSymbol: symbol.replace("USDT", ""),
-          pct,
-          price: closePrice,
-          volMultiple: Math.round(volMultiple * 10) / 10,
-          windowMinutes,
-          ts: Date.now(),
-        });
+        if (Math.abs(pct) >= priceChangePct && volMultiple >= volSpikeMultiple) {
+          moves.push({
+            id: `market_${symbol}_${new Date(t0).toISOString().slice(0, 10)}`,
+            kind: "market",
+            symbol,
+            baseSymbol: symbol.replace("USDT", ""),
+            pct,
+            price: closePrice,
+            volMultiple: Math.round(volMultiple * 10) / 10,
+            windowMinutes,
+            ts: Date.now(),
+          });
+        }
+        log(`  行情 ${symbol}: ${windowMinutes}min ${pct >= 0 ? "+" : ""}${pct.toFixed(2)}% 量比 ${volMultiple.toFixed(1)}x ${Math.abs(pct) >= priceChangePct ? "★异动" : ""}`);
+      } catch (e) {
+        log(`  行情 ${symbol} 拉取失败: ${e.message}`);
       }
-      log(`  行情 ${symbol}: ${windowMinutes}min ${pct >= 0 ? "+" : ""}${pct.toFixed(2)}% 量比 ${volMultiple.toFixed(1)}x ${Math.abs(pct) >= priceChangePct ? "★异动" : ""}`);
-    } catch (e) {
-      log(`  行情 ${symbol} 拉取失败: ${e.message}`);
-    }
-  }
+    })
+  );
   return moves;
 }
 
@@ -163,29 +165,31 @@ async function fetchFundingRate(cfg) {
   if (!cfg.fundingRate?.enabled) return [];
   const { symbols, absThreshold } = cfg.fundingRate;
   const out = [];
-  for (const sym of symbols) {
-    try {
-      const d = await fetchJson(`https://fapi.binance.com/fapi/v1/premiumIndex?symbol=${sym}`);
-      const rate = parseFloat(d.lastFundingRate ?? 0);
-      const absPct = Math.abs(rate) * 100;
-      if (absPct >= absThreshold) {
-        out.push({
-          id: `funding_${sym}_${new Date().toISOString().slice(0, 10)}_${rate > 0 ? "up" : "down"}`,
-          kind: "fundingRate",
-          symbol: sym,
-          baseSymbol: sym.replace("USDT", ""),
-          ratePct: rate * 100,
-          markPrice: parseFloat(d.markPrice ?? 0),
-          ts: Date.now(),
-        });
-        log(`  资金费率 ${sym}: ${rate.toFixed(4)} (${absPct.toFixed(2)}%) 触发`);
-      } else {
-        log(`  资金费率 ${sym}: ${rate.toFixed(4)} 未触发`);
+  await Promise.all(
+    symbols.map(async (sym) => {
+      try {
+        const d = await fetchJson(`https://fapi.binance.com/fapi/v1/premiumIndex?symbol=${sym}`);
+        const rate = parseFloat(d.lastFundingRate ?? 0);
+        const absPct = Math.abs(rate) * 100;
+        if (absPct >= absThreshold) {
+          out.push({
+            id: `funding_${sym}_${new Date().toISOString().slice(0, 10)}_${rate > 0 ? "up" : "down"}`,
+            kind: "fundingRate",
+            symbol: sym,
+            baseSymbol: sym.replace("USDT", ""),
+            ratePct: rate * 100,
+            markPrice: parseFloat(d.markPrice ?? 0),
+            ts: Date.now(),
+          });
+          log(`  资金费率 ${sym}: ${rate.toFixed(4)} (${absPct.toFixed(2)}%) 触发`);
+        } else {
+          log(`  资金费率 ${sym}: ${rate.toFixed(4)} 未触发`);
+        }
+      } catch (e) {
+        log(`  资金费率 ${sym} 拉取失败: ${e.message}`);
       }
-    } catch (e) {
-      log(`  资金费率 ${sym} 拉取失败: ${e.message}`);
-    }
-  }
+    })
+  );
   return out;
 }
 
@@ -193,29 +197,31 @@ async function fetchWhaleWatch(cfg) {
   if (!cfg.whale?.enabled) return [];
   const { symbols } = cfg.whale;
   const out = [];
-  for (const sym of symbols) {
-    try {
-      const d = await fetchJson(
-        `https://fapi.binance.com/futures/data/topLongShortPositionRatio?symbol=${sym}&period=1h&limit=1`
-      );
-      if (!Array.isArray(d) || d.length === 0) continue;
-      const latest = d[0];
-      const ratio = parseFloat(latest.longShortRatio ?? 1);
-      if (Math.abs(ratio - 1) >= 0.5) {
-        out.push({
-          id: `whale_${sym}_${new Date().toISOString().slice(0, 10)}`,
-          kind: "whale",
-          symbol: sym,
-          baseSymbol: sym.replace("USDT", ""),
-          ratio,
-          ts: Date.now(),
-        });
-        log(`  鲸鱼 ${sym}: 多空比 ${ratio} 异常`);
+  await Promise.all(
+    symbols.map(async (sym) => {
+      try {
+        const d = await fetchJson(
+          `https://fapi.binance.com/futures/data/topLongShortPositionRatio?symbol=${sym}&period=1h&limit=1`
+        );
+        if (!Array.isArray(d) || d.length === 0) return;
+        const latest = d[0];
+        const ratio = parseFloat(latest.longShortRatio ?? 1);
+        if (Math.abs(ratio - 1) >= 0.5) {
+          out.push({
+            id: `whale_${sym}_${new Date().toISOString().slice(0, 10)}`,
+            kind: "whale",
+            symbol: sym,
+            baseSymbol: sym.replace("USDT", ""),
+            ratio,
+            ts: Date.now(),
+          });
+          log(`  鲸鱼 ${sym}: 多空比 ${ratio} 异常`);
+        }
+      } catch (e) {
+        log(`  鲸鱼 ${sym} 拉取失败: ${e.message}`);
       }
-    } catch (e) {
-      log(`  鲸鱼 ${sym} 拉取失败: ${e.message}`);
-    }
-  }
+    })
+  );
   return out;
 }
 
@@ -296,22 +302,21 @@ function drainAnnouncements(limit = 1) {
 }
 
 // 单次模式下: 直接连一次 WS, 等最多 N 秒拿公告
-async function fetchAnnouncementsOnce(waitMs = 30000) {
+async function fetchAnnouncementsOnce(waitMs = 5000) {
   if (!annWebSocket) connectAnnouncements();
   const deadline = Date.now() + waitMs;
   while (annBuffer.length === 0 && Date.now() < deadline) {
-    await new Promise((r) => setTimeout(r, 2000));
+    await new Promise((r) => setTimeout(r, 1000));
   }
   return drainAnnouncements(5);
 }
 
-// 常驻模式下每轮调用, 已有 buffer 就立刻取, 没有就短等
+// 常驻模式下每轮调用: buffer 有就立刻取, 没有就短等 3 秒(不阻塞太久, 避免错过 slot 窗口)
 async function fetchAnnouncements(cfg) {
   if (!cfg.announcement?.enabled) return [];
   const fromBuffer = drainAnnouncements(5);
   if (fromBuffer.length) return fromBuffer;
-  // buffer 空, 再等 10 秒看看
-  await new Promise((r) => setTimeout(r, 10000));
+  await new Promise((r) => setTimeout(r, 3000));
   return drainAnnouncements(5);
 }
 
@@ -639,8 +644,12 @@ function timelineGate(state) {
   buildTimeline(state);
   const timeline = state.timeline;
   const now = Date.now();
-  // 把已过且没发的 slot 跳过(素材不足时已跳过)
-  while (state.timelineIdx < timeline.length && timeline[state.timelineIdx] <= now - 60000) {
+  const slotGraceMs = 5 * 60000; // slot 过期 5 分钟内仍可补发
+  // 跳过"过期太久且没发"的 slot
+  while (
+    state.timelineIdx < timeline.length &&
+    timeline[state.timelineIdx] <= now - slotGraceMs
+  ) {
     state.timelineIdx++;
   }
   if (state.timelineIdx >= timeline.length) {
@@ -651,6 +660,7 @@ function timelineGate(state) {
     const slotStr = new Date(nextSlot).toLocaleString("zh-CN", { hour12: false });
     return { ok: false, msg: `时间线 slot ${slotStr} 未到, 等待` };
   }
+  // 到了 slot(或 5 分钟宽限内), 可以发
   return { ok: true, msg: "" };
 }
 
@@ -658,13 +668,17 @@ async function runOnce(onceMode = false) {
   log(`\n=== 开始一轮 @ ${new Date().toLocaleString("zh-CN", { hour12: false })}`);
   const state = loadState();
 
-  // 1. 抓全部素材
-  const marketMoves = await fetchMarketMove(config);
-  const announcements = onceMode ? await fetchAnnouncementsOnce(5000) : await fetchAnnouncements(config);
-  const newCoins = await fetchNewCoins(config);
-  const funding = await fetchFundingRate(config);
-  const whales = await fetchWhaleWatch(config);
-  const fng = await fetchFearGreed(config);
+  // 1. 抓全部素材(并行拉, 控制总耗时, 避免错过 slot 窗口)
+  // 公告用 buffer(常驻时 WS 实时填), 单次模式给 5s 等待
+  const [marketMoves, announcements, newCoins, funding, whales, fng] =
+    await Promise.all([
+      fetchMarketMove(config),
+      onceMode ? fetchAnnouncementsOnce(5000) : fetchAnnouncements(config),
+      fetchNewCoins(config),
+      fetchFundingRate(config),
+      fetchWhaleWatch(config),
+      fetchFearGreed(config),
+    ]);
 
   const candidates = [
     ...marketMoves, ...announcements, ...newCoins, ...funding, ...whales, ...fng,
