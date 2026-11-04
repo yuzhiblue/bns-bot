@@ -598,9 +598,7 @@ function buildTimeline(state) {
   if (!s?.enabled) return null;
   const tz = s.timezone ?? "Asia/Shanghai";
   const dayKey = todayStrTZ(tz);
-  if (state.timelineKey === dayKey && Array.isArray(state.timeline)) {
-    return state.timeline;
-  }
+  // 按需生成(每次调用都算), 但用 state 记录已发进度
   const slots = [];
   const quietFrom = s.quiet?.from ?? 0;
   const quietTo = s.quiet?.to ?? 0;
@@ -632,35 +630,51 @@ function buildTimeline(state) {
 
   state.timeline = slots;
   state.timelineKey = dayKey;
-  state.timelineIdx = 0;
+  // 进度由 state.timelineSentCount 管理(发一帖 +1), 不再用 timelineIdx 跳格
+  if (state.timelineSentCount === undefined) state.timelineSentCount = 0;
+  if (state.timelineKey !== dayKey || (state.timelineSentCount === 0 && !state.timelineDay)) {
+    // 新的一天重置进度
+    if (state.timelineKey !== dayKey) state.timelineSentCount = 0;
+    state.timelineDay = dayKey;
+  }
   saveState(state);
   return slots;
 }
 
-// 按时间线判断: 是否到了该发的 slot, 还是未到/已发完
+// 按时间线判断: 锚定式, 错过的 slot 可以追发(只追最近的 1 个)
 function timelineGate(state) {
   const s = config.schedule;
   if (!s?.enabled) return { ok: true, msg: "" };
   buildTimeline(state);
   const timeline = state.timeline;
   const now = Date.now();
-  const slotGraceMs = 5 * 60000; // slot 过期 5 分钟内仍可补发
-  // 跳过"过期太久且没发"的 slot
-  while (
-    state.timelineIdx < timeline.length &&
-    timeline[state.timelineIdx] <= now - slotGraceMs
-  ) {
-    state.timelineIdx++;
+  const sent = state.timelineSentCount ?? 0;
+
+  // 今天发满了
+  if (sent >= timeline.length) {
+    return { ok: false, msg: `今日 ${timeline.length} 个 slot 已用完, 明天继续` };
   }
-  if (state.timelineIdx >= timeline.length) {
-    return { ok: false, msg: "今日时间线发完, 明天继续" };
+
+  // 当前应处于的 slot 位置
+  // 找第一个"应该到点"的 slot: 即 timeline[i] <= now 的最后一个 i, 且 i >= sent
+  // 如果所有 timeline[i] (i>=sent) 都还没到点 -> 等待下一个
+  // 如果有些 timeline[i] 已经过了(错过了) -> 允许追发最近的一个(即 timeline[sent])
+  const nextDue = timeline[sent];
+  if (now >= nextDue) {
+    // 到了(或错过了)该发的 slot, 可以发
+    // 如果错过太久(>30min), 说明中间有大段没发, 只追 1 帖不连补
+    const missedMs = now - nextDue;
+    if (missedMs > 30 * 60000) {
+      log(`  时间线: 追发 1 帖(原 slot ${new Date(nextDue).toLocaleString("zh-CN",{hour12:false})} 已错过 ${Math.round(missedMs/60000)}min, 不连补)`);
+    }
+    return { ok: true, msg: "" };
   }
-  const nextSlot = timeline[state.timelineIdx];
-  if (now < nextSlot - 30000) {
-    const slotStr = new Date(nextSlot).toLocaleString("zh-CN", { hour12: false });
-    return { ok: false, msg: `时间线 slot ${slotStr} 未到, 等待` };
+  // 还没到该发的 slot 时间
+  const waitMs = nextDue - now;
+  if (waitMs > 30000) {
+    const slotStr = new Date(nextDue).toLocaleString("zh-CN", { hour12: false });
+    return { ok: false, msg: `时间线 slot ${slotStr} 未到(还差 ${Math.round(waitMs/60000)}min), 等待` };
   }
-  // 到了 slot(或 5 分钟宽限内), 可以发
   return { ok: true, msg: "" };
 }
 
@@ -739,7 +753,7 @@ async function runOnce(onceMode = false) {
     state.lastPostAt = Date.now();
     state.todayPosted++;
     markUsed(state, material.id);
-    if (config.schedule?.enabled) state.timelineIdx = (state.timelineIdx ?? 0) + 1;
+    if (config.schedule?.enabled) state.timelineSentCount = (state.timelineSentCount ?? 0) + 1;
     state.postHistory = state.postHistory ?? [];
     state.postHistory.push({
       id: result.data?.id,
