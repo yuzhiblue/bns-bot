@@ -1,0 +1,14 @@
+# 运行状态/日志, 不入库
+state.json
+bot.log
+bot.pid
+
+# config.json 里有你的 OpenAPI Key, 不能推
+config.json
+
+# Node
+node_modules/
+
+# 杂项
+.DS_Store
+Thumbs.db
