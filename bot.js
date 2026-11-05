@@ -406,10 +406,12 @@ function genFundingPost(m) {
   const up = m.ratePct > 0;
   const annual = Math.abs(m.ratePct * 24 * 365).toFixed(0);
   const payer = up ? "空头" : "多头";
-  const opener = fill(pickFrom(TPL.funding.openers, "opener"), {
+  // 按付费方选词库: 多头付费=多头拥挤, 空头付费=空头拥挤
+  const bucket = up ? TPL.fundingLong : TPL.fundingShort;
+  const opener = fill(pickFrom(bucket.openers, "opener"), {
     coin, ratePct: m.ratePct.toFixed(3), annual, payer,
   });
-  const closer = fill(pickFrom(TPL.funding.closers, "closer"), {
+  const closer = fill(pickFrom(bucket.closers, "closer"), {
     coin, ratePct: m.ratePct.toFixed(3), annual, payer,
   });
 
@@ -428,11 +430,20 @@ function genFundingPost(m) {
 function genWhalePost(m) {
   const coin = m.baseSymbol;
   const long = m.ratio > 1;
+  // 按多空方向选词库, 保证开头/结尾方向一致
+  let openers, closers;
+  if (long) {
+    openers = TPL.whale.longOpeners;
+    closers = TPL.whale.longClosers;
+  } else {
+    openers = TPL.whale.shortOpeners;
+    closers = TPL.whale.shortClosers;
+  }
   const side = long ? "多头" : "空头";
-  const opener = fill(pickFrom(TPL.whale.openers, "opener"), {
+  const opener = fill(pickFrom(openers, "opener"), {
     coin, ratio: m.ratio, side,
   });
-  const closer = fill(pickFrom(TPL.whale.closers, "closer"), {
+  const closer = fill(pickFrom(closers, "closer"), {
     coin, ratio: m.ratio, side,
   });
 
@@ -662,20 +673,23 @@ function timelineGate(state) {
   const nextDue = timeline[sent];
   if (now >= nextDue) {
     // 到了(或错过了)该发的 slot, 可以发
-    // 如果错过太久(>30min), 说明中间有大段没发, 只追 1 帖不连补
     const missedMs = now - nextDue;
     if (missedMs > 30 * 60000) {
       log(`  时间线: 追发 1 帖(原 slot ${new Date(nextDue).toLocaleString("zh-CN",{hour12:false})} 已错过 ${Math.round(missedMs/60000)}min, 不连补)`);
     }
     return { ok: true, msg: "" };
   }
-  // 还没到该发的 slot 时间
+  // 还没到, 但 30 分钟内到点 -> 允许提前发(避免 07:58 轮次因差 2 分钟错过 08:00 slot)
   const waitMs = nextDue - now;
-  if (waitMs > 30000) {
-    const slotStr = new Date(nextDue).toLocaleString("zh-CN", { hour12: false });
-    return { ok: false, msg: `时间线 slot ${slotStr} 未到(还差 ${Math.round(waitMs/60000)}min), 等待` };
+  if (waitMs <= 30 * 60000) {
+    if (waitMs > 60000) {
+      log(`  时间线: 提前补发(原 slot ${new Date(nextDue).toLocaleString("zh-CN",{hour12:false})} 还差 ${Math.round(waitMs/60000)}min, 本轮先发)`);
+    }
+    return { ok: true, msg: "" };
   }
-  return { ok: true, msg: "" };
+  // 超过 30 分钟, 等待
+  const slotStr = new Date(nextDue).toLocaleString("zh-CN", { hour12: false });
+  return { ok: false, msg: `时间线 slot ${slotStr} 未到(还差 ${Math.round(waitMs/60000)}min), 等待` };
 }
 
 async function runOnce(onceMode = false) {
@@ -698,15 +712,22 @@ async function runOnce(onceMode = false) {
     ...marketMoves, ...announcements, ...newCoins, ...funding, ...whales, ...fng,
   ];
 
-  // --force 模式: 没素材时造一条行情帖用来测发帖链路
+  // --force 模式: 没素材时用实时真实数据造一条行情帖(不用假数字, 避免虚假消息)
   const forceMode = process.argv.includes("--force");
   if (candidates.length === 0 && forceMode) {
-    const m = marketMoves[0] ?? {
-      id: `force_${Date.now()}`, kind: "market", symbol: "BTCUSDT", baseSymbol: "BTC",
-      pct: 2.5, price: 120000, volMultiple: 3.2, windowMinutes: 60,
-    };
-    log("--force: 没有新素材, 用造出来的行情帖测发帖链路");
-    candidates.push(m);
+    try {
+      const d = await fetchJson(`${BINANCE_API}/api/v3/ticker/24hr?symbol=BTCUSDT`);
+      candidates.push({
+        id: `force_${Date.now()}`, kind: "market", symbol: "BTCUSDT", baseSymbol: "BTC",
+        pct: parseFloat(d.priceChangePercent), price: parseFloat(d.lastPrice),
+        volMultiple: 1, windowMinutes: 24, isForce: true,
+      });
+      log("--force: 用实时 BTC 数据造一条帖(真实价格)");
+    } catch (e) {
+      log(`--force: 拉实时数据失败(${e.message}), 不发假帖, 跳过本轮`);
+      saveState(state);
+      return;
+    }
   }
 
   // 2. 去重(素材 id 没发过)
