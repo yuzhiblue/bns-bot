@@ -1,0 +1,69 @@
+name: bns-bot
+
+# 公开仓库的标准 runner 免费且不限分钟数, 不消耗私有库每月 2000 分钟额度。
+on:
+  schedule:
+    # UTC 时间, 每 15 分钟一轮; 整点最容易排队, 故意错开 8 分钟
+    - cron: "8,23,38,53 * * * *"
+  workflow_dispatch: {}
+
+# 需要把 state.json 推回仓库
+permissions:
+  contents: write
+
+# 同一时刻只允许一个实例写状态文件, 避免并发覆盖
+concurrency:
+  group: bns-bot-state
+  cancel-in-progress: false
+
+jobs:
+  cycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      TZ: Asia/Shanghai
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Generate config.json from Secret
+        env:
+          BNS_CONFIG: ${{ secrets.BNS_CONFIG }}
+        run: |
+          if [ -z "$BNS_CONFIG" ]; then
+            echo "::error::仓库 Secret BNS_CONFIG 未设置"
+            exit 1
+          fi
+          printf '%s' "$BNS_CONFIG" > config.json
+          node -e "const c=require('./config.json'); if(!c.openApiKey) throw new Error('config.json 缺少 openApiKey'); console.log('config.json 就绪, dryRun=' + c.dryRun)"
+
+      - name: Run one cycle
+        run: node bot.js --once
+
+      - name: Persist state.json
+        run: |
+          git config user.name "bns-bot[bot]"
+          git config user.email "bns-bot[bot]@users.noreply.github.com"
+          git add -f state.json
+          if git diff --cached --quiet; then
+            echo "state.json 无变化, 跳过提交"
+            exit 0
+          fi
+          git commit -m "chore: persist bot state $(date -u +%Y-%m-%dT%H:%M:%SZ) [skip ci]"
+          branch="${GITHUB_REF_NAME}"
+          git pull --rebase origin "${branch}" || true
+          n=0
+          until git push origin "HEAD:${branch}"; do
+            n=$((n + 1))
+            if [ "$n" -ge 3 ]; then
+              echo "::error::state.json 推送失败"
+              exit 1
+            fi
+            git pull --rebase origin "${branch}" || git rebase --abort || true
+            sleep 2
+          done

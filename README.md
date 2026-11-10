@@ -69,3 +69,61 @@ node bot.js --test     # 发一条测试帖, 只验接口
 ## 日志
 
 常驻模式重定向到 `bot.log`。Windows 上跑 `start.bat` 会自动追加。
+
+## 部署到 GitHub Actions（公开仓库）
+
+本地电脑关机就停, 云端版用 GitHub Actions 每 15 分钟跑一轮 `node bot.js --once`。
+**仓库必须是 Public**: 公开仓库的标准 runner 免费且不限分钟数, 不消耗私有库每月 2000 分钟额度;
+私有库跑这个频率约 2880 分钟/月, 会直接把额度打爆并拖停其他 workflow。
+
+> ⚠️ 公开仓库里**代码、`templates.js` 词库、`state.json`、运行日志（含帖子全文）全部公开**。
+> `config.json` 和里面的 OpenAPI Key 不入库（`.gitignore` 已排除）, 只放在 Secret 里。
+> 推送前执行 `git ls-files` 确认输出里没有 `config.json`; 若历史上曾提交过含 Key 的文件,
+> 先去币安重新生成 Key 并清理历史。
+
+### 步骤
+
+1. 先提交本次改动, 在 GitHub 新建一个**公开**空仓库并推上去
+   （现有 `origin` 是 cnb.cool, 另加一个远程; 推到 `main` 以对齐 GitHub 新仓库的默认分支）:
+
+   ```bash
+   git add .gitignore README.md bot.js config.example.json .github/workflows/bot.yml state.json
+   git commit -m "chore: GitHub Actions 部署"
+   git remote add github https://github.com/<你的用户名>/<仓库名>.git
+   git push github master:main
+   ```
+
+   推完确认默认分支（`Settings → Branches`）上能看到 `.github/workflows/bot.yml`
+   —— **定时调度只在默认分支生效**。`state.json` 建议一起提交以保留去重记录;
+   想从零开始就先删掉它再提交。
+
+2. `Settings → Secrets and variables → Actions → New repository secret`:
+   名称 `BNS_CONFIG`, 值 = 本地 `config.json` 的**完整内容**（含 `openApiKey`）。
+   想先验证就把 `dryRun` 设为 `true`, 确认真发再改成 `false`。
+   改配置只需更新这个 Secret, 不用重新提交代码。
+
+3. `Settings → Actions → General → Workflow permissions` 选 **Read and write permissions**
+   （workflow 需要把 `state.json` 推回仓库）。
+
+4. `Actions → bns-bot → Run workflow` 手动跑一次, 看日志是否正常、
+   仓库是否多了一条 `persist bot state` 提交。
+
+### 运行机制
+
+- `.github/workflows/bot.yml` 用 UTC cron `8,23,38,53 * * * *`（每 15 分钟, 故意错开整点减少排队）。
+  GitHub 定时调度常延迟 5~30 分钟, 时间线排期的「只追发最近 1 个 slot」逻辑能容错。
+- `state.json` 每轮被 commit 回仓库, 用于持久化去重记录、当日发帖数和时间线进度;
+  同时保证仓库持续有 push 活动, 避免公开仓库「60 天无活动自动禁用定时 workflow」。
+- `TZ=Asia/Shanghai` 由 workflow 设置, 日志和「今天」的判定与本地一致。
+- 单次模式**不挂 WebSocket**（长连接会让 job 挂到超时）, 公告改走 `announcement.apiUrl`:
+  在 `BNS_CONFIG` 的 `announcement` 里加 `apiUrl` 指向一个币安公告列表 JSON 接口才会启用;
+  不配就跳过公告, 其余行情/费率/多空比/新币/情绪素材照常。接口失效或结构变了会自动降级, 不影响发帖。
+- `refreshSymbols.js` 回写 `config.json`, 而云端配置在 Secret 里, 所以**不要在 Actions 里跑它**,
+  要换监控币种直接编辑 `BNS_CONFIG` Secret。
+
+### 上线前必做
+
+GitHub runner 是美国机房 IP, 币安对部分机房 IP 会返回 **451 / 风控**（错误码 2000002）。
+先用 `dryRun: true` 手动跑几轮, 确认行情接口能拉到数据、发帖链路没有地域限制, 再改成 `false` 真发。
+
+本地常驻模式不受影响: `node bot.js` 仍走原来的 WebSocket 公告订阅。

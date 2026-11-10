@@ -78,7 +78,6 @@ async function fetchJson(url, opts = {}, timeoutMs = 10000) {
 // 行情异动:对比 N 分钟前的价格 + 成交量放大(各币种并行拉)
 async function fetchMarketMove(cfg) {
   const { symbols, priceChangePct, windowMinutes, volSpikeMultiple } = cfg.market;
-  const state = loadState();
   const moves = [];
 
   await Promise.all(
@@ -131,9 +130,8 @@ async function fetchMarketMove(cfg) {
 
 // ---------- 新信源: 新币 / 资金费率 / 鲸鱼 / 恐惧贪婪 ----------
 
-async function fetchNewCoins(cfg) {
+async function fetchNewCoins(cfg, state) {
   if (!cfg.newCoin?.enabled) return [];
-  const state = loadState();
   try {
     const info = await fetchJson(`${BINANCE_API}/api/v3/exchangeInfo`, {}, 30000);
     const now = Date.now();
@@ -152,7 +150,6 @@ async function fetchNewCoins(cfg) {
         ts: now,
       }));
     state.newCoinIds = [...new Set([...(state.newCoinIds ?? []), ...fresh.map((s) => s.baseAsset)])].slice(-50);
-    saveState(state);
     if (news.length) log(`  新币: 发现 ${news.length} 个 7 天内上线的币`);
     return news;
   } catch (e) {
@@ -225,7 +222,7 @@ async function fetchWhaleWatch(cfg) {
   return out;
 }
 
-async function fetchFearGreed(cfg) {
+async function fetchFearGreed(cfg, state) {
   if (!cfg.sentiment?.enabled) return [];
   try {
     const j = await fetchJson("https://api.alternative.me/fng/?limit=1", {}, 15000);
@@ -233,14 +230,12 @@ async function fetchFearGreed(cfg) {
     if (!d) return [];
     const val = parseInt(d.value, 10);
     const cls = d.value_classification ?? "";
-    const today = new Date().toISOString().slice(0, 10);
-    const state = loadState();
+    const today = todayStrTZ(cfg.schedule?.timezone);
     if ((state.sentimentDates ?? []).includes(today)) {
       log(`  恐惧贪婪: 今天已发过, 跳过`);
       return [];
     }
     state.sentimentDates = [...(state.sentimentDates ?? []), today].slice(-30);
-    saveState(state);
     log(`  恐惧贪婪: ${val} (${cls})`);
     return [{ id: `fng_${today}`, kind: "fearGreed", value: val, cls, ts: Date.now() }];
   } catch (e) {
@@ -301,14 +296,65 @@ function drainAnnouncements(limit = 1) {
   return out;
 }
 
-// 单次模式下: 直接连一次 WS, 等最多 N 秒拿公告
-async function fetchAnnouncementsOnce(waitMs = 5000) {
-  if (!annWebSocket) connectAnnouncements();
-  const deadline = Date.now() + waitMs;
-  while (annBuffer.length === 0 && Date.now() < deadline) {
-    await new Promise((r) => setTimeout(r, 1000));
+// 单次/无服务器模式: 用 HTTP 拉公告(WS 长连接只适合常驻进程)
+// 公告接口结构不固定, 这里宽松解析; 接口失败或结构不认识就降级为空, 不影响其他素材。
+// 只有在 config.json 的 announcement.apiUrl 配了地址才会启用。
+function collectArticleArrays(node, out, depth = 0) {
+  if (!node || depth > 4 || out.length >= 10) return;
+  if (Array.isArray(node)) {
+    const looksLikeArticles = node.some(
+      (x) => x && typeof x === "object" && ("title" in x || "body" in x || "content" in x)
+    );
+    if (looksLikeArticles) out.push(node);
+    else for (const item of node.slice(0, 20)) collectArticleArrays(item, out, depth + 1);
+    return;
   }
-  return drainAnnouncements(5);
+  if (typeof node === "object") {
+    for (const v of Object.values(node)) collectArticleArrays(v, out, depth + 1);
+  }
+}
+
+async function fetchAnnouncementsHttp(cfg, state) {
+  const url = cfg.announcement?.apiUrl;
+  if (!cfg.announcement?.enabled || !url) return [];
+  try {
+    const json = await fetchJson(url, {}, 10000);
+    const groups = [];
+    collectArticleArrays(json, groups);
+    const articles = groups.flat().slice(0, 20);
+    if (!articles.length) {
+      log("  公告: 接口没返回可识别的公告(结构可能变了), 本轮跳过");
+      return [];
+    }
+    const seen = new Set((state.lastAnnouncementIds ?? []).map(String));
+    const ids = articles.map((a) => String(a.id ?? a.articleId ?? a.code ?? a.title ?? ""));
+    state.lastAnnouncementIds = [
+      ...new Set([...(state.lastAnnouncementIds ?? []), ...ids.filter(Boolean)]),
+    ].slice(-200);
+    if (seen.size === 0) {
+      log(`  公告: 首次运行, 把 ${ids.length} 条现有公告记为基线, 之后只发新公告`);
+      return [];
+    }
+    const out = [];
+    for (let i = 0; i < articles.length; i++) {
+      if (!ids[i] || seen.has(ids[i])) continue;
+      const a = articles[i];
+      const tsRaw = a.releaseTime ?? a.releaseDate ?? a.publishTime ?? a.ctime;
+      const ts = typeof tsRaw === "number" ? tsRaw : (tsRaw ? Date.parse(tsRaw) : Date.now());
+      out.push({
+        id: `ann_${ids[i]}`,
+        kind: "announcement",
+        title: String(a.title ?? ""),
+        body: String(a.body ?? a.content ?? a.summary ?? ""),
+        ts: Number.isFinite(ts) ? ts : Date.now(),
+      });
+    }
+    if (out.length) log(`  公告: 发现 ${out.length} 条新公告`);
+    return out;
+  } catch (e) {
+    log(`  公告: HTTP 拉取失败(${e.message}), 本轮跳过`);
+    return [];
+  }
 }
 
 // 常驻模式下每轮调用: buffer 有就立刻取, 没有就短等 3 秒(不阻塞太久, 避免错过 slot 窗口)
@@ -648,7 +694,6 @@ function buildTimeline(state) {
     if (state.timelineKey !== dayKey) state.timelineSentCount = 0;
     state.timelineDay = dayKey;
   }
-  saveState(state);
   return slots;
 }
 
@@ -695,17 +740,19 @@ function timelineGate(state) {
 async function runOnce(onceMode = false) {
   log(`\n=== 开始一轮 @ ${new Date().toLocaleString("zh-CN", { hour12: false })}`);
   const state = loadState();
+  // 每轮写一个时间戳: 保证状态文件必然变化, 便于外部(GitHub Actions)提交持久化并保持仓库活动
+  state.lastRunAt = Date.now();
 
-  // 1. 抓全部素材(并行拉, 控制总耗时, 避免错过 slot 窗口)
-  // 公告用 buffer(常驻时 WS 实时填), 单次模式给 5s 等待
+  // 1. 抓全部素材(并行拉)。所有抓取共享同一个 state 对象, 由本函数结尾统一落盘,
+  //    避免并发写文件互相覆盖。单次模式不连 WS, 改用可配置的 HTTP 公告源。
   const [marketMoves, announcements, newCoins, funding, whales, fng] =
     await Promise.all([
       fetchMarketMove(config),
-      onceMode ? fetchAnnouncementsOnce(5000) : fetchAnnouncements(config),
-      fetchNewCoins(config),
+      onceMode ? fetchAnnouncementsHttp(config, state) : fetchAnnouncements(config),
+      fetchNewCoins(config, state),
       fetchFundingRate(config),
       fetchWhaleWatch(config),
-      fetchFearGreed(config),
+      fetchFearGreed(config, state),
     ]);
 
   const candidates = [
@@ -826,7 +873,10 @@ async function main() {
   if (process.argv.includes("--once")) {
     await runOnce(true);
     log("单次跑完, 退出");
-    return;
+    // 无服务器环境必须明确退出: 任何残留 timer/socket 都会让 job 一直挂到超时
+    try { annWebSocket?.close(); } catch {}
+    await new Promise((r) => setTimeout(r, 50));
+    process.exit(0);
   }
 
   // 常驻: 每 cycleMinutes 跑一轮

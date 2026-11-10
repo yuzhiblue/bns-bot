@@ -13,7 +13,7 @@
     "volSpikeMultiple": 3
   },
 
-  "announcement": { "enabled": true, "maxAgeHours": 12, "locale": "en" },
+  "announcement": { "enabled": true, "maxAgeHours": 12, "locale": "en", "apiUrl": "" },
 
   "fundingRate": {
     "enabled": true,
