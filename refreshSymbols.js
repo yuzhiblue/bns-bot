@@ -31,7 +31,7 @@ async function main() {
   const log = (...a) => console.log(`[${new Date().toLocaleString("zh-CN", { hour12: false })}]`, ...a);
 
   log(`拉全所 24hr ticker...`);
-  const tickers = await fetch("https://api.binance.com/api/v3/ticker/24hr").then((r) => r.json());
+  const tickers = await fetch("https://data-api.binance.vision/api/v3/ticker/24hr").then((r) => r.json());
 
   // 过滤: USDT 计价 + 成交额达标
   // 排除"壳"币: 稳定币包装/ETF包装/杠杆代币等, 帖子写出来没人看

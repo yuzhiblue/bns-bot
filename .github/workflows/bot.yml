@@ -5,7 +5,12 @@ on:
   schedule:
     # UTC 时间, 每 15 分钟一轮; 整点最容易排队, 故意错开 8 分钟
     - cron: "8,23,38,53 * * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      test_post:
+        description: "勾选后只发一条测试帖验证发帖接口(不跑常规轮次)"
+        type: boolean
+        default: false
 
 # 需要把 state.json 推回仓库
 permissions:
@@ -43,7 +48,12 @@ jobs:
           node -e "const c=require('./config.json'); if(!c.openApiKey) throw new Error('config.json 缺少 openApiKey'); console.log('config.json 就绪, dryRun=' + c.dryRun)"
 
       - name: Run one cycle
+        if: ${{ inputs.test_post != true }}
         run: node bot.js --once
+
+      - name: Test publish endpoint
+        if: ${{ inputs.test_post == true }}
+        run: node bot.js --test
 
       - name: Persist state.json
         run: |

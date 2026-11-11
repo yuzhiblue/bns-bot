@@ -21,7 +21,10 @@ const ROOT = __dirname;
 const config = JSON.parse(fs.readFileSync(path.join(ROOT, "config.json"), "utf8"));
 const STATE_FILE = path.join(ROOT, "state.json");
 
-const BINANCE_API = "https://api.binance.com";
+// 现货行情走币安官方公开数据镜像: api.binance.com 对美国出口 IP 返回 451,
+// data-api.binance.vision 是同一套现货公开数据, 不执行该地域封锁。
+// 注意: 该镜像只有现货接口, 没有 fapi 合约接口(已探测返回 404)。
+const BINANCE_API = "https://data-api.binance.vision";
 const BAPI = "https://www.binance.com/bapi";
 
 // ---------- 工具 ----------
@@ -160,12 +163,16 @@ async function fetchNewCoins(cfg, state) {
 
 async function fetchFundingRate(cfg) {
   if (!cfg.fundingRate?.enabled) return [];
+  // 合约接口没有无地域限制的镜像, 默认禁用; 只有 config 里显式配了可用
+  // baseUrl 才请求, 避免每轮刷一屏 451。
+  const base = cfg.fundingRate.baseUrl;
+  if (!base) return [];
   const { symbols, absThreshold } = cfg.fundingRate;
   const out = [];
   await Promise.all(
     symbols.map(async (sym) => {
       try {
-        const d = await fetchJson(`https://fapi.binance.com/fapi/v1/premiumIndex?symbol=${sym}`);
+        const d = await fetchJson(`${base}/fapi/v1/premiumIndex?symbol=${sym}`);
         const rate = parseFloat(d.lastFundingRate ?? 0);
         const absPct = Math.abs(rate) * 100;
         if (absPct >= absThreshold) {
@@ -192,13 +199,16 @@ async function fetchFundingRate(cfg) {
 
 async function fetchWhaleWatch(cfg) {
   if (!cfg.whale?.enabled) return [];
+  // 同资金费率: 合约接口默认禁用, 需要时在 config 里配可用 baseUrl。
+  const base = cfg.whale.baseUrl;
+  if (!base) return [];
   const { symbols } = cfg.whale;
   const out = [];
   await Promise.all(
     symbols.map(async (sym) => {
       try {
         const d = await fetchJson(
-          `https://fapi.binance.com/futures/data/topLongShortPositionRatio?symbol=${sym}&period=1h&limit=1`
+          `${base}/futures/data/topLongShortPositionRatio?symbol=${sym}&period=1h&limit=1`
         );
         if (!Array.isArray(d) || d.length === 0) return;
         const latest = d[0];

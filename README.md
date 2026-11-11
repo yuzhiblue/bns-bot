@@ -126,29 +126,38 @@ node bot.js --test     # 发一条测试帖, 只验接口
 - `TZ=Asia/Shanghai` 由 workflow 设置, 日志和「今天」的判定与本地一致。
 - 单次模式**不挂 WebSocket**（长连接会让 job 挂到超时）, 公告改走 `announcement.apiUrl`:
   在 `BNS_CONFIG` 的 `announcement` 里加 `apiUrl` 指向一个币安公告列表 JSON 接口才会启用;
-  不配就跳过公告, 其余行情/费率/多空比/新币/情绪素材照常。接口失效或结构变了会自动降级, 不影响发帖。
+  不配就跳过公告。接口失效或结构变了会自动降级, 不影响发帖。
 - `refreshSymbols.js` 回写 `config.json`, 而云端配置在 Secret 里, 所以**不要在 Actions 里跑它**,
   要换监控币种直接编辑 `BNS_CONFIG` Secret。
 
-### 451 地区封锁排查（必看）
+### 451 地区封锁排查（2026-11-11 已实测）
 
-GitHub runner 的出口 IP 在美国, 币安对受限地区返回 **HTTP 451**。
-注意: 各抓取函数都把失败 `catch` 掉了, 所以**所有接口 451 时 job 依然是绿色**,
-只会在日志里刷「拉取失败: HTTP 451」, 最后靠 `alternative.me` 的恐惧贪婪指数撑着。
-**在确认行情和发帖接口都通之前, 不要把 `dryRun` 改成 `false`。**
+GitHub runner 的出口 IP 在美国, `api.binance.com` 与 `fapi.binance.com` 全部返回
+**HTTP 451**。各抓取函数把失败 `catch` 掉了, 所以**所有接口 451 时 job 依然是绿色**
+（假绿）, 只会刷「拉取失败: HTTP 451」, 靠 `alternative.me` 的恐惧贪婪指数撑着。
 
-排查工具: `Actions → probe-binance → Run workflow` 手动跑一次只读探针,
-它会列出 `api.binance.com` / `fapi.binance.com` / `data-api.binance.vision` /
-`www.binance.com/bapi`（发帖域名）以及几个第三方源的状态码, 不发帖、不读 Secret、不改 `state.json`。
-按结果分两种情况:
+`Actions → probe-binance → Run workflow` 是只读探针（不发帖、不读 Secret、不改 `state.json`）。
+实测结果与代码里的处理:
 
-- **发帖域名 `www.binance.com/bapi` 也 451** → 换出口 IP 才能解决: 在亚洲合规地区的 VPS 上
-  挂 GitHub self-hosted runner（`runs-on: self-hosted`, 不消耗 Actions 分钟）, 或把 bot 直接迁到
-  亚太区 VPS / AWS Lambda 亚太区域。改代码换数据源救不了发帖接口。
-- **发帖域名通、只有行情域名 451** → 把 `api.binance.com` 换成币安官方公开数据镜像
-  `data-api.binance.vision`（同一套现货公开数据, 不执行美国地区封锁）; 合约的
-  `fapi.binance.com` 没有等价镜像, 资金费率/多空比两个素材源需要关掉或另找数据源。
+| 域名 | 状态 | 处理 |
+|---|---|---|
+| `api.binance.com`（K线 / exchangeInfo） | 451 | 统一改用官方镜像 `data-api.binance.vision`（探针实测 200） |
+| `fapi.binance.com`（资金费率 / 多空比） | 451 | 没有等价镜像（`/fapi/...` 在 vision 上 404）, **默认禁用** |
+| `www.binance.com/bapi`（发帖） | 400 + JSON 业务错误 | ✅ 没被地区封锁, 可以发帖 |
+| OKX / Bybit | ERR / 403 | 也不通, 不作备选 |
 
-确认接口都通之后, 再用 `dryRun: true` 手动跑几轮, 最后把 Secret 里的 `dryRun` 改成 `false` 真发。
+现货行情（K线 / exchangeInfo / ticker）已统一走 `data-api.binance.vision`;
+`fundingRate` / `whale` 只有在 config 里显式填了 `baseUrl` 才会请求, 留空（默认）即静默跳过,
+不再每轮刷屏 451。现有素材源: 行情异动、新币、恐惧贪婪、可选公告。
+
+**注意**: 探针用 GET 打发帖接口, 400 只说明请求到达业务层、没被 451 拦截;
+真正带 Key 的 POST 是否被接受、有没有设备风控（错误码 2000002）还没验证。
+上线顺序:
+
+1. `Actions → bns-bot → Run workflow` 不勾选, 用 `dryRun: true` 跑一轮,
+   确认日志里出现 `行情 XXX: 60min ...` 而不是「拉取失败」;
+2. `Actions → bns-bot → Run workflow` 勾选 **test_post**（执行 `node bot.js --test`）,
+   真发一条测试帖, 看到「✅ 接口通, 发帖成功」才算发帖链路验证通过;
+3. 最后把 Secret `BNS_CONFIG` 里的 `dryRun` 改成 `false` 正式上线。
 
 本地常驻模式不受影响: `node bot.js` 仍走原来的 WebSocket 公告订阅。

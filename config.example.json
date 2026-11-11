@@ -17,12 +17,13 @@
 
   "fundingRate": {
     "enabled": true,
+    "baseUrl": "",
     "symbols": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
     "absThreshold": 0.05,
     "checkEveryHours": 1
   },
 
-  "whale": { "enabled": true, "symbols": ["BTCUSDT", "ETHUSDT", "SOLUSDT", "DOGEUSDT"], "minThresholdUsd": 5000000 },
+  "whale": { "enabled": true, "baseUrl": "", "symbols": ["BTCUSDT", "ETHUSDT", "SOLUSDT", "DOGEUSDT"], "minThresholdUsd": 5000000 },
 
   "sentiment": { "enabled": true, "source": "alternative.me", "dailyPost": true },
 
