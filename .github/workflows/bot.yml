@@ -4,8 +4,11 @@ name: bns-bot
 on:
   schedule:
     # UTC 时间, 每 15 分钟一轮; 整点最容易排队, 故意错开 8 分钟。
-    # 2026-11-11 重新推送一次, 让 GitHub 重新注册 schedule(排查定时事件不触发)。
-    - cron: "8,23,38,53 * * * *"
+    # 拆成 4 条独立 cron: 触发时刻不变, 但让 GitHub 重新注册 schedule 事件。
+    - cron: "8 * * * *"
+    - cron: "23 * * * *"
+    - cron: "38 * * * *"
+    - cron: "53 * * * *"
   workflow_dispatch:
     inputs:
       test_post:
