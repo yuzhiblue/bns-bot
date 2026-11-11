@@ -3,7 +3,8 @@ name: bns-bot
 # 公开仓库的标准 runner 免费且不限分钟数, 不消耗私有库每月 2000 分钟额度。
 on:
   schedule:
-    # UTC 时间, 每 15 分钟一轮; 整点最容易排队, 故意错开 8 分钟
+    # UTC 时间, 每 15 分钟一轮; 整点最容易排队, 故意错开 8 分钟。
+    # 2026-11-11 重新推送一次, 让 GitHub 重新注册 schedule(排查定时事件不触发)。
     - cron: "8,23,38,53 * * * *"
   workflow_dispatch:
     inputs:
