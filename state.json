@@ -2,7 +2,8 @@
   "postedMaterialIds": [
     "force_1793784251295",
     "whale_BTCUSDT_2026-11-05",
-    "whale_XRPUSDT_2026-11-05"
+    "whale_XRPUSDT_2026-11-05",
+    "ann_289730"
   ],
   "lastAnnouncementIds": [
     "289715",
@@ -24,11 +25,12 @@
     "288429",
     "288467",
     "288395",
-    "288285"
+    "288285",
+    "289730"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1793840497475,
-  "todayPosted": 3,
+  "lastPostAt": 1794389619524,
+  "todayPosted": 4,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -48,6 +50,12 @@
       "kind": "whale",
       "at": 1793840497475,
       "text": "🐋 XRP 多头占优了\n· 当前多空比: 2.3024\n· 多头持仓明显占优\n\n多头付费，持仓成本不低，留意。\n\n$XRP #多空比\n#行情异动"
+    },
+    {
+      "id": 387065525916056,
+      "kind": "announcement",
+      "at": 1794389619524,
+      "text": "📢 币安公告更新\n\nFund Your First Recurring Buy - Deposit USD and Earn Rewards\n\n新消息，注意你的持仓。\n\n#币安公告\n#行情异动"
     }
   ],
   "newCoinIds": [],
@@ -70,11 +78,34 @@
   ],
   "timelineKey": "2026-11-11",
   "timelineIdx": 0,
-  "timelineSentCount": 2,
+  "timelineSentCount": 3,
   "timelineDay": "2026-11-05",
-  "lastRunAt": 1794382980645,
+  "lastRunAt": 1794389615941,
   "sentimentDates": [
     "2026-11-11"
   ],
-  "lastFetchAt": 1794382980645
+  "lastFetchAt": 1794389615941,
+  "symbols": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "ZECUSDT",
+    "SOLUSDT",
+    "XRPUSDT",
+    "PEPEUSDT",
+    "NEARUSDT",
+    "NVDABUSDT",
+    "BNBUSDT",
+    "UNIUSDT",
+    "INITUSDT",
+    "HYPEUSDT",
+    "DOGEUSDT",
+    "ENAUSDT",
+    "AVAXUSDT"
+  ],
+  "symbolsUpdatedAt": "2026-11-11",
+  "symbolsMeta": {
+    "topN": 16,
+    "minUsd": 30000000,
+    "updatedAt": 1794389617150
+  }
 }
