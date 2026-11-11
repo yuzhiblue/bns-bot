@@ -8,6 +8,7 @@
 
   "market": {
     "symbols": ["BTCUSDT", "ETHUSDT", "SOLUSDT", "DOGEUSDT", "XRPUSDT", "BNBUSDT"],
+    "symbolPool": { "topN": 16, "minUsd": 30000000 },
     "priceChangePct": 3,
     "windowMinutes": 60,
     "volSpikeMultiple": 3

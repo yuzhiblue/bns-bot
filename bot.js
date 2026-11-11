@@ -16,6 +16,7 @@
 const fs = require("fs");
 const path = require("path");
 const TPL = require("./templates");
+const { fetchSymbolPool, DEFAULT_TOP_N, DEFAULT_MIN_USD } = require("./symbolPool");
 
 const ROOT = __dirname;
 const config = JSON.parse(fs.readFileSync(path.join(ROOT, "config.json"), "utf8"));
@@ -813,6 +814,38 @@ function timelineGate(state) {
   return { ok: false, msg: `时间线 slot ${slotStr} 未到(还差 ${Math.round(waitMs/60000)}min), 等待` };
 }
 
+// 云端(--once)每天首次到点轮次按 24h 成交额刷新监控币种池。
+// Secret 里的 market.symbols 只是初始快照, 结果存 state.json 才能跨 runner 持久;
+// 本地常驻模式仍由 daily-refresh.bat + refreshSymbols.js 负责, 避免两套机制打架。
+async function refreshSymbolPoolIfNeeded(state, onceMode) {
+  const poolCfg = config.market?.symbolPool ?? {};
+  if (!onceMode || poolCfg.autoRefresh === false) return;
+
+  const today = todayStrTZ(config.schedule?.timezone);
+  if (state.symbolsUpdatedAt === today && Array.isArray(state.symbols) && state.symbols.length) {
+    config.market.symbols = state.symbols;
+    log(`币种池: 今日(${today})已刷新, 沿用 ${state.symbols.length} 个`);
+    return;
+  }
+
+  const topN = poolCfg.topN ?? config._symbolsAuto?.topN ?? DEFAULT_TOP_N;
+  const minUsd = poolCfg.minUsd ?? config._symbolsAuto?.minUsd ?? DEFAULT_MIN_USD;
+  try {
+    const { symbols } = await fetchSymbolPool({ topN, minUsd });
+    config.market.symbols = symbols;
+    state.symbols = symbols;
+    state.symbolsUpdatedAt = today;
+    state.symbolsMeta = { topN, minUsd, updatedAt: Date.now() };
+    log(`币种池: 今日首次刷新, 24h 成交额前 ${symbols.length} 个(≥${minUsd / 1e6}M USDT): ${symbols.join(", ")}`);
+  } catch (e) {
+    // 刷新失败不阻断发帖: 沿用上次持久化的池子, 没有则沿用 Secret 里的初始值
+    const fallback = Array.isArray(state.symbols) && state.symbols.length
+      ? state.symbols : config.market.symbols;
+    config.market.symbols = fallback;
+    log(`币种池: 刷新失败(${e.message}), 沿用 ${fallback.length} 个, 下个 slot 再试`);
+  }
+}
+
 async function runOnce(onceMode = false) {
   log(`\n=== 开始一轮 @ ${new Date().toLocaleString("zh-CN", { hour12: false })}`);
   const state = loadState();
@@ -853,6 +886,9 @@ async function runOnce(onceMode = false) {
 
   // 到点了才写时间戳: 状态文件变化 → workflow 提交持久化 + 保持仓库活动
   state.lastRunAt = Date.now();
+
+  // 1.5 云端模式: 每天首次到点轮次自动刷新币种池(空转轮次走不到这里)
+  await refreshSymbolPoolIfNeeded(state, onceMode);
 
   // 2. 抓全部素材(并行拉)。所有抓取共享同一个 state 对象, 由本函数结尾统一落盘,
   //    避免并发写文件互相覆盖。单次模式不连 WS, 改用 HTTP 公告源。

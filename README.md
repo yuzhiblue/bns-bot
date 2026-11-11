@@ -8,7 +8,9 @@
 |---|---|
 | `bot.js` | 主程序, 单文件, Node 18+ |
 | `config.json` | 配置: Key、节奏、监控币种、敏感词 |
-| `state.json` | 运行状态(自动维护, 别手动改) |
+| `state.json` | 运行状态(自动维护, 别手动改); 云端的当日币种池也存在这里 |
+| `symbolPool.js` | 按 24h 成交额筛选币种池, 云端与本地共用同一份规则 |
+| `refreshSymbols.js` | 本地常驻模式刷新币种池(云端不要用) |
 | `bot.log` | 日志(常驻模式输出到这) |
 | `start.bat` | Windows 启动脚本 |
 | `start.sh` | Linux 启动脚本 |
@@ -51,7 +53,8 @@ node bot.js --test     # 发一条测试帖, 只验接口
 | `schedule.evenSpread` | **`true` = 全天 24 小时均分, 无静默期**; 详见下节 |
 | `schedule.maxPerDay` | 一天几个 slot(均分间隔 = `1440 / maxPerDay`) |
 | `schedule.startHour` / `intervalMinutes` / `quiet` | 仅 `evenSpread=false` 时生效 |
-| `market.symbols` | 监控哪些币 |
+| `market.symbols` | 初始监控币种; **云端 `--once` 每天按成交额自动覆盖**(结果存 `state.json`) |
+| `market.symbolPool` | 可选: 自动刷新的 `topN` / `minUsd` / `autoRefresh`; 不写用默认 16 个 / 3000 万 USDT |
 | `market.priceChangePct` | N 分钟内涨跌多少算异动 |
 | `market.volSpikeMultiple` | 成交量放大几倍才算(避免假异动) |
 | `post.hashtags` | 帖子结尾自动带的话题 |
@@ -151,20 +154,37 @@ node bot.js --test     # 发一条测试帖, 只验接口
 - **抓取节奏**: bot 先判断时间线 slot, 没到点就**零请求退出、不改 `state.json`、不产生 commit**;
   只有每个 slot 才抓一次接口, 并用 `state.lastFetchAt` 的时间冷却（一个间隔减 20 分钟余量）保证
   同一 slot 不重复抓、连续没素材也会按周期继续尝试。接口调用量约从 96 次/天降到
-  `maxPerDay` 次/天（当前 15 次/天）; 代价是两次 slot 之间发生的异动要等到下个 slot 才看。
+  `maxPerDay` 次/天（当前 15 次/天, 币种池刷新另加 1 次/天）; 代价是两次 slot 之间发生的异动要等到下个 slot 才看。
 - **选帖**: 每轮最多发 1 条。多条素材按热度评分取最高的一条（行情看涨跌幅与量比、
   新币看上线新鲜度、公告看发布时间、情绪看指数极端程度, 全部叠加新鲜度加权）。
   日志会打印各候选分数; 没有素材就不发。
 -   `state.json` 只在真正抓取过的轮次被 commit 回仓库, 用于持久化去重记录、当日发帖数、
-  时间线进度和 `lastFetchAt`; 每天十几次 push 也足以保持仓库活动,
+  时间线进度、`lastFetchAt` 和当日币种池; 每天十几次 push 也足以保持仓库活动,
   避免公开仓库「60 天无活动自动禁用定时 workflow」。
 - `TZ=Asia/Shanghai` 由 workflow 设置, 日志和「今天」的判定与本地一致。
 - 单次模式**不挂 WebSocket**（长连接会让 job 挂到超时）, 公告走内置 HTTP 接口
   `www.binance.com/bapi/composite/v1/public/cms/article/list/query`（公开、无需 Key）:
   取 12 小时内的新公告, 首次运行把现有公告记为基线, 避免一次性补发旧公告。
   想换接口可在 `BNS_CONFIG` 的 `announcement.apiUrl` 里覆盖; 接口失效或结构变了会自动降级, 不影响其他素材。
-- `refreshSymbols.js` 回写 `config.json`, 而云端配置在 Secret 里, 所以**不要在 Actions 里跑它**,
-  要换监控币种直接编辑 `BNS_CONFIG` Secret。
+
+### 监控币种池自动刷新（云端 `--once`）
+
+GitHub Actions 每次新建 runner, Secret `BNS_CONFIG` 里的 `market.symbols` 只是**初始快照**。
+bot 在**每天第一次到点轮次**拉一次全所 `ticker/24hr`, 按 24h 成交额取前 `topN`
+（默认 16）个成交额 ≥ `minUsd`（默认 3000 万 USDT）的 USDT 交易对,
+排除稳定币包装 / ETF 股票包装 / 代币化黄金 / 跨链桥等壳币。结果写进 `state.json` 的
+`symbols` / `symbolsUpdatedAt` / `symbolsMeta`, 抓取时用 `state.symbols` 覆盖
+`config.market.symbols`; 因为 `state.json` 每轮 commit 回仓库, 新 runner 能接着用。
+
+- **不需要改 Secret、不需要新 workflow**; 每天只多 1 次请求, 空转轮次仍然零请求。
+- 刷新失败会沿用上次的池子（没有则沿用 Secret 初始值）, **不阻断发帖**, 下个 slot 再试;
+  日志分别显示 `币种池: 今日首次刷新…` / `今日已刷新, 沿用…` / `刷新失败…`。
+- 想调参数: 在 `BNS_CONFIG` 的 `market` 里加
+  `"symbolPool": { "topN": 16, "minUsd": 30000000 }`; 加 `"autoRefresh": false` 可关掉。
+  不写这些字段也能正常工作（用默认值, 或复用 `_symbolsAuto` 里记录的上次参数）。
+- 本地常驻模式**不走这套**: `refreshSymbols.js` + `daily-refresh.bat` 回写本地 `config.json`
+  并重启 bot, 两者共用 `symbolPool.js` 的同一份筛选规则。**不要在 Actions 里跑
+  `refreshSymbols.js`** —— 它改的是会被 Secret 覆盖的 `config.json`, 且改动会随 runner 销毁。
 
 ### 451 地区封锁排查（2026-11-11 已实测）
 
