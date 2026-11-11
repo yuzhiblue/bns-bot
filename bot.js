@@ -1,16 +1,15 @@
 #!/usr/bin/env node
 /**
- * bns-bot — 币安广场自动发帖机器人
+ * bns-bot — 币安广场自动发帖机器人（GitHub Actions 纯云端单次模式）
  * 抓取行情异动 + 币安公告 → 生成带 $币种 的帖子 → 调官方 OpenAPI 发布
  *
- * 用法:
- *   node bot.js            正常运行(按 config.json 的 dryRun)
- *   node bot.js --once     只跑一轮就退出(调试用)
- *   node bot.js --force    忽略节奏限制, 本轮强制发帖(--once 时没素材会造一条)
- *   node bot.js --test     只测发帖接口通不通(用一句测试帖)
+ * 每次运行只跑一轮就退出, 由 workflow 的 cron 定时唤起; 状态靠 state.json 持久化,
+ * 配置由 Secret BNS_CONFIG 注入为 config.json。没有常驻进程、没有长连接。
  *
- * 验证发帖链路:  node bot.js --once --force
- * 之后把 config.dryRun 改 false 就是真发
+ * 用法:
+ *   node bot.js            跑一轮(workflow 里写作 node bot.js --once, --once 为兼容参数)
+ *   node bot.js --force    没素材时用实时行情造一条(仍受时间线约束)
+ *   node bot.js --test     发一条测试帖验发帖接口
  */
 
 const fs = require("fs");
@@ -259,61 +258,9 @@ async function fetchFearGreed(cfg, state) {
   }
 }
 
-// ---------- 公告 WebSocket 订阅(常驻) ----------
-// 公告流是实时推送, 没新公告不会主动发, 所以常驻模式下挂着一个 WS
-const ANN_WS = "wss://stream.binance.com:443/ws/announcementStream";
-let annWebSocket = null;
-const annBuffer = []; // 未消化的新公告
-
-function connectAnnouncements() {
-  const state = loadState();
-  const seen = new Set(state.lastAnnouncementIds);
-  annWebSocket = new WebSocket(ANN_WS);
-
-  annWebSocket.onmessage = (ev) => {
-    let msg;
-    try { msg = JSON.parse(String(ev.data)); } catch { return; }
-    // 公告流的消息结构: { stream: 'announcementStream', data: {...} }
-    const a = msg.data ?? msg;
-    if (!a?.id) return;
-    const idStr = String(a.id);
-    if (seen.has(idStr)) return; // 已见过的跳过
-    const news = {
-      id: `ann_${a.id}`,
-      kind: "announcement",
-      title: a.title ?? "",
-      body: a.body ?? "",
-      ts: a.releaseTime ? Date.parse(a.releaseTime) : Date.now(),
-    };
-    annBuffer.push(news);
-    log(`  公告推送: ${news.title?.slice(0, 60)}`);
-
-    // 更新 seen, 避免重启后重复
-    const st = loadState();
-    st.lastAnnouncementIds = [...new Set([...st.lastAnnouncementIds, idStr])].slice(-200);
-    saveState(st);
-  };
-
-  annWebSocket.onclose = () => {
-    log("  公告 WS 断开, 5s 后重连");
-    annWebSocket = null;
-    setTimeout(connectAnnouncements, 5000);
-  };
-  annWebSocket.onerror = () => {
-    // onclose 会跟着触发, 不额外处理
-  };
-}
-
-// 取未消化的公告, 取完清空
-function drainAnnouncements(limit = 1) {
-  if (annBuffer.length === 0) return [];
-  const out = annBuffer.splice(0, limit);
-  return out;
-}
-
-// 单次/无服务器模式: 用 HTTP 拉公告(WS 长连接只适合常驻进程)
-// 公告接口结构不固定, 这里宽松解析; 接口失败或结构不认识就降级为空, 不影响其他素材。
-// 只有在 config.json 的 announcement.apiUrl 配了地址才会启用。
+// ---------- 公告(HTTP) ----------
+// 云端是短进程, 不挂长连接; 公告接口结构不固定, 宽松解析,
+// 失败或结构不认识就降级为空, 不影响其他素材。
 function collectArticleArrays(node, out, depth = 0) {
   if (!node || depth > 6 || out.length >= 20) return;
   if (Array.isArray(node)) {
@@ -388,15 +335,6 @@ async function fetchAnnouncementsHttp(cfg, state) {
     log(`  公告: HTTP 拉取失败(${e.message}), 本轮跳过`);
     return [];
   }
-}
-
-// 常驻模式下每轮调用: buffer 有就立刻取, 没有就短等 3 秒(不阻塞太久, 避免错过 slot 窗口)
-async function fetchAnnouncements(cfg) {
-  if (!cfg.announcement?.enabled) return [];
-  const fromBuffer = drainAnnouncements(5);
-  if (fromBuffer.length) return fromBuffer;
-  await new Promise((r) => setTimeout(r, 3000));
-  return drainAnnouncements(5);
 }
 
 // ---------- 帖子生成(从 templates.js 读词库) ----------
@@ -814,12 +752,11 @@ function timelineGate(state) {
   return { ok: false, msg: `时间线 slot ${slotStr} 未到(还差 ${Math.round(waitMs/60000)}min), 等待` };
 }
 
-// 云端(--once)每天首次到点轮次按 24h 成交额刷新监控币种池。
-// Secret 里的 market.symbols 只是初始快照, 结果存 state.json 才能跨 runner 持久;
-// 本地常驻模式仍由 daily-refresh.bat + refreshSymbols.js 负责, 避免两套机制打架。
-async function refreshSymbolPoolIfNeeded(state, onceMode) {
+// 每天首次到点轮次按 24h 成交额刷新监控币种池。
+// Secret 里的 market.symbols 只是初始快照, 结果存 state.json 才能跨 runner 持久。
+async function refreshSymbolPoolIfNeeded(state) {
   const poolCfg = config.market?.symbolPool ?? {};
-  if (!onceMode || poolCfg.autoRefresh === false) return;
+  if (poolCfg.autoRefresh === false) return;
 
   const today = todayStrTZ(config.schedule?.timezone);
   if (state.symbolsUpdatedAt === today && Array.isArray(state.symbols) && state.symbols.length) {
@@ -846,7 +783,7 @@ async function refreshSymbolPoolIfNeeded(state, onceMode) {
   }
 }
 
-async function runOnce(onceMode = false) {
+async function runOnce() {
   log(`\n=== 开始一轮 @ ${new Date().toLocaleString("zh-CN", { hour12: false })}`);
   const state = loadState();
 
@@ -887,15 +824,15 @@ async function runOnce(onceMode = false) {
   // 到点了才写时间戳: 状态文件变化 → workflow 提交持久化 + 保持仓库活动
   state.lastRunAt = Date.now();
 
-  // 1.5 云端模式: 每天首次到点轮次自动刷新币种池(空转轮次走不到这里)
-  await refreshSymbolPoolIfNeeded(state, onceMode);
+  // 1.5 每天首次到点轮次自动刷新币种池(空转轮次走不到这里)
+  await refreshSymbolPoolIfNeeded(state);
 
   // 2. 抓全部素材(并行拉)。所有抓取共享同一个 state 对象, 由本函数结尾统一落盘,
-  //    避免并发写文件互相覆盖。单次模式不连 WS, 改用 HTTP 公告源。
+  //    避免并发写文件互相覆盖。公告走内置 HTTP 接口。
   const [marketMoves, announcements, newCoins, funding, whales, fng] =
     await Promise.all([
       fetchMarketMove(config),
-      onceMode ? fetchAnnouncementsHttp(config, state) : fetchAnnouncements(config),
+      fetchAnnouncementsHttp(config, state),
       fetchNewCoins(config, state),
       fetchFundingRate(config),
       fetchWhaleWatch(config),
@@ -1004,7 +941,7 @@ async function main() {
       log(`节奏: 时间线排期 ${s.startHour}:00 起, 每 ${s.intervalMinutes}min 一 slot, 每天 ${s.maxPerDay} slot, ${quiet}`);
     }
   } else {
-    log(`节奏: 每轮 ${config.cycleMinutes}min, 每天 ≤${config.postsPerDay} 帖, 最小间隔 ${config.minIntervalMinutes}min`);
+    log(`节奏: 非时间线模式, 每天 ≤${config.postsPerDay} 帖, 最小间隔 ${config.minIntervalMinutes}min`);
   }
   log(`监控: ${config.market.symbols.join(", ")} (${config.market.windowMinutes}min 内 ${config.market.priceChangePct}% + 量比 ${config.market.volSpikeMultiple}x)`);
 
@@ -1012,30 +949,11 @@ async function main() {
     await testPost();
     return;
   }
-  if (process.argv.includes("--once")) {
-    await runOnce(true);
-    log("单次跑完, 退出");
-    // 无服务器环境必须明确退出: 任何残留 timer/socket 都会让 job 一直挂到超时
-    try { annWebSocket?.close(); } catch {}
-    await new Promise((r) => setTimeout(r, 50));
-    process.exit(0);
-  }
-
-  // 常驻: 每 cycleMinutes 跑一轮
-  const interval = config.cycleMinutes * 60000;
-  log("连接公告 WebSocket...");
-  connectAnnouncements();
-  const onceMode = process.argv.includes("--once");
-  await runOnce(onceMode);
-  if (!onceMode) setInterval(() => runOnce(false), interval);
-  log(`常驻运行中, 每 ${config.cycleMinutes} 分钟一轮, Ctrl+C 退出`);
-
-  process.on("SIGINT", () => {
-    log("收到 Ctrl+C, 保存状态退出");
-    saveState(loadState());
-    try { annWebSocket?.close(); } catch {}
-    process.exit(0);
-  });
+  await runOnce();
+  log("单次跑完, 退出");
+  // 无服务器环境必须明确退出, 避免残留 handle 让 job 挂到超时
+  await new Promise((r) => setTimeout(r, 50));
+  process.exit(0);
 }
 
 main().catch((e) => {

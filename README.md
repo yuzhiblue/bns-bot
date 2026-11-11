@@ -1,59 +1,50 @@
-# bns-bot — 币安广场自动发帖
+# bns-bot — 币安广场自动发帖（GitHub Actions 纯云端）
 
-抓取币安行情异动 + 实时公告 → 生成带 `$币种` 的帖子 → 调广场 OpenAPI 发布。
+抓取币安行情异动 + 公告 → 生成带 `$币种` 的帖子 → 调广场 OpenAPI 发布。
+**只跑云端**: workflow 每 15 分钟唤起一个短进程, 跑一轮就退出; 没有常驻服务、没有长连接,
+本机不留启动脚本和计划任务。配置在 Secret `BNS_CONFIG`, 状态靠 `state.json` 持久化。
 
 ## 文件
 
 | 文件 | 说明 |
 |---|---|
-| `bot.js` | 主程序, 单文件, Node 18+ |
-| `config.json` | 配置: Key、节奏、监控币种、敏感词 |
-| `state.json` | 运行状态(自动维护, 别手动改); 云端的当日币种池也存在这里 |
-| `symbolPool.js` | 按 24h 成交额筛选币种池, 云端与本地共用同一份规则 |
-| `refreshSymbols.js` | 本地常驻模式刷新币种池(云端不要用) |
-| `bot.log` | 日志(常驻模式输出到这) |
-| `start.bat` | Windows 启动脚本 |
-| `start.sh` | Linux 启动脚本 |
-
-## 快速开始
-
-```bash
-# 1. 先跑一轮看看抓到的素材(不发帖)
-node bot.js --once
-
-# 2. 验证发帖链路(造一条假行情真发出去)
-node bot.js --once --force
-
-# 3. 确认帖子没问题后, 把 config.json 的 dryRun 改 false, 常驻跑
-node bot.js
-```
+| `.github/workflows/bot.yml` | 云端定时调度、注入 Secret、提交 `state.json` |
+| `bot.js` | 主程序, 跑一轮即退出 |
+| `templates.js` | 帖子词库 |
+| `symbolPool.js` | 按 24h 成交额筛选币种池 |
+| `config.example.json` | 配置示例(仅参考, 不影响线上) |
+| `config.json` | 运行时由 Secret 生成; 本地若保留, `.gitignore` 已排除, 不入库 |
+| `state.json` | 运行状态(自动维护, 别手动改); 当日币种池也存在这里 |
 
 ## 命令
 
+本地跑需要先有一份 `config.json`（可从 `config.example.json` 复制并填入 Key）;
+云端由 workflow 从 Secret 自动生成, 不需要这一步。
+
 ```bash
-node bot.js            # 常驻: 每 cycleMinutes 判一次节奏, 到 slot 才抓接口 + 挂公告 WS
-node bot.js --once     # 单次: 判一次节奏, 到 slot 才抓一轮然后退出
+node bot.js            # 跑一轮: 判节奏 → 到点才抓接口 → 抓完就发 → 退出
+node bot.js --once     # 同上, --once 只是兼容 workflow 写法的参数
 node bot.js --force    # 没素材时用实时行情造一条(仍受时间线约束)
-node bot.js --test     # 发一条测试帖, 只验接口
+node bot.js --test     # 发一条测试帖验发帖接口
 ```
 
-`--force` 和 `--once` 可组合: `node bot.js --once --force`。注意 `--force` 只在时间线
+日常不用手动执行, `Actions → bns-bot → Run workflow` 即可触发一轮。
+`--force` 和 `--once` 可组合: `node bot.js --once --force`; 注意 `--force` 只在时间线
 允许发帖时才生效, 不会绕过节奏。
 
 ## 节奏参数
 
-`config.json` 里:
+`config.json` 里（轮询频率由 workflow 的 cron 决定, 不在配置里）:
 
 | 字段 | 说明 |
 |---|---|
-| `cycleMinutes` | 多久检查一次节奏(15 分钟一次); **没到发帖 slot 就不抓接口** |
 | `postsPerDay` | 每天最多发几帖(非时间线模式用) |
 | `minIntervalMinutes` | 两帖最小间隔(非时间线模式用) |
 | `schedule.enabled` | `true` 走时间线排期 |
 | `schedule.evenSpread` | **`true` = 全天 24 小时均分, 无静默期**; 详见下节 |
 | `schedule.maxPerDay` | 一天几个 slot(均分间隔 = `1440 / maxPerDay`) |
 | `schedule.startHour` / `intervalMinutes` / `quiet` | 仅 `evenSpread=false` 时生效 |
-| `market.symbols` | 初始监控币种; **云端 `--once` 每天按成交额自动覆盖**(结果存 `state.json`) |
+| `market.symbols` | 初始监控币种; **每天按成交额自动覆盖**(结果存 `state.json`) |
 | `market.symbolPool` | 可选: 自动刷新的 `topN` / `minUsd` / `autoRefresh`; 不写用默认 16 个 / 3000 万 USDT |
 | `market.priceChangePct` | N 分钟内涨跌多少算异动 |
 | `market.volSpikeMultiple` | 成交量放大几倍才算(避免假异动) |
@@ -98,11 +89,13 @@ node bot.js --test     # 发一条测试帖, 只验接口
 
 ## 日志
 
-常驻模式重定向到 `bot.log`。Windows 上跑 `start.bat` 会自动追加。
+在 `Actions → bns-bot → 对应运行记录 → cycle` 里看, 公开仓库的日志含帖子全文。
+本地不产生 `bot.log`。
 
 ## 部署到 GitHub Actions（公开仓库）
 
-本地电脑关机就停, 云端版用 GitHub Actions 每 15 分钟跑一轮 `node bot.js --once`。
+GitHub Actions 每 15 分钟跑一轮 `node bot.js --once`（`--once` 现在只是兼容参数,
+不写也是跑一轮就退出）。
 **仓库必须是 Public**: 公开仓库的标准 runner 免费且不限分钟数, 不消耗私有库每月 2000 分钟额度;
 私有库跑这个频率约 2880 分钟/月, 会直接把额度打爆并拖停其他 workflow。
 
@@ -117,7 +110,7 @@ node bot.js --test     # 发一条测试帖, 只验接口
    （现有 `origin` 是 cnb.cool, 另加一个远程; 推到 `main` 以对齐 GitHub 新仓库的默认分支）:
 
    ```bash
-   git add .gitignore README.md bot.js config.example.json .github/workflows/bot.yml state.json
+   git add .gitignore README.md bot.js templates.js symbolPool.js config.example.json .github/workflows/bot.yml state.json
    git commit -m "chore: GitHub Actions 部署"
    git remote add github https://github.com/<你的用户名>/<仓库名>.git
    git push github master:main
@@ -136,7 +129,7 @@ node bot.js --test     # 发一条测试帖, 只验接口
    `environment:` 才会注入, 本 workflow 没有配, 填那里读不到）。
 
    - Name: `BNS_CONFIG`（区分大小写, 对应 workflow 里的 `secrets.BNS_CONFIG`）
-   - Secret: 本地 `config.json` 的**完整内容**（含 `openApiKey`, 多行 JSON 直接粘贴）,
+   - Secret: **完整配置 JSON**（含 `openApiKey`, 多行直接粘贴; 可在 `config.example.json` 基础上改）,
      先把 `dryRun` 改成 `true`, 确认接口通了再改成 `false`
    - 点 **Add secret**。Secret 保存后不能再查看, 以后改配置只能整份覆盖粘贴,
      不用重新提交代码。粘贴不完整时 workflow 里的 `require('./config.json')` 会直接报错。
@@ -162,12 +155,12 @@ node bot.js --test     # 发一条测试帖, 只验接口
   时间线进度、`lastFetchAt` 和当日币种池; 每天十几次 push 也足以保持仓库活动,
   避免公开仓库「60 天无活动自动禁用定时 workflow」。
 - `TZ=Asia/Shanghai` 由 workflow 设置, 日志和「今天」的判定与本地一致。
-- 单次模式**不挂 WebSocket**（长连接会让 job 挂到超时）, 公告走内置 HTTP 接口
+- **无常驻进程、无长连接**: 公告走内置 HTTP 接口
   `www.binance.com/bapi/composite/v1/public/cms/article/list/query`（公开、无需 Key）:
   取 12 小时内的新公告, 首次运行把现有公告记为基线, 避免一次性补发旧公告。
   想换接口可在 `BNS_CONFIG` 的 `announcement.apiUrl` 里覆盖; 接口失效或结构变了会自动降级, 不影响其他素材。
 
-### 监控币种池自动刷新（云端 `--once`）
+### 监控币种池自动刷新
 
 GitHub Actions 每次新建 runner, Secret `BNS_CONFIG` 里的 `market.symbols` 只是**初始快照**。
 bot 在**每天第一次到点轮次**拉一次全所 `ticker/24hr`, 按 24h 成交额取前 `topN`
@@ -182,9 +175,7 @@ bot 在**每天第一次到点轮次**拉一次全所 `ticker/24hr`, 按 24h 成
 - 想调参数: 在 `BNS_CONFIG` 的 `market` 里加
   `"symbolPool": { "topN": 16, "minUsd": 30000000 }`; 加 `"autoRefresh": false` 可关掉。
   不写这些字段也能正常工作（用默认值, 或复用 `_symbolsAuto` 里记录的上次参数）。
-- 本地常驻模式**不走这套**: `refreshSymbols.js` + `daily-refresh.bat` 回写本地 `config.json`
-  并重启 bot, 两者共用 `symbolPool.js` 的同一份筛选规则。**不要在 Actions 里跑
-  `refreshSymbols.js`** —— 它改的是会被 Secret 覆盖的 `config.json`, 且改动会随 runner 销毁。
+- 筛选规则集中在 `symbolPool.js`, 写成纯函数便于离线验证; 没有第二套本地刷新脚本。
 
 ### 451 地区封锁排查（2026-11-11 已实测）
 
@@ -209,14 +200,13 @@ GitHub runner 的出口 IP 在美国, `api.binance.com` 与 `fapi.binance.com` �
 **发帖链路已验证通过**: 2026-11-11 用 `test_post` 跑 `node bot.js --test` 真发成功
 （`id=386976997232534`）, 说明 OpenAPI Key 有效、发帖域名没被封、无设备风控。
 
-上线顺序:
+当前状态与验证方式（2026-11-11 已正式上线, Secret `BNS_CONFIG` 里 `dryRun=false`）:
 
-1. `Actions → bns-bot → Run workflow` 不勾选, 用 `dryRun: true` 跑一轮。
+1. `Actions → bns-bot → Run workflow` 不勾选 **test_post**, 手动跑一轮看日志。
    注意**只有落在 slot 窗口内的轮次才会抓接口**; 其它轮次日志是
    「时间线: ... 本轮不抓接口也不发帖」, 属正常。到点的轮次应看到 `行情 XXX: 60min ...`
-   而不是「拉取失败」, 以及 `公告: 首次运行, 把 N 条现有公告记为基线`。
+   而不是「拉取失败」。
 2. （可选复验）`Actions → bns-bot → Run workflow` 勾选 **test_post**
-   （执行 `node bot.js --test`）, 再真发一条测试帖;
-3. 最后把 Secret `BNS_CONFIG` 里的 `dryRun` 改成 `false` 正式上线。
-
-本地常驻模式不受影响: `node bot.js` 仍走原来的 WebSocket 公告订阅。
+   （执行 `node bot.js --test`）, 真发一条测试帖验 Key 与风控。
+3. 判断链路是否通要看具体日志行（`行情` / `素材` / `✅ 发帖成功` / `chore: persist bot state`）;
+   所有抓取失败都被 catch 吞掉, **job 绿色不等于链路通**。

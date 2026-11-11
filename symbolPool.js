@@ -2,8 +2,8 @@
 /**
  * symbolPool.js — 按 24h 成交额挑选监控币种池
  *
- * 云端 bot.js(--once) 与本地 refreshSymbols.js 共用同一份筛选规则,
- * 避免两套规则各自漂移。本文件不读写任何配置文件, 只负责取数 + 筛选。
+ * 供 bot.js 调用; 筛选规则写成纯函数, 便于离线验证。
+ * 本文件不读写任何配置文件, 只负责取数 + 筛选。
  */
 
 const TICKER_URL = "https://data-api.binance.vision/api/v3/ticker/24hr";

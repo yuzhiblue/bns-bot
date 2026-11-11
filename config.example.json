@@ -2,7 +2,6 @@
   "openApiKey": "把你的币安广场 OpenAPI Key 填这里",
   "dryRun": true,
 
-  "cycleMinutes": 15,
   "postsPerDay": 15,
   "minIntervalMinutes": 90,
 
