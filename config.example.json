@@ -31,10 +31,8 @@
 
   "schedule": {
     "enabled": true,
-    "startHour": 8,
-    "intervalMinutes": 90,
+    "evenSpread": true,
     "maxPerDay": 15,
-    "quiet": { "from": 0, "to": 7 },
     "timezone": "Asia/Shanghai"
   },
 

@@ -721,16 +721,22 @@ function buildTimeline(state) {
   const dayKey = todayStrTZ(tz);
   // 按需生成(每次调用都算), 但用 state 记录已发进度
   const slots = [];
-  const quietFrom = s.quiet?.from ?? 0;
-  const quietTo = s.quiet?.to ?? 0;
-  const intervalMs = (s.intervalMinutes ?? 90) * 60000;
+  const maxPerDay = s.maxPerDay ?? 15;
+  // evenSpread: 把 maxPerDay 个 slot 平均铺满 24 小时(从本地 0:00 起), 不设静默期。
+  // 15 帖 -> 1440/15 = 96min 一个 slot: 0:00 / 1:36 / 3:12 / ... / 22:24。
+  // 关掉这个开关则回到原来的 "startHour 起 + intervalMinutes + quiet" 写法。
+  const evenSpread = s.evenSpread === true;
+  const intervalMinutes = evenSpread ? (24 * 60) / maxPerDay : (s.intervalMinutes ?? 90);
+  const intervalMs = intervalMinutes * 60000;
+  const quietFrom = evenSpread ? 0 : (s.quiet?.from ?? 0);
+  const quietTo = evenSpread ? 0 : (s.quiet?.to ?? 0);
 
-  // 从 startHour 开始, 每跳 intervalMs 一次, 用"目标时区的日+时分"推进(处理跨天)
+  // 从起点开始, 每跳 intervalMs 一次, 用"目标时区的日+时分"推进(处理跨天)
   let curDay = dayKey;
-  let curH = s.startHour ?? 8;
+  let curH = evenSpread ? 0 : (s.startHour ?? 8);
   let curM = 0;
-  for (let i = 0; i < s.maxPerDay; i++) {
-    // 静默期: 落在 [quietFrom, quietTo) 的小时, 推到 quietTo:00
+  for (let i = 0; i < maxPerDay; i++) {
+    // 静默期: 落在 [quietFrom, quietTo) 的小时, 推到 quietTo:00(evenSpread 下 0<0 恒不成立)
     if (quietFrom < quietTo && curH >= quietFrom && curH < quietTo) {
       curH = quietTo;
       curM = 0;
@@ -768,7 +774,13 @@ function timelineGate(state) {
   buildTimeline(state);
   const timeline = state.timeline;
   const now = Date.now();
-  const sent = state.timelineSentCount ?? 0;
+  let sent = state.timelineSentCount ?? 0;
+  if (s.evenSpread) {
+    // 均分模式下按时间推进: 已经过去(超过 30min 容错)的 slot 不再补发,
+    // 否则一帖没发出去时会永远卡在 0:00 那一格, 每轮都显示"追发 0:00"。
+    const passed = timeline.filter((t) => now >= t + 30 * 60000).length;
+    sent = Math.max(sent, passed);
+  }
 
   // 今天发满了
   if (sent >= timeline.length) {
@@ -819,15 +831,24 @@ async function runOnce(onceMode = false) {
     return;
   }
 
-  // 同一个 slot 只抓一次接口: timelineGate 允许"提前 30 分钟补发",
-  // 不拦住的话, 这段窗口里的多个 15 分钟轮次会重复抓取。
+  // 按周期冷却: 一个 slot 周期内只抓一次接口。
+  // 用「上次抓取时间戳」而不是「已发数量」做 key —— 后者在一帖都没发出去时
+  // 永远不变, 会让当天后续 slot 全被挡住(没素材时整天只抓一次)。
   if (config.schedule?.enabled) {
-    const slotKey = `${state.timelineKey ?? ""}#${state.timelineSentCount ?? 0}`;
-    if (state.lastFetchSlot === slotKey) {
-      log(`本 slot 已抓过接口(进度 ${state.timelineSentCount ?? 0}), 跳过`);
+    const s = config.schedule;
+    const intervalMs = (s.evenSpread
+      ? (24 * 60) / (s.maxPerDay ?? 15)
+      : (s.intervalMinutes ?? 90)) * 60000;
+    // 留 20 分钟余量, 让"提前 30 分钟补发"窗口里的下一个 slot 仍能按点抓到
+    const cooldownMs = Math.max(30 * 60000, intervalMs - 20 * 60000);
+    const gapMin = state.lastFetchAt
+      ? Math.round((Date.now() - state.lastFetchAt) / 60000)
+      : Infinity;
+    if (gapMin < cooldownMs / 60000) {
+      log(`距上次抓取 ${gapMin}min < ${Math.round(cooldownMs / 60000)}min, 跳过`);
       return;
     }
-    state.lastFetchSlot = slotKey;
+    state.lastFetchAt = Date.now();
   }
 
   // 到点了才写时间戳: 状态文件变化 → workflow 提交持久化 + 保持仓库活动
@@ -939,8 +960,13 @@ async function main() {
   log(`模式: ${config.dryRun ? "dryRun(不真发)" : "真发"}`);
   if (config.schedule?.enabled) {
     const s = config.schedule;
-    const quiet = s.quiet?.from !== undefined ? `静默 ${s.quiet.from}:00-${s.quiet.to}:00` : "无静默";
-    log(`节奏: 时间线排期 ${s.startHour}:00 起, 每 ${s.intervalMinutes}min 一 slot, 每天 ${s.maxPerDay} slot, ${quiet}`);
+    if (s.evenSpread) {
+      const step = Math.round((24 * 60) / (s.maxPerDay ?? 15));
+      log(`节奏: 24h 均分, 0:00 起每 ${step}min 一 slot, 每天 ${s.maxPerDay} slot, 无静默`);
+    } else {
+      const quiet = s.quiet?.from !== undefined ? `静默 ${s.quiet.from}:00-${s.quiet.to}:00` : "无静默";
+      log(`节奏: 时间线排期 ${s.startHour}:00 起, 每 ${s.intervalMinutes}min 一 slot, 每天 ${s.maxPerDay} slot, ${quiet}`);
+    }
   } else {
     log(`节奏: 每轮 ${config.cycleMinutes}min, 每天 ≤${config.postsPerDay} 帖, 最小间隔 ${config.minIntervalMinutes}min`);
   }

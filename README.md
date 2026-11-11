@@ -45,13 +45,39 @@ node bot.js --test     # 发一条测试帖, 只验接口
 | 字段 | 说明 |
 |---|---|
 | `cycleMinutes` | 多久检查一次节奏(15 分钟一次); **没到发帖 slot 就不抓接口** |
-| `postsPerDay` | 每天最多发几帖 |
-| `minIntervalMinutes` | 两帖最小间隔 |
+| `postsPerDay` | 每天最多发几帖(非时间线模式用) |
+| `minIntervalMinutes` | 两帖最小间隔(非时间线模式用) |
+| `schedule.enabled` | `true` 走时间线排期 |
+| `schedule.evenSpread` | **`true` = 全天 24 小时均分, 无静默期**; 详见下节 |
+| `schedule.maxPerDay` | 一天几个 slot(均分间隔 = `1440 / maxPerDay`) |
+| `schedule.startHour` / `intervalMinutes` / `quiet` | 仅 `evenSpread=false` 时生效 |
 | `market.symbols` | 监控哪些币 |
 | `market.priceChangePct` | N 分钟内涨跌多少算异动 |
 | `market.volSpikeMultiple` | 成交量放大几倍才算(避免假异动) |
 | `post.hashtags` | 帖子结尾自动带的话题 |
 | `post.disclaimer` | 帖子结尾追加的免责声明 |
+
+### 24 小时均分排期（当前默认）
+
+`schedule` 写成:
+
+```json
+"schedule": {
+  "enabled": true,
+  "evenSpread": true,
+  "maxPerDay": 15,
+  "timezone": "Asia/Shanghai"
+}
+```
+
+间隔 = `1440 / maxPerDay` 分钟。当前 15 帖即 **96 分钟一个 slot**, 从本地 0:00 铺到 24:00:
+`0:00 / 1:36 / 3:12 / 4:48 / 6:24 / 8:00 / 9:36 / 11:12 / 12:48 / 14:24 / 16:00 / 17:36 / 19:12 / 20:48 / 22:24`。
+**没有静默期**; 改 `maxPerDay` 会自动重算间隔, 不用手动改别处。
+把 `evenSpread` 设成 `false` 就回到旧的 `startHour` + `intervalMinutes` + `quiet` 写法。
+
+> GitHub Actions 版的配置在 Secret 里: `Settings → Secrets and variables → Actions` →
+> 停在 **Secrets** 标签 → 下半部分 `Repository secrets` → 点 `BNS_CONFIG` 更新整份 JSON。
+> 只改仓库里的 `config.example.json` **不会影响线上**。
 
 ## 限流
 
@@ -123,13 +149,14 @@ node bot.js --test     # 发一条测试帖, 只验接口
 - `.github/workflows/bot.yml` 用 UTC cron `8,23,38,53 * * * *`（每 15 分钟, 故意错开整点减少排队）。
   GitHub 定时调度常延迟 5~30 分钟, 时间线排期的「只追发最近 1 个 slot」逻辑能容错。
 - **抓取节奏**: bot 先判断时间线 slot, 没到点就**零请求退出、不改 `state.json`、不产生 commit**;
-  只有每个 slot（默认 90 分钟）才抓一次接口, 并用 `state.lastFetchSlot` 保证同一 slot 不重复抓。
-  接口调用量约从 96 次/天降到 11~16 次/天; 代价是两次 slot 之间发生的异动要等到下个 slot 才看。
+  只有每个 slot 才抓一次接口, 并用 `state.lastFetchAt` 的时间冷却（一个间隔减 20 分钟余量）保证
+  同一 slot 不重复抓、连续没素材也会按周期继续尝试。接口调用量约从 96 次/天降到
+  `maxPerDay` 次/天（当前 15 次/天）; 代价是两次 slot 之间发生的异动要等到下个 slot 才看。
 - **选帖**: 每轮最多发 1 条。多条素材按热度评分取最高的一条（行情看涨跌幅与量比、
   新币看上线新鲜度、公告看发布时间、情绪看指数极端程度, 全部叠加新鲜度加权）。
   日志会打印各候选分数; 没有素材就不发。
-- `state.json` 只在真正抓取过的轮次被 commit 回仓库, 用于持久化去重记录、当日发帖数、
-  时间线进度和 `lastFetchSlot`; 每天十几次 push 也足以保持仓库活动,
+-   `state.json` 只在真正抓取过的轮次被 commit 回仓库, 用于持久化去重记录、当日发帖数、
+  时间线进度和 `lastFetchAt`; 每天十几次 push 也足以保持仓库活动,
   避免公开仓库「60 天无活动自动禁用定时 workflow」。
 - `TZ=Asia/Shanghai` 由 workflow 设置, 日志和「今天」的判定与本地一致。
 - 单次模式**不挂 WebSocket**（长连接会让 job 挂到超时）, 公告走内置 HTTP 接口
