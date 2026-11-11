@@ -29,13 +29,14 @@ node bot.js
 ## 命令
 
 ```bash
-node bot.js            # 常驻: 每 cycleMinutes 跑一轮 + 挂公告 WS
-node bot.js --once     # 单次: 跑一轮就退出
-node bot.js --force    # 强制发(忽略节奏, 没素材就造一条)
+node bot.js            # 常驻: 每 cycleMinutes 判一次节奏, 到 slot 才抓接口 + 挂公告 WS
+node bot.js --once     # 单次: 判一次节奏, 到 slot 才抓一轮然后退出
+node bot.js --force    # 没素材时用实时行情造一条(仍受时间线约束)
 node bot.js --test     # 发一条测试帖, 只验接口
 ```
 
-`--force` 和 `--once` 可组合: `node bot.js --once --force`
+`--force` 和 `--once` 可组合: `node bot.js --once --force`。注意 `--force` 只在时间线
+允许发帖时才生效, 不会绕过节奏。
 
 ## 节奏参数
 
@@ -43,7 +44,7 @@ node bot.js --test     # 发一条测试帖, 只验接口
 
 | 字段 | 说明 |
 |---|---|
-| `cycleMinutes` | 多久抓一轮素材(15 分钟一次, 行情数据实时算) |
+| `cycleMinutes` | 多久检查一次节奏(15 分钟一次); **没到发帖 slot 就不抓接口** |
 | `postsPerDay` | 每天最多发几帖 |
 | `minIntervalMinutes` | 两帖最小间隔 |
 | `market.symbols` | 监控哪些币 |
@@ -121,12 +122,20 @@ node bot.js --test     # 发一条测试帖, 只验接口
 
 - `.github/workflows/bot.yml` 用 UTC cron `8,23,38,53 * * * *`（每 15 分钟, 故意错开整点减少排队）。
   GitHub 定时调度常延迟 5~30 分钟, 时间线排期的「只追发最近 1 个 slot」逻辑能容错。
-- `state.json` 每轮被 commit 回仓库, 用于持久化去重记录、当日发帖数和时间线进度;
-  同时保证仓库持续有 push 活动, 避免公开仓库「60 天无活动自动禁用定时 workflow」。
+- **抓取节奏**: bot 先判断时间线 slot, 没到点就**零请求退出、不改 `state.json`、不产生 commit**;
+  只有每个 slot（默认 90 分钟）才抓一次接口, 并用 `state.lastFetchSlot` 保证同一 slot 不重复抓。
+  接口调用量约从 96 次/天降到 11~16 次/天; 代价是两次 slot 之间发生的异动要等到下个 slot 才看。
+- **选帖**: 每轮最多发 1 条。多条素材按热度评分取最高的一条（行情看涨跌幅与量比、
+  新币看上线新鲜度、公告看发布时间、情绪看指数极端程度, 全部叠加新鲜度加权）。
+  日志会打印各候选分数; 没有素材就不发。
+- `state.json` 只在真正抓取过的轮次被 commit 回仓库, 用于持久化去重记录、当日发帖数、
+  时间线进度和 `lastFetchSlot`; 每天十几次 push 也足以保持仓库活动,
+  避免公开仓库「60 天无活动自动禁用定时 workflow」。
 - `TZ=Asia/Shanghai` 由 workflow 设置, 日志和「今天」的判定与本地一致。
-- 单次模式**不挂 WebSocket**（长连接会让 job 挂到超时）, 公告改走 `announcement.apiUrl`:
-  在 `BNS_CONFIG` 的 `announcement` 里加 `apiUrl` 指向一个币安公告列表 JSON 接口才会启用;
-  不配就跳过公告。接口失效或结构变了会自动降级, 不影响发帖。
+- 单次模式**不挂 WebSocket**（长连接会让 job 挂到超时）, 公告走内置 HTTP 接口
+  `www.binance.com/bapi/composite/v1/public/cms/article/list/query`（公开、无需 Key）:
+  取 12 小时内的新公告, 首次运行把现有公告记为基线, 避免一次性补发旧公告。
+  想换接口可在 `BNS_CONFIG` 的 `announcement.apiUrl` 里覆盖; 接口失效或结构变了会自动降级, 不影响其他素材。
 - `refreshSymbols.js` 回写 `config.json`, 而云端配置在 Secret 里, 所以**不要在 Actions 里跑它**,
   要换监控币种直接编辑 `BNS_CONFIG` Secret。
 
@@ -148,16 +157,19 @@ GitHub runner 的出口 IP 在美国, `api.binance.com` 与 `fapi.binance.com` �
 
 现货行情（K线 / exchangeInfo / ticker）已统一走 `data-api.binance.vision`;
 `fundingRate` / `whale` 只有在 config 里显式填了 `baseUrl` 才会请求, 留空（默认）即静默跳过,
-不再每轮刷屏 451。现有素材源: 行情异动、新币、恐惧贪婪、可选公告。
+不再每轮刷屏 451。现有素材源: 行情异动、新币、恐惧贪婪、公告（已内置）。
 
-**注意**: 探针用 GET 打发帖接口, 400 只说明请求到达业务层、没被 451 拦截;
-真正带 Key 的 POST 是否被接受、有没有设备风控（错误码 2000002）还没验证。
+**发帖链路已验证通过**: 2026-11-11 用 `test_post` 跑 `node bot.js --test` 真发成功
+（`id=386976997232534`）, 说明 OpenAPI Key 有效、发帖域名没被封、无设备风控。
+
 上线顺序:
 
-1. `Actions → bns-bot → Run workflow` 不勾选, 用 `dryRun: true` 跑一轮,
-   确认日志里出现 `行情 XXX: 60min ...` 而不是「拉取失败」;
-2. `Actions → bns-bot → Run workflow` 勾选 **test_post**（执行 `node bot.js --test`）,
-   真发一条测试帖, 看到「✅ 接口通, 发帖成功」才算发帖链路验证通过;
+1. `Actions → bns-bot → Run workflow` 不勾选, 用 `dryRun: true` 跑一轮。
+   注意**只有落在 slot 窗口内的轮次才会抓接口**; 其它轮次日志是
+   「时间线: ... 本轮不抓接口也不发帖」, 属正常。到点的轮次应看到 `行情 XXX: 60min ...`
+   而不是「拉取失败」, 以及 `公告: 首次运行, 把 N 条现有公告记为基线`。
+2. （可选复验）`Actions → bns-bot → Run workflow` 勾选 **test_post**
+   （执行 `node bot.js --test`）, 再真发一条测试帖;
 3. 最后把 Secret `BNS_CONFIG` 里的 `dryRun` 改成 `false` 正式上线。
 
 本地常驻模式不受影响: `node bot.js` 仍走原来的 WebSocket 公告订阅。

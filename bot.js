@@ -26,6 +26,10 @@ const STATE_FILE = path.join(ROOT, "state.json");
 // 注意: 该镜像只有现货接口, 没有 fapi 合约接口(已探测返回 404)。
 const BINANCE_API = "https://data-api.binance.vision";
 const BAPI = "https://www.binance.com/bapi";
+// 币安公告中心公开 CMS 接口(GET, 无需 Key): data.catalogs[].articles[]
+// 每条含 id / code / title / releaseDate(毫秒时间戳), 列表不带正文。
+const ANNOUNCEMENT_URL =
+  "https://www.binance.com/bapi/composite/v1/public/cms/article/list/query?type=1&pageNo=1&pageSize=5";
 
 // ---------- 工具 ----------
 function log(...args) {
@@ -310,7 +314,7 @@ function drainAnnouncements(limit = 1) {
 // 公告接口结构不固定, 这里宽松解析; 接口失败或结构不认识就降级为空, 不影响其他素材。
 // 只有在 config.json 的 announcement.apiUrl 配了地址才会启用。
 function collectArticleArrays(node, out, depth = 0) {
-  if (!node || depth > 4 || out.length >= 10) return;
+  if (!node || depth > 6 || out.length >= 20) return;
   if (Array.isArray(node)) {
     const looksLikeArticles = node.some(
       (x) => x && typeof x === "object" && ("title" in x || "body" in x || "content" in x)
@@ -325,19 +329,35 @@ function collectArticleArrays(node, out, depth = 0) {
 }
 
 async function fetchAnnouncementsHttp(cfg, state) {
-  const url = cfg.announcement?.apiUrl;
-  if (!cfg.announcement?.enabled || !url) return [];
+  if (!cfg.announcement?.enabled) return [];
+  // apiUrl 留空就用内置官方接口; 填了则允许自定义(便于接口改版时换地址)
+  const url = cfg.announcement.apiUrl || ANNOUNCEMENT_URL;
+  const maxAgeMs = (cfg.announcement?.maxAgeHours ?? 12) * 3600000;
+  const headers = {
+    "User-Agent": "Mozilla/5.0 (compatible; bns-bot/1.0)",
+    Origin: "https://www.binance.com",
+    Referer: "https://www.binance.com/en/support/announcement",
+  };
   try {
-    const json = await fetchJson(url, {}, 10000);
+    const json = await fetchJson(url, { headers }, 10000);
     const groups = [];
     collectArticleArrays(json, groups);
-    const articles = groups.flat().slice(0, 20);
-    if (!articles.length) {
+    const all = groups.flat();
+    if (!all.length) {
       log("  公告: 接口没返回可识别的公告(结构可能变了), 本轮跳过");
       return [];
     }
+    // 同一公告可能出现在多个栏目, 按 id 去重后按发布时间倒序, 只看最新的一批
+    const uniq = [...new Map(
+      all.map((a) => [String(a.id ?? a.code ?? a.title ?? ""), a])
+    ).values()];
+    uniq.sort(
+      (a, b) => Number(b.releaseDate ?? b.publishDate ?? 0) - Number(a.releaseDate ?? a.publishDate ?? 0)
+    );
+    const articles = uniq.slice(0, 20);
+
     const seen = new Set((state.lastAnnouncementIds ?? []).map(String));
-    const ids = articles.map((a) => String(a.id ?? a.articleId ?? a.code ?? a.title ?? ""));
+    const ids = articles.map((a) => String(a.id ?? a.code ?? a.title ?? ""));
     state.lastAnnouncementIds = [
       ...new Set([...(state.lastAnnouncementIds ?? []), ...ids.filter(Boolean)]),
     ].slice(-200);
@@ -349,17 +369,19 @@ async function fetchAnnouncementsHttp(cfg, state) {
     for (let i = 0; i < articles.length; i++) {
       if (!ids[i] || seen.has(ids[i])) continue;
       const a = articles[i];
-      const tsRaw = a.releaseTime ?? a.releaseDate ?? a.publishTime ?? a.ctime;
-      const ts = typeof tsRaw === "number" ? tsRaw : (tsRaw ? Date.parse(tsRaw) : Date.now());
+      const tsRaw = a.releaseDate ?? a.publishDate ?? a.releaseTime ?? a.publishTime ?? a.ctime;
+      const ts = typeof tsRaw === "number" ? tsRaw : (tsRaw ? Date.parse(tsRaw) : 0);
+      // 只发时效内的新公告, 时间戳缺失/解析失败的宁可不发
+      if (!Number.isFinite(ts) || ts <= 0 || Date.now() - ts > maxAgeMs) continue;
       out.push({
         id: `ann_${ids[i]}`,
         kind: "announcement",
         title: String(a.title ?? ""),
         body: String(a.body ?? a.content ?? a.summary ?? ""),
-        ts: Number.isFinite(ts) ? ts : Date.now(),
+        ts,
       });
     }
-    if (out.length) log(`  公告: 发现 ${out.length} 条新公告`);
+    if (out.length) log(`  公告: 发现 ${out.length} 条新公告(${maxAgeMs / 3600000}h 内)`);
     return out;
   } catch (e) {
     log(`  公告: HTTP 拉取失败(${e.message}), 本轮跳过`);
@@ -533,6 +555,38 @@ function genFearGreedPost(m) {
   lines.push("");
   lines.push("#恐惧贪婪指数");
   return lines.join("\n");
+}
+
+// 热度评分: 事件强度 + 新鲜度, 只用于同一轮多条素材里挑一条发。
+// 分数没有跨类型严格可比性, 但规则固定、日志可见, 便于按需调整权重。
+function heatScore(m) {
+  const ageHours = Math.max(0, (Date.now() - (m.ts ?? Date.now())) / 3600000);
+  const freshBonus = Math.max(0, 20 - ageHours); // 越新越高, 20 分封顶
+  let base;
+  switch (m.kind) {
+    case "market":
+      // 涨跌幅度 + 量比放大倍数, 异动越猛分越高
+      base = 40 + Math.min(40, Math.abs(m.pct ?? 0) * 8) + Math.min(20, (m.volMultiple ?? 1) * 4);
+      break;
+    case "newCoin":
+      base = 90 - Math.min(30, Math.max(0, (Date.now() - (m.onboardDate ?? Date.now())) / 86400000) * 4);
+      break;
+    case "announcement":
+      base = 70; // 其余差异由新鲜度区分
+      break;
+    case "fearGreed":
+      base = 30 + Math.min(30, Math.abs((m.value ?? 50) - 50) * 0.6);
+      break;
+    case "fundingRate":
+      base = 35 + Math.min(30, Math.abs(m.rate ?? 0) * 300);
+      break;
+    case "whale":
+      base = 35 + Math.min(30, Math.abs((m.ratio ?? 1) - 1) * 30);
+      break;
+    default:
+      base = 10;
+  }
+  return base + freshBonus;
 }
 
 function buildPost(material, cfg) {
@@ -750,11 +804,37 @@ function timelineGate(state) {
 async function runOnce(onceMode = false) {
   log(`\n=== 开始一轮 @ ${new Date().toLocaleString("zh-CN", { hour12: false })}`);
   const state = loadState();
-  // 每轮写一个时间戳: 保证状态文件必然变化, 便于外部(GitHub Actions)提交持久化并保持仓库活动
+
+  // 1. 先判节奏再抓接口: 没到发帖时点就零请求退出, 且完全不改动 state,
+  //    GitHub Actions 也不会为这种空转轮次提交 state.json。
+  //    抓取频率从每 15 分钟一次降到每个 slot(默认 90min)一次。
+  if (config.schedule?.enabled) {
+    const gate = timelineGate(state);
+    if (!gate.ok) {
+      log(`时间线: ${gate.msg}, 本轮不抓接口也不发帖`);
+      return;
+    }
+  } else if (!canPostNow(state)) {
+    log(`节奏未到 (今日已发 ${state.todayPosted}/${config.postsPerDay}, 最小间隔 ${config.minIntervalMinutes}min), 本轮不抓接口也不发帖`);
+    return;
+  }
+
+  // 同一个 slot 只抓一次接口: timelineGate 允许"提前 30 分钟补发",
+  // 不拦住的话, 这段窗口里的多个 15 分钟轮次会重复抓取。
+  if (config.schedule?.enabled) {
+    const slotKey = `${state.timelineKey ?? ""}#${state.timelineSentCount ?? 0}`;
+    if (state.lastFetchSlot === slotKey) {
+      log(`本 slot 已抓过接口(进度 ${state.timelineSentCount ?? 0}), 跳过`);
+      return;
+    }
+    state.lastFetchSlot = slotKey;
+  }
+
+  // 到点了才写时间戳: 状态文件变化 → workflow 提交持久化 + 保持仓库活动
   state.lastRunAt = Date.now();
 
-  // 1. 抓全部素材(并行拉)。所有抓取共享同一个 state 对象, 由本函数结尾统一落盘,
-  //    避免并发写文件互相覆盖。单次模式不连 WS, 改用可配置的 HTTP 公告源。
+  // 2. 抓全部素材(并行拉)。所有抓取共享同一个 state 对象, 由本函数结尾统一落盘,
+  //    避免并发写文件互相覆盖。单次模式不连 WS, 改用 HTTP 公告源。
   const [marketMoves, announcements, newCoins, funding, whales, fng] =
     await Promise.all([
       fetchMarketMove(config),
@@ -787,7 +867,7 @@ async function runOnce(onceMode = false) {
     }
   }
 
-  // 2. 去重(素材 id 没发过)
+  // 3. 去重(素材 id 没发过)
   const seen = new Set(state.postedMaterialIds);
   const fresh = candidates.filter((c) => !seen.has(c.id));
   log(`素材: 行情 ${marketMoves.length} / 公告 ${announcements.length} / 新币 ${newCoins.length} / 费率 ${funding.length} / 鲸鱼 ${whales.length} / 情绪 ${fng.length} = 共 ${fresh.length} 条未发`);
@@ -798,24 +878,14 @@ async function runOnce(onceMode = false) {
     return;
   }
 
-  // 3. 节奏控制(时间线模式优先, 否则走最小间隔)
-  if (config.schedule?.enabled) {
-    const gate = timelineGate(state);
-    if (!gate.ok) {
-      log(`时间线: ${gate.msg}, 本轮不发`);
-      saveState(state);
-      return;
-    }
-  } else if (!canPostNow(state)) {
-    log(`节奏未到 (今日已发 ${state.todayPosted}/${config.postsPerDay}, 最小间隔 ${config.minIntervalMinutes}min), 本轮不发`);
-    saveState(state);
-    return;
+  // 4. 热度排序: 多条候选只发热度最高的那一条
+  const scored = fresh
+    .map((m) => ({ m, score: heatScore(m) }))
+    .sort((a, b) => b.score - a.score);
+  if (scored.length > 1) {
+    log(`  本轮 ${scored.length} 条候选热度: ${scored.map(({ m, score }) => `${m.kind}:${score.toFixed(1)}`).join(" / ")}`);
   }
-
-  // 4. 排序: 新币 > 行情异动 > 费率/鲸鱼 > 公告 > 恐惧贪婪
-  const kindRank = { newCoin: 0, market: 1, fundingRate: 2, whale: 3, announcement: 4, fearGreed: 5 };
-  const sorted = [...fresh].sort((a, b) => (kindRank[a.kind] ?? 9) - (kindRank[b.kind] ?? 9));
-  const material = sorted[0];
+  const material = scored[0].m;
   const text = buildPost(material, config);
   log(`本轮待发 [${material.kind}]:\n${text}`);
 

@@ -20,6 +20,7 @@ jobs:
             "https://data-api.binance.vision/api/v3/exchangeInfo"
             "https://data-api.binance.vision/fapi/v1/premiumIndex?symbol=BTCUSDT"
             "https://www.binance.com/"
+            "https://www.binance.com/bapi/composite/v1/public/cms/article/list/query?type=1&pageNo=1&pageSize=5"
             "https://www.binance.com/bapi/composite/v1/public/pgc/openApi/content/add"
             "https://api.binance.us/api/v3/ping"
             "https://api1.binance.com/api/v3/ping"
