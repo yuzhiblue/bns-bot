@@ -97,10 +97,19 @@ node bot.js --test     # 发一条测试帖, 只验接口
    —— **定时调度只在默认分支生效**。`state.json` 建议一起提交以保留去重记录;
    想从零开始就先删掉它再提交。
 
-2. `Settings → Secrets and variables → Actions → New repository secret`:
-   名称 `BNS_CONFIG`, 值 = 本地 `config.json` 的**完整内容**（含 `openApiKey`）。
-   想先验证就把 `dryRun` 设为 `true`, 确认真发再改成 `false`。
-   改配置只需更新这个 Secret, 不用重新提交代码。
+2. `Settings → Secrets and variables → Actions`, 停在 **Secrets** 标签页
+   （**不要切到 Variables**: 变量是明文, 公开仓库会把 Key 暴露, 且 workflow 读的是
+   `secrets.BNS_CONFIG` 而不是 `vars.*`）。
+
+   在页面下半部分的 **Repository secrets** 区块点绿色 **New repository secret**
+   （**不要点上面的 Manage environment secrets**: 环境级 Secret 需要 job 里声明
+   `environment:` 才会注入, 本 workflow 没有配, 填那里读不到）。
+
+   - Name: `BNS_CONFIG`（区分大小写, 对应 workflow 里的 `secrets.BNS_CONFIG`）
+   - Secret: 本地 `config.json` 的**完整内容**（含 `openApiKey`, 多行 JSON 直接粘贴）,
+     先把 `dryRun` 改成 `true`, 确认接口通了再改成 `false`
+   - 点 **Add secret**。Secret 保存后不能再查看, 以后改配置只能整份覆盖粘贴,
+     不用重新提交代码。粘贴不完整时 workflow 里的 `require('./config.json')` 会直接报错。
 
 3. `Settings → Actions → General → Workflow permissions` 选 **Read and write permissions**
    （workflow 需要把 `state.json` 推回仓库）。
@@ -121,9 +130,25 @@ node bot.js --test     # 发一条测试帖, 只验接口
 - `refreshSymbols.js` 回写 `config.json`, 而云端配置在 Secret 里, 所以**不要在 Actions 里跑它**,
   要换监控币种直接编辑 `BNS_CONFIG` Secret。
 
-### 上线前必做
+### 451 地区封锁排查（必看）
 
-GitHub runner 是美国机房 IP, 币安对部分机房 IP 会返回 **451 / 风控**（错误码 2000002）。
-先用 `dryRun: true` 手动跑几轮, 确认行情接口能拉到数据、发帖链路没有地域限制, 再改成 `false` 真发。
+GitHub runner 的出口 IP 在美国, 币安对受限地区返回 **HTTP 451**。
+注意: 各抓取函数都把失败 `catch` 掉了, 所以**所有接口 451 时 job 依然是绿色**,
+只会在日志里刷「拉取失败: HTTP 451」, 最后靠 `alternative.me` 的恐惧贪婪指数撑着。
+**在确认行情和发帖接口都通之前, 不要把 `dryRun` 改成 `false`。**
+
+排查工具: `Actions → probe-binance → Run workflow` 手动跑一次只读探针,
+它会列出 `api.binance.com` / `fapi.binance.com` / `data-api.binance.vision` /
+`www.binance.com/bapi`（发帖域名）以及几个第三方源的状态码, 不发帖、不读 Secret、不改 `state.json`。
+按结果分两种情况:
+
+- **发帖域名 `www.binance.com/bapi` 也 451** → 换出口 IP 才能解决: 在亚洲合规地区的 VPS 上
+  挂 GitHub self-hosted runner（`runs-on: self-hosted`, 不消耗 Actions 分钟）, 或把 bot 直接迁到
+  亚太区 VPS / AWS Lambda 亚太区域。改代码换数据源救不了发帖接口。
+- **发帖域名通、只有行情域名 451** → 把 `api.binance.com` 换成币安官方公开数据镜像
+  `data-api.binance.vision`（同一套现货公开数据, 不执行美国地区封锁）; 合约的
+  `fapi.binance.com` 没有等价镜像, 资金费率/多空比两个素材源需要关掉或另找数据源。
+
+确认接口都通之后, 再用 `dryRun: true` 手动跑几轮, 最后把 Secret 里的 `dryRun` 改成 `false` 真发。
 
 本地常驻模式不受影响: `node bot.js` 仍走原来的 WebSocket 公告订阅。

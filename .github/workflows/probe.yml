@@ -1,0 +1,36 @@
+name: probe-binance
+
+# 只读诊断: 检查 GitHub runner 出口 IP 能访问哪些币安域名/备用镜像/第三方源。
+# 不发帖、不读 Secret、不碰 state.json; 只在 Actions 页面手动触发时运行。
+on:
+  workflow_dispatch: {}
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check endpoint reachability
+        run: |
+          urls=(
+            "https://api.binance.com/api/v3/ping"
+            "https://fapi.binance.com/fapi/v1/ping"
+            "https://data-api.binance.vision/api/v3/ping"
+            "https://data-api.binance.vision/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=2"
+            "https://data-api.binance.vision/api/v3/exchangeInfo"
+            "https://data-api.binance.vision/fapi/v1/premiumIndex?symbol=BTCUSDT"
+            "https://www.binance.com/"
+            "https://www.binance.com/bapi/composite/v1/public/pgc/openApi/content/add"
+            "https://api.binance.us/api/v3/ping"
+            "https://api1.binance.com/api/v3/ping"
+            "https://api.coingecko.com/api/v3/ping"
+            "https://api.okx.com/api/v5/public/time"
+            "https://api.bybit.com/v5/market/time"
+          )
+          for u in "${urls[@]}"; do
+            code=$(curl -s -o /tmp/probe_body -w '%{http_code}' --max-time 10 "$u" 2>/dev/null) || code="ERR"
+            echo "[$code] $u"
+          done
+          echo "--- 发帖域名返回详情(区分 451 地区封锁与业务错误码) ---"
+          detail=$(curl -s -i --max-time 10 "https://www.binance.com/bapi/composite/v1/public/pgc/openApi/content/add" 2>/dev/null) || detail="(request failed)"
+          printf '%s\n' "${detail:0:600}"
