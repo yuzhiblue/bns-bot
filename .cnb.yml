@@ -1,0 +1,20 @@
+# CNB 出口网络只读探针（诊断用，拿到结论后删除）
+# 不读任何 Secret、不发帖、不写 state.json；只打印出口 IP 与目标域名的 HTTP 状态码。
+# 本仓在 CNB 的默认分支是 master，所以分支键写 master（不是 main）。
+# push 时自动跑一次；也可在 CNB 页面用 web_trigger 随时手动重跑。
+# 故意不配 crontab：避免每 5 分钟产生无用构建、消耗免费额度。
+master:
+  push:
+    - name: network-probe
+      docker:
+        image: node:20
+      stages:
+        - name: probe
+          script: node probe-network.mjs
+  web_trigger:
+    - name: network-probe
+      docker:
+        image: node:20
+      stages:
+        - name: probe
+          script: node probe-network.mjs
