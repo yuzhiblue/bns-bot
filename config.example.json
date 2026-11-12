@@ -8,9 +8,9 @@
   "market": {
     "symbols": ["BTCUSDT", "ETHUSDT", "SOLUSDT", "DOGEUSDT", "XRPUSDT", "BNBUSDT"],
     "symbolPool": { "topN": 16, "minUsd": 30000000 },
-    "priceChangePct": 3,
-    "windowMinutes": 60,
-    "volSpikeMultiple": 3
+    "priceChangePct": 2,
+    "windowMinutes": 30,
+    "volSpikeMultiple": 2
   },
 
   "announcement": { "enabled": true, "maxAgeHours": 12, "locale": "en", "apiUrl": "" },
