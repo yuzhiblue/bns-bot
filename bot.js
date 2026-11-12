@@ -548,13 +548,20 @@ function buildPost(material, cfg) {
     default: return null;
   }
 
-  // 追加话题
-  const tags = cfg.post?.hashtags ?? [];
-  if (material.kind === "market" && !text.includes("#行情异动") && tags.includes("行情异动")) {
-    // 已在文本里带过,不重复
-  } else {
-    const extra = tags.map((t) => `#${t}`).join(" ");
-    if (extra && !text.includes(extra)) text += "\n" + extra;
+  // 追加话题: 各 gen*Post 末行自带一个固定标签(如 #币安公告 / #币安新币),
+  // 配置里的 post.hashtags 要接到同一行, 全部用空格分隔, 超宽交给客户端自动换行。
+  const existing = new Set(text.match(/#[^\s#]+/g) ?? []);
+  const extra = (cfg.post?.hashtags ?? []).map((t) => `#${t}`).filter((t) => !existing.has(t));
+  if (extra.length) {
+    const lines = text.split("\n");
+    const last = lines[lines.length - 1] ?? "";
+    // 末行是标签行(可选带一个 $币种, 后跟若干 #标签)时直接续上, 否则另起一行
+    if (/^\s*(\$[A-Za-z0-9]+\s+)?#[^\s#]+(\s+#[^\s#]+)*\s*$/.test(last)) {
+      lines[lines.length - 1] = last.trimEnd() + " " + extra.join(" ");
+      text = lines.join("\n");
+    } else {
+      text += "\n" + extra.join(" ");
+    }
   }
   const disclaimer = cfg.post?.disclaimer?.trim();
   if (disclaimer) text += `\n\n${disclaimer}`;
