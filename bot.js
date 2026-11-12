@@ -600,7 +600,8 @@ async function publishPost(text, imageList) {
 // 任何一步失败都返回 null, 由上层降级为纯文本发帖(不影响发帖链路)。
 async function tryImageForMaterial(material, cfg) {
   if (material.kind !== "market") return null;
-  if (!cfg.post?.imageCard) return null;
+  // 默认开, 仅显式 false 才关(避免 Secret 里漏配 imageCard 导致日常行情帖悄悄不配图)
+  if (cfg.post?.imageCard === false) return null;
   try {
     const buf = makeMarketCard({
       baseSymbol: material.baseSymbol,
