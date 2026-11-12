@@ -27,6 +27,10 @@ jobs:
             "https://api.coingecko.com/api/v3/ping"
             "https://api.okx.com/api/v5/public/time"
             "https://api.bybit.com/v5/market/time"
+            "https://data-api.binance.vision/fapi/v1/ping"
+            "https://data-api.binance.vision/fapi/v1/premiumIndex?symbol=BTCUSDT"
+            "https://data-api.binance.vision/futures/data/topLongShortPositionRatio?symbol=BTCUSDT&period=1h&limit=1"
+            "https://fapi.binance.com/futures/data/topLongShortPositionRatio?symbol=BTCUSDT&period=1h&limit=1"
           )
           for u in "${urls[@]}"; do
             code=$(curl -s -o /tmp/probe_body -w '%{http_code}' --max-time 10 "$u" 2>/dev/null) || code="ERR"
