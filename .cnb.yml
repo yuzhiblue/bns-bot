@@ -6,7 +6,8 @@ master:
   "crontab: 8,23,38,53 * * * *":
     - name: trigger-bns-bot
       imports:
-        # TODO 改成你实际创建的密钥仓库路径（见 README「落地 CNB 触发器」）
+        # 密钥仓库禁止 clone, 只能 Web 端编辑; URL 的 main 是密钥仓库默认分支、dispatch.yml 是文件名。
+        # 若建出来默认分支是 master 或文件名不同, 两处 imports 都要同步改。
         - https://cnb.cool/yuzhiblue/bns-bot-secrets/-/blob/main/dispatch.yml
       docker:
         image: node:20

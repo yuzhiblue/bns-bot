@@ -213,8 +213,11 @@ BNS_DISPATCH_TOKEN: "github_pat_..."
 > `.cnb.yml` 即可满足; 若以后换账号改 crontab, 需在密钥文件里配 `allow_slugs` 等授权。
 > 脚本不会把 token 打进日志。
 
-**③ 把 `.cnb.yml` 里两处 `imports` URL 改成实际密钥仓库路径**
-（当前是占位值 `https://cnb.cool/yuzhiblue/bns-bot-secrets/-/blob/main/dispatch.yml`）, 推到 CNB `master`。
+**③ 确认 `.cnb.yml` 两处 `imports` 与实际一致** —— 已按
+`https://cnb.cool/yuzhiblue/bns-bot-secrets/-/blob/main/dispatch.yml` 配好。
+URL 里的 `main` 是密钥仓库默认分支、`dispatch.yml` 是 ② 里新建的文件名; CNB 新建仓库默认分支
+通常是 `main`, 若你建出来是 `master` 或文件名不同, 改这两处再推到 CNB `master`。
+密钥仓库按设计禁止 git clone / ls-remote, 只能在 Web 端确认, 本机无法替你校验。
 
 然后在 CNB 仓库页面用 **手动触发 / 自定义按钮** 选 `web_trigger` 跑一次,
 到 `Actions → bns-bot` 看是否出现标题 `cycle · cnb` 的运行。
