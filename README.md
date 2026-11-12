@@ -1,8 +1,10 @@
 # bns-bot — 币安广场自动发帖（GitHub Actions 纯云端）
 
 抓取币安行情异动 + 公告 → 生成带 `$币种` 的帖子 → 调广场 OpenAPI 发布。
-**只跑云端**: workflow 每 15 分钟唤起一个短进程, 跑一轮就退出; 没有常驻服务、没有长连接,
-本机不留启动脚本和计划任务。配置在 Secret `BNS_CONFIG`, 状态靠 `state.json` 持久化。
+**只跑云端**: 外部定时器每 15 分钟 POST `workflow_dispatch` 唤起一个短进程, 跑一轮就退出;
+没有常驻服务、没有长连接, 本机不留启动脚本和计划任务。
+GitHub 内置 `schedule` 只作兜底(实测会连续数小时漏跑), 详见「外部定时器」一节。
+配置在 Secret `BNS_CONFIG`, 状态靠 `state.json` 持久化。
 
 ## 文件
 
@@ -140,10 +142,76 @@ GitHub Actions 每 15 分钟跑一轮 `node bot.js --once`（`--once` 现在只�
 4. `Actions → bns-bot → Run workflow` 手动跑一次, 看日志是否正常、
    仓库是否多了一条 `persist bot state` 提交。
 
+## 外部定时器（推荐, 替代 GitHub 内置 cron）
+
+GitHub 的 `schedule` 是 best-effort 投递: 2026-11-11 曾连续 9 小时不触发、恢复时成批补发,
+11-12 又断了 5 小时 41 分; 官方文档也明确「高负载时可能延迟甚至丢弃」。
+`bot.yml` 里的 `schedule` 现在**只作兜底**, 主触发改由外部定时器 POST `workflow_dispatch` API。
+
+### 1. 创建 fine-grained PAT
+
+右上角头像 → **Settings** → 左侧栏最底部 **Developer settings** →
+**Personal access tokens** → **Fine-grained tokens** → **Generate new token**:
+
+- **Token name**: 如 `bns-bot-external-cron`
+- **Expiration**: 选 90 天, **不要选 No expiration**; 到期前重新生成并替换定时器里的值
+- **Resource owner**: `yuzhiblue`
+- **Repository access**: 选 **Only select repositories** → 只勾 `bns-bot`
+  （**不要选 All repositories**）
+- **Permissions** → 展开 **Repository permissions** → **Actions** 设为 **Read and write**;
+  其余全部保持 No access（**不要勾 Contents / Administration**）
+- 点 **Generate token**, 复制 `github_pat_...` 整串（只显示一次）
+
+> 官方 REST 文档: `POST /actions/workflows/{id}/dispatches` 只需 `Actions: write`。
+> 该 token 只能触发 workflow, 不能改代码、读 Secret、发 Issue。
+> 它要存进第三方定时器服务, 所以务必单仓库 + 短有效期 + 定期轮换。
+
+### 2. 定时器配置
+
+| 项 | 值 |
+|---|---|
+| URL | `https://api.github.com/repos/yuzhiblue/bns-bot/actions/workflows/bot.yml/dispatches` |
+| Method | `POST` |
+| Header `Authorization` | `Bearer github_pat_...` |
+| Header `Accept` | `application/vnd.github+json` |
+| Header `Content-Type` | `application/json` |
+| Body | `{"ref":"main","inputs":{"source":"cron-job.org"}}` |
+| 频率 | 每 15 分钟, UTC `:08 / :23 / :38 / :53`（与兜底 cron 对齐） |
+
+`inputs.source` 只用于辨识来源: 运行列表标题分别是
+`cycle · cron-job.org`（外部定时器）、`cycle · manual`（手动跑）、`cycle · schedule`（兜底定时）。
+不传 `test_post`（默认 `false`）, 走 `node bot.js --once`。
+
+外部每 15 分钟敲一次门是安全的: bot 内部 `evenSpread` / `maxPerDay=15` 自己判断到不到发帖 slot,
+没到点就零请求退出, 重复或提前触发都不会超额发帖。
+
+### 3. 免费定时器候选
+
+| 服务 | 免费 | 最小间隔 | 自定义 Header | POST + Body | 备注 |
+|---|---|---|---|---|---|
+| **cron-job.org** | 完全免费, 无需信用卡 | 1 分钟(每 job ≤ 60 次/小时) | ✅ 任意(`User-Agent`/`Connection` 除外) | ✅ | **最贴合**; job 数不限, 失败邮件告警, 连续失败 25 次自动停用 |
+| **CNB 定时流水线** | 已有 `cnb.cool` 仓库和账号 | 5 分钟 | 不需要(在流水线里 curl) | ✅ | 国内可达、时区 `Asia/Shanghai`; PAT 可存 CNB Secrets 不交第三方; 需写 `.cnb.yml` |
+| Cloudflare Workers Cron | 免费 10 万次/天 | 1 分钟 | ✅ | ✅ | 占 CF 账号额度、每账号仅 5 个 Cron, 本项目不优先 |
+| Upstash QStash / FastCron / EasyCron | 有免费层 | 1 分钟 | ✅ | ✅ | 需注册新账号, 额度按消息数, 免费政策未逐一核实 |
+| UptimeRobot / Better Stack / Healthchecks.io | 免费层 | 5 分钟起 | ❌ | ❌ | 监控型, 免费层只发 GET/HEAD, **带不了 `Authorization`, 直接排除** |
+| Vercel Cron / Google Cloud Scheduler / AWS EventBridge | 有免费层 | — | ✅ | ✅ | 免费版定时粒度按天或需绑信用卡 + 云项目, 不满足本场景 |
+
+> cron-job.org 单次请求超时 30 秒、响应上限 64 KB; GitHub dispatches 接口几乎瞬时返回, 不构成问题。
+> 它同样不承诺准点（高峰期可能延迟）, 但比 GitHub schedule 的整段停摆可控得多,
+> 且出口 IP 固定（见其 FAQ）, 便于排查。CNB 方案的 `crontab` 最小间隔 5 分钟、
+> 触发身份是「最后修改该配置的用户」, 该用户被移出仓库会导致任务失败。
+
+### 4. 验证
+
+配好后等 15~20 分钟, 在 `Actions → bns-bot` 看有没有标题为 `cycle · cron-job.org` 的运行;
+点进去看 `Trigger info` 步骤打印的 `event=workflow_dispatch`。
+确认外部定时器稳定跑一两天后, 再删掉 `bot.yml` 里的 `on.schedule` 整段, 避免两种触发源叠加。
+
 ### 运行机制
 
-- `.github/workflows/bot.yml` 用 UTC cron `8,23,38,53 * * * *`（每 15 分钟, 故意错开整点减少排队）。
-  GitHub 定时调度常延迟 5~30 分钟, 时间线排期的「只追发最近 1 个 slot」逻辑能容错。
+- 主触发是外部定时器 POST `workflow_dispatch`（每 15 分钟, 见上节）;
+  `bot.yml` 里的 UTC cron `8 / 23 / 38 / 53` 只作兜底。
+  定时调度常延迟甚至整段漏跑, 时间线排期的「只追发最近 1 个 slot」逻辑能容错。
 - **抓取节奏**: bot 先判断时间线 slot, 没到点就**零请求退出、不改 `state.json`、不产生 commit**;
   只有每个 slot 才抓一次接口, 并用 `state.lastFetchAt` 的时间冷却（一个间隔减 20 分钟余量）保证
   同一 slot 不重复抓、连续没素材也会按周期继续尝试。接口调用量约从 96 次/天降到

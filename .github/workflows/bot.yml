@@ -1,10 +1,12 @@
 name: bns-bot
+run-name: "cycle · ${{ inputs.source || github.event_name }}"
 
 # 公开仓库的标准 runner 免费且不限分钟数, 不消耗私有库每月 2000 分钟额度。
 on:
   schedule:
+    # 仅作兜底: GitHub schedule 是 best-effort, 实测会连续数小时漏跑。
+    # 主触发来自外部定时器 POST workflow_dispatch(见 README「外部定时器」一节)。
     # UTC 时间, 每 15 分钟一轮; 整点最容易排队, 故意错开 8 分钟。
-    # 拆成 4 条独立 cron: 触发时刻不变, 但让 GitHub 重新注册 schedule 事件。
     - cron: "8 * * * *"
     - cron: "23 * * * *"
     - cron: "38 * * * *"
@@ -15,6 +17,10 @@ on:
         description: "勾选后只发一条测试帖验证发帖接口(不跑常规轮次)"
         type: boolean
         default: false
+      source:
+        description: "触发来源标记, 仅用于日志辨识; 外部定时器可填 cron-job.org 等"
+        type: string
+        default: "manual"
 
 # 需要把 state.json 推回仓库
 permissions:
@@ -50,6 +56,9 @@ jobs:
           fi
           printf '%s' "$BNS_CONFIG" > config.json
           node -e "const c=require('./config.json'); if(!c.openApiKey) throw new Error('config.json 缺少 openApiKey'); console.log('config.json 就绪, dryRun=' + c.dryRun)"
+
+      - name: Trigger info
+        run: echo "触发来源=${{ inputs.source || github.event_name }} event=${{ github.event_name }} ref=${{ github.ref_name }}"
 
       - name: Run one cycle
         if: ${{ inputs.test_post != true }}
