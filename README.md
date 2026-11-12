@@ -244,7 +244,51 @@ URL 里的 `main` 是密钥仓库默认分支、`dispatch.yml` 是 ② 里新建
 > （两次探针分别是 `45.40.228.119` / `42.193.175.155`）, 别指望靠白名单解决问题;
 > `crontab` 最小间隔 5 分钟, 触发身份是「最后修改该配置的用户」, 该用户被移出仓库会导致任务失败。
 
-### 5. 验证与收尾
+### 5. 境外冗余: cron-job.org 配置清单
+
+CNB 主触发之外, 用一个**境外出口**的第二触发源冗余。完全免费、无需信用卡,
+最小间隔 1 分钟、支持任意自定义 Header 与 POST body。
+
+**① 单独建一个 PAT**（不要复用 CNB 那个, 方便单独吊销）: 按第 1 节步骤,
+Token name 填 `bns-bot-cron-job-org`, 其余相同（只勾 `bns-bot`、`Actions: Read and write`、90 天）。
+
+**② 注册并登录** `https://cron-job.org` → 点 **Create Cronjob**。
+
+**③ 基本信息**:
+
+| 字段 | 值 |
+|---|---|
+| Title | `bns-bot dispatch` |
+| URL | `https://api.github.com/repos/yuzhiblue/bns-bot/actions/workflows/bot.yml/dispatches` |
+
+**④ 执行计划**: 选自定义 schedule, 分钟填 `8, 23, 38, 53`; 小时 / 日 / 月 / 星期都选
+「每小时 / 每天 / 每月 / 每天」（REST API 里即 `hours: [-1]` 等）,
+与 CNB `crontab` 及 GitHub 兜底 cron 的分钟对齐。
+
+**⑤ 展开 Advanced（高级）**, 填:
+
+| 字段 | 值 |
+|---|---|
+| Request method | `POST` |
+| Time zone | `Asia/Shanghai` |
+| Request headers | 加三行: `Authorization` = `Bearer github_pat_...`、`Accept` = `application/vnd.github+json`、`Content-Type` = `application/json` |
+| Request body | `{"ref":"main","inputs":{"source":"cron-job.org"}}` |
+
+> 页面字段标签可能略有差异, 以你看到的为准; 关键是 **Request method / Time zone / headers / body**
+> 这四项都在 Advanced 区块里。`User-Agent` 与 `Connection` 不允许自定义（官方 FAQ 限制）, 我们也不需要。
+> **不要用 GET**、不要把它建成「监控 / 健康检查」类型, 也不要改用 classic token（权限更大）。
+
+**⑥ 开启失败通知**: 在 job 设置里打开 `onFailure`（失败时邮件通知）。
+连续失败 25 次会自动停用, 别让它长期静默失败。
+
+**⑦ 保存后手动执行一次**（列表里的执行按钮）, 去 `Actions → bns-bot` 看有没有
+`cycle · cron-job.org` 的运行。
+
+> 单次请求超时 30 秒、响应上限 64 KB, GitHub dispatches 几乎瞬时返回, 不构成问题。
+> 它同样不承诺准点（高峰期可能延迟）, 但出口在境外, 与 CNB 的国内出口互为备份;
+> 执行历史保留 50 次, 便于事后核对哪一次漏了。
+
+### 6. 验证与收尾
 
 配好后等 15~20 分钟, 在 `Actions → bns-bot` 看有没有 `cycle · cnb` / `cycle · cron-job.org` 的运行;
 点进去看 `Trigger info` 步骤打印的 `event=workflow_dispatch`。
