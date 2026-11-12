@@ -57,16 +57,16 @@ jobs:
           sudo apt-get install -y fonts-dejavu-core >/dev/null 2>&1 || true
           npm install
 
-      - name: Generate config.json from Secret
+      # 仓库 config.json(已 checkout, 不含 Key) + Secret 里的 Key 注入 openApiKey
+      - name: Inject OpenAPI key into config
         env:
           BNS_CONFIG: ${{ secrets.BNS_CONFIG }}
         run: |
           if [ -z "$BNS_CONFIG" ]; then
-            echo "::error::仓库 Secret BNS_CONFIG 未设置"
+            echo "::error::仓库 Secret BNS_CONFIG 未设置(现在只存 OpenAPI Key 字符串)"
             exit 1
           fi
-          printf '%s' "$BNS_CONFIG" > config.json
-          node -e "const c=require('./config.json'); if(!c.openApiKey) throw new Error('config.json 缺少 openApiKey'); console.log('config.json 就绪, dryRun=' + c.dryRun)"
+          node -e "const fs=require('fs');const c=JSON.parse(fs.readFileSync('config.json','utf8'));c.openApiKey=process.env.BNS_CONFIG;fs.writeFileSync('config.json',JSON.stringify(c,null,2));if(!c.openApiKey)throw new Error('openApiKey 注入失败');console.log('config.json 就绪, dryRun=' + c.dryRun)"
 
       - name: Trigger info
         run: echo "触发来源=${{ inputs.source || github.event_name }} event=${{ github.event_name }} ref=${{ github.ref_name }}"

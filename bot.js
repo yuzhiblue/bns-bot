@@ -4,7 +4,8 @@
  * 抓取行情异动 + 币安公告 → 生成带 $币种 的帖子 → 调官方 OpenAPI 发布
  *
  * 每次运行只跑一轮就退出, 由 workflow 的 cron 定时唤起; 状态靠 state.json 持久化,
- * 配置由 Secret BNS_CONFIG 注入为 config.json。没有常驻进程、没有长连接。
+ * 配置: 仓库 config.json 为基准(不含 Key), 云端由 workflow 把 Secret 里的 openApiKey 注入;
+ * 本地可放 config.local.json(含 Key, gitignore, 优先)。没有常驻进程、没有长连接。
  *
  * 用法:
  *   node bot.js            跑一轮(workflow 里写作 node bot.js --once, --once 为兼容参数)
@@ -20,7 +21,11 @@ const { uploadImage } = require("./squareMedia");
 const { makeMarketCard } = require("./imageCard");
 
 const ROOT = __dirname;
-const config = JSON.parse(fs.readFileSync(path.join(ROOT, "config.json"), "utf8"));
+// 本地若有 config.local.json(含 Key, gitignore)则优先; 否则用仓库 config.json(CI 已注入 Key)
+const configFile = fs.existsSync(path.join(ROOT, "config.local.json"))
+  ? "config.local.json"
+  : "config.json";
+const config = JSON.parse(fs.readFileSync(path.join(ROOT, configFile), "utf8"));
 const STATE_FILE = path.join(ROOT, "state.json");
 
 // 现货行情走币安官方公开数据镜像: api.binance.com 对美国出口 IP 返回 451,

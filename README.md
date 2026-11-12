@@ -5,21 +5,21 @@
 唤起一个短进程, 跑一轮就退出; 没有常驻服务、没有长连接, 本机不留启动脚本和计划任务。
 **执行端留在 GitHub Actions**（CNB runner 实测连不上发帖域名, 见「外部定时器」一节）;
 GitHub 内置 `schedule` 只作兜底, `cron-job.org` 是可选的境外冗余（尚未配置）。
-配置在 Secret `BNS_CONFIG`, 状态靠 `state.json` 持久化。
+配置分两份: 仓库里的 `config.json`（入库的基准配置, 不含 OpenAPI Key, 所有可调参数都在这里）和 Secret `BNS_CONFIG`, 状态靠 `state.json` 持久化。
 
 ## 文件
 
 | 文件 | 说明 |
 |---|---|
-| `.github/workflows/bot.yml` | 云端**执行端**: 注入 Secret、跑一轮 bot、提交 `state.json`; 内置 `schedule` 仅作兜底 |
+| `.github/workflows/bot.yml` | 云端**执行端**: 把 Secret 里的 Key 注入 config.json、跑一轮 bot、提交 `state.json`; 内置 `schedule` 仅作兜底 |
 | `.cnb.yml` | CNB 触发器配置: `crontab` 定时 + `web_trigger` 手动触发 |
 | `trigger-workflow.mjs` | CNB 流水线执行的脚本: POST `workflow_dispatch`, 带重试与失败标红 |
 | `.github/workflows/probe.yml` | `probe-binance` 只读网络诊断(手动触发, 不发帖) |
 | `bot.js` | 主程序, 跑一轮即退出 |
 | `templates.js` | 帖子词库 |
 | `symbolPool.js` | 按 24h 成交额筛选币种池 |
-| `config.example.json` | 配置示例(仅参考, 不影响线上) |
-| `config.json` | 运行时由 Secret 生成; 本地若保留, `.gitignore` 已排除, 不入库 |
+| `config.json` | **入库的基准配置**(不含 OpenAPI Key, 所有可调参数在此); CI 由 workflow 注入 Key |
+| `config.local.json` | 本地调试用(含 Key, `.gitignore` 排除, 不入库); `bot.js` 优先读它 |
 | `state.json` | 运行状态(自动维护, 别手动改); 当日币种池也存在这里 |
 | `imageCard.js` | 用 `@napi-rs/canvas` 生成行情卡片 PNG |
 | `squareMedia.js` | 币安广场图片上传(presignedUrl → S3 PUT → imageStatus 轮询) |
@@ -27,8 +27,8 @@ GitHub 内置 `schedule` 只作兜底, `cron-job.org` 是可选的境外冗余�
 
 ## 命令
 
-本地跑需要先有一份 `config.json`（可从 `config.example.json` 复制并填入 Key）;
-云端由 workflow 从 Secret 自动生成, 不需要这一步。
+本地调试: 放一份 `config.local.json`（含你的 OpenAPI Key, 与 `config.json` 同结构, 仅 `openApiKey` 填真值）;
+`bot.js` 会优先读它, 且它已被 `.gitignore` 排除, 不会入库泄露。云端由 workflow 注入 Key, 不用这一步。
 
 ```bash
 node bot.js            # 跑一轮: 判节奏 → 到点才抓接口 → 抓完就发 → 退出
@@ -82,9 +82,10 @@ node bot.js --test-image # 生成行情卡片图并带图发一条测试帖, 验
 **没有静默期**; 改 `maxPerDay` 会自动重算间隔, 不用手动改别处。
 把 `evenSpread` 设成 `false` 就回到旧的 `startHour` + `intervalMinutes` + `quiet` 写法。
 
-> GitHub Actions 版的配置在 Secret 里: `Settings → Secrets and variables → Actions` →
-> 停在 **Secrets** 标签 → 下半部分 `Repository secrets` → 点 `BNS_CONFIG` 更新整份 JSON。
-> 只改仓库里的 `config.example.json` **不会影响线上**。
+> 配置分两份: 仓库里的 **`config.json`** 是入库的基准配置（不含 Key, 所有可调参数如 market 阈值、
+> imageCard、发帖节奏都在这里, 改了提交即生效）; **`BNS_CONFIG`** 这个 Secret **只存 OpenAPI Key**
+> （一个字符串, 不再存整份 JSON）, 运行时由 workflow 注入到 `config.json` 的 `openApiKey`。
+> 想改参数直接改 `config.json` 提交即可。
 
 ## 限流
 
@@ -100,7 +101,7 @@ node bot.js --test-image # 生成行情卡片图并带图发一条测试帖, 验
 | 20002 / 20022 | 敏感词 | 检查帖子内容, 加 `post.disclaimer` 或改词库 |
 | 220009 | 当日限额 | 停到明天 |
 | 30008 | 违规禁言 | 去币安 App 申诉 |
-| 220004 | Key 过期 | 重新生成 Key 填进 config |
+| 220004 | Key 过期 | 重新生成 Key 后更新 Secret BNS_CONFIG（本地调试则改 config.local.json） |
 
 ## 日志
 
@@ -134,10 +135,10 @@ CNB 定时器每 15 分钟触发一次, GitHub Actions 才跑一轮 `node bot.js
 私有库按这个频率约 **2880 次运行/月**（96 次/天 × 30 天）, 即便每轮只有几十秒,
 累计也很容易打爆额度并拖停其他 workflow。
 
-> ⚠️ 公开仓库里**代码、`templates.js` 词库、`state.json`、运行日志（含帖子全文）全部公开**。
-> `config.json` 和里面的 OpenAPI Key 不入库（`.gitignore` 已排除）, 只放在 Secret 里。
-> 推送前执行 `git ls-files` 确认输出里没有 `config.json`; 若历史上曾提交过含 Key 的文件,
-> 先去币安重新生成 Key 并清理历史。
+> ⚠️ 公开仓库里**代码、`templates.js` 词库、`state.json`、运行日志（含帖子全文）、`config.json`
+> （基准配置, **不含 Key**）全部公开**。真正的 OpenAPI Key 只在 Secret `BNS_CONFIG`（一个字符串）,
+> 以及你本地的 `config.local.json`（`.gitignore` 已排除, 不入库）。
+> 推送前 `git ls-files` 确认没有 `config.local.json`; 若历史上曾提交过含 Key 的文件, 先去币安重新生成 Key。
 
 ### 步骤
 
@@ -145,7 +146,7 @@ CNB 定时器每 15 分钟触发一次, GitHub Actions 才跑一轮 `node bot.js
    （现有 `origin` 是 cnb.cool, 另加一个远程; 推到 `main` 以对齐 GitHub 新仓库的默认分支）:
 
    ```bash
-   git add .gitignore README.md bot.js templates.js symbolPool.js config.example.json .github/workflows/bot.yml .github/workflows/probe.yml .cnb.yml trigger-workflow.mjs state.json
+   git add .gitignore README.md bot.js templates.js symbolPool.js config.json .github/workflows/bot.yml .github/workflows/probe.yml .cnb.yml trigger-workflow.mjs state.json
    git commit -m "chore: GitHub Actions 部署"
    git remote add github https://github.com/<你的用户名>/<仓库名>.git
    git push github master:main
@@ -164,10 +165,9 @@ CNB 定时器每 15 分钟触发一次, GitHub Actions 才跑一轮 `node bot.js
    `environment:` 才会注入, 本 workflow 没有配, 填那里读不到）。
 
    - Name: `BNS_CONFIG`（区分大小写, 对应 workflow 里的 `secrets.BNS_CONFIG`）
-   - Secret: **完整配置 JSON**（含 `openApiKey`, 多行直接粘贴; 可在 `config.example.json` 基础上改）,
-     先把 `dryRun` 改成 `true`, 确认接口通了再改成 `false`
-   - 点 **Add secret**。Secret 保存后不能再查看, 以后改配置只能整份覆盖粘贴,
-     不用重新提交代码。粘贴不完整时 workflow 里的 `require('./config.json')` 会直接报错。
+   - Secret: **只填你的 OpenAPI Key 字符串**（不再存整份 JSON）; 所有可调参数都在仓库的
+     `config.json` 里, 改完提交即生效, 不用改 Secret。
+   - 点 **Add secret**。Secret 保存后不能再查看; 以后换 Key 时把这里覆盖成新 Key 即可。
 
 3. `Settings → Actions → General → Workflow permissions` 选 **Read and write permissions**
    （workflow 需要把 `state.json` 推回仓库）。
@@ -363,21 +363,21 @@ Token name 填 `bns-bot-cron-job-org`, 其余相同（只勾 `bns-bot`、`Action
   「开场白 + 英文标题 + 一句万能话术」的空壳帖; 日志会打印
   `公告: N 条新公告无正文, 跳过(不发空壳帖)`。想恢复公告帖, 需让 `announcement.apiUrl`
   指向能返回正文 / 摘要的接口; 接口失效或结构变了会自动降级, 不影响其他素材。
-  想连抓都不抓, 把 `BNS_CONFIG` 的 `announcement.enabled` 改成 `false`。
+  想连抓都不抓, 把 `config.json` 的 `announcement.enabled` 改成 `false`。
 
 ### 监控币种池自动刷新
 
-GitHub Actions 每次新建 runner, Secret `BNS_CONFIG` 里的 `market.symbols` 只是**初始快照**。
+GitHub Actions 每次新建 runner, config.json 里的 `market.symbols` 只是**初始快照**。
 bot 在**每天第一次到点轮次**拉一次全所 `ticker/24hr`, 按 24h 成交额取前 `topN`
 （默认 16）个成交额 ≥ `minUsd`（默认 3000 万 USDT）的 USDT 交易对,
 排除稳定币包装 / ETF 股票包装 / 代币化黄金 / 跨链桥等壳币。结果写进 `state.json` 的
 `symbols` / `symbolsUpdatedAt` / `symbolsMeta`, 抓取时用 `state.symbols` 覆盖
 `config.market.symbols`; 因为 `state.json` 每轮 commit 回仓库, 新 runner 能接着用。
 
-- **不需要改 Secret、不需要新 workflow**; 每天只多 1 次请求, 空转轮次仍然零请求。
+- **不需要改 config.json、不需要新 workflow**; 每天只多 1 次请求, 空转轮次仍然零请求。
 - 刷新失败会沿用上次的池子（没有则沿用 Secret 初始值）, **不阻断发帖**, 下个 slot 再试;
   日志分别显示 `币种池: 今日首次刷新…` / `今日已刷新, 沿用…` / `刷新失败…`。
-- 想调参数: 在 `BNS_CONFIG` 的 `market` 里加
+- 想调参数: 在 `config.json` 的 `market` 里加
   `"symbolPool": { "topN": 16, "minUsd": 30000000 }`; 加 `"autoRefresh": false` 可关掉。
   不写这些字段也能正常工作（用默认值, 或复用 `_symbolsAuto` 里记录的上次参数）。
 - 筛选规则集中在 `symbolPool.js`, 写成纯函数便于离线验证; 没有第二套本地刷新脚本。
@@ -409,7 +409,7 @@ GitHub runner 的出口 IP 在美国, `api.binance.com` 与 `fapi.binance.com` �
 **发帖链路已验证通过**: 2026-11-11 用 `test_post` 跑 `node bot.js --test` 真发成功
 （`id=386976997232534`）, 说明 OpenAPI Key 有效、发帖域名没被封、无设备风控。
 
-当前状态与验证方式（2026-11-11 正式上线, Secret `BNS_CONFIG` 里 `dryRun=false`;
+当前状态与验证方式（2026-11-11 正式上线, config.json 里 `dryRun=false`;
 2026-11-12 起主触发改为 CNB 定时流水线, 链路已验证）:
 
 1. `Actions → bns-bot → Run workflow` 不勾选 **test_post**, 手动跑一轮看日志。

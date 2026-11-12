@@ -5,8 +5,9 @@ bot.pid
 # 注意: state.json 必须入库 —— GitHub Actions 版靠每轮提交它来持久化发帖状态,
 #       同时保持仓库活动, 避免 60 天无活动被自动禁用定时 workflow。
 
-# 本地若保留 config.json(含 OpenAPI Key), 不能推; 云端由 Secret BNS_CONFIG 注入
-config.json
+# 入库的基准配置(不含 Key); 云端由 workflow 把 Secret 里的 Key 注入 openApiKey。
+# 本地调试用 config.local.json(含 Key, 不入库); bot.js 优先读它。
+config.local.json
 
 # Node
 node_modules/
