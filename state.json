@@ -37,7 +37,9 @@
     "290090",
     "290072",
     "290079",
-    "290125"
+    "290125",
+    "289935",
+    "290052"
   ],
   "lastMarketSnap": {},
   "lastPostAt": 1794457395668,
@@ -103,12 +105,12 @@
   "timelineIdx": 0,
   "timelineSentCount": 5,
   "timelineDay": "2026-11-05",
-  "lastRunAt": 1794479901282,
+  "lastRunAt": 1794485303882,
   "sentimentDates": [
     "2026-11-11",
     "2026-11-12"
   ],
-  "lastFetchAt": 1794479901282,
+  "lastFetchAt": 1794485303882,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
