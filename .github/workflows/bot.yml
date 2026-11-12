@@ -17,6 +17,10 @@ on:
         description: "勾选后只发一条测试帖验证发帖接口(不跑常规轮次)"
         type: boolean
         default: false
+      test_image:
+        description: "勾选后生成行情卡片图并带图发一条测试帖, 验证图片上传与发布链路"
+        type: boolean
+        default: false
       source:
         description: "触发来源标记, 仅用于日志辨识; 外部定时器可填 cron-job.org 等"
         type: string
@@ -71,8 +75,12 @@ jobs:
         if: ${{ inputs.test_post != true }}
         run: node bot.js --once
 
+      - name: Test image post
+        if: ${{ inputs.test_image == true }}
+        run: node bot.js --test-image
+
       - name: Test publish endpoint
-        if: ${{ inputs.test_post == true }}
+        if: ${{ inputs.test_post == true && inputs.test_image != true }}
         run: node bot.js --test
 
       - name: Persist state.json

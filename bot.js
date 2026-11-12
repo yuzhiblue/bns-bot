@@ -973,6 +973,34 @@ async function testPost() {
   }
 }
 
+// 验证图片帖链路: 用模拟行情数据生成卡片 → 上传 → 带图发布一条测试帖。
+// 用于确认 presigned 上传 + content/add(imageList) 整条链路可用, 不依赖真实行情异动触发。
+async function testImagePost() {
+  log("测试图片帖链路(生成行情卡片 → 上传 → 带图发布一条测试帖)");
+  try {
+    const buf = makeMarketCard({
+      baseSymbol: "BTC",
+      pct: 3.2,
+      price: 67234.5,
+      volMultiple: 3.1,
+      windowMinutes: 60,
+      at: Date.now(),
+    });
+    const url = await uploadImage(config.openApiKey, buf, "png");
+    log(`  卡片上传成功: ${url}`);
+    const text = `bns-bot 图片帖链路测试 ${new Date().toLocaleString("zh-CN", { hour12: false })}\n#行情异动`;
+    const r = await publishPost(text, [url]);
+    if (r.code === "000000" || r.code === 0) {
+      log(`✅ 图片帖发布成功 id=${r.data?.id}`);
+      log(`   https://www.binance.com/square/post/${r.data?.id}`);
+    } else {
+      log(`❌ 图片帖发布失败 code=${r.code} (${ERROR_CODES[String(r.code)] ?? r.message})`);
+    }
+  } catch (e) {
+    log(`❌ 图片帖链路失败: ${e.message}`);
+  }
+}
+
 async function main() {
   log("bns-bot 启动");
   log(`模式: ${config.dryRun ? "dryRun(不真发)" : "真发"}`);
@@ -990,6 +1018,10 @@ async function main() {
   }
   log(`监控: ${config.market.symbols.join(", ")} (${config.market.windowMinutes}min 内 ${config.market.priceChangePct}% + 量比 ${config.market.volSpikeMultiple}x)`);
 
+  if (process.argv.includes("--test-image")) {
+    await testImagePost();
+    return;
+  }
   if (process.argv.includes("--test")) {
     await testPost();
     return;
