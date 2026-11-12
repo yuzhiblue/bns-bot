@@ -762,7 +762,9 @@ function timelineGate(state) {
     // 均分模式下按时间推进: 已经过去(超过 30min 容错)的 slot 不再补发,
     // 否则一帖没发出去时会永远卡在 0:00 那一格, 每轮都显示"追发 0:00"。
     const passed = timeline.filter((t) => now >= t + 30 * 60000).length;
-    sent = Math.max(sent, passed);
+    // 错过的 slot 最多只领先实际已发数 1 个: 允许后续素材以 cooldown 节奏(约 76min)
+    // 把浪费的 slot 逐条追回(不连刷), 同时实现"追发最近 1 个"的初衷, 又不会失控。
+    sent = Math.min(Math.max(sent, passed), (state.timelineSentCount ?? 0) + 1);
   }
 
   // 今天发满了
