@@ -3,7 +3,8 @@
     "force_1793784251295",
     "whale_BTCUSDT_2026-11-05",
     "whale_XRPUSDT_2026-11-05",
-    "ann_289730"
+    "ann_289730",
+    "fng_2026-11-12"
   ],
   "lastAnnouncementIds": [
     "289715",
@@ -26,11 +27,13 @@
     "288467",
     "288395",
     "288285",
-    "289730"
+    "289730",
+    "289731",
+    "289917"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794389619524,
-  "todayPosted": 4,
+  "lastPostAt": 1794446907549,
+  "todayPosted": 5,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -56,56 +59,61 @@
       "kind": "announcement",
       "at": 1794389619524,
       "text": "📢 币安公告更新\n\nFund Your First Recurring Buy - Deposit USD and Earn Rewards\n\n新消息，注意你的持仓。\n\n#币安公告\n#行情异动"
+    },
+    {
+      "id": 387300177648720,
+      "kind": "fearGreed",
+      "at": 1794446907549,
+      "text": "🌡️ 市场温度计：28\n\n极度恐惧区，往往是别人恐惧我贪婪的时候。\n\n#恐惧贪婪指数\n#行情异动"
     }
   ],
   "newCoinIds": [],
   "timeline": [
-    1794326400000,
-    1794332160000,
-    1794337920000,
-    1794343680000,
-    1794349440000,
-    1794355200000,
-    1794360960000,
-    1794366720000,
-    1794372480000,
-    1794378240000,
-    1794384000000,
-    1794389760000,
-    1794395520000,
-    1794401280000,
-    1794407040000
+    1794412800000,
+    1794418560000,
+    1794424320000,
+    1794430080000,
+    1794435840000,
+    1794441600000,
+    1794447360000,
+    1794453120000,
+    1794458880000,
+    1794464640000,
+    1794470400000,
+    1794476160000,
+    1794481920000,
+    1794487680000,
+    1794493440000
   ],
-  "timelineKey": "2026-11-11",
+  "timelineKey": "2026-11-12",
   "timelineIdx": 0,
-  "timelineSentCount": 3,
+  "timelineSentCount": 4,
   "timelineDay": "2026-11-05",
-  "lastRunAt": 1794389615941,
+  "lastRunAt": 1794446903698,
   "sentimentDates": [
-    "2026-11-11"
+    "2026-11-11",
+    "2026-11-12"
   ],
-  "lastFetchAt": 1794389615941,
+  "lastFetchAt": 1794446903698,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
     "ZECUSDT",
     "SOLUSDT",
-    "XRPUSDT",
-    "PEPEUSDT",
-    "NEARUSDT",
     "NVDABUSDT",
-    "BNBUSDT",
+    "XRPUSDT",
+    "NEARUSDT",
+    "PEPEUSDT",
     "UNIUSDT",
+    "BNBUSDT",
     "INITUSDT",
     "HYPEUSDT",
-    "DOGEUSDT",
-    "ENAUSDT",
-    "AVAXUSDT"
+    "MUBUSDT"
   ],
-  "symbolsUpdatedAt": "2026-11-11",
+  "symbolsUpdatedAt": "2026-11-12",
   "symbolsMeta": {
     "topN": 16,
     "minUsd": 30000000,
-    "updatedAt": 1794389617150
+    "updatedAt": 1794446904993
   }
 }
