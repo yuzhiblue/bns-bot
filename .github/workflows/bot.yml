@@ -3,14 +3,8 @@ run-name: "cycle · ${{ inputs.source || github.event_name }}"
 
 # 公开仓库的标准 runner 免费且不限分钟数, 不消耗私有库每月 2000 分钟额度。
 on:
-  schedule:
-    # 仅作兜底: GitHub schedule 是 best-effort, 实测会连续数小时漏跑。
-    # 主触发来自外部定时器 POST workflow_dispatch(见 README「外部定时器」一节)。
-    # UTC 时间, 每 15 分钟一轮; 整点最容易排队, 故意错开 8 分钟。
-    - cron: "8 * * * *"
-    - cron: "23 * * * *"
-    - cron: "38 * * * *"
-    - cron: "53 * * * *"
+  # 主触发来自外部定时器 CNB(每 15 分钟 POST workflow_dispatch, 见 README「外部定时器」一节)。
+  # GitHub 自带 schedule 已移除: best-effort、时好时坏, 且与 CNB 节奏完全重叠、纯属冗余。
   workflow_dispatch:
     inputs:
       test_post:
