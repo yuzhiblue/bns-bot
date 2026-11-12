@@ -146,7 +146,13 @@ GitHub Actions 每 15 分钟跑一轮 `node bot.js --once`（`--once` 现在只�
 
 GitHub 的 `schedule` 是 best-effort 投递: 2026-11-11 曾连续 9 小时不触发、恢复时成批补发,
 11-12 又断了 5 小时 41 分; 官方文档也明确「高负载时可能延迟甚至丢弃」。
-`bot.yml` 里的 `schedule` 现在**只作兜底**, 主触发改由外部定时器 POST `workflow_dispatch` API。
+`bot.yml` 里的 `schedule` 现在**只作兜底**; 主触发是 CNB 定时流水线每 15 分钟 POST
+`workflow_dispatch`, `cron-job.org` 作为境外第二触发源冗余。
+
+> **执行端仍在 GitHub Actions**: 2026-11-12 在 CNB runner 实测, `www.binance.com/bapi`
+> 五次连测全部 `UND_ERR_CONNECT_TIMEOUT`(约 10.49s, 耗时高度一致), `binance.com` 与
+> `api.binance.com` 也超时; 而 `api.github.com` 5/5 200(median 47ms)。
+> 发帖与公告抓取都在 `www.binance.com` 上, 所以 CNB **只能当触发器, 不能跑 bot**。
 
 ### 1. 创建 fine-grained PAT
 
@@ -164,7 +170,7 @@ GitHub 的 `schedule` 是 best-effort 投递: 2026-11-11 曾连续 9 小时不�
 
 > 官方 REST 文档: `POST /actions/workflows/{id}/dispatches` 只需 `Actions: write`。
 > 该 token 只能触发 workflow, 不能改代码、读 Secret、发 Issue。
-> 它要存进第三方定时器服务, 所以务必单仓库 + 短有效期 + 定期轮换。
+> 它要存进 CNB 密钥仓库(或第三方定时器服务), 所以务必单仓库 + 短有效期 + 定期轮换。
 
 ### 2. 定时器配置
 
@@ -175,22 +181,55 @@ GitHub 的 `schedule` 是 best-effort 投递: 2026-11-11 曾连续 9 小时不�
 | Header `Authorization` | `Bearer github_pat_...` |
 | Header `Accept` | `application/vnd.github+json` |
 | Header `Content-Type` | `application/json` |
-| Body | `{"ref":"main","inputs":{"source":"cron-job.org"}}` |
-| 频率 | 每 15 分钟, UTC `:08 / :23 / :38 / :53`（与兜底 cron 对齐） |
+| Body | `{"ref":"main","inputs":{"source":"cnb"}}`（`cron-job.org` 那条填 `cron-job.org`） |
+| 频率 | 每 15 分钟, `:08 / :23 / :38 / :53`（与兜底 cron 的分钟对齐） |
 
 `inputs.source` 只用于辨识来源: 运行列表标题分别是
-`cycle · cron-job.org`（外部定时器）、`cycle · manual`（手动跑）、`cycle · schedule`（兜底定时）。
+`cycle · cnb`（CNB 定时器）、`cycle · cron-job.org`（境外冗余）、
+`cycle · manual`（手动跑）、`cycle · schedule`（兜底定时）。
 不传 `test_post`（默认 `false`）, 走 `node bot.js --once`。
 
 外部每 15 分钟敲一次门是安全的: bot 内部 `evenSpread` / `maxPerDay=15` 自己判断到不到发帖 slot,
 没到点就零请求退出, 重复或提前触发都不会超额发帖。
 
-### 3. 免费定时器候选
+### 3. 落地 CNB 触发器（主方案, 仓库已配好）
+
+`.cnb.yml` 与 `trigger-workflow.mjs` 已在仓库里: `crontab: 8,23,38,53 * * * *` 按
+`Asia/Shanghai` 触发, 脚本带 3 次重试、4xx 快速失败、失败 `exit 1` 让构建标红。
+你只需三步:
+
+**① 创建密钥仓库**: 打开 `https://cnb.cool/new/repos` → 仓库类型选 **密钥仓库**
+（**不要选普通仓库**; 密钥仓库禁止本地 clone / push, 只能 Web 端编辑, 带动态水印与审计日志）→
+仓库名建议 `bns-bot-secrets` → 创建。
+
+**② 在密钥仓库 Web 端新建 `dispatch.yml`**, 内容:
+
+```yaml
+BNS_DISPATCH_TOKEN: "github_pat_..."
+```
+
+> 默认只有密钥仓库的**管理员 / 负责人**成员触发的流水线能引用该文件。
+> CNB `crontab` 以「最后修改该配置的用户」身份触发, 所以让创建密钥仓库的账号去推
+> `.cnb.yml` 即可满足; 若以后换账号改 crontab, 需在密钥文件里配 `allow_slugs` 等授权。
+> 脚本不会把 token 打进日志。
+
+**③ 把 `.cnb.yml` 里两处 `imports` URL 改成实际密钥仓库路径**
+（当前是占位值 `https://cnb.cool/yuzhiblue/bns-bot-secrets/-/blob/main/dispatch.yml`）, 推到 CNB `master`。
+
+然后在 CNB 仓库页面用 **手动触发 / 自定义按钮** 选 `web_trigger` 跑一次,
+到 `Actions → bns-bot` 看是否出现标题 `cycle · cnb` 的运行。
+最后在 CNB 仓库设置里开启**构建失败通知**（钉钉 / 企业微信 / 邮件, 入口以页面为准）——
+脚本失败会让构建标红, 不会像 GitHub schedule 那样静默丢。
+
+分钟数与 GitHub 兜底 cron 对齐, 三层同时打也安全: bot 内部 slot 判断 +
+`concurrency` 保证不重复发帖。
+
+### 4. 免费定时器候选
 
 | 服务 | 免费 | 最小间隔 | 自定义 Header | POST + Body | 备注 |
 |---|---|---|---|---|---|
-| **cron-job.org** | 完全免费, 无需信用卡 | 1 分钟(每 job ≤ 60 次/小时) | ✅ 任意(`User-Agent`/`Connection` 除外) | ✅ | **最贴合**; job 数不限, 失败邮件告警, 连续失败 25 次自动停用 |
-| **CNB 定时流水线** | 已有 `cnb.cool` 仓库和账号 | 5 分钟 | 不需要(在流水线里 curl) | ✅ | 国内可达、时区 `Asia/Shanghai`; PAT 可存 CNB Secrets 不交第三方; 需写 `.cnb.yml` |
+| **CNB 定时流水线** | 已有 `cnb.cool` 仓库和账号 | 5 分钟 | 不需要(密钥仓库 `imports` 注入) | ✅ | **主方案, 已配置**; 实测到 `api.github.com` 5/5 200(median 47ms); 时区 `Asia/Shanghai`; PAT 存密钥仓库不交第三方 |
+| **cron-job.org** | 完全免费, 无需信用卡 | 1 分钟(每 job ≤ 60 次/小时) | ✅ 任意(`User-Agent`/`Connection` 除外) | ✅ | **境外冗余**; job 数不限, 失败邮件告警, 连续失败 25 次自动停用 |
 | Cloudflare Workers Cron | 免费 10 万次/天 | 1 分钟 | ✅ | ✅ | 占 CF 账号额度、每账号仅 5 个 Cron, 本项目不优先 |
 | Upstash QStash / FastCron / EasyCron | 有免费层 | 1 分钟 | ✅ | ✅ | 需注册新账号, 额度按消息数, 免费政策未逐一核实 |
 | UptimeRobot / Better Stack / Healthchecks.io | 免费层 | 5 分钟起 | ❌ | ❌ | 监控型, 免费层只发 GET/HEAD, **带不了 `Authorization`, 直接排除** |
@@ -198,12 +237,13 @@ GitHub 的 `schedule` 是 best-effort 投递: 2026-11-11 曾连续 9 小时不�
 
 > cron-job.org 单次请求超时 30 秒、响应上限 64 KB; GitHub dispatches 接口几乎瞬时返回, 不构成问题。
 > 它同样不承诺准点（高峰期可能延迟）, 但比 GitHub schedule 的整段停摆可控得多,
-> 且出口 IP 固定（见其 FAQ）, 便于排查。CNB 方案的 `crontab` 最小间隔 5 分钟、
-> 触发身份是「最后修改该配置的用户」, 该用户被移出仓库会导致任务失败。
+> 且出口 IP 固定（见其 FAQ）, 便于排查。CNB 出口 IP 实测是**动态的**
+> （两次探针分别是 `45.40.228.119` / `42.193.175.155`）, 别指望靠白名单解决问题;
+> `crontab` 最小间隔 5 分钟, 触发身份是「最后修改该配置的用户」, 该用户被移出仓库会导致任务失败。
 
-### 4. 验证
+### 5. 验证与收尾
 
-配好后等 15~20 分钟, 在 `Actions → bns-bot` 看有没有标题为 `cycle · cron-job.org` 的运行;
+配好后等 15~20 分钟, 在 `Actions → bns-bot` 看有没有 `cycle · cnb` / `cycle · cron-job.org` 的运行;
 点进去看 `Trigger info` 步骤打印的 `event=workflow_dispatch`。
 确认外部定时器稳定跑一两天后, 再删掉 `bot.yml` 里的 `on.schedule` 整段, 避免两种触发源叠加。
 
