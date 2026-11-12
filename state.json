@@ -4,7 +4,8 @@
     "whale_BTCUSDT_2026-11-05",
     "whale_XRPUSDT_2026-11-05",
     "ann_289730",
-    "fng_2026-11-12"
+    "fng_2026-11-12",
+    "ann_290037"
   ],
   "lastAnnouncementIds": [
     "289715",
@@ -29,11 +30,13 @@
     "288285",
     "289730",
     "289731",
-    "289917"
+    "289917",
+    "290037",
+    "290034"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794446907549,
-  "todayPosted": 5,
+  "lastPostAt": 1794457395668,
+  "todayPosted": 6,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -65,6 +68,12 @@
       "kind": "fearGreed",
       "at": 1794446907549,
       "text": "🌡️ 市场温度计：28\n\n极度恐惧区，往往是别人恐惧我贪婪的时候。\n\n#恐惧贪婪指数\n#行情异动"
+    },
+    {
+      "id": 387343136962541,
+      "kind": "announcement",
+      "at": 1794457395668,
+      "text": "📢 币安又有新动作\n\nUpdates on Step Size for Spot Trading Pairs (2026-11-19)\n\n先别慌，看完公告再动手。\n\n#币安公告\n#行情异动"
     }
   ],
   "newCoinIds": [],
@@ -87,14 +96,14 @@
   ],
   "timelineKey": "2026-11-12",
   "timelineIdx": 0,
-  "timelineSentCount": 4,
+  "timelineSentCount": 5,
   "timelineDay": "2026-11-05",
-  "lastRunAt": 1794446903698,
+  "lastRunAt": 1794457393284,
   "sentimentDates": [
     "2026-11-11",
     "2026-11-12"
   ],
-  "lastFetchAt": 1794446903698,
+  "lastFetchAt": 1794457393284,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
