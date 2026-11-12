@@ -1,6 +1,6 @@
 # bns-bot — 币安广场自动发帖（GitHub Actions 纯云端）
 
-抓取币安行情异动 + 公告 → 生成带 `$币种` 的帖子 → 调广场 OpenAPI 发布。
+抓取币安行情异动 / 新币 / 情绪等素材 → 生成带 `$币种` 的帖子 → 调广场 OpenAPI 发布。
 **只跑云端**: CNB 定时流水线每 15 分钟 POST `workflow_dispatch`, 由 GitHub Actions
 唤起一个短进程, 跑一轮就退出; 没有常驻服务、没有长连接, 本机不留启动脚本和计划任务。
 **执行端留在 GitHub Actions**（CNB runner 实测连不上发帖域名, 见「外部定时器」一节）;
@@ -336,7 +336,11 @@ Token name 填 `bns-bot-cron-job-org`, 其余相同（只勾 `bns-bot`、`Action
 - **无常驻进程、无长连接**: 公告走内置 HTTP 接口
   `www.binance.com/bapi/composite/v1/public/cms/article/list/query`（公开、无需 Key）:
   取 12 小时内的新公告, 首次运行把现有公告记为基线, 避免一次性补发旧公告。
-  想换接口可在 `BNS_CONFIG` 的 `announcement.apiUrl` 里覆盖; 接口失效或结构变了会自动降级, 不影响其他素材。
+  **该列表接口只返回标题、不返回正文**, 所以无正文的公告会被直接跳过, 不会生成
+  「开场白 + 英文标题 + 一句万能话术」的空壳帖; 日志会打印
+  `公告: N 条新公告无正文, 跳过(不发空壳帖)`。想恢复公告帖, 需让 `announcement.apiUrl`
+  指向能返回正文 / 摘要的接口; 接口失效或结构变了会自动降级, 不影响其他素材。
+  想连抓都不抓, 把 `BNS_CONFIG` 的 `announcement.enabled` 改成 `false`。
 
 ### 监控币种池自动刷新
 
@@ -376,7 +380,8 @@ GitHub runner 的出口 IP 在美国, `api.binance.com` 与 `fapi.binance.com` �
 
 现货行情（K线 / exchangeInfo / ticker）已统一走 `data-api.binance.vision`;
 `fundingRate` / `whale` 只有在 config 里显式填了 `baseUrl` 才会请求, 留空（默认）即静默跳过,
-不再每轮刷屏 451。现有素材源: 行情异动、新币、恐惧贪婪、公告（已内置）。
+不再每轮刷屏 451。**实际会有内容的素材源**: 行情异动、新币、恐惧贪婪;
+公告源仍抓取, 但当前列表接口无正文, 不会据此发帖。
 
 **发帖链路已验证通过**: 2026-11-11 用 `test_post` 跑 `node bot.js --test` 真发成功
 （`id=386976997232534`）, 说明 OpenAPI Key 有效、发帖域名没被封、无设备风控。

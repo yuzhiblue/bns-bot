@@ -314,6 +314,7 @@ async function fetchAnnouncementsHttp(cfg, state) {
       return [];
     }
     const out = [];
+    let noBody = 0;
     for (let i = 0; i < articles.length; i++) {
       if (!ids[i] || seen.has(ids[i])) continue;
       const a = articles[i];
@@ -321,15 +322,22 @@ async function fetchAnnouncementsHttp(cfg, state) {
       const ts = typeof tsRaw === "number" ? tsRaw : (tsRaw ? Date.parse(tsRaw) : 0);
       // 只发时效内的新公告, 时间戳缺失/解析失败的宁可不发
       if (!Number.isFinite(ts) || ts <= 0 || Date.now() - ts > maxAgeMs) continue;
+      // 内置 CMS 列表接口只给标题、不给正文; 没有正文时模板只能拼出
+      // 「随机开场白 + 英文标题 + 随机话术」的空壳帖, 读起来不知所云, 不如不发。
+      // 想恢复公告帖: 让 announcement.apiUrl 指向能返回正文/摘要的接口即可。
+      const body = String(a.body ?? a.content ?? a.summary ?? "")
+        .replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+      if (!body) { noBody++; continue; }
       out.push({
         id: `ann_${ids[i]}`,
         kind: "announcement",
         title: String(a.title ?? ""),
-        body: String(a.body ?? a.content ?? a.summary ?? ""),
+        body,
         ts,
       });
     }
     if (out.length) log(`  公告: 发现 ${out.length} 条新公告(${maxAgeMs / 3600000}h 内)`);
+    else if (noBody) log(`  公告: ${noBody} 条新公告无正文, 跳过(不发空壳帖)`);
     return out;
   } catch (e) {
     log(`  公告: HTTP 拉取失败(${e.message}), 本轮跳过`);
