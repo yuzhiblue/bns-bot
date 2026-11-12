@@ -21,6 +21,9 @@ GitHub 内置 `schedule` 只作兜底, `cron-job.org` 是可选的境外冗余�
 | `config.example.json` | 配置示例(仅参考, 不影响线上) |
 | `config.json` | 运行时由 Secret 生成; 本地若保留, `.gitignore` 已排除, 不入库 |
 | `state.json` | 运行状态(自动维护, 别手动改); 当日币种池也存在这里 |
+| `imageCard.js` | 用 `@napi-rs/canvas` 生成行情卡片 PNG |
+| `squareMedia.js` | 币安广场图片上传(presignedUrl → S3 PUT → imageStatus 轮询) |
+| `package.json` | 声明 `@napi-rs/canvas` 运行时依赖, Actions 里 `npm install` |
 
 ## 命令
 
@@ -102,6 +105,25 @@ node bot.js --test     # 发一条测试帖验发帖接口
 
 在 `Actions → bns-bot → 对应运行记录 → cycle` 里看, 公开仓库的日志含帖子全文。
 本地不产生 `bot.log`。
+
+## 图片帖（行情卡片）
+
+行情异动帖会自动配一张**行情卡片图**（币种 + 涨跌幅 + 现价 + 量比 + 时间，绿涨红跌），
+提升广场曝光。目前只给行情帖配图，其它类型仍是纯文本。
+
+- **图从哪来**：在 GitHub Actions runner 本地用 `@napi-rs/canvas` 生成 PNG，再走币安自己的
+  接口上传，**不依赖图床、不占 Cloudflare / GitHub 私有库额度、不新增账号**，也不消耗发帖额度。
+- **上传流程**（参数来自官方 `binance-skills-hub` 的 `square-post` 源码）：
+  1. `POST …/composite/v2/…/image/presignedUrl` 拿一次性 `presignedUrl` + `fileTicket`；
+  2. `PUT` 二进制直接传到该 S3 地址；
+  3. `POST …/v2/…/image/imageStatus` 轮询（最多 10 次、间隔 3 秒）拿到 `imageUrl`；
+  4. 发帖走 `…/v1/…/content/add`，图片短帖为 `contentType:1` + `imageList:[url]`（最多 4 张）。
+- **失败降级**：卡片生成、上传或发布任一步失败，自动回退为纯文本发帖，不影响发帖链路；
+  日志打印 `配图失败, 降级纯文本: …`。`--force` / `--test` 不触发配图。
+- **开关**：`config.post.imageCard`（默认 `true`）。只想发纯文本就设 `false`。
+- **额度**：币安广场每日上传限额 400 次，本项目最多 15 帖/天，余量充足。
+- **字体**：卡片只用英文 / 数字，避免中文字体依赖；完整中文免责声明仍放在文字帖正文。
+  Actions 已确保安装 `fonts-dejavu-core`，本地若缺失字会渲染不出（不影响纯文本帖）。
 
 ## 部署到 GitHub Actions（公开仓库）
 

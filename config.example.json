@@ -36,5 +36,5 @@
     "timezone": "Asia/Shanghai"
   },
 
-  "post": { "hashtags": ["行情异动"], "disclaimer": "" }
+  "post": { "hashtags": ["行情异动"], "disclaimer": "", "imageCard": true }
 }

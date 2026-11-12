@@ -46,6 +46,13 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Install deps (canvas) and font
+        # @napi-rs/canvas 用于本地生成行情卡片 PNG; 字体确保卡片文字可渲染。
+        run: |
+          sudo apt-get update -y >/dev/null 2>&1 || true
+          sudo apt-get install -y fonts-dejavu-core >/dev/null 2>&1 || true
+          npm install
+
       - name: Generate config.json from Secret
         env:
           BNS_CONFIG: ${{ secrets.BNS_CONFIG }}

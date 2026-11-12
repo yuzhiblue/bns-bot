@@ -1,0 +1,9 @@
+{
+  "name": "bns-bot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "币安广场自动发帖（GitHub Actions 纯云端单次模式）",
+  "dependencies": {
+    "@napi-rs/canvas": "1.1.1"
+  }
+}

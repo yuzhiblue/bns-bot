@@ -16,6 +16,8 @@ const fs = require("fs");
 const path = require("path");
 const TPL = require("./templates");
 const { fetchSymbolPool, DEFAULT_TOP_N, DEFAULT_MIN_USD } = require("./symbolPool");
+const { uploadImage } = require("./squareMedia");
+const { makeMarketCard } = require("./imageCard");
 
 const ROOT = __dirname;
 const config = JSON.parse(fs.readFileSync(path.join(ROOT, "config.json"), "utf8"));
@@ -573,7 +575,11 @@ function buildPost(material, cfg) {
 
 // ---------- 发帖 ----------
 
-async function publishPost(text) {
+async function publishPost(text, imageList) {
+  // 纯文本短帖: 只传 bodyTextOnly; 图片短帖(contentType=1): imageList(最多 4 张)
+  const body = imageList && imageList.length
+    ? { contentType: 1, bodyTextOnly: text, imageList }
+    : { bodyTextOnly: text };
   const res = await fetch(
     `${BAPI}/composite/v1/public/pgc/openApi/content/add`,
     {
@@ -583,11 +589,34 @@ async function publishPost(text) {
         "Content-Type": "application/json",
         clienttype: "binanceSkill",
       },
-      body: JSON.stringify({ bodyTextOnly: text }),
+      body: JSON.stringify(body),
     }
   );
   const data = await res.json();
   return data;
+}
+
+// 行情帖尝试配图: 本地生成行情卡片 -> 上传到币安 -> 返回 imageList
+// 任何一步失败都返回 null, 由上层降级为纯文本发帖(不影响发帖链路)。
+async function tryImageForMaterial(material, cfg) {
+  if (material.kind !== "market") return null;
+  if (!cfg.post?.imageCard) return null;
+  try {
+    const buf = makeMarketCard({
+      baseSymbol: material.baseSymbol,
+      pct: material.pct,
+      price: material.price,
+      volMultiple: material.volMultiple,
+      windowMinutes: material.windowMinutes,
+      at: material.ts,
+    });
+    const url = await uploadImage(cfg.openApiKey, buf, "png");
+    log(`  配图: 上传成功 ${url}`);
+    return [url];
+  } catch (e) {
+    log(`  配图失败, 降级纯文本: ${e.message}`);
+    return null;
+  }
 }
 
 const ERROR_CODES = {
@@ -904,8 +933,9 @@ async function runOnce() {
     return;
   }
 
-  // 5. 发帖
-  const result = await publishPost(text);
+  // 5. 发帖(行情帖尝试配图, 失败自动降级纯文本)
+  const imageList = await tryImageForMaterial(material, config);
+  const result = await publishPost(text, imageList);
   if (result.code === "000000" || result.code === 0) {
     state.lastPostAt = Date.now();
     state.todayPosted++;

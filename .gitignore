@@ -10,6 +10,7 @@ config.json
 
 # Node
 node_modules/
+package-lock.json
 
 # 杂项
 .DS_Store
