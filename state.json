@@ -11,11 +11,12 @@
     "news_1di4l73",
     "news_vb4fgf",
     "news_nc8jc2",
-    "news_90cmbz"
+    "news_90cmbz",
+    "news_1gkgtjr"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794550104935,
-  "todayPosted": 12,
+  "lastPostAt": 1794553705421,
+  "todayPosted": 13,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -89,6 +90,12 @@
       "kind": "news",
       "at": 1794550104935,
       "text": "📰 Cointelegraph\n\n由于流动性稀薄、ETF 流出，比特币跌破 7 万美元\n\n随着加密货币情绪跌至四个多月以来的最低水平，分析师警告机构资金外流、流动性稀薄和杠杆率上升，比特币跌破 70,000 美元。\n\n消息面仅供参考，操作看自己的判断。\n\n#加密资讯"
+    },
+    {
+      "id": 387737621746935,
+      "kind": "news",
+      "at": 1794553705421,
+      "text": "这是今天加密货币领域发生的事情\n\n需要知道今天加密货币领域发生了什么吗？以下是影响比特币价格、区块链、DeFi、Web3 和加密货币监管的每日趋势和事件的最新新闻。\n\n消息面仅供参考，操作看自己的判断。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -120,10 +127,10 @@
   ],
   "timelineKey": "2026-11-13",
   "timelineIdx": 0,
-  "timelineSentCount": 5,
+  "timelineSentCount": 6,
   "timelineDay": "2026-11-13",
-  "lastRunAt": 1794550096766,
-  "lastFetchAt": 1794550096766,
+  "lastRunAt": 1794553697746,
+  "lastFetchAt": 1794553697746,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
