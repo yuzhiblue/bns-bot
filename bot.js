@@ -392,7 +392,7 @@ async function fetchRssNews(cfg, state) {
       log(`  RSS ${feed.name}: 拉取失败(${e.message})`);
     }
   }));
-  // 英文媒体自带摘要, 统一翻译为中文; 失败(回退英文)则该条不发英文帖
+  // 英文媒体自带摘要, 统一翻译为中文; 翻译失败则回退英文原文直接发
   const [zhTitles, zhSummaries] = await Promise.all([
     Promise.all(raw.map((r) => translateText(r.title))),
     Promise.all(raw.map((r) => translateText(r.summary))),
@@ -401,7 +401,7 @@ async function fetchRssNews(cfg, state) {
   for (let i = 0; i < raw.length; i++) {
     const zhT = (zhTitles[i] || "").trim();
     const zhS = (zhSummaries[i] || "").trim();
-    if (!zhT || zhT === (raw[i].title || "").trim()) continue; // 翻译失败(仍是英文)则跳过
+    if (!zhT) continue; // 标题为空才跳过(翻译失败回退英文原文, 直接发英文帖)
     out.push({
       id: `news_${hashStr(normalizeText(zhT))}`,
       kind: "news", source: raw[i].source, title: zhT, link: raw[i].link,
