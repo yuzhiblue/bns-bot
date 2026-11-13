@@ -10,11 +10,12 @@
     "market_PEPEUSDT_2026-11-13",
     "news_1di4l73",
     "news_vb4fgf",
-    "news_nc8jc2"
+    "news_nc8jc2",
+    "news_90cmbz"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794546504570,
-  "todayPosted": 11,
+  "lastPostAt": 1794550104935,
+  "todayPosted": 12,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -82,6 +83,12 @@
       "kind": "news",
       "at": 1794546504570,
       "text": "📰 CoinDesk\n\n美元指数创 19 个月新高，比特币跌破 70,000 美元\n\n周五早些时候，加密货币市场的抛售步伐加快。比特币跌破7万美元，以太币跌破2000美元，引发期货市场大规模清算。\n\n消息面仅供参考，操作看自己的判断。\n\n#加密资讯 #行情异动"
+    },
+    {
+      "id": 387722874160972,
+      "kind": "news",
+      "at": 1794550104935,
+      "text": "📰 Cointelegraph\n\n由于流动性稀薄、ETF 流出，比特币跌破 7 万美元\n\n随着加密货币情绪跌至四个多月以来的最低水平，分析师警告机构资金外流、流动性稀薄和杠杆率上升，比特币跌破 70,000 美元。\n\n消息面仅供参考，操作看自己的判断。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -113,10 +120,10 @@
   ],
   "timelineKey": "2026-11-13",
   "timelineIdx": 0,
-  "timelineSentCount": 4,
+  "timelineSentCount": 5,
   "timelineDay": "2026-11-13",
-  "lastRunAt": 1794546498100,
-  "lastFetchAt": 1794546498100,
+  "lastRunAt": 1794550096766,
+  "lastFetchAt": 1794550096766,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
