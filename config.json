@@ -60,6 +60,7 @@
   "news": {
     "enabled": true,
     "perFeed": 2,
+    "cardFeeds": ["Cointelegraph"],
     "feeds": [
       {
         "name": "Cointelegraph",

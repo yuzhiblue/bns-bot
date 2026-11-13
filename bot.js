@@ -19,7 +19,7 @@ const TPL = require("./templates");
 const { buildTake } = require("./takes");
 const { fetchSymbolPool, DEFAULT_TOP_N, DEFAULT_MIN_USD } = require("./symbolPool");
 const { uploadImage } = require("./squareMedia");
-const { makeMarketCard, makeTrendingCard, makeMoversCard, makeNewCoinCard } = require("./imageCard");
+const { makeMarketCard, makeTrendingCard, makeMoversCard, makeNewCoinCard, makeNewsCard } = require("./imageCard");
 
 const ROOT = __dirname;
 // 本地若有 config.local.json(含 Key, gitignore)则优先; 否则用仓库 config.json(CI 已注入 Key)
@@ -456,9 +456,10 @@ async function fetchRssNews(cfg, state) {
     // 标题或摘要仍是原文 = 翻译失败, 标记英文原帖, 生成文案时不加中文解读段与 CTA, 避免再叠加中文
     const fallback = zhT === (raw[i].title || "").trim()
       || (raw[i].summary && zhS === (raw[i].summary || "").trim());
+    // titleEn 保留 RSS 英文原标题: 资讯卡片只渲染 ASCII, 中文翻译标题仍放帖子正文
     out.push({
       id: `news_${hashStr(normalizeText(zhT))}`,
-      kind: "news", source: raw[i].source, title: zhT, link: raw[i].link,
+      kind: "news", source: raw[i].source, title: zhT, titleEn: raw[i].title, link: raw[i].link,
       image: raw[i].image, summary: zhS, ts: raw[i].ts,
       lang: fallback ? "en" : "zh",
     });
@@ -761,14 +762,24 @@ async function tryImageForMaterial(material, cfg) {
       log(`  配图: ${material.kind} 卡片上传成功 ${url}`);
       return [url];
     }
-    // 资讯帖: 若 RSS 带有文章配图(jpg/png), 下载后上传币安带一张图发; 失败降级纯文本
-    if (material.kind === "news" && material.image) {
-      const ext = imageExt(material.image);
-      if (!ext) { log("  配图: 非 jpg/png, 跳过"); return null; }
-      const buf = await downloadImage(material.image);
-      const url = await uploadImage(cfg.openApiKey, buf, ext);
-      log(`  配图: 远程图上传成功 ${url}`);
-      return [url];
+    // 资讯帖: news.cardFeeds 列出的源(当前 Cointelegraph)改用自己的生成卡片,
+    // 不搬第三方封面上的媒体水印/标识; 其余源仍沿用 RSS 自带配图。
+    // 以后发现别的源也有水印, 只需把源名加进 news.cardFeeds, 不用改代码。
+    if (material.kind === "news") {
+      if ((cfg.news?.cardFeeds ?? []).includes(material.source)) {
+        const buf = makeNewsCard({ titleEn: material.titleEn, at: material.ts });
+        const url = await uploadImage(cfg.openApiKey, buf, "png");
+        log(`  配图: news 卡片上传成功 ${url}`);
+        return [url];
+      }
+      if (material.image) {
+        const ext = imageExt(material.image);
+        if (!ext) { log("  配图: 非 jpg/png, 跳过"); return null; }
+        const buf = await downloadImage(material.image);
+        const url = await uploadImage(cfg.openApiKey, buf, ext);
+        log(`  配图: 远程图上传成功 ${url}`);
+        return [url];
+      }
     }
   } catch (e) {
     log(`  配图失败, 降级纯文本: ${e.message}`);

@@ -1,4 +1,4 @@
-// 行情卡片 PNG 生成(纯 Node, 依赖 @napi-rs/canvas)。
+// 卡片 PNG 生成(纯 Node, 依赖 @napi-rs/canvas)。
 // 卡片只用英文/数字(币种、涨跌幅、现价、量比、时间), 不渲染中文,
 // 这样无需中文字体; 完整中文免责声明仍放在文字帖正文里。
 const { createCanvas, GlobalFonts } = require("@napi-rs/canvas");
@@ -196,4 +196,52 @@ function makeNewCoinCard({ baseAsset, symbol, onboardDate, at }) {
   });
 }
 
-module.exports = { makeMarketCard, makeTrendingCard, makeMoversCard, makeNewCoinCard };
+// ---------- 资讯卡片 ----------
+// 只渲染 RSS 的英文原标题(翻译前), 中文标题/摘要仍在帖子正文里, 因此无需中文字体。
+// 弯引号 / 破折号等先换成 ASCII 等价字符, 其余非 ASCII 直接剔除, 避免出现方块字。
+function asciiTitle(s) {
+  return String(s ?? "")
+    .replace(/[‘’‛]/g, "'")
+    .replace(/[“”„]/g, '"')
+    .replace(/[–—]/g, "-")
+    .replace(/…/g, "...")
+    .replace(/\u00a0/g, " ")
+    .replace(/[^\x20-\x7e]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+// 按 measureText 折行; 超过 maxLines 时末行加省略号, 避免长标题溢出卡片
+function wrapAscii(ctx, text, maxWidth, maxLines) {
+  const lines = [];
+  let cur = "";
+  for (const w of text.split(/\s+/).filter(Boolean)) {
+    const next = cur ? `${cur} ${w}` : w;
+    if (cur && ctx.measureText(next).width > maxWidth) { lines.push(cur); cur = w; }
+    else cur = next;
+  }
+  if (cur) lines.push(cur);
+  if (lines.length <= maxLines) return lines;
+  const kept = lines.slice(0, maxLines);
+  let last = kept[maxLines - 1];
+  while (last.length && ctx.measureText(`${last}…`).width > maxWidth) last = last.slice(0, -1);
+  kept[maxLines - 1] = `${last.trimEnd()}…`;
+  return kept;
+}
+
+function makeNewsCard({ titleEn, at }) {
+  return makeCard((ctx) => {
+    // 不写来源媒体名: 卡片上挂第三方平台标识容易被当成引流
+    drawChrome(ctx, { title: "CRYPTO NEWS", subtitle: "Latest headlines", accent: GOLD, at });
+    const title = asciiTitle(titleEn) || "No headline available";
+    ctx.fillStyle = FG;
+    ctx.font = 'bold 60px "DejaVuSansBold", sans-serif';
+    wrapAscii(ctx, title, 900, 5).forEach((line, i) => ctx.fillText(line, 90, 360 + i * 92));
+    ctx.fillStyle = CARD;
+    ctx.fillRect(90, 860, 900, 2);
+    ctx.fillStyle = SUB;
+    ctx.font = '34px "DejaVuSans", sans-serif';
+    ctx.fillText("Full summary in the post below", 90, 920);
+  });
+}
+
+module.exports = { makeMarketCard, makeTrendingCard, makeMoversCard, makeNewCoinCard, makeNewsCard };
