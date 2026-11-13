@@ -13,11 +13,12 @@
     "news_nc8jc2",
     "news_90cmbz",
     "news_1gkgtjr",
-    "news_5sm9jv"
+    "news_5sm9jv",
+    "news_1m1nhmx"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794557305108,
-  "todayPosted": 14,
+  "lastPostAt": 1794560907025,
+  "todayPosted": 15,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -103,6 +104,12 @@
       "kind": "news",
       "at": 1794557305108,
       "text": "以太坊财务公司 BTCS 亏本出售以太币，以保持 6400 万美元的 Aave 贷款健康\n\n这家在纳斯达克上市的公司有 46,676 ETH 来支持其借款，如果 ETH 跌至 1,700 美元左右，这笔贷款可能会被清算。\n\n这条属于消息面驱动。文中提到的 1,700美元只是当下快照。值得跟踪的是后续成交量能否放大、以及这则消息在未来 24–48 小时是否被数据验证；单日消息本身很难改写趋势，我不据"
+    },
+    {
+      "id": 387767119473071,
+      "kind": "news",
+      "at": 1794560907025,
+      "text": "全球范围内的 Microsoft 365 中断影响了 Outlook 电子邮件和 Teams 日历\n\n由于中断中断了政府电子邮件以及 ChatGPT 和 Claude 中的 Microsoft 365 连接器，微软于周五开始了更广泛的补丁发布。\n\n这条属于消息面驱动。值得跟踪的是后续成交量能否放大、以及这则消息在未来 24–48 小时是否被数据验证；单日消息本身很难改写趋势，我不据此推断方向。\n\n"
     }
   ],
   "newCoinIds": [],
@@ -134,10 +141,10 @@
   ],
   "timelineKey": "2026-11-13",
   "timelineIdx": 0,
-  "timelineSentCount": 7,
+  "timelineSentCount": 8,
   "timelineDay": "2026-11-13",
-  "lastRunAt": 1794557298209,
-  "lastFetchAt": 1794557298209,
+  "lastRunAt": 1794560899473,
+  "lastFetchAt": 1794560899473,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
