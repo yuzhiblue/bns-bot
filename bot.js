@@ -517,8 +517,8 @@ function genMoversPost(m) {
 
 function genNewsPost(m) {
   const lines = [];
-  lines.push(`📰 ${m.source || "加密资讯"}`);
-  lines.push("");
+  // 不显示文章来源平台名(如 CoinDesk / Cointelegraph): 币安广场对"把用户引向第三方平台"敏感,
+  // 帖首挂别家媒体名容易被当成引流。m.source 仅保留在素材里供日志排查, 不渲染。
   if (m.title) lines.push(m.title);
   if (m.summary) {
     lines.push("");
