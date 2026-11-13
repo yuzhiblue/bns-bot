@@ -9,7 +9,8 @@
     "fng_2026-11-13",
     "market_PEPEUSDT_2026-11-13",
     "news_1di4l73",
-    "news_vb4fgf"
+    "news_vb4fgf",
+    "news_nc8jc2"
   ],
   "lastAnnouncementIds": [
     "289715",
@@ -48,8 +49,8 @@
     "290149"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794542904746,
-  "todayPosted": 10,
+  "lastPostAt": 1794546504570,
+  "todayPosted": 11,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -111,6 +112,12 @@
       "kind": "news",
       "at": 1794542904746,
       "text": "📰 CoinDesk\n\nBitcoin dips below $70,000 as Dollar Index hits 19-month high\nhttps://www.coindesk.com/markets/2026/11/13/bitcoin-dips-below-usd70-000-as-selloff-gathers-pace\n\n消息面仅供参考，操作看自己的判断。\n\n#加密资讯 #行"
+    },
+    {
+      "id": 387708127101399,
+      "kind": "news",
+      "at": 1794546504570,
+      "text": "📰 CoinDesk\n\n美元指数创 19 个月新高，比特币跌破 70,000 美元\n\n周五早些时候，加密货币市场的抛售步伐加快。比特币跌破7万美元，以太币跌破2000美元，引发期货市场大规模清算。\n\n消息面仅供参考，操作看自己的判断。\n\n#加密资讯 #行情异动"
     }
   ],
   "newCoinIds": [],
@@ -142,15 +149,15 @@
   ],
   "timelineKey": "2026-11-13",
   "timelineIdx": 0,
-  "timelineSentCount": 3,
+  "timelineSentCount": 4,
   "timelineDay": "2026-11-13",
-  "lastRunAt": 1794542897958,
+  "lastRunAt": 1794546498100,
   "sentimentDates": [
     "2026-11-11",
     "2026-11-12",
     "2026-11-13"
   ],
-  "lastFetchAt": 1794542897958,
+  "lastFetchAt": 1794546498100,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
