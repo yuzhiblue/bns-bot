@@ -228,6 +228,30 @@ function isPromoSummary(s) {
   return t.length < 80 && PROMO_SUMMARY_ANY.test(t);
 }
 
+// WordPress / 聚合站常把站点名、标题链接、"This post first appeared on..." 署名尾巴
+// 连同正文一起塞进 <description>。按块拆开逐块丢掉非正文内容, 只留有事实的段落。
+// 例: BitcoinMagazine = [Bitcoin Magazine] + [标题] + [正文] + [版权尾巴];
+// 旧逻辑用 includes(title) 判"摘要等于标题", 会把正文一起置空, 该源一条素材都发不出。
+function summaryBlocks(html, title) {
+  const titleNorm = normalizeText(title);
+  const blocks = (html || "")
+    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
+    .replace(/<\s*br\s*\/?\s*>/gi, "\n")
+    .replace(/<\/\s*(?:p|div|li|h[1-6])\s*>/gi, "\n")
+    .split("\n")
+    .map(stripHtml)
+    .filter(Boolean);
+  return blocks.filter((b) => {
+    const n = normalizeText(b);
+    if (!n) return false; // CDATA 残留 / 纯符号
+    // 标题链接块(以及"标题 + 少量尾巴"), 不再误伤后面的正文段
+    if (titleNorm && (n === titleNorm || (n.includes(titleNorm) && n.length < titleNorm.length + 40))) return false;
+    if (/^(?:this|the) post\b[\s\S]*\bfirst appeared on\b/i.test(b)) return false; // 署名尾巴
+    if (n.length < 24 && !/[.!?。！？]/.test(b)) return false; // 站点名 / 导航短块
+    return true;
+  }).join(" ").trim();
+}
+
 // 简易 RSS 2.0(<item>) 与 Atom(<entry>) 解析, 不引依赖。
 // 从 RSS/Atom item 提取一张文章配图: 媒体缩略图优先, 其次正文内 <img>
 function extractRssImage(blk) {
@@ -261,11 +285,11 @@ function parseRss(xml, limit) {
       blk.match(/<description[^>]*>([\s\S]*?)<\/description>/i) ||
       blk.match(/<content:encoded[^>]*>([\s\S]*?)<\/content:encoded>/i) ||
       blk.match(/<summary[^>]*>([\s\S]*?)<\/summary>/i);
-    let summary = descRaw ? stripHtml(descRaw[1]) : "";
+    let summary = descRaw ? summaryBlocks(descRaw[1], title) : "";
     // 栏目导语/引流话术里没有事实, 置空后上层会跳过整条(不发只剩空壳标题的帖)
     if (isPromoSummary(summary)) summary = "";
-    // Google News 等会把标题包进 description 的 <a> 里, 摘要会等于标题, 去重避免重复
-    if (summary && normalizeText(summary).includes(normalizeText(title))) summary = "";
+    // 纯标题壳(Google News 把标题包进 <a>)已在 summaryBlocks 里逐块丢掉, 结果为空同样跳过;
+    // 不再用 includes(title) 整段置空, 否则会连正文一起丢。
     summary = summary.slice(0, 240);
     let ts = 0;
     const pd = blk.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/i) ||
