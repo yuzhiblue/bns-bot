@@ -27,53 +27,6 @@
     "windowMinutes": 30,
     "volSpikeMultiple": 2
   },
-  "fundingRate": {
-    "enabled": false,
-    "_disabledReason": "GitHub Actions 出口被币安合约接口地域封锁(fapi.binance.com 返回 451), data-api.binance.vision 不提供 fapi 路径(404); 云端无法启用, 需自配未被封锁的代理 baseUrl",
-    "symbols": [
-      "BTCUSDT",
-      "ETHUSDT",
-      "SOLUSDT",
-      "ZECUSDT",
-      "XRPUSDT",
-      "NEARUSDT",
-      "BNBUSDT",
-      "PEPEUSDT",
-      "UNIUSDT",
-      "SUIUSDT",
-      "DOGEUSDT",
-      "HYPEUSDT",
-      "ENAUSDT",
-      "TRUMPUSDT",
-      "TRXUSDT",
-      "LINKUSDT"
-    ],
-    "absThreshold": 0.05,
-    "checkEveryHours": 1
-  },
-  "whale": {
-    "enabled": false,
-    "_disabledReason": "依赖币安合约 futures/data 接口, 云端出口被地域封锁且无镜像; 需自配代理 baseUrl 才能启用",
-    "symbols": [
-      "BTCUSDT",
-      "ETHUSDT",
-      "SOLUSDT",
-      "ZECUSDT",
-      "XRPUSDT",
-      "NEARUSDT",
-      "BNBUSDT",
-      "PEPEUSDT",
-      "UNIUSDT",
-      "SUIUSDT",
-      "DOGEUSDT",
-      "HYPEUSDT",
-      "ENAUSDT",
-      "TRUMPUSDT",
-      "TRXUSDT",
-      "LINKUSDT"
-    ],
-    "minThresholdUsd": 5000000
-  },
   "newCoin": {
     "enabled": true,
     "checkEveryMinutes": 30

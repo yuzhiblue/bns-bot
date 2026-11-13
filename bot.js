@@ -168,77 +168,6 @@ async function fetchNewCoins(cfg, state) {
   }
 }
 
-async function fetchFundingRate(cfg) {
-  if (!cfg.fundingRate?.enabled) return [];
-  // 合约接口没有无地域限制的镜像, 默认禁用; 只有 config 里显式配了可用
-  // baseUrl 才请求, 避免每轮刷一屏 451。
-  const base = cfg.fundingRate.baseUrl;
-  if (!base) return [];
-  const { symbols, absThreshold } = cfg.fundingRate;
-  const out = [];
-  await Promise.all(
-    symbols.map(async (sym) => {
-      try {
-        const d = await fetchJson(`${base}/fapi/v1/premiumIndex?symbol=${sym}`);
-        const rate = parseFloat(d.lastFundingRate ?? 0);
-        const absPct = Math.abs(rate) * 100;
-        if (absPct >= absThreshold) {
-          out.push({
-            id: `funding_${sym}_${new Date().toISOString().slice(0, 10)}_${rate > 0 ? "up" : "down"}`,
-            kind: "fundingRate",
-            symbol: sym,
-            baseSymbol: sym.replace("USDT", ""),
-            ratePct: rate * 100,
-            markPrice: parseFloat(d.markPrice ?? 0),
-            ts: Date.now(),
-          });
-          log(`  资金费率 ${sym}: ${rate.toFixed(4)} (${absPct.toFixed(2)}%) 触发`);
-        } else {
-          log(`  资金费率 ${sym}: ${rate.toFixed(4)} 未触发`);
-        }
-      } catch (e) {
-        log(`  资金费率 ${sym} 拉取失败: ${e.message}`);
-      }
-    })
-  );
-  return out;
-}
-
-async function fetchWhaleWatch(cfg) {
-  if (!cfg.whale?.enabled) return [];
-  // 同资金费率: 合约接口默认禁用, 需要时在 config 里配可用 baseUrl。
-  const base = cfg.whale.baseUrl;
-  if (!base) return [];
-  const { symbols } = cfg.whale;
-  const out = [];
-  await Promise.all(
-    symbols.map(async (sym) => {
-      try {
-        const d = await fetchJson(
-          `${base}/futures/data/topLongShortPositionRatio?symbol=${sym}&period=1h&limit=1`
-        );
-        if (!Array.isArray(d) || d.length === 0) return;
-        const latest = d[0];
-        const ratio = parseFloat(latest.longShortRatio ?? 1);
-        if (Math.abs(ratio - 1) >= 0.5) {
-          out.push({
-            id: `whale_${sym}_${new Date().toISOString().slice(0, 10)}`,
-            kind: "whale",
-            symbol: sym,
-            baseSymbol: sym.replace("USDT", ""),
-            ratio,
-            ts: Date.now(),
-          });
-          log(`  鲸鱼 ${sym}: 多空比 ${ratio} 异常`);
-        }
-      } catch (e) {
-        log(`  鲸鱼 ${sym} 拉取失败: ${e.message}`);
-      }
-    })
-  );
-  return out;
-}
-
 // ---------- 热门信源: CoinGecko 热搜 / 全市场涨跌榜 / RSS 资讯 / CryptoPanic ----------
 // 全部第三方、零 key(除 CryptoPanic 需免费 key); 失败一律 return [], 不影响其它素材。
 
@@ -461,63 +390,6 @@ function genNewCoinPost(m) {
   return lines.join("\n");
 }
 
-function genFundingPost(m) {
-  const coin = m.baseSymbol;
-  const up = m.ratePct > 0;
-  const annual = Math.abs(m.ratePct * 24 * 365).toFixed(0);
-  const payer = up ? "空头" : "多头";
-  // 按付费方选词库: 多头付费=多头拥挤, 空头付费=空头拥挤
-  const bucket = up ? TPL.fundingLong : TPL.fundingShort;
-  const opener = fill(pickFrom(bucket.openers, "opener"), {
-    coin, ratePct: m.ratePct.toFixed(3), annual, payer,
-  });
-  const closer = fill(pickFrom(bucket.closers, "closer"), {
-    coin, ratePct: m.ratePct.toFixed(3), annual, payer,
-  });
-
-  const lines = [];
-  lines.push(`📊 ${opener}`);
-  lines.push(`· 当期费率: ${m.ratePct.toFixed(3)}%`);
-  lines.push(`· 年化: ${annual}%`);
-  lines.push(`· 付费方: ${payer}`);
-  lines.push("");
-  lines.push(closer);
-  lines.push("");
-  lines.push(`$${coin} #资金费率`);
-  return lines.join("\n");
-}
-
-function genWhalePost(m) {
-  const coin = m.baseSymbol;
-  const long = m.ratio > 1;
-  // 按多空方向选词库, 保证开头/结尾方向一致
-  let openers, closers;
-  if (long) {
-    openers = TPL.whale.longOpeners;
-    closers = TPL.whale.longClosers;
-  } else {
-    openers = TPL.whale.shortOpeners;
-    closers = TPL.whale.shortClosers;
-  }
-  const side = long ? "多头" : "空头";
-  const opener = fill(pickFrom(openers, "opener"), {
-    coin, ratio: m.ratio, side,
-  });
-  const closer = fill(pickFrom(closers, "closer"), {
-    coin, ratio: m.ratio, side,
-  });
-
-  const lines = [];
-  lines.push(`🐋 ${opener}`);
-  lines.push(`· 当前多空比: ${m.ratio}`);
-  lines.push(`· ${long ? "多头持仓明显占优" : "空头持仓明显占优"}`);
-  lines.push("");
-  lines.push(closer);
-  lines.push("");
-  lines.push(`$${coin} #多空比`);
-  return lines.join("\n");
-}
-
 function genTrendingPost(m) {
   const lines = [];
   lines.push("🔥 24 小时热搜币种（大家都在看）");
@@ -585,12 +457,6 @@ function heatScore(m) {
     case "news":
       base = 58;
       break;
-    case "fundingRate":
-      base = 35 + Math.min(30, Math.abs(m.rate ?? 0) * 300);
-      break;
-    case "whale":
-      base = 35 + Math.min(30, Math.abs((m.ratio ?? 1) - 1) * 30);
-      break;
     default:
       base = 10;
   }
@@ -602,8 +468,6 @@ function buildPost(material, cfg) {
   switch (material.kind) {
     case "market": text = genMarketPost(material); break;
     case "newCoin": text = genNewCoinPost(material); break;
-    case "fundingRate": text = genFundingPost(material); break;
-    case "whale": text = genWhalePost(material); break;
     case "trending": text = genTrendingPost(material); break;
     case "movers": text = genMoversPost(material); break;
     case "news": text = genNewsPost(material); break;
@@ -976,19 +840,17 @@ async function runOnce() {
 
   // 2. 抓全部素材(并行拉)。所有抓取共享同一个 state 对象, 由本函数结尾统一落盘,
   //    避免并发写文件互相覆盖。公告走内置 HTTP 接口。
-  const [marketMoves, newCoins, funding, whales, trending, movers, newsRss] =
+  const [marketMoves, newCoins, trending, movers, newsRss] =
     await Promise.all([
       fetchMarketMove(config),
       fetchNewCoins(config, state),
-      fetchFundingRate(config),
-      fetchWhaleWatch(config),
       fetchTrending(config, state),
       fetchMovers(config, state),
       fetchRssNews(config, state),
     ]);
 
   const candidates = [
-    ...marketMoves, ...newCoins, ...funding, ...whales,
+    ...marketMoves, ...newCoins,
     ...trending, ...movers, ...newsRss,
   ];
 
@@ -1013,7 +875,7 @@ async function runOnce() {
   // 3. 去重(素材 id 没发过)
   const seen = new Set(state.postedMaterialIds);
   const fresh = candidates.filter((c) => !seen.has(c.id));
-  log(`素材: 行情 ${marketMoves.length} / 新币 ${newCoins.length} / 费率 ${funding.length} / 鲸鱼 ${whales.length} / 热搜 ${trending.length} / 涨跌 ${movers.length} / 资讯 ${newsRss.length} = 共 ${fresh.length} 条未发`);
+  log(`素材: 行情 ${marketMoves.length} / 新币 ${newCoins.length} / 热搜 ${trending.length} / 涨跌 ${movers.length} / 资讯 ${newsRss.length} = 共 ${fresh.length} 条未发`);
 
   if (fresh.length === 0) {
     log("没有新素材, 本轮不发帖");
