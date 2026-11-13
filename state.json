@@ -23,11 +23,12 @@
     "news_erhdj9",
     "news_12inp92",
     "news_1ada2lw",
-    "news_1bsharu"
+    "news_1bsharu",
+    "news_1838xwu"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794593310455,
-  "todayPosted": 24,
+  "lastPostAt": 1794596905746,
+  "todayPosted": 25,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -173,6 +174,12 @@
       "kind": "news",
       "at": 1794593310455,
       "text": "特朗普首次民主党提名的 SEC 和 CFTC 可能会重塑加密货币监管机构\n\n两党的名单——两名共和党人和两名民主党人，是特朗普在这两个机构中的第一个民主党人选——将补充自《澄清法案》崩溃以来推动加密货币政策的委员会。\n\n这类变化的关键变量是落地：有没有明确规则、适用范围和生效时间。细节出来前，影响范围很难估，我也不据此推断方向。\n\n单条报道能提供的信息有限，多看几方口径更稳妥。\n\n看到这类标题，你"
+    },
+    {
+      "id": 387914570279851,
+      "kind": "news",
+      "at": 1794596905746,
+      "text": "Anthropic IPO 狂潮加剧市场不安，比特币暴跌至 68,000 美元\n\n分析师认为英伟达和比特币的下跌之间没有直接联系，而是指出投资者资金流入 Anthropic 以及更广泛的避险举措。\n\n把一条价格变化放进更长的时间窗看，才知道是噪音还是结构变化。我会继续看后续几天的资金流与成交量，当下不下判断。\n\n标题给的是结论，正文里的条件才值得细看。\n\n这类报道你一般会另外查哪些背景？\n\n#加密"
     }
   ],
   "newCoinIds": [],
@@ -204,10 +211,10 @@
   ],
   "timelineKey": "2026-11-14",
   "timelineIdx": 0,
-  "timelineSentCount": 3,
+  "timelineSentCount": 4,
   "timelineDay": "2026-11-14",
-  "lastRunAt": 1794593298742,
-  "lastFetchAt": 1794593298742,
+  "lastRunAt": 1794596898468,
+  "lastFetchAt": 1794596898468,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
