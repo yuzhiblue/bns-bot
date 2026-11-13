@@ -18,11 +18,12 @@
     "news_rsz88i",
     "news_rphv0b",
     "news_1p4uuc5",
-    "news_1w6pelg"
+    "news_1w6pelg",
+    "news_r758zv"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794575310593,
-  "todayPosted": 19,
+  "lastPostAt": 1794578933853,
+  "todayPosted": 20,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -138,6 +139,12 @@
       "kind": "news",
       "at": 1794575310593,
       "text": "第三季度营收转负后中本聪股价盘前下跌 6%\n\n比特币期权损失 580 万美元，导致营业收入低于零，比特币价格上涨将净利润提升至 8550 万美元。\n\n这类波动更像一次脉冲还是一段趋势，要看后续资金与成交能不能延续。只有单日数据时不急于下结论，我也不据此给方向。\n\n单条报道能提供的信息有限，多看几方口径更稳妥。\n\n这类报道你一般会另外查哪些背景？\n\n#加密资讯"
+    },
+    {
+      "id": 387840957470533,
+      "kind": "news",
+      "at": 1794578933853,
+      "text": "在 FATF 审查之前，加密货币洗钱对英国构成“重大风险”：RUSI\n\n评估人员将于 2027 年 6 月进行访问，距离完整的加密货币规则生效还有几个月，这将让英国证明其可以打击加密货币洗钱。\n\n这类资讯缺少可核对的后续指标，我会先看有没有独立数据或第二方确认，而不是急着给结论。\n\n单条报道能提供的信息有限，多看几方口径更稳妥。\n\n这类报道你一般会另外查哪些背景？\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -169,10 +176,10 @@
   ],
   "timelineKey": "2026-11-13",
   "timelineIdx": 0,
-  "timelineSentCount": 12,
+  "timelineSentCount": 13,
   "timelineDay": "2026-11-13",
-  "lastRunAt": 1794575297486,
-  "lastFetchAt": 1794575297486,
+  "lastRunAt": 1794578927496,
+  "lastFetchAt": 1794578927496,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
