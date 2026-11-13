@@ -12,11 +12,12 @@
     "news_vb4fgf",
     "news_nc8jc2",
     "news_90cmbz",
-    "news_1gkgtjr"
+    "news_1gkgtjr",
+    "news_5sm9jv"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794553705421,
-  "todayPosted": 13,
+  "lastPostAt": 1794557305108,
+  "todayPosted": 14,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -96,6 +97,12 @@
       "kind": "news",
       "at": 1794553705421,
       "text": "这是今天加密货币领域发生的事情\n\n需要知道今天加密货币领域发生了什么吗？以下是影响比特币价格、区块链、DeFi、Web3 和加密货币监管的每日趋势和事件的最新新闻。\n\n消息面仅供参考，操作看自己的判断。\n\n#加密资讯"
+    },
+    {
+      "id": 387752366070757,
+      "kind": "news",
+      "at": 1794557305108,
+      "text": "以太坊财务公司 BTCS 亏本出售以太币，以保持 6400 万美元的 Aave 贷款健康\n\n这家在纳斯达克上市的公司有 46,676 ETH 来支持其借款，如果 ETH 跌至 1,700 美元左右，这笔贷款可能会被清算。\n\n这条属于消息面驱动。文中提到的 1,700美元只是当下快照。值得跟踪的是后续成交量能否放大、以及这则消息在未来 24–48 小时是否被数据验证；单日消息本身很难改写趋势，我不据"
     }
   ],
   "newCoinIds": [],
@@ -127,10 +134,10 @@
   ],
   "timelineKey": "2026-11-13",
   "timelineIdx": 0,
-  "timelineSentCount": 6,
+  "timelineSentCount": 7,
   "timelineDay": "2026-11-13",
-  "lastRunAt": 1794553697746,
-  "lastFetchAt": 1794553697746,
+  "lastRunAt": 1794557298209,
+  "lastFetchAt": 1794557298209,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
