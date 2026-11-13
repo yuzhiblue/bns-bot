@@ -16,11 +16,12 @@
     "news_5sm9jv",
     "news_1m1nhmx",
     "news_rsz88i",
-    "news_rphv0b"
+    "news_rphv0b",
+    "news_1p4uuc5"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794568126006,
-  "todayPosted": 17,
+  "lastPostAt": 1794571707613,
+  "todayPosted": 18,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -124,6 +125,12 @@
       "kind": "news",
       "at": 1794568126006,
       "text": "国会因向中国出口芯片问题传唤前英伟达首席执行官黄仁勋和卢特尼克\n\n随着审查转向商务部对芯片出口的监管，众议院小组要求在 12 月份采访黄仁勋和 Nvidia 的高级律师。\n\n监管与人事变化的影响通常不在公布当天，而在后续的执行细则和落地节奏。我会盯配套文件与时间表，不把表态直接换算成行情。\n\n标题给的是结论，正文里的条件才值得细看。\n\n你判断一条资讯值不值得跟，通常看哪一点？\n\n#加密资讯"
+    },
+    {
+      "id": 387811358814958,
+      "kind": "news",
+      "at": 1794571707613,
+      "text": "数字信用：比较六种比特币优先股\n\n用于评估数字信贷的简单的四部分投资者框架。\n\n目前能确认的只有报道里给出的这些事实，还不足以判断影响范围。我会等后续数据或官方口径佐证，在此之前不做方向判断。\n\n事实和推测分开看，别让一条报道替代自己的判断。\n\n你的观察清单里会放哪些指标？\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -155,10 +162,10 @@
   ],
   "timelineKey": "2026-11-13",
   "timelineIdx": 0,
-  "timelineSentCount": 10,
+  "timelineSentCount": 11,
   "timelineDay": "2026-11-13",
-  "lastRunAt": 1794568119584,
-  "lastFetchAt": 1794568119584,
+  "lastRunAt": 1794571700445,
+  "lastFetchAt": 1794571700445,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
