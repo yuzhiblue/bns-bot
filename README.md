@@ -1,6 +1,6 @@
 # bns-bot — 币安广场自动发帖（GitHub Actions 纯云端）
 
-抓取币安行情异动 / 新币 / 情绪等素材 → 生成带 `$币种` 的帖子 → 调广场 OpenAPI 发布。
+抓取行情异动 / 新币 / 热搜榜 / 涨跌榜 / 资讯 RSS → 生成带 `$币种` 的帖子 → 调广场 OpenAPI 发布。
 **只跑云端**: CNB 定时流水线每小时 POST `workflow_dispatch`, 由 GitHub Actions
 唤起一个短进程, 跑一轮就退出; 没有常驻服务、没有长连接, 本机不留启动脚本和计划任务。
 **执行端留在 GitHub Actions**（CNB runner 实测连不上发帖域名, 见「外部定时器」一节）;
@@ -187,8 +187,8 @@ GitHub 自带的 `schedule` 是 best-effort 投递: 2026-11-11 曾连续 9 小�
 > **执行端仍在 GitHub Actions**: 2026-11-12 在 CNB runner 实测, `www.binance.com/bapi`
 > 五次连测全部 `UND_ERR_CONNECT_TIMEOUT`(约 10.49s, 耗时高度一致), `binance.com` 与
 > `api.binance.com` 也超时; 而 `api.github.com` 5/5 200(median 47ms)。
-> `data-api.binance.vision` 可达, 但它只是现货行情镜像, 不能替代发帖 / 公告 BAPI。
-> 发帖与公告抓取都在 `www.binance.com` 上, 所以 CNB **只能当触发器, 不能跑 bot**。
+> `data-api.binance.vision` 可达, 但它只是现货行情镜像, 不能替代发帖 BAPI。
+> 发帖接口在 `www.binance.com` 上, 所以 CNB **只能当触发器, 不能跑 bot**。
 
 ### 1. 创建 fine-grained PAT
 
@@ -350,20 +350,14 @@ Token name 填 `bns-bot-cron-job-org`, 其余相同（只勾 `bns-bot`、`Action
   同一 slot 不重复抓、连续没素材也会按周期继续尝试。接口调用量约从 96 次/天降到
   `maxPerDay` 次/天（当前 15 次/天, 币种池刷新另加 1 次/天）; 代价是两次 slot 之间发生的异动要等到下个 slot 才看。
 - **选帖**: 每轮最多发 1 条。多条素材按热度评分取最高的一条（行情看涨跌幅与量比、
-  新币看上线新鲜度、公告看发布时间、情绪看指数极端程度, 全部叠加新鲜度加权）。
+  新币看上线新鲜度, 热搜榜 / 涨跌榜 / 资讯按类型给基础分, 全部叠加新鲜度加权）。
   日志会打印各候选分数; 没有素材就不发。
 - `state.json` 只在真正抓取过的轮次被 commit 回仓库, 用于持久化去重记录、当日发帖数、
   时间线进度、`lastFetchAt` 和当日币种池; 每天十几次 push 也足以保持仓库活动,
   避免公开仓库「60 天无活动自动禁用定时 workflow」。
 - `TZ=Asia/Shanghai` 由 workflow 设置, 日志和「今天」的判定与本地一致。
-- **无常驻进程、无长连接**: 公告走内置 HTTP 接口
-  `www.binance.com/bapi/composite/v1/public/cms/article/list/query`（公开、无需 Key）:
-  取 12 小时内的新公告, 首次运行把现有公告记为基线, 避免一次性补发旧公告。
-  **该列表接口只返回标题、不返回正文**, 所以无正文的公告会被直接跳过, 不会生成
-  「开场白 + 英文标题 + 一句万能话术」的空壳帖; 日志会打印
-  `公告: N 条新公告无正文, 跳过(不发空壳帖)`。想恢复公告帖, 需让 `announcement.apiUrl`
-  指向能返回正文 / 摘要的接口; 接口失效或结构变了会自动降级, 不影响其他素材。
-  想连抓都不抓, 把 `config.json` 的 `announcement.enabled` 改成 `false`。
+- **无常驻进程、无长连接**: 每轮一次性拉取所需接口与 RSS, 跑完当轮即退出;
+  单个信源失败会自动降级为空, 不影响其他素材。
 
 ### 监控币种池自动刷新
 
@@ -389,22 +383,22 @@ bot 在**每天第一次到点轮次**拉一次全所 `ticker/24hr`, 按 24h 成
 
 GitHub runner 的出口 IP 在美国, `api.binance.com` 与 `fapi.binance.com` 全部返回
 **HTTP 451**。各抓取函数把失败 `catch` 掉了, 所以**所有接口 451 时 job 依然是绿色**
-（假绿）, 只会刷「拉取失败: HTTP 451」, 靠 `alternative.me` 的恐惧贪婪指数撑着。
+（假绿）, 当时只会刷「拉取失败: HTTP 451」, 彼时靠 `alternative.me` 的恐惧贪婪指数撑发帖量。
 
 `Actions → probe-binance → Run workflow` 是只读探针（不发帖、不读 Secret、不改 `state.json`）。
-实测结果与代码里的处理:
+实测结果与当时的处理:
 
 | 域名 | 状态 | 处理 |
 |---|---|---|
 | `api.binance.com`（K线 / exchangeInfo） | 451 | 统一改用官方镜像 `data-api.binance.vision`（探针实测 200） |
-| `fapi.binance.com`（资金费率 / 多空比） | 451 | 没有等价镜像（`/fapi/...` 在 vision 上 404）, **默认禁用** |
+| `fapi.binance.com`（资金费率 / 多空比） | 451 | 没有等价镜像（`/fapi/...` 在 vision 上 404）; 这两个素材源现已移除 |
 | `www.binance.com/bapi`（发帖） | 400 + JSON 业务错误 | ✅ 没被地区封锁, 可以发帖 |
 | OKX / Bybit | ERR / 403 | 也不通, 不作备选 |
 
-现货行情（K线 / exchangeInfo / ticker）已统一走 `data-api.binance.vision`;
-`fundingRate` / `whale` 只有在 config 里显式填了 `baseUrl` 才会请求, 留空（默认）即静默跳过,
-不再每轮刷屏 451。**实际会有内容的素材源**: 行情异动、新币、恐惧贪婪;
-公告源仍抓取, 但当前列表接口无正文, 不会据此发帖。
+以上是 2026-11-11 的历史排查结论。现货行情（K线 / exchangeInfo / ticker）
+现已统一走 `data-api.binance.vision`; 资金费率 / 多空比 / 恐惧贪婪 / 公告
+四个素材源此后已全部移除（代码与配置中均无对应项）。
+**当前实际会有内容的素材源**: 行情异动、新币、热搜榜、涨跌榜、资讯 RSS。
 
 **发帖链路已验证通过**: 2026-11-11 用 `test_post` 跑 `node bot.js --test` 真发成功
 （`id=386976997232534`）, 说明 OpenAPI Key 有效、发帖域名没被封、无设备风控。

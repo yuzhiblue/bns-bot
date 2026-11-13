@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * bns-bot — 币安广场自动发帖机器人（GitHub Actions 纯云端单次模式）
- * 抓取行情异动 + 币安公告 → 生成带 $币种 的帖子 → 调官方 OpenAPI 发布
+ * 抓取行情异动 / 新币 / 热搜榜 / 涨跌榜 / 资讯 RSS → 生成带 $币种 的帖子 → 调官方 OpenAPI 发布
  *
  * 每次运行只跑一轮就退出, 由 workflow 的 cron 定时唤起; 状态靠 state.json 持久化,
  * 配置: 仓库 config.json 为基准(不含 Key), 云端由 workflow 把 Secret 里的 openApiKey 注入;
@@ -46,7 +46,6 @@ function loadState() {
   } catch {
     return {
       postedMaterialIds: [],   // 已发过的素材 id
-      lastAnnouncementIds: [], // 上次见过的公告 id
       lastMarketSnap: {},      // symbol -> { price, ts }
       lastPostAt: 0,
       todayPosted: 0,
@@ -138,7 +137,7 @@ async function fetchMarketMove(cfg) {
   return moves;
 }
 
-// ---------- 新信源: 新币 / 资金费率 / 鲸鱼 / 恐惧贪婪 ----------
+// ---------- 新币 ----------
 
 async function fetchNewCoins(cfg, state) {
   if (!cfg.newCoin?.enabled) return [];
@@ -412,9 +411,6 @@ async function fetchRssNews(cfg, state) {
   return out;
 }
 
-// ---------- 公告(HTTP) ----------
-// 云端是短进程, 不挂长连接; 公告接口结构不固定, 宽松解析,
-// 失败或结构不认识就降级为空, 不影响其他素材。
 // ---------- 帖子生成(从 templates.js 读词库) ----------
 
 const CASHTAG = (sym) => `$${sym}`;
@@ -575,7 +571,7 @@ function buildPost(material, cfg) {
     default: return null;
   }
 
-  // 追加话题: 各 gen*Post 末行自带一个固定标签(如 #币安公告 / #币安新币),
+  // 追加话题: 各 gen*Post 末行自带一个固定标签(如 #行情异动 / #加密资讯),
   // 配置里的 post.hashtags 要接到同一行, 全部用空格分隔, 超宽交给客户端自动换行。
   const existing = new Set(text.match(/#[^\s#]+/g) ?? []);
   const extra = (cfg.post?.hashtags ?? []).map((t) => `#${t}`).filter((t) => !existing.has(t));
@@ -940,7 +936,7 @@ async function runOnce() {
   await refreshSymbolPoolIfNeeded(state);
 
   // 2. 抓全部素材(并行拉)。所有抓取共享同一个 state 对象, 由本函数结尾统一落盘,
-  //    避免并发写文件互相覆盖。公告走内置 HTTP 接口。
+  //    避免并发写文件互相覆盖。
   const [marketMoves, newCoins, trending, movers, newsRss] =
     await Promise.all([
       fetchMarketMove(config),
