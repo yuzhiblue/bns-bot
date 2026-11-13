@@ -311,12 +311,63 @@ async function fetchMovers(cfg, state) {
   }
 }
 
+// 竞品交易所关键词: 币安广场社区准则禁止"链接/推广其他交易平台", 保守过滤含竞品名的资讯帖
+const COMPETITOR_NAMES = [
+  "okx", "欧易", "okex",
+  "huobi", "火币", "htx",
+  "bybit", "币必",
+  "gate.io", "gateio", "芝麻开门",
+  "bitget",
+  "upbit",
+  "coinbase",
+  "kraken",
+  "kucoin", "库币",
+  "mexc", "抹茶", "mxc",
+  "bingx",
+  "phemex",
+  "deribit",
+  "crypto.com", "gemini", "bitfinex", "bitstamp",
+];
+const COMPETITOR_DOMAINS = [
+  "okx.com", "huobi.com", "htx.com", "bybit.com", "gate.io", "bitget.com",
+  "upbit.com", "coinbase.com", "kraken.com", "kucoin.com", "mexc.com",
+  "bingx.com", "phemex.com", "deribit.com", "crypto.com", "gemini.com",
+  "bitfinex.com", "bitstamp.com",
+];
+function mentionsCompetitor(text, link) {
+  const t = (text || "").toLowerCase();
+  for (const c of COMPETITOR_NAMES) if (t.includes(c)) return true;
+  if (link) {
+    try {
+      const host = new URL(link).hostname.toLowerCase();
+      for (const d of COMPETITOR_DOMAINS) if (host === d || host.endsWith("." + d)) return true;
+    } catch (e) {}
+  }
+  return false;
+}
+// 免费 Google 翻译端点(无需 key); 失败回退原文
+async function translateText(text, to = "zh-CN") {
+  const q = (text || "").trim();
+  if (!q) return "";
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${to}&dt=t&q=${encodeURIComponent(q)}`;
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 8000);
+    const r = await fetch(url, { signal: ctrl.signal, headers: { "User-Agent": "Mozilla/5.0" } });
+    clearTimeout(t);
+    if (!r.ok) return text;
+    const j = await r.json();
+    const zh = (j[0] || []).map((x) => x[0]).join("");
+    return zh || text;
+  } catch (e) { return text; }
+}
+
 async function fetchRssNews(cfg, state) {
   if (!cfg.news?.enabled) return [];
   const feeds = cfg.news?.feeds ?? [];
   if (!feeds.length) return [];
   const limit = cfg.news?.perFeed ?? 2;
-  const out = [];
+  const raw = [];
   await Promise.all(feeds.map(async (feed) => {
     try {
       const ctrl = new AbortController();
@@ -331,17 +382,33 @@ async function fetchRssNews(cfg, state) {
       const xml = await res.text();
       for (const it of parseRss(xml, limit)) {
         const link = it.link || "";
-        // 允许只有标题的信源(如 Google News 中文标题); 标题本身已是有效内容
-        out.push({
-          id: `news_${hashStr(normalizeText(it.title || link))}`,
-          kind: "news", source: feed.name, title: it.title, link, image: it.image, summary: it.summary, ts: it.ts,
-        });
+        const text = `${it.title || ""} ${it.summary || ""}`;
+        // 币安广场禁止链接/推广其他交易平台, 保守过滤含竞品交易所名的条目
+        if (mentionsCompetitor(text, link)) { log(`  过滤竞品帖: ${(it.title || "").slice(0, 30)}`); continue; }
+        if (!it.summary) continue; // 无正文摘要的空壳帖不发
+        raw.push({ source: feed.name, title: it.title, link, image: it.image, summary: it.summary, ts: it.ts });
       }
     } catch (e) {
       log(`  RSS ${feed.name}: 拉取失败(${e.message})`);
     }
   }));
-  log(`  资讯: ${out.length} 条候选(${feeds.map((f) => f.name).join("/")})`);
+  // 英文媒体自带摘要, 统一翻译为中文; 失败(回退英文)则该条不发英文帖
+  const [zhTitles, zhSummaries] = await Promise.all([
+    Promise.all(raw.map((r) => translateText(r.title))),
+    Promise.all(raw.map((r) => translateText(r.summary))),
+  ]);
+  const out = [];
+  for (let i = 0; i < raw.length; i++) {
+    const zhT = (zhTitles[i] || "").trim();
+    const zhS = (zhSummaries[i] || "").trim();
+    if (!zhT || zhT === (raw[i].title || "").trim()) continue; // 翻译失败(仍是英文)则跳过
+    out.push({
+      id: `news_${hashStr(normalizeText(zhT))}`,
+      kind: "news", source: raw[i].source, title: zhT, link: raw[i].link,
+      image: raw[i].image, summary: zhS, ts: raw[i].ts,
+    });
+  }
+  log(`  资讯: ${out.length} 条候选(中文, ${feeds.map((f) => f.name).join("/")})`);
   return out;
 }
 
