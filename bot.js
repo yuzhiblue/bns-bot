@@ -33,10 +33,6 @@ const STATE_FILE = path.join(ROOT, "state.json");
 // 注意: 该镜像只有现货接口, 没有 fapi 合约接口(已探测返回 404)。
 const BINANCE_API = "https://data-api.binance.vision";
 const BAPI = "https://www.binance.com/bapi";
-// 币安公告中心公开 CMS 接口(GET, 无需 Key): data.catalogs[].articles[]
-// 每条含 id / code / title / releaseDate(毫秒时间戳), 列表不带正文。
-const ANNOUNCEMENT_URL =
-  "https://www.binance.com/bapi/composite/v1/public/cms/article/list/query?type=1&pageNo=1&pageSize=5";
 
 // ---------- 工具 ----------
 function log(...args) {
@@ -243,28 +239,6 @@ async function fetchWhaleWatch(cfg) {
   return out;
 }
 
-async function fetchFearGreed(cfg, state) {
-  if (!cfg.sentiment?.enabled) return [];
-  try {
-    const j = await fetchJson("https://api.alternative.me/fng/?limit=1", {}, 15000);
-    const d = j?.data?.[0];
-    if (!d) return [];
-    const val = parseInt(d.value, 10);
-    const cls = d.value_classification ?? "";
-    const today = todayStrTZ(cfg.schedule?.timezone);
-    if ((state.sentimentDates ?? []).includes(today)) {
-      log(`  恐惧贪婪: 今天已发过, 跳过`);
-      return [];
-    }
-    state.sentimentDates = [...(state.sentimentDates ?? []), today].slice(-30);
-    log(`  恐惧贪婪: ${val} (${cls})`);
-    return [{ id: `fng_${today}`, kind: "fearGreed", value: val, cls, ts: Date.now() }];
-  } catch (e) {
-    log(`  恐惧贪婪拉取失败: ${e.message}`);
-    return [];
-  }
-}
-
 // ---------- 热门信源: CoinGecko 热搜 / 全市场涨跌榜 / RSS 资讯 / CryptoPanic ----------
 // 全部第三方、零 key(除 CryptoPanic 需免费 key); 失败一律 return [], 不影响其它素材。
 
@@ -423,90 +397,6 @@ async function fetchRssNews(cfg, state) {
 // ---------- 公告(HTTP) ----------
 // 云端是短进程, 不挂长连接; 公告接口结构不固定, 宽松解析,
 // 失败或结构不认识就降级为空, 不影响其他素材。
-function collectArticleArrays(node, out, depth = 0) {
-  if (!node || depth > 6 || out.length >= 20) return;
-  if (Array.isArray(node)) {
-    const looksLikeArticles = node.some(
-      (x) => x && typeof x === "object" && ("title" in x || "body" in x || "content" in x)
-    );
-    if (looksLikeArticles) out.push(node);
-    else for (const item of node.slice(0, 20)) collectArticleArrays(item, out, depth + 1);
-    return;
-  }
-  if (typeof node === "object") {
-    for (const v of Object.values(node)) collectArticleArrays(v, out, depth + 1);
-  }
-}
-
-async function fetchAnnouncementsHttp(cfg, state) {
-  if (!cfg.announcement?.enabled) return [];
-  // apiUrl 留空就用内置官方接口; 填了则允许自定义(便于接口改版时换地址)
-  const url = cfg.announcement.apiUrl || ANNOUNCEMENT_URL;
-  const maxAgeMs = (cfg.announcement?.maxAgeHours ?? 12) * 3600000;
-  const headers = {
-    "User-Agent": "Mozilla/5.0 (compatible; bns-bot/1.0)",
-    Origin: "https://www.binance.com",
-    Referer: "https://www.binance.com/en/support/announcement",
-  };
-  try {
-    const json = await fetchJson(url, { headers }, 10000);
-    const groups = [];
-    collectArticleArrays(json, groups);
-    const all = groups.flat();
-    if (!all.length) {
-      log("  公告: 接口没返回可识别的公告(结构可能变了), 本轮跳过");
-      return [];
-    }
-    // 同一公告可能出现在多个栏目, 按 id 去重后按发布时间倒序, 只看最新的一批
-    const uniq = [...new Map(
-      all.map((a) => [String(a.id ?? a.code ?? a.title ?? ""), a])
-    ).values()];
-    uniq.sort(
-      (a, b) => Number(b.releaseDate ?? b.publishDate ?? 0) - Number(a.releaseDate ?? a.publishDate ?? 0)
-    );
-    const articles = uniq.slice(0, 20);
-
-    const seen = new Set((state.lastAnnouncementIds ?? []).map(String));
-    const ids = articles.map((a) => String(a.id ?? a.code ?? a.title ?? ""));
-    state.lastAnnouncementIds = [
-      ...new Set([...(state.lastAnnouncementIds ?? []), ...ids.filter(Boolean)]),
-    ].slice(-200);
-    if (seen.size === 0) {
-      log(`  公告: 首次运行, 把 ${ids.length} 条现有公告记为基线, 之后只发新公告`);
-      return [];
-    }
-    const out = [];
-    let noBody = 0;
-    for (let i = 0; i < articles.length; i++) {
-      if (!ids[i] || seen.has(ids[i])) continue;
-      const a = articles[i];
-      const tsRaw = a.releaseDate ?? a.publishDate ?? a.releaseTime ?? a.publishTime ?? a.ctime;
-      const ts = typeof tsRaw === "number" ? tsRaw : (tsRaw ? Date.parse(tsRaw) : 0);
-      // 只发时效内的新公告, 时间戳缺失/解析失败的宁可不发
-      if (!Number.isFinite(ts) || ts <= 0 || Date.now() - ts > maxAgeMs) continue;
-      // 内置 CMS 列表接口只给标题、不给正文; 没有正文时模板只能拼出
-      // 「随机开场白 + 英文标题 + 随机话术」的空壳帖, 读起来不知所云, 不如不发。
-      // 想恢复公告帖: 让 announcement.apiUrl 指向能返回正文/摘要的接口即可。
-      const body = String(a.body ?? a.content ?? a.summary ?? "")
-        .replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
-      if (!body) { noBody++; continue; }
-      out.push({
-        id: `ann_${ids[i]}`,
-        kind: "announcement",
-        title: String(a.title ?? ""),
-        body,
-        ts,
-      });
-    }
-    if (out.length) log(`  公告: 发现 ${out.length} 条新公告(${maxAgeMs / 3600000}h 内)`);
-    else if (noBody) log(`  公告: ${noBody} 条新公告无正文, 跳过(不发空壳帖)`);
-    return out;
-  } catch (e) {
-    log(`  公告: HTTP 拉取失败(${e.message}), 本轮跳过`);
-    return [];
-  }
-}
-
 // ---------- 帖子生成(从 templates.js 读词库) ----------
 
 const CASHTAG = (sym) => `$${sym}`;
@@ -553,23 +443,6 @@ function genMarketPost(m) {
   lines.push(closer);
   lines.push("");
   lines.push(`${coin} #行情异动`);
-  return lines.join("\n");
-}
-
-function genAnnouncementPost(a) {
-  const opener = pickFrom(TPL.announcement.openers, "opener");
-  const closer = pickFrom(TPL.announcement.closers, "closer");
-
-  const lines = [];
-  lines.push(`📢 ${opener}`);
-  lines.push("");
-  lines.push(a.title);
-  const body = (a.body ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
-  if (body) lines.push(body.slice(0, 200) + (body.length > 200 ? "…" : ""));
-  lines.push("");
-  lines.push(closer);
-  lines.push("");
-  lines.push("#币安公告");
   return lines.join("\n");
 }
 
@@ -645,27 +518,6 @@ function genWhalePost(m) {
   return lines.join("\n");
 }
 
-function genFearGreedPost(m) {
-  const val = m.value;
-  let cls = m.cls;
-  if (val >= 75) cls = "极度贪婪";
-  else if (val >= 55) cls = "贪婪";
-  else if (val <= 25) cls = "极度恐惧";
-  else if (val <= 45) cls = "恐惧";
-  else cls = "中性";
-
-  const opener = fill(pickFrom(TPL.fearGreed.openers, "opener"), { val, cls });
-  const closer = fill(pickFrom(TPL.fearGreed.closers, "closer"), { val, cls });
-
-  const lines = [];
-  lines.push(`🌡️ ${opener}`);
-  lines.push("");
-  lines.push(closer);
-  lines.push("");
-  lines.push("#恐惧贪婪指数");
-  return lines.join("\n");
-}
-
 function genTrendingPost(m) {
   const lines = [];
   lines.push("🔥 24 小时热搜币种（大家都在看）");
@@ -724,12 +576,6 @@ function heatScore(m) {
     case "newCoin":
       base = 90 - Math.min(30, Math.max(0, (Date.now() - (m.onboardDate ?? Date.now())) / 86400000) * 4);
       break;
-    case "announcement":
-      base = 70; // 其余差异由新鲜度区分
-      break;
-    case "fearGreed":
-      base = 30 + Math.min(30, Math.abs((m.value ?? 50) - 50) * 0.6);
-      break;
     case "trending":
       base = 52;
       break;
@@ -755,11 +601,9 @@ function buildPost(material, cfg) {
   let text;
   switch (material.kind) {
     case "market": text = genMarketPost(material); break;
-    case "announcement": text = genAnnouncementPost(material); break;
     case "newCoin": text = genNewCoinPost(material); break;
     case "fundingRate": text = genFundingPost(material); break;
     case "whale": text = genWhalePost(material); break;
-    case "fearGreed": text = genFearGreedPost(material); break;
     case "trending": text = genTrendingPost(material); break;
     case "movers": text = genMoversPost(material); break;
     case "news": text = genNewsPost(material); break;
@@ -1132,21 +976,19 @@ async function runOnce() {
 
   // 2. 抓全部素材(并行拉)。所有抓取共享同一个 state 对象, 由本函数结尾统一落盘,
   //    避免并发写文件互相覆盖。公告走内置 HTTP 接口。
-  const [marketMoves, announcements, newCoins, funding, whales, fng, trending, movers, newsRss] =
+  const [marketMoves, newCoins, funding, whales, trending, movers, newsRss] =
     await Promise.all([
       fetchMarketMove(config),
-      fetchAnnouncementsHttp(config, state),
       fetchNewCoins(config, state),
       fetchFundingRate(config),
       fetchWhaleWatch(config),
-      fetchFearGreed(config, state),
       fetchTrending(config, state),
       fetchMovers(config, state),
       fetchRssNews(config, state),
     ]);
 
   const candidates = [
-    ...marketMoves, ...announcements, ...newCoins, ...funding, ...whales, ...fng,
+    ...marketMoves, ...newCoins, ...funding, ...whales,
     ...trending, ...movers, ...newsRss,
   ];
 
@@ -1171,7 +1013,7 @@ async function runOnce() {
   // 3. 去重(素材 id 没发过)
   const seen = new Set(state.postedMaterialIds);
   const fresh = candidates.filter((c) => !seen.has(c.id));
-  log(`素材: 行情 ${marketMoves.length} / 公告 ${announcements.length} / 新币 ${newCoins.length} / 费率 ${funding.length} / 鲸鱼 ${whales.length} / 情绪 ${fng.length} / 热搜 ${trending.length} / 涨跌 ${movers.length} / 资讯 ${newsRss.length} = 共 ${fresh.length} 条未发`);
+  log(`素材: 行情 ${marketMoves.length} / 新币 ${newCoins.length} / 费率 ${funding.length} / 鲸鱼 ${whales.length} / 热搜 ${trending.length} / 涨跌 ${movers.length} / 资讯 ${newsRss.length} = 共 ${fresh.length} 条未发`);
 
   if (fresh.length === 0) {
     log("没有新素材, 本轮不发帖");

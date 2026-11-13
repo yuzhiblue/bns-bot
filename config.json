@@ -27,11 +27,6 @@
     "windowMinutes": 30,
     "volSpikeMultiple": 2
   },
-  "announcement": {
-    "enabled": true,
-    "maxAgeHours": 12,
-    "locale": "en"
-  },
   "fundingRate": {
     "enabled": false,
     "_disabledReason": "GitHub Actions 出口被币安合约接口地域封锁(fapi.binance.com 返回 451), data-api.binance.vision 不提供 fapi 路径(404); 云端无法启用, 需自配未被封锁的代理 baseUrl",
@@ -78,11 +73,6 @@
       "LINKUSDT"
     ],
     "minThresholdUsd": 5000000
-  },
-  "sentiment": {
-    "enabled": true,
-    "source": "alternative.me",
-    "dailyPost": true
   },
   "newCoin": {
     "enabled": true,
