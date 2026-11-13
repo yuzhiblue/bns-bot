@@ -21,11 +21,12 @@
     "news_1w6pelg",
     "news_r758zv",
     "news_erhdj9",
-    "news_12inp92"
+    "news_12inp92",
+    "news_1ada2lw"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794586113101,
-  "todayPosted": 22,
+  "lastPostAt": 1794589705139,
+  "todayPosted": 23,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -159,6 +160,12 @@
       "kind": "news",
       "at": 1794586113101,
       "text": "随着 Anthropic 的重磅 IPO 临近，比特币将连续第六周下跌\n\n由于投资者权衡 Anthropic 的上市预期、英伟达的领导层变动以及美联储加息预期的上升，比特币今年下跌了 21%。\n\n这类借贷与持仓结构，风险往往集中在抵押品和触发线上。我会关注后续公告是否调整了相关条款，而不是只看当天的价格反应。\n\n标题给的是结论，正文里的条件才值得细看。\n\n你判断一条资讯值不值得跟，通常看哪一点？\n"
+    },
+    {
+      "id": 387885076564553,
+      "kind": "news",
+      "at": 1794589705139,
+      "text": "美国参议院银行委员会竞相就美国证券交易委员会的新提名举行听证会\n\n需要推进唐纳德·特朗普总统提名人的委员会迅速做出反应，确定美国证券交易委员会的人选，以便下周进行审查。\n\n这类变化的关键变量是落地：有没有明确规则、适用范围和生效时间。细节出来前，影响范围很难估，我也不据此推断方向。\n\n单条报道能提供的信息有限，多看几方口径更稳妥。\n\n你判断一条资讯值不值得跟，通常看哪一点？\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -190,10 +197,10 @@
   ],
   "timelineKey": "2026-11-14",
   "timelineIdx": 0,
-  "timelineSentCount": 1,
+  "timelineSentCount": 2,
   "timelineDay": "2026-11-14",
-  "lastRunAt": 1794586104973,
-  "lastFetchAt": 1794586104973,
+  "lastRunAt": 1794589697507,
+  "lastFetchAt": 1794589697507,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
