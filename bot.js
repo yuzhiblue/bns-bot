@@ -571,8 +571,9 @@ function buildPost(material, cfg) {
     default: return null;
   }
 
-  // 追加话题: 各 gen*Post 末行自带一个固定标签(如 #行情异动 / #加密资讯),
-  // 配置里的 post.hashtags 要接到同一行, 全部用空格分隔, 超宽交给客户端自动换行。
+  // 追加话题: 各 gen*Post 末行已自带该类型的固定标签(如 #行情异动 / #加密资讯)。
+  // post.hashtags 只放"所有类型都适用"的通用标签(默认留空), 别把类型专属标签放进来串到别的帖子;
+  // 要接到同一行, 全部用空格分隔, 超宽交给客户端自动换行。
   const existing = new Set(text.match(/#[^\s#]+/g) ?? []);
   const extra = (cfg.post?.hashtags ?? []).map((t) => `#${t}`).filter((t) => !existing.has(t));
   if (extra.length) {

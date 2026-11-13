@@ -61,7 +61,7 @@ GitHub 自带 `schedule` 已移除, 仅 CNB 触发）:
 | `market.symbolPool` | 可选: 自动刷新的 `topN` / `minUsd` / `autoRefresh`; 不写用默认 16 个 / 3000 万 USDT |
 | `market.priceChangePct` | N 分钟内涨跌多少算异动 |
 | `market.volSpikeMultiple` | 成交量放大几倍才算(避免假异动) |
-| `post.hashtags` | 帖子结尾自动带的话题 |
+| `post.hashtags` | 追加到每条帖子的**全局通用**话题, 默认留空; 各类型帖子已自带贴切标签, 别填类型专属标签 |
 | `post.disclaimer` | 帖子结尾追加的免责声明 |
 
 ### 24 小时均分排期（当前默认）
