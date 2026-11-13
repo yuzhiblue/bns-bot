@@ -290,6 +290,19 @@ function normalizeText(s) {
     .trim();
 }
 // 简易 RSS 2.0(<item>) 与 Atom(<entry>) 解析, 不引依赖。
+// 从 RSS/Atom item 提取一张文章配图: 媒体缩略图优先, 其次正文内 <img>
+function extractRssImage(blk) {
+  let m;
+  if ((m = blk.match(/<media:content[^>]*url="([^"]+)"/i))) return m[1];
+  if ((m = blk.match(/<media:thumbnail[^>]*url="([^"]+)"/i))) return m[1];
+  if ((m = blk.match(/<enclosure[^>]*type="image[^"]*"[^>]*url="([^"]+)"/i))) return m[1];
+  if ((m = blk.match(/<enclosure[^>]*url="([^"]+)"[^>]*type="image[^"]*"/i))) return m[1];
+  const desc = blk.match(/<description[^>]*>([\s\S]*?)<\/description>/i) ||
+    blk.match(/<content:encoded[^>]*>([\s\S]*?)<\/content:encoded>/i);
+  if (desc && (m = desc[1].match(/<img[^>]*src="([^"]+)"/i))) return m[1];
+  return "";
+}
+
 function parseRss(xml, limit) {
   const blocks = [];
   let m;
@@ -304,12 +317,13 @@ function parseRss(xml, limit) {
     const linkM = blk.match(/<link[^>]*>([\s\S]*?)<\/link>/i);
     if (linkM) link = linkM[1].trim();
     else { const l2 = blk.match(/<link[^>]*href="([^"]+)"/i); if (l2) link = l2[1]; }
+    const image = extractRssImage(blk);
     let ts = 0;
     const pd = blk.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/i) ||
       blk.match(/<updated[^>]*>([\s\S]*?)<\/updated>/i) ||
       blk.match(/<published[^>]*>([\s\S]*?)<\/published>/i);
     if (pd) ts = Date.parse(pd[1].trim());
-    if (title) out.push({ title, link, ts: ts || Date.now() });
+    if (title) out.push({ title, link, image, ts: ts || Date.now() });
   }
   return out;
 }
@@ -395,7 +409,7 @@ async function fetchRssNews(cfg, state) {
         const link = it.link || "";
         out.push({
           id: `news_${hashStr(normalizeText(it.title || link))}`,
-          kind: "news", source: feed.name, title: it.title, link, ts: it.ts,
+          kind: "news", source: feed.name, title: it.title, link, image: it.image, ts: it.ts,
         });
       }
     } catch (e) {
@@ -800,26 +814,63 @@ async function publishPost(text, imageList) {
 
 // 行情帖尝试配图: 本地生成行情卡片 -> 上传到币安 -> 返回 imageList
 // 任何一步失败都返回 null, 由上层降级为纯文本发帖(不影响发帖链路)。
+// 下载远程图片为 buffer(供上传币安); 体积/类型异常则抛错, 由上层降级纯文本
+async function downloadImage(url, timeoutMs = 12000) {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, {
+      signal: ctrl.signal,
+      headers: { "User-Agent": "Mozilla/5.0 (compatible; bns-bot/1.0)" },
+      redirect: "follow",
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const buf = Buffer.from(await res.arrayBuffer());
+    if (buf.length < 1024 || buf.length > 5 * 1024 * 1024) throw new Error(`体积异常 ${buf.length}`);
+    return buf;
+  } finally {
+    clearTimeout(t);
+  }
+}
+// 仅接受 jpg/png(币安上传接口目前只认这两种); 其它格式返回 null 表示不配图
+function imageExt(url) {
+  const m = /\.(jpg|jpeg|png)(?:[?#]|$)/i.exec(url || "");
+  if (!m) return null;
+  const e = m[1].toLowerCase();
+  return e === "jpeg" ? "jpg" : e;
+}
+
 async function tryImageForMaterial(material, cfg) {
-  if (material.kind !== "market") return null;
-  // 默认开, 仅显式 false 才关(避免 Secret 里漏配 imageCard 导致日常行情帖悄悄不配图)
+  // 默认开, 仅显式 false 才关(避免 Secret 里漏配 imageCard 导致日常配图悄悄不生效)
   if (cfg.post?.imageCard === false) return null;
   try {
-    const buf = makeMarketCard({
-      baseSymbol: material.baseSymbol,
-      pct: material.pct,
-      price: material.price,
-      volMultiple: material.volMultiple,
-      windowMinutes: material.windowMinutes,
-      at: material.ts,
-    });
-    const url = await uploadImage(cfg.openApiKey, buf, "png");
-    log(`  配图: 上传成功 ${url}`);
-    return [url];
+    if (material.kind === "market") {
+      const buf = makeMarketCard({
+        baseSymbol: material.baseSymbol,
+        pct: material.pct,
+        price: material.price,
+        volMultiple: material.volMultiple,
+        windowMinutes: material.windowMinutes,
+        at: material.ts,
+      });
+      const url = await uploadImage(cfg.openApiKey, buf, "png");
+      log(`  配图: 上传成功 ${url}`);
+      return [url];
+    }
+    // 资讯帖: 若 RSS 带有文章配图(jpg/png), 下载后上传币安带一张图发; 失败降级纯文本
+    if (material.kind === "news" && material.image) {
+      const ext = imageExt(material.image);
+      if (!ext) { log("  配图: 非 jpg/png, 跳过"); return null; }
+      const buf = await downloadImage(material.image);
+      const url = await uploadImage(cfg.openApiKey, buf, ext);
+      log(`  配图: 远程图上传成功 ${url}`);
+      return [url];
+    }
   } catch (e) {
     log(`  配图失败, 降级纯文本: ${e.message}`);
     return null;
   }
+  return null;
 }
 
 const ERROR_CODES = {
