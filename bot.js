@@ -745,14 +745,17 @@ function buildTimeline(state) {
   }
 
   state.timeline = slots;
-  state.timelineKey = dayKey;
-  // 进度由 state.timelineSentCount 管理(发一帖 +1), 不再用 timelineIdx 跳格
+  // 进度由 state.timelineSentCount 管理(发一帖 +1), 不再用 timelineIdx 跳格。
+  // 注意: 必须用 timelineDay 判断"新的一天", 且先比较、后赋值。
+  // 旧写法先执行 state.timelineKey = dayKey, 再判断 timelineKey !== dayKey,
+  // 条件永远为假 -> timelineSentCount 跨天不归零, 会一路累加到 15,
+  // 之后每天直接返回"slot 用完"而永久停发。
   if (state.timelineSentCount === undefined) state.timelineSentCount = 0;
-  if (state.timelineKey !== dayKey || (state.timelineSentCount === 0 && !state.timelineDay)) {
-    // 新的一天重置进度
-    if (state.timelineKey !== dayKey) state.timelineSentCount = 0;
+  if (state.timelineDay !== dayKey) {
+    state.timelineSentCount = 0;
     state.timelineDay = dayKey;
   }
+  state.timelineKey = dayKey;
   return slots;
 }
 
