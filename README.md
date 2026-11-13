@@ -1,17 +1,17 @@
 # bns-bot — 币安广场自动发帖（GitHub Actions 纯云端）
 
 抓取币安行情异动 / 新币 / 情绪等素材 → 生成带 `$币种` 的帖子 → 调广场 OpenAPI 发布。
-**只跑云端**: CNB 定时流水线每 15 分钟 POST `workflow_dispatch`, 由 GitHub Actions
+**只跑云端**: CNB 定时流水线每小时 POST `workflow_dispatch`, 由 GitHub Actions
 唤起一个短进程, 跑一轮就退出; 没有常驻服务、没有长连接, 本机不留启动脚本和计划任务。
 **执行端留在 GitHub Actions**（CNB runner 实测连不上发帖域名, 见「外部定时器」一节）;
-主触发是 CNB 定时器（每 15 分钟 POST `workflow_dispatch`）; GitHub 自带 `schedule` 已移除（best-effort、时好时坏, 且与 CNB 节奏重叠纯属冗余）。`cron-job.org` 是可选的境外冗余（尚未配置）。
+主触发是 CNB 定时器（每小时 POST `workflow_dispatch`）; GitHub 自带 `schedule` 已移除（best-effort、时好时坏, 且与 CNB 节奏重叠纯属冗余）。`cron-job.org` 是可选的境外冗余（尚未配置）。
 配置分两份: 仓库里的 `config.json`（入库的基准配置, 不含 OpenAPI Key, 所有可调参数都在这里）和 Secret `BNS_CONFIG`, 状态靠 `state.json` 持久化。
 
 ## 文件
 
 | 文件 | 说明 |
 |---|---|
-| `.github/workflows/bot.yml` | 云端**执行端**: 由 CNB 定时器每 15 分钟触发, 把 Secret 里的 Key 注入 config.json、跑一轮 bot、提交 `state.json` |
+| `.github/workflows/bot.yml` | 云端**执行端**: 由 CNB 定时器每小时触发, 把 Secret 里的 Key 注入 config.json、跑一轮 bot、提交 `state.json` |
 | `.cnb.yml` | CNB 触发器配置: `crontab` 定时 + `web_trigger` 手动触发 |
 | `trigger-workflow.mjs` | CNB 流水线执行的脚本: POST `workflow_dispatch`, 带重试与失败标红 |
 | `.github/workflows/probe.yml` | `probe-binance` 只读网络诊断(手动触发, 不发帖) |
@@ -129,8 +129,8 @@ GitHub 自带 `schedule` 已移除, 仅 CNB 触发）:
 
 ## 部署到 GitHub Actions（公开仓库）
 
-CNB 定时器每 15 分钟触发一次, GitHub Actions 才跑一轮 `node bot.js --once`
-（`--once` 只是兼容参数, 不写也是跑一轮就退出）; `bot.yml` 由 CNB 定时器每 15 分钟触发（手动 Run workflow 亦可）。
+CNB 定时器每小时触发一次, GitHub Actions 才跑一轮 `node bot.js --once`
+（`--once` 只是兼容参数, 不写也是跑一轮就退出）; `bot.yml` 由 CNB 定时器每小时触发（手动 Run workflow 亦可）。
 **仓库必须是 Public**: 公开仓库的标准 runner 免费且不限分钟数, 不消耗私有库每月 2000 分钟额度;
 私有库按这个频率约 **2880 次运行/月**（96 次/天 × 30 天）, 即便每轮只有几十秒,
 累计也很容易打爆额度并拖停其他 workflow。
@@ -180,7 +180,7 @@ CNB 定时器每 15 分钟触发一次, GitHub Actions 才跑一轮 `node bot.js
 
 GitHub 自带的 `schedule` 是 best-effort 投递: 2026-11-11 曾连续 9 小时不触发、恢复时成批补发,
 11-12 又断了 5 小时 41 分; 官方文档也明确「高负载时可能延迟甚至丢弃」。
-`bot.yml` 的 `on.schedule` 整段已删除; 主触发是 CNB 定时流水线每 15 分钟 POST
+`bot.yml` 的 `on.schedule` 整段已删除; 主触发是 CNB 定时流水线每小时 POST
 `workflow_dispatch`（2026-11-12 已验证: CNB 日志 `HTTP 204`, GitHub Actions 约 9 秒后起跑）。
 `cron-job.org` 是**可选的境外冗余, 目前尚未配置**, 配置清单见第 5 节。
 
@@ -218,19 +218,19 @@ GitHub 自带的 `schedule` 是 best-effort 投递: 2026-11-11 曾连续 9 小�
 | Header `Accept` | `application/vnd.github+json` |
 | Header `Content-Type` | `application/json` |
 | Body | `{"ref":"main","inputs":{"source":"cnb"}}`（`cron-job.org` 那条填 `cron-job.org`） |
-| 频率 | 每 15 分钟, `:08 / :23 / :38 / :53`（与 CNB `crontab` 分钟对齐） |
+| 频率 | 每小时, `:08`（与 CNB `crontab` 分钟对齐） |
 
 `inputs.source` 只用于辨识来源: 运行列表标题分别是
 `cycle · cnb`（CNB 定时器）、`cycle · cron-job.org`（境外冗余）、
 `cycle · manual`（手动跑）。
 不传 `test_post`（默认 `false`）, 走 `node bot.js --once`。
 
-外部每 15 分钟敲一次门是安全的: bot 内部 `evenSpread` / `maxPerDay=15` 自己判断到不到发帖 slot,
+外部每小时敲一次门是安全的: bot 内部 `evenSpread` / `maxPerDay=24` 自己判断到不到发帖 slot,
 没到点就零请求退出, 重复或提前触发都不会超额发帖。
 
 ### 3. 落地 CNB 触发器（主方案, 2026-11-12 已配置并验证）
 
-`.cnb.yml` 与 `trigger-workflow.mjs` 已在仓库里: `crontab: 8,23,38,53 * * * *` 按
+`.cnb.yml` 与 `trigger-workflow.mjs` 已在仓库里: `crontab: 8 * * * *` 按
 `Asia/Shanghai` 触发, 脚本带 3 次重试、4xx 快速失败、失败 `exit 1` 让构建标红。
 **这套链路已跑通**: CNB 日志 `HTTP 204`（约 1.9s）, `Actions → bns-bot` 随即出现
 `cycle · cnb` 并执行 `node bot.js --once`。以下是已完成的配置, 供重建 / 排障对照。
@@ -262,7 +262,7 @@ BNS_DISPATCH_TOKEN: "github_pat_..."
 
 **仍待办**: 在 CNB 仓库设置里开启**构建失败通知**（钉钉 / 企业微信 / 邮件, 入口以页面为准）——
 脚本失败会让构建标红, 不会像 GitHub schedule 那样静默丢; 另观察 `crontab` 一两天,
-确认 `:08 / :23 / :38 / :53` 都按时触发。
+确认 `:08` 都按时触发。
 
 CNB 与可选的 cron-job.org 分钟数对齐, 同时打也安全: bot 内部 slot 判断 +
 `concurrency` 保证不重复发帖。
@@ -342,7 +342,7 @@ Token name 填 `bns-bot-cron-job-org`, 其余相同（只勾 `bns-bot`、`Action
 
 ### 运行机制
 
-- 主触发是 **CNB 定时流水线** POST `workflow_dispatch`（每 15 分钟, 见上节）;
+- 主触发是 **CNB 定时流水线** POST `workflow_dispatch`（每小时, 见上节）;
   GitHub 自带 `schedule` 已移除（best-effort、时好时坏且与 CNB 重叠）。
   定时调度常延迟甚至整段漏跑, 时间线排期的「只追发最近 1 个 slot」逻辑能容错。
 - **抓取节奏**: bot 先判断时间线 slot, 没到点就**零请求退出、不改 `state.json`、不产生 commit**;

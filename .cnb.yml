@@ -1,9 +1,9 @@
-# CNB 定时触发器: 每 15 分钟 POST GitHub workflow_dispatch。
+# CNB 定时触发器: 每小时 POST GitHub workflow_dispatch。
 # 执行仍留在 GitHub Actions —— CNB 出口实测连不上 www.binance.com/bapi(5/5 超时), 不能跑 bot。
 # 本仓在 CNB 的默认分支是 master, 所以分支键写 master（不是 main）。
 # crontab 时区为 Asia/Shanghai(CNB 文档), 最小间隔 5 分钟。
 master:
-  "crontab: 8,23,38,53 * * * *":
+  "crontab: 8 * * * *":
     - name: trigger-bns-bot
       imports:
         # 密钥仓库禁止 clone, 只能 Web 端编辑; URL 的 main 是密钥仓库默认分支、dispatch.yml 是文件名。
