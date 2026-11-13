@@ -2,8 +2,8 @@
   "openApiKey": "",
   "dryRun": false,
   "cycleMinutes": 15,
-  "postsPerDay": 15,
-  "minIntervalMinutes": 90,
+  "postsPerDay": 24,
+  "minIntervalMinutes": 60,
   "market": {
     "symbols": [
       "BTCUSDT",
@@ -15,7 +15,7 @@
       "BNBUSDT",
       "PEPEUSDT",
       "UNIUSDT",
-      "SUIUSDT", 
+      "SUIUSDT",
       "DOGEUSDT",
       "HYPEUSDT",
       "ENAUSDT",
@@ -89,11 +89,11 @@
     "checkEveryMinutes": 30
   },
   "schedule": {
-  "enabled": true,
-  "evenSpread": true,
-  "maxPerDay": 15,
-  "timezone": "Asia/Shanghai"
-},
+    "enabled": true,
+    "evenSpread": true,
+    "maxPerDay": 24,
+    "timezone": "Asia/Shanghai"
+  },
   "post": {
     "hashtags": [
       "行情异动"
