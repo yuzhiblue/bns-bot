@@ -71,4 +71,129 @@ function makeMarketCard({ baseSymbol, pct, price, volMultiple, windowMinutes, at
   return canvas.toBuffer("image/png");
 }
 
-module.exports = { makeMarketCard };
+// ---------- 热搜榜 / 涨跌榜 / 新币卡片 ----------
+// 与行情卡共用同一套视觉规格: 1080×1080 深色底、纯 ASCII 文本、绿涨红跌、底部免责条。
+// 只渲染 ASCII(币种符号等), 避免 runner 缺中文字体时出现方块字; 中文说明放在帖子正文里。
+const GOLD = "#f0b90b";
+
+function ascii(s, max = 14) {
+  return String(s ?? "").replace(/[^\x20-\x7e]/g, "").trim().slice(0, max) || "-";
+}
+function fmtPct(p) {
+  const n = Number(p);
+  if (!Number.isFinite(n)) return "";
+  return `${n >= 0 ? "+" : ""}${n.toFixed(1)}%`;
+}
+function timeText(at) {
+  const t = at ? new Date(at) : new Date();
+  return `${t.toLocaleString("en-GB", { timeZone: "Asia/Shanghai", hour12: false })} CST`;
+}
+// 公共框架: 背景 + 顶部主题色细条 + 标题 + 时间 + 底部免责条
+function drawChrome(ctx, { title, subtitle, accent, at }) {
+  ctx.fillStyle = BG;
+  ctx.fillRect(0, 0, 1080, 1080);
+  ctx.fillStyle = accent;
+  ctx.fillRect(0, 0, 1080, 10);
+  ctx.fillStyle = FG;
+  ctx.font = 'bold 64px "DejaVuSansBold", sans-serif';
+  ctx.fillText(title, 90, 135);
+  ctx.fillStyle = SUB;
+  ctx.font = '32px "DejaVuSans", sans-serif';
+  ctx.fillText(`${subtitle} · ${timeText(at)}`, 90, 190);
+  ctx.fillStyle = CARD;
+  ctx.fillRect(0, 1080 - 96, 1080, 96);
+  ctx.fillStyle = SUB;
+  ctx.font = '30px "DejaVuSans", sans-serif';
+  ctx.fillText("Auto-posted by bns-bot · Not financial advice", 90, 1080 - 40);
+}
+function makeCard(draw) {
+  const canvas = createCanvas(1080, 1080);
+  const ctx = canvas.getContext("2d");
+  draw(ctx);
+  return canvas.toBuffer("image/png");
+}
+
+function makeTrendingCard({ items = [], at }) {
+  return makeCard((ctx) => {
+    drawChrome(ctx, { title: "TRENDING 24H", subtitle: "CoinGecko top search", accent: GOLD, at });
+    const rows = items.slice(0, 6);
+    if (!rows.length) {
+      ctx.fillStyle = SUB;
+      ctx.font = '40px "DejaVuSans", sans-serif';
+      ctx.fillText("No trending data", 90, 340);
+      return;
+    }
+    rows.forEach((it, i) => {
+      const y = 310 + i * 105;
+      ctx.fillStyle = SUB;
+      ctx.font = '34px "DejaVuSans", sans-serif';
+      ctx.fillText(`#${i + 1}`, 90, y);
+      ctx.fillStyle = FG;
+      ctx.font = 'bold 52px "DejaVuSansBold", sans-serif';
+      ctx.fillText(`$${ascii(it.sym, 8)}`, 200, y);
+      const pct = it.data?.price_change_percentage_24h?.usd;
+      const label = fmtPct(pct);
+      if (label) {
+        ctx.fillStyle = Number(pct) >= 0 ? GREEN : RED;
+        ctx.font = 'bold 44px "DejaVuSansBold", sans-serif';
+        ctx.textAlign = "right";
+        ctx.fillText(label, 990, y);
+        ctx.textAlign = "left";
+      }
+      ctx.fillStyle = CARD;
+      ctx.fillRect(90, y + 30, 900, 2);
+    });
+  });
+}
+
+function makeMoversCard({ items = [], at }) {
+  return makeCard((ctx) => {
+    drawChrome(ctx, { title: "24H MOVERS", subtitle: "Top gainers / losers", accent: GOLD, at });
+    const valid = items.filter((i) => Number.isFinite(Number(i.pct)));
+    const gainers = valid.filter((i) => Number(i.pct) >= 0).sort((a, b) => Number(b.pct) - Number(a.pct)).slice(0, 5);
+    const losers = valid.filter((i) => Number(i.pct) < 0).sort((a, b) => Number(a.pct) - Number(b.pct)).slice(0, 5);
+    const cols = [
+      { x: 90, label: "GAINERS", color: GREEN, rows: gainers },
+      { x: 560, label: "LOSERS", color: RED, rows: losers },
+    ];
+    for (const col of cols) {
+      ctx.fillStyle = col.color;
+      ctx.font = 'bold 36px "DejaVuSansBold", sans-serif';
+      ctx.fillText(col.label, col.x, 290);
+      if (!col.rows.length) {
+        ctx.fillStyle = SUB;
+        ctx.font = '32px "DejaVuSans", sans-serif';
+        ctx.fillText("none", col.x, 370);
+      }
+      col.rows.forEach((it, i) => {
+        const y = 370 + i * 110;
+        ctx.fillStyle = FG;
+        ctx.font = 'bold 46px "DejaVuSansBold", sans-serif';
+        ctx.fillText(`$${ascii(it.sym, 8)}`, col.x, y);
+        ctx.fillStyle = col.color;
+        ctx.font = '34px "DejaVuSans", sans-serif';
+        ctx.fillText(fmtPct(it.pct), col.x, y + 42);
+      });
+    }
+  });
+}
+
+function makeNewCoinCard({ baseAsset, symbol, onboardDate, at }) {
+  return makeCard((ctx) => {
+    drawChrome(ctx, { title: "NEW LISTING", subtitle: "Binance Spot", accent: GREEN, at });
+    const coin = ascii(baseAsset, 12);
+    const size = coin.length > 8 ? 110 : coin.length > 5 ? 140 : 170;
+    ctx.fillStyle = FG;
+    ctx.font = `bold ${size}px "DejaVuSansBold", sans-serif`;
+    ctx.fillText(`$${coin}`, 90, 500);
+    ctx.fillStyle = SUB;
+    ctx.font = '46px "DejaVuSans", sans-serif';
+    ctx.fillText(`Pair   ${ascii(symbol, 16)}`, 90, 600);
+    const days = Number(onboardDate)
+      ? Math.max(0, Math.round((Date.now() - Number(onboardDate)) / 86400000))
+      : 0;
+    ctx.fillText(`Listed   ${days}d ago`, 90, 670);
+  });
+}
+
+module.exports = { makeMarketCard, makeTrendingCard, makeMoversCard, makeNewCoinCard };

@@ -18,7 +18,7 @@ const path = require("path");
 const TPL = require("./templates");
 const { fetchSymbolPool, DEFAULT_TOP_N, DEFAULT_MIN_USD } = require("./symbolPool");
 const { uploadImage } = require("./squareMedia");
-const { makeMarketCard } = require("./imageCard");
+const { makeMarketCard, makeTrendingCard, makeMoversCard, makeNewCoinCard } = require("./imageCard");
 
 const ROOT = __dirname;
 // 本地若有 config.local.json(含 Key, gitignore)则优先; 否则用仓库 config.json(CI 已注入 Key)
@@ -662,6 +662,21 @@ async function tryImageForMaterial(material, cfg) {
       log(`  配图: 上传成功 ${url}`);
       return [url];
     }
+    // 热搜榜 / 涨跌榜 / 新币: 同样生成卡片图(与行情卡同规格), 失败降级纯文本
+    const cardBuilders = {
+      trending: () => makeTrendingCard({ items: material.items, at: material.ts }),
+      movers: () => makeMoversCard({ items: material.items, at: material.ts }),
+      newCoin: () => makeNewCoinCard({
+        baseAsset: material.baseAsset, symbol: material.symbol,
+        onboardDate: material.onboardDate, at: material.ts,
+      }),
+    };
+    if (cardBuilders[material.kind]) {
+      const buf = cardBuilders[material.kind]();
+      const url = await uploadImage(cfg.openApiKey, buf, "png");
+      log(`  配图: ${material.kind} 卡片上传成功 ${url}`);
+      return [url];
+    }
     // 资讯帖: 若 RSS 带有文章配图(jpg/png), 下载后上传币安带一张图发; 失败降级纯文本
     if (material.kind === "news" && material.image) {
       const ext = imageExt(material.image);
@@ -997,7 +1012,7 @@ async function runOnce() {
     return;
   }
 
-  // 5. 发帖(行情帖尝试配图, 失败自动降级纯文本)
+  // 5. 发帖(卡片/资讯素材尝试配图, 失败自动降级纯文本)
   const imageList = await tryImageForMaterial(material, config);
   const result = await publishPost(text, imageList);
   if (result.code === "000000" || result.code === 0) {
