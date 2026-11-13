@@ -265,6 +265,160 @@ async function fetchFearGreed(cfg, state) {
   }
 }
 
+// ---------- 热门信源: CoinGecko 热搜 / 全市场涨跌榜 / RSS 资讯 / CryptoPanic ----------
+// 全部第三方、零 key(除 CryptoPanic 需免费 key); 失败一律 return [], 不影响其它素材。
+
+function decodeEntities(s) {
+  return (s || "")
+    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
+    .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n))
+    .replace(/\s+/g, " ").trim();
+}
+function hashStr(s) {
+  let h = 5381;
+  for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0;
+  return h.toString(36);
+}
+// 简易 RSS 2.0(<item>) 与 Atom(<entry>) 解析, 不引依赖。
+function parseRss(xml, limit) {
+  const blocks = [];
+  let m;
+  const itemRe = /<item[\s>]([\s\S]*?)<\/item>/gi;
+  while ((m = itemRe.exec(xml))) blocks.push(m[1]);
+  const entryRe = /<entry[\s>]([\s\S]*?)<\/entry>/gi;
+  while ((m = entryRe.exec(xml))) blocks.push(m[1]);
+  const out = [];
+  for (const blk of blocks.slice(0, limit)) {
+    const title = decodeEntities((blk.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1]);
+    let link = "";
+    const linkM = blk.match(/<link[^>]*>([\s\S]*?)<\/link>/i);
+    if (linkM) link = linkM[1].trim();
+    else { const l2 = blk.match(/<link[^>]*href="([^"]+)"/i); if (l2) link = l2[1]; }
+    let ts = 0;
+    const pd = blk.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/i) ||
+      blk.match(/<updated[^>]*>([\s\S]*?)<\/updated>/i) ||
+      blk.match(/<published[^>]*>([\s\S]*?)<\/published>/i);
+    if (pd) ts = Date.parse(pd[1].trim());
+    if (title) out.push({ title, link, ts: ts || Date.now() });
+  }
+  return out;
+}
+
+async function fetchTrending(cfg, state) {
+  if (!cfg.trending?.enabled) return [];
+  const today = todayStrTZ(cfg.schedule?.timezone);
+  if ((state.trendingDates ?? []).includes(today)) {
+    log("  热搜: 今天已发过, 跳过");
+    return [];
+  }
+  try {
+    const j = await fetchJson("https://api.coingecko.com/api/v3/search/trending", {}, 15000);
+    const coins = j?.coins ?? [];
+    if (!coins.length) return [];
+    state.trendingDates = [...(state.trendingDates ?? []), today].slice(-30);
+    const items = coins.slice(0, cfg.trending?.topN ?? 6).map((c) => {
+      const item = c.item ?? {};
+      return {
+        sym: (item.symbol ?? "").toUpperCase(),
+        name: item.name ?? (item.symbol ?? "").toUpperCase(),
+        rank: c.market_cap_rank ?? item.market_cap_rank ?? "",
+        data: item.data ?? {},
+      };
+    }).filter((x) => x.sym);
+    log(`  热搜: ${items.length} 个热搜币`);
+    return [{ id: `trending_${today}`, kind: "trending", items, ts: Date.now() }];
+  } catch (e) {
+    log(`  热搜拉取失败: ${e.message}`);
+    return [];
+  }
+}
+
+async function fetchMovers(cfg, state) {
+  if (!cfg.movers?.enabled) return [];
+  const today = todayStrTZ(cfg.schedule?.timezone);
+  if ((state.moversDates ?? []).includes(today)) {
+    log("  涨跌榜: 今天已发过, 跳过");
+    return [];
+  }
+  const topN = cfg.movers?.topN ?? 6;
+  const minAbsPct = cfg.movers?.minAbsPct ?? 4;
+  try {
+    const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_change_percentage_24h_desc&per_page=${topN * 3}&page=1&sparkline=false`;
+    const arr = await fetchJson(url, {}, 15000);
+    if (!Array.isArray(arr) || !arr.length) return [];
+    const gainers = [...arr].sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h).slice(0, topN);
+    const losers = [...arr].sort((a, b) => a.price_change_percentage_24h - b.price_change_percentage_24h).slice(0, topN);
+    const filtered = [...gainers, ...losers].filter((c) => Math.abs(c.price_change_percentage_24h ?? 0) >= minAbsPct);
+    if (!filtered.length) { log(`  涨跌榜: 24h 波动均 < ${minAbsPct}%, 跳过`); return []; }
+    state.moversDates = [...(state.moversDates ?? []), today].slice(-30);
+    const items = filtered.map((c) => ({
+      sym: (c.symbol || "").toUpperCase(), name: c.name,
+      pct: c.price_change_percentage_24h ?? 0, price: c.current_price,
+    }));
+    log(`  涨跌榜: ${items.length} 个涨跌币(≥${minAbsPct}%)`);
+    return [{ id: `movers_${today}`, kind: "movers", items, ts: Date.now() }];
+  } catch (e) {
+    log(`  涨跌榜拉取失败: ${e.message}`);
+    return [];
+  }
+}
+
+async function fetchRssNews(cfg, state) {
+  if (!cfg.news?.enabled) return [];
+  const feeds = cfg.news?.feeds ?? [];
+  if (!feeds.length) return [];
+  const limit = cfg.news?.perFeed ?? 2;
+  const out = [];
+  await Promise.all(feeds.map(async (feed) => {
+    try {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 12000);
+      const res = await fetch(feed.url, {
+        signal: ctrl.signal,
+        headers: { "User-Agent": "Mozilla/5.0 (compatible; bns-bot/1.0)" },
+        redirect: "follow",
+      });
+      clearTimeout(t);
+      if (!res.ok) { log(`  RSS ${feed.name}: HTTP ${res.status}`); return; }
+      const xml = await res.text();
+      for (const it of parseRss(xml, limit)) {
+        const link = it.link || "";
+        out.push({
+          id: `news_${feed.name}_${hashStr(link || it.title)}`,
+          kind: "news", source: feed.name, title: it.title, link, ts: it.ts,
+        });
+      }
+    } catch (e) {
+      log(`  RSS ${feed.name}: 拉取失败(${e.message})`);
+    }
+  }));
+  log(`  资讯: ${out.length} 条候选(${feeds.map((f) => f.name).join("/")})`);
+  return out;
+}
+
+async function fetchCryptoPanic(cfg, state) {
+  if (!cfg.cryptopanic?.enabled) return [];
+  const key = cfg.cryptopanic?.apiKey;
+  if (!key) { log("  加密恐慌: 未配置 apiKey, 跳过(去 cryptopanic.com 申请免费 key)"); return []; }
+  try {
+    const url = `https://cryptopanic.com/api/v1/posts/?auth_token=${encodeURIComponent(key)}&public=true`;
+    const j = await fetchJson(url, { headers: { "User-Agent": "Mozilla/5.0 (compatible; bns-bot/1.0)" } }, 15000);
+    const results = j?.results ?? [];
+    const out = results.slice(0, 10).map((r) => ({
+      id: `cp_${r.id ?? hashStr(r.url || r.title || String(Math.random()))}`,
+      kind: "news", source: "CryptoPanic", title: r.title || "", link: r.url || "",
+      ts: Date.parse(r.created_at) || Date.now(),
+    }));
+    log(`  加密恐慌: ${out.length} 条候选`);
+    return out;
+  } catch (e) {
+    log(`  加密恐慌拉取失败: ${e.message}`);
+    return [];
+  }
+}
+
 // ---------- 公告(HTTP) ----------
 // 云端是短进程, 不挂长连接; 公告接口结构不固定, 宽松解析,
 // 失败或结构不认识就降级为空, 不影响其他素材。
@@ -511,6 +665,50 @@ function genFearGreedPost(m) {
   return lines.join("\n");
 }
 
+function genTrendingPost(m) {
+  const lines = [];
+  lines.push("🔥 24 小时热搜币种（大家都在看）");
+  lines.push("");
+  m.items.slice(0, 6).forEach((it, i) => {
+    const chg = it.data?.price_change_percentage_24h?.usd;
+    const pct = (typeof chg === "number") ? ` (${chg >= 0 ? "+" : ""}${chg.toFixed(1)}%)` : "";
+    lines.push(`${i + 1}. ${it.sym}${pct}`);
+  });
+  lines.push("");
+  lines.push("热度是情绪不是建议，仓位自己拿主意。");
+  lines.push("");
+  lines.push("#热搜币种 #加密资讯");
+  return lines.join("\n");
+}
+
+function genMoversPost(m) {
+  const lines = [];
+  const up = m.items.filter((i) => i.pct >= 0).sort((a, b) => b.pct - a.pct);
+  const down = m.items.filter((i) => i.pct < 0).sort((a, b) => a.pct - b.pct);
+  lines.push("📊 24h 涨跌榜（全市场）");
+  lines.push("");
+  if (up.length) lines.push("领涨：" + up.slice(0, 5).map((i) => `${i.sym} +${i.pct.toFixed(1)}%`).join(" / "));
+  if (down.length) lines.push("领跌：" + down.slice(0, 5).map((i) => `${i.sym} ${i.pct.toFixed(1)}%`).join(" / "));
+  lines.push("");
+  lines.push("极端波动时更要注意风险，别追在尖上。");
+  lines.push("");
+  lines.push("#涨跌榜单 #行情异动");
+  return lines.join("\n");
+}
+
+function genNewsPost(m) {
+  const lines = [];
+  lines.push(`📰 ${m.source || "加密资讯"}`);
+  lines.push("");
+  if (m.title) lines.push(m.title);
+  if (m.link) lines.push(m.link);
+  lines.push("");
+  lines.push("消息面仅供参考，操作看自己的判断。");
+  lines.push("");
+  lines.push("#加密资讯");
+  return lines.join("\n");
+}
+
 // 热度评分: 事件强度 + 新鲜度, 只用于同一轮多条素材里挑一条发。
 // 分数没有跨类型严格可比性, 但规则固定、日志可见, 便于按需调整权重。
 function heatScore(m) {
@@ -530,6 +728,15 @@ function heatScore(m) {
       break;
     case "fearGreed":
       base = 30 + Math.min(30, Math.abs((m.value ?? 50) - 50) * 0.6);
+      break;
+    case "trending":
+      base = 52;
+      break;
+    case "movers":
+      base = 53;
+      break;
+    case "news":
+      base = 58;
       break;
     case "fundingRate":
       base = 35 + Math.min(30, Math.abs(m.rate ?? 0) * 300);
@@ -552,6 +759,9 @@ function buildPost(material, cfg) {
     case "fundingRate": text = genFundingPost(material); break;
     case "whale": text = genWhalePost(material); break;
     case "fearGreed": text = genFearGreedPost(material); break;
+    case "trending": text = genTrendingPost(material); break;
+    case "movers": text = genMoversPost(material); break;
+    case "news": text = genNewsPost(material); break;
     default: return null;
   }
 
@@ -884,7 +1094,7 @@ async function runOnce() {
 
   // 2. 抓全部素材(并行拉)。所有抓取共享同一个 state 对象, 由本函数结尾统一落盘,
   //    避免并发写文件互相覆盖。公告走内置 HTTP 接口。
-  const [marketMoves, announcements, newCoins, funding, whales, fng] =
+  const [marketMoves, announcements, newCoins, funding, whales, fng, trending, movers, newsRss, newsCp] =
     await Promise.all([
       fetchMarketMove(config),
       fetchAnnouncementsHttp(config, state),
@@ -892,10 +1102,15 @@ async function runOnce() {
       fetchFundingRate(config),
       fetchWhaleWatch(config),
       fetchFearGreed(config, state),
+      fetchTrending(config, state),
+      fetchMovers(config, state),
+      fetchRssNews(config, state),
+      fetchCryptoPanic(config, state),
     ]);
 
   const candidates = [
     ...marketMoves, ...announcements, ...newCoins, ...funding, ...whales, ...fng,
+    ...trending, ...movers, ...newsRss, ...newsCp,
   ];
 
   // --force 模式: 没素材时用实时真实数据造一条行情帖(不用假数字, 避免虚假消息)
@@ -919,7 +1134,7 @@ async function runOnce() {
   // 3. 去重(素材 id 没发过)
   const seen = new Set(state.postedMaterialIds);
   const fresh = candidates.filter((c) => !seen.has(c.id));
-  log(`素材: 行情 ${marketMoves.length} / 公告 ${announcements.length} / 新币 ${newCoins.length} / 费率 ${funding.length} / 鲸鱼 ${whales.length} / 情绪 ${fng.length} = 共 ${fresh.length} 条未发`);
+  log(`素材: 行情 ${marketMoves.length} / 公告 ${announcements.length} / 新币 ${newCoins.length} / 费率 ${funding.length} / 鲸鱼 ${whales.length} / 情绪 ${fng.length} / 热搜 ${trending.length} / 涨跌 ${movers.length} / 资讯 ${newsRss.length + newsCp.length} = 共 ${fresh.length} 条未发`);
 
   if (fresh.length === 0) {
     log("没有新素材, 本轮不发帖");

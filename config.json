@@ -105,5 +105,40 @@
     "updated": "2026-11-05T00:46:23.801Z",
     "topN": 16,
     "minUsd": 30000000
+  },
+  "trending": {
+    "enabled": true,
+    "topN": 6
+  },
+  "movers": {
+    "enabled": true,
+    "topN": 6,
+    "minAbsPct": 4
+  },
+  "news": {
+    "enabled": true,
+    "perFeed": 2,
+    "feeds": [
+      {
+        "name": "Cointelegraph",
+        "url": "https://cointelegraph.com/rss"
+      },
+      {
+        "name": "Decrypt",
+        "url": "https://decrypt.co/feed"
+      },
+      {
+        "name": "CoinDesk",
+        "url": "https://www.coindesk.com/arc/outboundfeeds/rss/"
+      },
+      {
+        "name": "BitcoinMagazine",
+        "url": "https://bitcoinmagazine.com/.rss/full/"
+      }
+    ]
+  },
+  "cryptopanic": {
+    "enabled": true,
+    "apiKey": ""
   }
 }
