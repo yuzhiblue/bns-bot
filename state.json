@@ -25,11 +25,12 @@
     "news_1ada2lw",
     "news_1bsharu",
     "news_1838xwu",
-    "news_1mgpnp7"
+    "news_1mgpnp7",
+    "news_18b1vxb"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794600523376,
-  "todayPosted": 26,
+  "lastPostAt": 1794604104606,
+  "todayPosted": 27,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -187,6 +188,12 @@
       "kind": "news",
       "at": 1794600523376,
       "text": "沉睡 16 年后比特币钱包苏醒，转移 690 万美元\n\n2010 年 9 月的两次比特币挖矿奖励相差几分钟。这些硬币的价值接近原市场价值的115万倍。\n\n目前能确认的只有报道里给出的这些事实，还不足以判断影响范围。我会等后续数据或官方口径佐证，在此之前不做方向判断。\n\n先记下能确认的部分，结论留到有更多数据的时候。\n\n你的观察清单里会放哪些指标？\n\n#加密资讯"
+    },
+    {
+      "id": 387944056750555,
+      "kind": "news",
+      "at": 1794604104606,
+      "text": "中国 32 亿美元的人工智能管道仍需要 Nvidia 芯片 华盛顿限制\n\n尽管北京方面大力推行国内替代品，但中国的数据中心项目仍在围绕受限的英伟达处理器进行设计。\n\n目前能确认的只有报道里给出的这些事实，还不足以判断影响范围。我会等后续数据或官方口径佐证，在此之前不做方向判断。\n\n单条报道能提供的信息有限，多看几方口径更稳妥。\n\n看到这类标题，你第一反应会先确认什么？\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -218,10 +225,10 @@
   ],
   "timelineKey": "2026-11-14",
   "timelineIdx": 0,
-  "timelineSentCount": 5,
+  "timelineSentCount": 6,
   "timelineDay": "2026-11-14",
-  "lastRunAt": 1794600516347,
-  "lastFetchAt": 1794600516347,
+  "lastRunAt": 1794604097104,
+  "lastFetchAt": 1794604097104,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
