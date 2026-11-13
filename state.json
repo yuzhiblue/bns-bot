@@ -15,11 +15,12 @@
     "news_1gkgtjr",
     "news_5sm9jv",
     "news_1m1nhmx",
-    "news_rsz88i"
+    "news_rsz88i",
+    "news_rphv0b"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794564507652,
-  "todayPosted": 16,
+  "lastPostAt": 1794568126006,
+  "todayPosted": 17,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -117,6 +118,12 @@
       "kind": "news",
       "at": 1794564507652,
       "text": "Unocoin 因可疑转账而暂停存款和取款\n\nUnocoin 表示，这些转账是在 BitGo 平台之外签署的，而其账户被冻结，可能是通过钱包恢复功能进行的。\n\n安全与服务类事件，先确认影响范围、以及是否仍在持续，比讨论市场反应更有意义。我会等官方口径和后续通报，不据此推断方向。\n\n事实和推测分开看，别让一条报道替代自己的判断。\n\n看到这类标题，你第一反应会先确认什么？\n\n#加密资讯"
+    },
+    {
+      "id": 387796688520492,
+      "kind": "news",
+      "at": 1794568126006,
+      "text": "国会因向中国出口芯片问题传唤前英伟达首席执行官黄仁勋和卢特尼克\n\n随着审查转向商务部对芯片出口的监管，众议院小组要求在 12 月份采访黄仁勋和 Nvidia 的高级律师。\n\n监管与人事变化的影响通常不在公布当天，而在后续的执行细则和落地节奏。我会盯配套文件与时间表，不把表态直接换算成行情。\n\n标题给的是结论，正文里的条件才值得细看。\n\n你判断一条资讯值不值得跟，通常看哪一点？\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -148,10 +155,10 @@
   ],
   "timelineKey": "2026-11-13",
   "timelineIdx": 0,
-  "timelineSentCount": 9,
+  "timelineSentCount": 10,
   "timelineDay": "2026-11-13",
-  "lastRunAt": 1794564500568,
-  "lastFetchAt": 1794564500568,
+  "lastRunAt": 1794568119584,
+  "lastFetchAt": 1794568119584,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
