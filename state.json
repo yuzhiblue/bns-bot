@@ -14,11 +14,12 @@
     "news_90cmbz",
     "news_1gkgtjr",
     "news_5sm9jv",
-    "news_1m1nhmx"
+    "news_1m1nhmx",
+    "news_rsz88i"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794560907025,
-  "todayPosted": 15,
+  "lastPostAt": 1794564507652,
+  "todayPosted": 16,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -110,6 +111,12 @@
       "kind": "news",
       "at": 1794560907025,
       "text": "全球范围内的 Microsoft 365 中断影响了 Outlook 电子邮件和 Teams 日历\n\n由于中断中断了政府电子邮件以及 ChatGPT 和 Claude 中的 Microsoft 365 连接器，微软于周五开始了更广泛的补丁发布。\n\n这条属于消息面驱动。值得跟踪的是后续成交量能否放大、以及这则消息在未来 24–48 小时是否被数据验证；单日消息本身很难改写趋势，我不据此推断方向。\n\n"
+    },
+    {
+      "id": 387781867692986,
+      "kind": "news",
+      "at": 1794564507652,
+      "text": "Unocoin 因可疑转账而暂停存款和取款\n\nUnocoin 表示，这些转账是在 BitGo 平台之外签署的，而其账户被冻结，可能是通过钱包恢复功能进行的。\n\n安全与服务类事件，先确认影响范围、以及是否仍在持续，比讨论市场反应更有意义。我会等官方口径和后续通报，不据此推断方向。\n\n事实和推测分开看，别让一条报道替代自己的判断。\n\n看到这类标题，你第一反应会先确认什么？\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -141,10 +148,10 @@
   ],
   "timelineKey": "2026-11-13",
   "timelineIdx": 0,
-  "timelineSentCount": 8,
+  "timelineSentCount": 9,
   "timelineDay": "2026-11-13",
-  "lastRunAt": 1794560899473,
-  "lastFetchAt": 1794560899473,
+  "lastRunAt": 1794564500568,
+  "lastFetchAt": 1794564500568,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
