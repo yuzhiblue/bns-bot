@@ -26,11 +26,12 @@
     "news_1bsharu",
     "news_1838xwu",
     "news_1mgpnp7",
-    "news_18b1vxb"
+    "news_18b1vxb",
+    "news_a521j6"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794604104606,
-  "todayPosted": 27,
+  "lastPostAt": 1794607705130,
+  "todayPosted": 28,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -194,6 +195,12 @@
       "kind": "news",
       "at": 1794604104606,
       "text": "中国 32 亿美元的人工智能管道仍需要 Nvidia 芯片 华盛顿限制\n\n尽管北京方面大力推行国内替代品，但中国的数据中心项目仍在围绕受限的英伟达处理器进行设计。\n\n目前能确认的只有报道里给出的这些事实，还不足以判断影响范围。我会等后续数据或官方口径佐证，在此之前不做方向判断。\n\n单条报道能提供的信息有限，多看几方口径更稳妥。\n\n看到这类标题，你第一反应会先确认什么？\n\n#加密资讯"
+    },
+    {
+      "id": 387958804512058,
+      "kind": "news",
+      "at": 1794607705130,
+      "text": "OpenAI 与 Visa、Mastercard 和 Amex 合作在 ChatGPT 中推出人工智能支付\n\nOpenAI 的新支付钱包允许人工智能代理使用现有的卡网络完成购买，并计划最终允许预授权交易。\n\n目前能确认的只有报道里给出的这些事实，还不足以判断影响范围。我会等后续数据或官方口径佐证，在此之前不做方向判断。\n\n标题给的是结论，正文里的条件才值得细看。\n\n你的观察清单里会放哪些指标？\n\n"
     }
   ],
   "newCoinIds": [],
@@ -225,10 +232,10 @@
   ],
   "timelineKey": "2026-11-14",
   "timelineIdx": 0,
-  "timelineSentCount": 6,
+  "timelineSentCount": 7,
   "timelineDay": "2026-11-14",
-  "lastRunAt": 1794604097104,
-  "lastFetchAt": 1794604097104,
+  "lastRunAt": 1794607698346,
+  "lastFetchAt": 1794607698346,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
