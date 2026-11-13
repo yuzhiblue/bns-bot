@@ -281,6 +281,14 @@ function hashStr(s) {
   for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0;
   return h.toString(36);
 }
+// 资讯标题/链接归一化: 小写 + 去标点空白, 用于跨信源去重(同一条新闻不同来源标题一致即判重)
+function normalizeText(s) {
+  return (s || "")
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s]/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 // 简易 RSS 2.0(<item>) 与 Atom(<entry>) 解析, 不引依赖。
 function parseRss(xml, limit) {
   const blocks = [];
@@ -386,7 +394,7 @@ async function fetchRssNews(cfg, state) {
       for (const it of parseRss(xml, limit)) {
         const link = it.link || "";
         out.push({
-          id: `news_${feed.name}_${hashStr(link || it.title)}`,
+          id: `news_${hashStr(normalizeText(it.title || link))}`,
           kind: "news", source: feed.name, title: it.title, link, ts: it.ts,
         });
       }
@@ -407,7 +415,7 @@ async function fetchCryptoPanic(cfg, state) {
     const j = await fetchJson(url, { headers: { "User-Agent": "Mozilla/5.0 (compatible; bns-bot/1.0)" } }, 15000);
     const results = j?.results ?? [];
     const out = results.slice(0, 10).map((r) => ({
-      id: `cp_${r.id ?? hashStr(r.url || r.title || String(Math.random()))}`,
+      id: `news_${hashStr(normalizeText(r.title || r.url))}`,
       kind: "news", source: "CryptoPanic", title: r.title || "", link: r.url || "",
       ts: Date.parse(r.created_at) || Date.now(),
     }));
