@@ -19,11 +19,12 @@
     "news_rphv0b",
     "news_1p4uuc5",
     "news_1w6pelg",
-    "news_r758zv"
+    "news_r758zv",
+    "news_erhdj9"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794578933853,
-  "todayPosted": 20,
+  "lastPostAt": 1794582506075,
+  "todayPosted": 21,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -145,6 +146,12 @@
       "kind": "news",
       "at": 1794578933853,
       "text": "在 FATF 审查之前，加密货币洗钱对英国构成“重大风险”：RUSI\n\n评估人员将于 2027 年 6 月进行访问，距离完整的加密货币规则生效还有几个月，这将让英国证明其可以打击加密货币洗钱。\n\n这类资讯缺少可核对的后续指标，我会先看有没有独立数据或第二方确认，而不是急着给结论。\n\n单条报道能提供的信息有限，多看几方口径更稳妥。\n\n这类报道你一般会另外查哪些背景？\n\n#加密资讯"
+    },
+    {
+      "id": 387855589222943,
+      "kind": "news",
+      "at": 1794582506075,
+      "text": "特朗普总统在美国证券交易委员会和美国商品期货交易委员会的两党提名名单中任命了两名民主党人，因为这两个机构都人手不足\n\n周四，白宫向参议院派出了四名 SEC 和 CFTC 提名人，其中包括前 CFTC 专员克里斯汀·约翰逊 (Kristin Johnson) 和两名参与《澄清法案》工作的工作人员。\n\n监管与人事变化的影响通常不在公布当天，而在后续的执行细则和落地节奏。我会盯配套文件与时间表，不把表态"
     }
   ],
   "newCoinIds": [],
@@ -176,10 +183,10 @@
   ],
   "timelineKey": "2026-11-13",
   "timelineIdx": 0,
-  "timelineSentCount": 13,
+  "timelineSentCount": 14,
   "timelineDay": "2026-11-13",
-  "lastRunAt": 1794578927496,
-  "lastFetchAt": 1794578927496,
+  "lastRunAt": 1794582498636,
+  "lastFetchAt": 1794582498636,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
