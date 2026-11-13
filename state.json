@@ -7,7 +7,8 @@
     "fng_2026-11-12",
     "ann_290037",
     "fng_2026-11-13",
-    "market_PEPEUSDT_2026-11-13"
+    "market_PEPEUSDT_2026-11-13",
+    "news_1di4l73"
   ],
   "lastAnnouncementIds": [
     "289715",
@@ -46,8 +47,8 @@
     "290149"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794535711042,
-  "todayPosted": 8,
+  "lastPostAt": 1794539304487,
+  "todayPosted": 9,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -97,6 +98,12 @@
       "kind": "market",
       "at": 1794535711042,
       "text": "📊 $PEPE 30 分钟涨 2.2%\n· 多头发力了\n· 现价 0\n· 成交量放大 2.3 倍\n\n这波节奏不错，持有观望\n\n$PEPE #行情异动"
+    },
+    {
+      "id": 387678635496759,
+      "kind": "news",
+      "at": 1794539304487,
+      "text": "📰 Cointelegraph\n\nTrump nominates Hester Peirce successor among SEC, CFTC picks\n<![CDATA[https://cointelegraph.com/news/trump-nominates-hester-peirce-successor-among-sec-cftc-picks?utm_source=rss_feed"
     }
   ],
   "newCoinIds": [],
@@ -128,15 +135,15 @@
   ],
   "timelineKey": "2026-11-13",
   "timelineIdx": 0,
-  "timelineSentCount": 1,
+  "timelineSentCount": 2,
   "timelineDay": "2026-11-13",
-  "lastRunAt": 1794535704290,
+  "lastRunAt": 1794539296728,
   "sentimentDates": [
     "2026-11-11",
     "2026-11-12",
     "2026-11-13"
   ],
-  "lastFetchAt": 1794535704290,
+  "lastFetchAt": 1794539296728,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
