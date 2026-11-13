@@ -175,6 +175,7 @@ function decodeEntities(s) {
   return (s || "")
     .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
     .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+    .replace(/&nbsp;/gi, " ")
     .replace(/&quot;/g, '"').replace(/&#39;/g, "'")
     .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n))
     .replace(/\s+/g, " ").trim();
@@ -237,7 +238,10 @@ function parseRss(xml, limit) {
       blk.match(/<description[^>]*>([\s\S]*?)<\/description>/i) ||
       blk.match(/<content:encoded[^>]*>([\s\S]*?)<\/content:encoded>/i) ||
       blk.match(/<summary[^>]*>([\s\S]*?)<\/summary>/i);
-    const summary = descRaw ? stripHtml(descRaw[1]).slice(0, 240) : "";
+    let summary = descRaw ? stripHtml(descRaw[1]) : "";
+    // Google News 等会把标题包进 description 的 <a> 里, 摘要会等于标题, 去重避免重复
+    if (summary && normalizeText(summary).includes(normalizeText(title))) summary = "";
+    summary = summary.slice(0, 240);
     let ts = 0;
     const pd = blk.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/i) ||
       blk.match(/<updated[^>]*>([\s\S]*?)<\/updated>/i) ||
@@ -327,8 +331,7 @@ async function fetchRssNews(cfg, state) {
       const xml = await res.text();
       for (const it of parseRss(xml, limit)) {
         const link = it.link || "";
-        // 没有正文摘要的条目不收: 只发标题+链接的空壳帖没有阅读价值
-        if (!it.summary) continue;
+        // 允许只有标题的信源(如 Google News 中文标题); 标题本身已是有效内容
         out.push({
           id: `news_${hashStr(normalizeText(it.title || link))}`,
           kind: "news", source: feed.name, title: it.title, link, image: it.image, summary: it.summary, ts: it.ts,
