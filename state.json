@@ -27,11 +27,12 @@
     "news_1838xwu",
     "news_1mgpnp7",
     "news_18b1vxb",
-    "news_a521j6"
+    "news_a521j6",
+    "news_10yhmeh"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794607705130,
-  "todayPosted": 28,
+  "lastPostAt": 1794611305371,
+  "todayPosted": 29,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -201,6 +202,12 @@
       "kind": "news",
       "at": 1794607705130,
       "text": "OpenAI 与 Visa、Mastercard 和 Amex 合作在 ChatGPT 中推出人工智能支付\n\nOpenAI 的新支付钱包允许人工智能代理使用现有的卡网络完成购买，并计划最终允许预授权交易。\n\n目前能确认的只有报道里给出的这些事实，还不足以判断影响范围。我会等后续数据或官方口径佐证，在此之前不做方向判断。\n\n标题给的是结论，正文里的条件才值得细看。\n\n你的观察清单里会放哪些指标？\n\n"
+    },
+    {
+      "id": 387973551143481,
+      "kind": "news",
+      "at": 1794611305371,
+      "text": "英伟达前高管能否取代黄仁勋？ Arm 的雷内·哈斯 (Rene Haas) 成为候选人\n\n据报道，英伟达董事会已与 Arm 首席执行官接洽，寻找黄仁勋的继任者，同时一些员工正在努力让这家芯片制造商的创始人重新担任首席执行官。\n\n这类资讯缺少可核对的后续指标，我会先看有没有独立数据或第二方确认，而不是急着给结论。\n\n标题给的是结论，正文里的条件才值得细看。\n\n你的观察清单里会放哪些指标？\n\n#加密资"
     }
   ],
   "newCoinIds": [],
@@ -232,10 +239,10 @@
   ],
   "timelineKey": "2026-11-14",
   "timelineIdx": 0,
-  "timelineSentCount": 7,
+  "timelineSentCount": 8,
   "timelineDay": "2026-11-14",
-  "lastRunAt": 1794607698346,
-  "lastFetchAt": 1794607698346,
+  "lastRunAt": 1794611296937,
+  "lastFetchAt": 1794611296937,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
