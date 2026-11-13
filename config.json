@@ -40,7 +40,8 @@
   "post": {
     "hashtags": [],
     "disclaimer": "",
-    "imageCard": true
+    "imageCard": true,
+    "take": true
   },
   "_symbolsAuto": {
     "updated": "2026-11-05T00:46:23.801Z",

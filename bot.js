@@ -16,6 +16,7 @@
 const fs = require("fs");
 const path = require("path");
 const TPL = require("./templates");
+const { buildTake } = require("./takes");
 const { fetchSymbolPool, DEFAULT_TOP_N, DEFAULT_MIN_USD } = require("./symbolPool");
 const { uploadImage } = require("./squareMedia");
 const { makeMarketCard, makeTrendingCard, makeMoversCard, makeNewCoinCard } = require("./imageCard");
@@ -401,10 +402,14 @@ async function fetchRssNews(cfg, state) {
     const zhT = (zhTitles[i] || "").trim();
     const zhS = (zhSummaries[i] || "").trim();
     if (!zhT) continue; // 标题为空才跳过(翻译失败回退英文原文, 直接发英文帖)
+    // 标题或摘要仍是原文 = 翻译失败, 标记英文原帖, 生成文案时不加中文解读段与 CTA, 避免再叠加中文
+    const fallback = zhT === (raw[i].title || "").trim()
+      || (raw[i].summary && zhS === (raw[i].summary || "").trim());
     out.push({
       id: `news_${hashStr(normalizeText(zhT))}`,
       kind: "news", source: raw[i].source, title: zhT, link: raw[i].link,
       image: raw[i].image, summary: zhS, ts: raw[i].ts,
+      lang: fallback ? "en" : "zh",
     });
   }
   log(`  资讯: ${out.length} 条候选(中文, ${feeds.map((f) => f.name).join("/")})`);
@@ -425,7 +430,7 @@ function fmtPrice(p) {
 }
 // 简单去重: 记住最近 N 次用过的句子, 随机时优先跳过, 全撞过再放行
 const RECENT_DEPTH = 6;
-const recentUsed = { opener: [], closer: [] };
+const recentUsed = { opener: [], closer: [], cta: [] };
 function pickFrom(list, slot) {
   const tried = [];
   for (let attempt = 0; attempt < list.length; attempt++) {
@@ -450,7 +455,23 @@ function fill(template, data) {
   );
 }
 
-function genMarketPost(m) {
+// 解读段: 由 takes.js 从素材真实数据推导; CTA: 一个开放式提问。
+// 受 post.take 控制(默认开); 英文原帖(翻译失败回退)解读段与 CTA 都不加, 避免再叠加中文。
+// 关闭时返回空数组, 输出与改动前逐字一致, 便于一键回退。
+function takeLines(m, cfg) {
+  if (cfg.post?.take === false || m.lang === "en") return [];
+  const take = buildTake(m);
+  return take ? ["", take] : [];
+}
+// 收尾话术本身已是提问时不再叠加 CTA, 避免连续两个问句
+function ctaLines(m, cfg, closer) {
+  if (cfg.post?.take === false || m.lang === "en") return [];
+  const list = TPL.ctas?.[m.kind] ?? [];
+  if (!list.length || /[？?]/.test(closer || "")) return [];
+  return ["", pickFrom(list, "cta")];
+}
+
+function genMarketPost(m, cfg) {
   const up = m.pct >= 0;
   const coin = CASHTAG(m.baseSymbol);
   const bucket = up ? TPL.marketUp : TPL.marketDown;
@@ -462,29 +483,36 @@ function genMarketPost(m) {
   lines.push(`· ${opener}`);
   lines.push(`· 现价 ${fmtPrice(m.price)}`);
   lines.push(`· 成交量放大 ${m.volMultiple} 倍`);
-  lines.push("");
-  lines.push(closer);
-  lines.push("");
-  lines.push(`${coin} #行情异动`);
+  lines.push(...takeLines(m, cfg));
+  lines.push("", closer);
+  lines.push(...ctaLines(m, cfg, closer));
+  lines.push("", `${coin} #行情异动`);
   return lines.join("\n");
 }
 
-function genNewCoinPost(m) {
+function genNewCoinPost(m, cfg) {
   const coin = m.baseAsset;
-  const days = Math.max(1, Math.round((Date.now() - m.onboardDate) / 86400000));
+  const onboard = Number(m.onboardDate);
+  const hasOnboard = Number.isFinite(onboard) && onboard > 0;
+  const days = hasOnboard ? Math.max(1, Math.round((Date.now() - onboard) / 86400000)) : 1;
   const opener = fill(pickFrom(TPL.newCoin.openers, "opener"), { coin, days });
-  const closer = fill(pickFrom(TPL.newCoin.closers, "closer"), { coin, days });
+  // 素材缺上线时间时 days 无意义, 排除含 {days} 的收尾模板, 避免渲染成 "NaN 天"
+  const closerPool = hasOnboard
+    ? TPL.newCoin.closers
+    : TPL.newCoin.closers.filter((s) => !s.includes("{days}"));
+  const closer = fill(pickFrom(closerPool, "closer"), { coin, days });
 
   const lines = [];
   lines.push(`🆕 ${opener}`);
-  lines.push("");
-  lines.push(closer);
-  lines.push("");
-  lines.push(`$${coin} #币安新币`);
+  lines.push(...takeLines(m, cfg));
+  lines.push("", closer);
+  lines.push(...ctaLines(m, cfg, closer));
+  lines.push("", `$${coin} #币安新币`);
   return lines.join("\n");
 }
 
-function genTrendingPost(m) {
+function genTrendingPost(m, cfg) {
+  const closer = "热度是情绪不是建议，仓位自己拿主意。";
   const lines = [];
   lines.push("🔥 24 小时热搜币种（大家都在看）");
   lines.push("");
@@ -493,14 +521,15 @@ function genTrendingPost(m) {
     const pct = (typeof chg === "number") ? ` (${chg >= 0 ? "+" : ""}${chg.toFixed(1)}%)` : "";
     lines.push(`${i + 1}. ${it.sym}${pct}`);
   });
-  lines.push("");
-  lines.push("热度是情绪不是建议，仓位自己拿主意。");
-  lines.push("");
-  lines.push("#热搜币种 #加密资讯");
+  lines.push(...takeLines(m, cfg));
+  lines.push("", closer);
+  lines.push(...ctaLines(m, cfg, closer));
+  lines.push("", "#热搜币种 #加密资讯");
   return lines.join("\n");
 }
 
-function genMoversPost(m) {
+function genMoversPost(m, cfg) {
+  const closer = "极端波动时更要注意风险，别追在尖上。";
   const lines = [];
   const up = m.items.filter((i) => i.pct >= 0).sort((a, b) => b.pct - a.pct);
   const down = m.items.filter((i) => i.pct < 0).sort((a, b) => a.pct - b.pct);
@@ -508,26 +537,28 @@ function genMoversPost(m) {
   lines.push("");
   if (up.length) lines.push("领涨：" + up.slice(0, 5).map((i) => `${i.sym} +${i.pct.toFixed(1)}%`).join(" / "));
   if (down.length) lines.push("领跌：" + down.slice(0, 5).map((i) => `${i.sym} ${i.pct.toFixed(1)}%`).join(" / "));
-  lines.push("");
-  lines.push("极端波动时更要注意风险，别追在尖上。");
-  lines.push("");
-  lines.push("#涨跌榜单 #行情异动");
+  lines.push(...takeLines(m, cfg));
+  lines.push("", closer);
+  lines.push(...ctaLines(m, cfg, closer));
+  lines.push("", "#涨跌榜单 #行情异动");
   return lines.join("\n");
 }
 
-function genNewsPost(m) {
-  const lines = [];
+function genNewsPost(m, cfg) {
   // 不显示文章来源平台名(如 CoinDesk / Cointelegraph): 币安广场对"把用户引向第三方平台"敏感,
   // 帖首挂别家媒体名容易被当成引流。m.source 仅保留在素材里供日志排查, 不渲染。
+  // 翻译失败回退的英文原帖: 只跳过中文解读段和 CTA, 其余保持原文结构
+  const closer = "消息面仅供参考，操作看自己的判断。";
+  const lines = [];
   if (m.title) lines.push(m.title);
   if (m.summary) {
     lines.push("");
     lines.push(m.summary);
   }
-  lines.push("");
-  lines.push("消息面仅供参考，操作看自己的判断。");
-  lines.push("");
-  lines.push("#加密资讯");
+  lines.push(...takeLines(m, cfg));
+  lines.push("", closer);
+  lines.push(...ctaLines(m, cfg, closer));
+  lines.push("", "#加密资讯");
   return lines.join("\n");
 }
 
@@ -563,11 +594,11 @@ function heatScore(m) {
 function buildPost(material, cfg) {
   let text;
   switch (material.kind) {
-    case "market": text = genMarketPost(material); break;
-    case "newCoin": text = genNewCoinPost(material); break;
-    case "trending": text = genTrendingPost(material); break;
-    case "movers": text = genMoversPost(material); break;
-    case "news": text = genNewsPost(material); break;
+    case "market": text = genMarketPost(material, cfg); break;
+    case "newCoin": text = genNewCoinPost(material, cfg); break;
+    case "trending": text = genTrendingPost(material, cfg); break;
+    case "movers": text = genMoversPost(material, cfg); break;
+    case "news": text = genNewsPost(material, cfg); break;
     default: return null;
   }
 
@@ -590,7 +621,8 @@ function buildPost(material, cfg) {
   const disclaimer = cfg.post?.disclaimer?.trim();
   if (disclaimer) text += `\n\n${disclaimer}`;
 
-  // 币安广场帖子长度限制:1000 字符左右,保守截断
+  // 币安官方《新手指南》: 短帖上限 2,100 字符。这里仍保守截在 950 作兜底,
+  // 实际五类帖子(含解读段)约 150–350 字符, 远低于上限, 正常不会触发。
   if (text.length > 950) text = text.slice(0, 947) + "…";
   return text;
 }
