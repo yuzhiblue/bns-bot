@@ -205,6 +205,29 @@ function stripHtml(s) {
     .replace(/\s+/g, " ")
     .trim();
 }
+// RSS 里有两类 description 不是新闻摘要:
+//   1) 每日汇总栏目的固定导语(Cointelegraph "Here's what happened in crypto today":
+//      "Need to know what happened in crypto today? Here is the latest news on ...");
+//   2) 纯引流话术("请点击文章查看详细内容" / "Read more" / "Follow us")。
+// 翻译后就是"想了解最新的加密货币资讯？…点击文章查看详细内容"这类空壳。
+// 判为无摘要后交给上层已有的 `if (!summary) continue` 跳过整条: 这类条目的标题
+// 同样是日更栏目名, 只删句子会发出一个没有事实、还带解读段的空壳帖。
+const PROMO_SUMMARY_START = [
+  /^(?:want|need|looking) to (?:know|learn|read|get|stay|catch up|see|find out)\b/i,
+  /^need to know what happened\b/i,
+  /^here(?:'|’)?s?\b.{0,20}\b(?:what happened|latest news|roundup|recap)\b/i,
+  /^(?:click|tap|read|follow|subscribe|visit|check out|learn more|read more|for more|full story)\b/i,
+  /^(?:想了解|想知道|想获取|关注比特币交易|关注我们|请点击|点击|阅读全文|详情请|更多(?:详情|内容|资讯))/,
+];
+// 短文本里出现明确引流动作、基本没有事实, 也按空壳处理
+const PROMO_SUMMARY_ANY = /(?:请点击(?:文章|链接|这里|原文)|点击查看详细|关注比特币交易|click here|read more|follow us)/i;
+function isPromoSummary(s) {
+  const t = (s || "").trim();
+  if (!t) return true;
+  if (PROMO_SUMMARY_START.some((re) => re.test(t))) return true;
+  return t.length < 80 && PROMO_SUMMARY_ANY.test(t);
+}
+
 // 简易 RSS 2.0(<item>) 与 Atom(<entry>) 解析, 不引依赖。
 // 从 RSS/Atom item 提取一张文章配图: 媒体缩略图优先, 其次正文内 <img>
 function extractRssImage(blk) {
@@ -239,6 +262,8 @@ function parseRss(xml, limit) {
       blk.match(/<content:encoded[^>]*>([\s\S]*?)<\/content:encoded>/i) ||
       blk.match(/<summary[^>]*>([\s\S]*?)<\/summary>/i);
     let summary = descRaw ? stripHtml(descRaw[1]) : "";
+    // 栏目导语/引流话术里没有事实, 置空后上层会跳过整条(不发只剩空壳标题的帖)
+    if (isPromoSummary(summary)) summary = "";
     // Google News 等会把标题包进 description 的 <a> 里, 摘要会等于标题, 去重避免重复
     if (summary && normalizeText(summary).includes(normalizeText(title))) summary = "";
     summary = summary.slice(0, 240);
@@ -402,6 +427,8 @@ async function fetchRssNews(cfg, state) {
     const zhT = (zhTitles[i] || "").trim();
     const zhS = (zhSummaries[i] || "").trim();
     if (!zhT) continue; // 标题为空才跳过(翻译失败回退英文原文, 直接发英文帖)
+    // 英文规则没覆盖到、但翻译产物变成中文引流话术时在这里兜底跳过
+    if (isPromoSummary(zhS)) { log(`  过滤空壳摘要: ${zhT.slice(0, 30)}`); continue; }
     // 标题或摘要仍是原文 = 翻译失败, 标记英文原帖, 生成文案时不加中文解读段与 CTA, 避免再叠加中文
     const fallback = zhT === (raw[i].title || "").trim()
       || (raw[i].summary && zhS === (raw[i].summary || "").trim());
