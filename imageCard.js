@@ -16,7 +16,12 @@ const BG = "#0b0e11", CARD = "#181a20", FG = "#eaecef", SUB = "#848e9c";
 const GREEN = "#0ecb81", RED = "#f6465d";
 
 function fmtPrice(p) {
-  return Number(p).toLocaleString("en-US", { maximumFractionDigits: 4 });
+  const n = Number(p);
+  if (!Number.isFinite(n) || n === 0) return "0";
+  if (Math.abs(n) >= 1) return n.toLocaleString("en-US", { maximumFractionDigits: n >= 1000 ? 2 : 4 });
+  let s = n.toPrecision(4);
+  if (/e/i.test(s)) s = n.toFixed(20);
+  return s.replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "");
 }
 
 function makeMarketCard({ baseSymbol, pct, price, volMultiple, windowMinutes, at }) {

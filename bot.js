@@ -192,6 +192,18 @@ function normalizeText(s) {
     .replace(/\s+/g, " ")
     .trim();
 }
+// 把 RSS 摘要里的 HTML/CDATA/裸链接清成纯文本, 供资讯帖正文使用
+function stripHtml(s) {
+  const raw = (s || "").replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1");
+  const noTag = (x) => x
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ");
+  return noTag(decodeEntities(noTag(raw)))
+    .replace(/https?:\/\/\S+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 // 简易 RSS 2.0(<item>) 与 Atom(<entry>) 解析, 不引依赖。
 // 从 RSS/Atom item 提取一张文章配图: 媒体缩略图优先, 其次正文内 <img>
 function extractRssImage(blk) {
@@ -218,15 +230,20 @@ function parseRss(xml, limit) {
     const title = decodeEntities((blk.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1]);
     let link = "";
     const linkM = blk.match(/<link[^>]*>([\s\S]*?)<\/link>/i);
-    if (linkM) link = linkM[1].trim();
-    else { const l2 = blk.match(/<link[^>]*href="([^"]+)"/i); if (l2) link = l2[1]; }
+    if (linkM) link = decodeEntities(linkM[1]).trim();
+    if (!link) { const l2 = blk.match(/<link[^>]*href="([^"]+)"/i); if (l2) link = l2[1]; }
     const image = extractRssImage(blk);
+    const descRaw =
+      blk.match(/<description[^>]*>([\s\S]*?)<\/description>/i) ||
+      blk.match(/<content:encoded[^>]*>([\s\S]*?)<\/content:encoded>/i) ||
+      blk.match(/<summary[^>]*>([\s\S]*?)<\/summary>/i);
+    const summary = descRaw ? stripHtml(descRaw[1]).slice(0, 240) : "";
     let ts = 0;
     const pd = blk.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/i) ||
       blk.match(/<updated[^>]*>([\s\S]*?)<\/updated>/i) ||
       blk.match(/<published[^>]*>([\s\S]*?)<\/published>/i);
     if (pd) ts = Date.parse(pd[1].trim());
-    if (title) out.push({ title, link, image, ts: ts || Date.now() });
+    if (title) out.push({ title, link, image, summary, ts: ts || Date.now() });
   }
   return out;
 }
@@ -310,9 +327,11 @@ async function fetchRssNews(cfg, state) {
       const xml = await res.text();
       for (const it of parseRss(xml, limit)) {
         const link = it.link || "";
+        // 没有正文摘要的条目不收: 只发标题+链接的空壳帖没有阅读价值
+        if (!it.summary) continue;
         out.push({
           id: `news_${hashStr(normalizeText(it.title || link))}`,
-          kind: "news", source: feed.name, title: it.title, link, image: it.image, ts: it.ts,
+          kind: "news", source: feed.name, title: it.title, link, image: it.image, summary: it.summary, ts: it.ts,
         });
       }
     } catch (e) {
@@ -329,6 +348,15 @@ async function fetchRssNews(cfg, state) {
 // ---------- 帖子生成(从 templates.js 读词库) ----------
 
 const CASHTAG = (sym) => `$${sym}`;
+// 价格格式化: 低价币保留有效数字(如 0.00000452), 不能四舍五入成 0
+function fmtPrice(p) {
+  const n = Number(p);
+  if (!Number.isFinite(n) || n === 0) return "0";
+  if (Math.abs(n) >= 1) return n.toLocaleString("en-US", { maximumFractionDigits: n >= 1000 ? 2 : 4 });
+  let s = n.toPrecision(4);
+  if (/e/i.test(s)) s = n.toFixed(20);
+  return s.replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "");
+}
 // 简单去重: 记住最近 N 次用过的句子, 随机时优先跳过, 全撞过再放行
 const RECENT_DEPTH = 6;
 const recentUsed = { opener: [], closer: [] };
@@ -366,7 +394,7 @@ function genMarketPost(m) {
   const lines = [];
   lines.push(`📊 ${coin} ${m.windowMinutes} 分钟${up ? "涨" : "跌"} ${Math.abs(m.pct).toFixed(1)}%`);
   lines.push(`· ${opener}`);
-  lines.push(`· 现价 ${m.price.toLocaleString("en-US", { maximumFractionDigits: 4 })}`);
+  lines.push(`· 现价 ${fmtPrice(m.price)}`);
   lines.push(`· 成交量放大 ${m.volMultiple} 倍`);
   lines.push("");
   lines.push(closer);
@@ -426,7 +454,10 @@ function genNewsPost(m) {
   lines.push(`📰 ${m.source || "加密资讯"}`);
   lines.push("");
   if (m.title) lines.push(m.title);
-  if (m.link) lines.push(m.link);
+  if (m.summary) {
+    lines.push("");
+    lines.push(m.summary);
+  }
   lines.push("");
   lines.push("消息面仅供参考，操作看自己的判断。");
   lines.push("");
