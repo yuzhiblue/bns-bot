@@ -406,27 +406,6 @@ async function fetchRssNews(cfg, state) {
   return out;
 }
 
-async function fetchCryptoPanic(cfg, state) {
-  if (!cfg.cryptopanic?.enabled) return [];
-  const key = cfg.cryptopanic?.apiKey;
-  if (!key) { log("  加密恐慌: 未配置 apiKey, 跳过(去 cryptopanic.com 申请免费 key)"); return []; }
-  try {
-    const url = `https://cryptopanic.com/api/v1/posts/?auth_token=${encodeURIComponent(key)}&public=true`;
-    const j = await fetchJson(url, { headers: { "User-Agent": "Mozilla/5.0 (compatible; bns-bot/1.0)" } }, 15000);
-    const results = j?.results ?? [];
-    const out = results.slice(0, 10).map((r) => ({
-      id: `news_${hashStr(normalizeText(r.title || r.url))}`,
-      kind: "news", source: "CryptoPanic", title: r.title || "", link: r.url || "",
-      ts: Date.parse(r.created_at) || Date.now(),
-    }));
-    log(`  加密恐慌: ${out.length} 条候选`);
-    return out;
-  } catch (e) {
-    log(`  加密恐慌拉取失败: ${e.message}`);
-    return [];
-  }
-}
-
 // ---------- 公告(HTTP) ----------
 // 云端是短进程, 不挂长连接; 公告接口结构不固定, 宽松解析,
 // 失败或结构不认识就降级为空, 不影响其他素材。
@@ -1102,7 +1081,7 @@ async function runOnce() {
 
   // 2. 抓全部素材(并行拉)。所有抓取共享同一个 state 对象, 由本函数结尾统一落盘,
   //    避免并发写文件互相覆盖。公告走内置 HTTP 接口。
-  const [marketMoves, announcements, newCoins, funding, whales, fng, trending, movers, newsRss, newsCp] =
+  const [marketMoves, announcements, newCoins, funding, whales, fng, trending, movers, newsRss] =
     await Promise.all([
       fetchMarketMove(config),
       fetchAnnouncementsHttp(config, state),
@@ -1113,12 +1092,11 @@ async function runOnce() {
       fetchTrending(config, state),
       fetchMovers(config, state),
       fetchRssNews(config, state),
-      fetchCryptoPanic(config, state),
     ]);
 
   const candidates = [
     ...marketMoves, ...announcements, ...newCoins, ...funding, ...whales, ...fng,
-    ...trending, ...movers, ...newsRss, ...newsCp,
+    ...trending, ...movers, ...newsRss,
   ];
 
   // --force 模式: 没素材时用实时真实数据造一条行情帖(不用假数字, 避免虚假消息)
@@ -1142,7 +1120,7 @@ async function runOnce() {
   // 3. 去重(素材 id 没发过)
   const seen = new Set(state.postedMaterialIds);
   const fresh = candidates.filter((c) => !seen.has(c.id));
-  log(`素材: 行情 ${marketMoves.length} / 公告 ${announcements.length} / 新币 ${newCoins.length} / 费率 ${funding.length} / 鲸鱼 ${whales.length} / 情绪 ${fng.length} / 热搜 ${trending.length} / 涨跌 ${movers.length} / 资讯 ${newsRss.length + newsCp.length} = 共 ${fresh.length} 条未发`);
+  log(`素材: 行情 ${marketMoves.length} / 公告 ${announcements.length} / 新币 ${newCoins.length} / 费率 ${funding.length} / 鲸鱼 ${whales.length} / 情绪 ${fng.length} / 热搜 ${trending.length} / 涨跌 ${movers.length} / 资讯 ${newsRss.length} = 共 ${fresh.length} 条未发`);
 
   if (fresh.length === 0) {
     log("没有新素材, 本轮不发帖");

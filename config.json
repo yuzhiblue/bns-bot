@@ -136,9 +136,5 @@
         "url": "https://bitcoinmagazine.com/.rss/full/"
       }
     ]
-  },
-  "cryptopanic": {
-    "enabled": true,
-    "apiKey": ""
   }
 }
