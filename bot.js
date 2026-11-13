@@ -599,8 +599,12 @@ function genMoversPost(m, cfg) {
 function genNewsPost(m, cfg) {
   // 不显示文章来源平台名(如 CoinDesk / Cointelegraph): 币安广场对"把用户引向第三方平台"敏感,
   // 帖首挂别家媒体名容易被当成引流。m.source 仅保留在素材里供日志排查, 不渲染。
-  // 翻译失败回退的英文原帖: 只跳过中文解读段和 CTA, 其余保持原文结构
-  const closer = "消息面仅供参考，操作看自己的判断。";
+  // 收尾话术改走词库随机, 避免每条资讯帖结尾都是同一句"消息面仅供参考"。
+  // 关闭 post.take 时沿用旧句, 保证一键回退与改动前逐字一致。
+  // 翻译失败回退的英文原帖仍只跳过中文解读段和 CTA, 结构不变。
+  const closer = cfg.post?.take === false
+    ? "消息面仅供参考，操作看自己的判断。"
+    : pickFrom(TPL.newsClosers, "closer");
   const lines = [];
   if (m.title) lines.push(m.title);
   if (m.summary) {
