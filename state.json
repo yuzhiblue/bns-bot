@@ -112,15 +112,15 @@
   ],
   "timelineKey": "2026-11-13",
   "timelineIdx": 0,
-  "timelineSentCount": 6,
-  "timelineDay": "2026-11-05",
-  "lastRunAt": 1794526705130,
+  "timelineSentCount": 0,
+  "timelineDay": "2026-11-13",
+  "lastRunAt": 1794532098533,
   "sentimentDates": [
     "2026-11-11",
     "2026-11-12",
     "2026-11-13"
   ],
-  "lastFetchAt": 1794526705130,
+  "lastFetchAt": 1794532098533,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
