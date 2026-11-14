@@ -42,11 +42,12 @@
     "trending_2026-11-14_AKE_BTC_HYPE_ETH_PENGU_SOL",
     "news_hq6cw6",
     "news_id29rx",
-    "news_fna8k1"
+    "news_fna8k1",
+    "movers_2026-11-14_FIGR_HELOC_ADA_HYPE_SOL_ZEC_LINK_DOGE"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794665310528,
-  "todayPosted": 5,
+  "lastPostAt": 1794668922007,
+  "todayPosted": 6,
   "todayKey": "Sat Nov 14 2026",
   "postHistory": [
     {
@@ -306,6 +307,12 @@
       "kind": "news",
       "at": 1794665310528,
       "text": "做市商和交易商可能会因为比特币和以太币的交易价格范围而加剧市场波动。有意思的是，这种幕后力量往往比表面上的资金流动更影响短期的震荡节奏。\n\n#加密资讯"
+    },
+    {
+      "id": 388209548890459,
+      "kind": "movers",
+      "at": 1794668922007,
+      "text": "📊 24h 涨跌榜（全市场）\n\n领涨：FIGR_HELOC +4.4%\n领跌：ADA -8.7% / HYPE -8.6% / SOL -8.0% / ZEC -7.5% / LINK -7.0%\n\n榜单中唯一的领涨标的为单一代币FIGR_HELOC，其余资产全部录得跌幅。领跌阵营涵盖了Cardano、Solana、Hyperliquid等多条主流公链，以及Zcash、Chainlink和Dog"
     }
   ],
   "newCoinIds": [],
@@ -337,10 +344,10 @@
   ],
   "timelineKey": "2026-11-14",
   "timelineIdx": 0,
-  "timelineSentCount": 22,
+  "timelineSentCount": 23,
   "timelineDay": "2026-11-14",
-  "lastRunAt": 1794665298187,
-  "lastFetchAt": 1794665298187,
+  "lastRunAt": 1794668905326,
+  "lastFetchAt": 1794668905326,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -365,7 +372,7 @@
     "updatedAt": 1794586106417
   },
   "lastPostAtByKind": {
-    "movers": 1794650910784,
+    "movers": 1794668922007,
     "trending": 1794654513337,
     "news": 1794665310528
   }
