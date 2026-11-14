@@ -411,11 +411,54 @@ async function translateText(text, to = "zh-CN") {
   } catch (e) { return text; }
 }
 
+// 资讯解读: 用 LLM 针对单条新闻生成有具体指向的中文短评。
+// 失败 / 超时 / 未配置 → 返回 null, 由 genNewsPost 走 A 兜底(不加解读与 CTA), 绝不回退到规则套话。
+async function genNewsTake(m, cfg) {
+  const llm = cfg.llm;
+  if (!llm?.enabled) return null;
+  const key = process.env[llm.apiKeyEnv || "GITHUB_TOKEN"] || llm.apiKey;
+  if (!key) return null;
+  const system = [
+    "你是币安广场一个加密资讯号的运营, 写有观点但不煽动的中文短评。",
+    "只用给定的标题和摘要, 不编造新事实、不预测具体价格、不给买卖建议。",
+    "不要用'暴跌/崩盘/狂潮'等煽动词; 控制在 3 句以内; 不要以问号结尾; 不要用'解读:'这类前缀, 直接给正文。",
+  ].join("");
+  const user = `标题: ${m.title}\n摘要: ${m.summary}\n\n写一句有具体指向的点评: 例如这条对哪类参与者影响最大、市场为何这么反应、或接下来该看哪个信号。不要泛泛而谈"等后续数据"。`;
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), llm.timeoutMs ?? 15000);
+    const r = await fetch(`${llm.baseURL}/chat/completions`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
+      body: JSON.stringify({
+        model: llm.model,
+        messages: [{ role: "system", content: system }, { role: "user", content: user }],
+        temperature: 0.6,
+        max_tokens: 200,
+      }),
+      signal: ctrl.signal,
+    });
+    clearTimeout(t);
+    if (!r.ok) { log(`  LLM 解读失败 HTTP ${r.status}`); return null; }
+    const j = await r.json();
+    const text = (j?.choices?.[0]?.message?.content ?? "").trim().replace(/\s+/g, " ");
+    return text ? text.slice(0, llm.maxChars ?? 130) : null;
+  } catch (e) {
+    log(`  LLM 解读异常 ${e.message}`);
+    return null;
+  }
+}
+
 async function fetchRssNews(cfg, state) {
   if (!cfg.news?.enabled) return [];
   const feeds = cfg.news?.feeds ?? [];
   if (!feeds.length) return [];
   const limit = cfg.news?.perFeed ?? 2;
+  // 选题过滤: 资讯标题含强煽动词 / 未证实传闻时跳过。平台对这类内容限流且易被打"需核查"标;
+  // 行情异动 / 涨跌榜由数据驱动, 不在此列。词表可在 config.news.skipWords 增删。
+  const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const skipWords = cfg.news?.skipWords ?? [];
+  const skipRe = skipWords.length ? new RegExp(skipWords.map(escapeRe).join("|")) : null;
   const raw = [];
   await Promise.all(feeds.map(async (feed) => {
     try {
@@ -451,6 +494,8 @@ async function fetchRssNews(cfg, state) {
     const zhT = (zhTitles[i] || "").trim();
     const zhS = (zhSummaries[i] || "").trim();
     if (!zhT) continue; // 标题为空才跳过(翻译失败回退英文原文, 直接发英文帖)
+    // 选题过滤: 资讯标题含强煽动词 / 未证实传闻时跳过, 平台易限流且易被打"需核查"标
+    if (skipRe && skipRe.test(zhT)) { log(`  过滤煽动/传言标题: ${zhT.slice(0, 30)}`); continue; }
     // 英文规则没覆盖到、但翻译产物变成中文引流话术时在这里兜底跳过
     if (isPromoSummary(zhS)) { log(`  过滤空壳摘要: ${zhT.slice(0, 30)}`); continue; }
     // 标题或摘要仍是原文 = 翻译失败, 标记英文原帖, 生成文案时不加中文解读段与 CTA, 避免再叠加中文
@@ -599,21 +644,23 @@ function genMoversPost(m, cfg) {
 function genNewsPost(m, cfg) {
   // 不显示文章来源平台名(如 CoinDesk / Cointelegraph): 币安广场对"把用户引向第三方平台"敏感,
   // 帖首挂别家媒体名容易被当成引流。m.source 仅保留在素材里供日志排查, 不渲染。
-  // 收尾话术改走词库随机, 避免每条资讯帖结尾都是同一句"消息面仅供参考"。
-  // 关闭 post.take 时沿用旧句, 保证一键回退与改动前逐字一致。
-  // 翻译失败回退的英文原帖仍只跳过中文解读段和 CTA, 结构不变。
-  const closer = cfg.post?.take === false
-    ? "消息面仅供参考，操作看自己的判断。"
-    : pickFrom(TPL.newsClosers, "closer");
+  // 中文资讯解读由 LLM 在发帖前预生成并存入 m.take; 按你的选择, LLM 不可用 / 英文回退 / 关闭 take 时:
+  //   - take=false → 旧固定收尾, 与改动前逐字一致(一键回退);
+  //   - 其余 → 不加解读段与 CTA 的 A 兜底(仅标题 + 摘要 + 标签), 干净不公式化。
+  const isOff = cfg.post?.take === false;
   const lines = [];
   if (m.title) lines.push(m.title);
   if (m.summary) {
     lines.push("");
     lines.push(m.summary);
   }
-  lines.push(...takeLines(m, cfg));
-  lines.push("", closer);
-  lines.push(...ctaLines(m, cfg, closer));
+  if (isOff) {
+    lines.push("", "消息面仅供参考，操作看自己的判断。");
+  } else if (m.take) {
+    lines.push("", m.take);
+    lines.push("", pickFrom(TPL.newsClosers, "closer"));
+    lines.push(...ctaLines(m, cfg, m.take));
+  }
   lines.push("", "#加密资讯");
   return lines.join("\n");
 }
@@ -1102,6 +1149,10 @@ async function runOnce() {
     log(`  本轮 ${scored.length} 条候选热度: ${scored.map(({ m, score }) => `${m.kind}:${score.toFixed(1)}`).join(" / ")}`);
   }
   const material = scored[0].m;
+  // 中文资讯帖在真实发帖前调 LLM 生成解读, 存入 material.take; 失败 / 英文 / 关 take / dryRun 时留空走 A 兜底
+  if (material.kind === "news" && material.lang === "zh" && config.post?.take !== false && !config.dryRun) {
+    material.take = await genNewsTake(material, config);
+  }
   const text = buildPost(material, config);
   log(`本轮待发 [${material.kind}]:\n${text}`);
 

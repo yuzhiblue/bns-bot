@@ -66,7 +66,7 @@ function makeMarketCard({ baseSymbol, pct, price, volMultiple, windowMinutes, at
   ctx.fillRect(0, H - 96, W, 96);
   ctx.fillStyle = SUB;
   ctx.font = '30px "DejaVuSans", sans-serif';
-  ctx.fillText("Auto-posted by bns-bot · Not financial advice", 90, H - 40);
+  ctx.fillText("Not financial advice", 90, H - 40);
 
   return canvas.toBuffer("image/png");
 }
@@ -104,7 +104,7 @@ function drawChrome(ctx, { title, subtitle, accent, at }) {
   ctx.fillRect(0, 1080 - 96, 1080, 96);
   ctx.fillStyle = SUB;
   ctx.font = '30px "DejaVuSans", sans-serif';
-  ctx.fillText("Auto-posted by bns-bot · Not financial advice", 90, 1080 - 40);
+  ctx.fillText("Not financial advice", 90, 1080 - 40);
 }
 function makeCard(draw) {
   const canvas = createCanvas(1080, 1080);
@@ -235,12 +235,7 @@ function makeNewsCard({ titleEn, at }) {
     const title = asciiTitle(titleEn) || "No headline available";
     ctx.fillStyle = FG;
     ctx.font = 'bold 60px "DejaVuSansBold", sans-serif';
-    wrapAscii(ctx, title, 900, 5).forEach((line, i) => ctx.fillText(line, 90, 360 + i * 92));
-    ctx.fillStyle = CARD;
-    ctx.fillRect(90, 860, 900, 2);
-    ctx.fillStyle = SUB;
-    ctx.font = '34px "DejaVuSans", sans-serif';
-    ctx.fillText("Full summary in the post below", 90, 920);
+    wrapAscii(ctx, title, 900, 5).forEach((line, i) => ctx.fillText(line, 90, 430 + i * 92));
   });
 }
 
