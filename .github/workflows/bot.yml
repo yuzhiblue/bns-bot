@@ -15,6 +15,10 @@ on:
         description: "勾选后生成行情卡片图并带图发一条测试帖, 验证图片上传与发布链路"
         type: boolean
         default: false
+      force:
+        description: "勾选后强制发帖(绕过时间线静默期/节奏, 用于手动验证)"
+        type: boolean
+        default: false
       source:
         description: "触发来源标记, 仅用于日志辨识; 外部定时器可填 cron-job.org 等"
         type: string
@@ -68,7 +72,7 @@ jobs:
 
       - name: Run one cycle
         if: ${{ inputs.test_post != true }}
-        run: node bot.js --once
+        run: node bot.js --once ${{ inputs.force == true && '--force' || '' }}
 
       - name: Test image post
         if: ${{ inputs.test_image == true }}

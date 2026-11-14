@@ -1055,17 +1055,18 @@ async function refreshSymbolPoolIfNeeded(state) {
 async function runOnce() {
   log(`\n=== 开始一轮 @ ${new Date().toLocaleString("zh-CN", { hour12: false })}`);
   const state = loadState();
+  const forceMode = process.argv.includes("--force");
 
   // 1. 先判节奏再抓接口: 没到发帖时点就零请求退出, 且完全不改动 state,
   //    GitHub Actions 也不会为这种空转轮次提交 state.json。
   //    抓取频率从每 15 分钟一次降到每个 slot(默认 90min)一次。
-  if (config.schedule?.enabled) {
+  if (config.schedule?.enabled && !forceMode) {
     const gate = timelineGate(state);
     if (!gate.ok) {
       log(`时间线: ${gate.msg}, 本轮不抓接口也不发帖`);
       return;
     }
-  } else if (!canPostNow(state)) {
+  } else if (!forceMode && !canPostNow(state)) {
     log(`节奏未到 (今日已发 ${state.todayPosted}/${config.postsPerDay}, 最小间隔 ${config.minIntervalMinutes}min), 本轮不抓接口也不发帖`);
     return;
   }
@@ -1113,7 +1114,6 @@ async function runOnce() {
   ];
 
   // --force 模式: 没素材时用实时真实数据造一条行情帖(不用假数字, 避免虚假消息)
-  const forceMode = process.argv.includes("--force");
   if (candidates.length === 0 && forceMode) {
     try {
       const d = await fetchJson(`${BINANCE_API}/api/v3/ticker/24hr?symbol=BTCUSDT`);

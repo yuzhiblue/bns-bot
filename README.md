@@ -33,16 +33,14 @@
 ```bash
 node bot.js            # 跑一轮: 判节奏 → 到点才抓接口 → 抓完就发 → 退出
 node bot.js --once     # 同上, --once 只是兼容 workflow 写法的参数
-node bot.js --force    # 没素材时用实时行情造一条(仍受时间线约束)
+node bot.js --force    # 强制发一条(绕过时间线/节奏, 用于验证); 没素材时用实时行情造一条
 node bot.js --test     # 发一条测试帖验发帖接口
 node bot.js --test-image # 生成行情卡片图并带图发一条测试帖, 验图片链路(Actions 里勾 test_image)
 ```
 
 日常不用手动执行, `Actions → bns-bot → Run workflow` 即可触发一轮。
-`--force` 和 `--once` 可组合: `node bot.js --once --force`; `--force` 只在时间线
-允许发帖时才生效, 不会绕过节奏, **但会绕过 `dryRun` 真发帖**（判断是
-`if (config.dryRun && !forceMode)`）。线上 `dryRun=false` 用不到这个区别,
-本地调试别把 `--force` 当成「只生成不发送」。
+`--force` 和 `--once` 可组合: `node bot.js --once --force`; `--force` 现在**绕过时间线静默期与节奏**直接发帖(用于随时手动验证), 同时也会绕过 `dryRun` 真发帖。线上 `dryRun=false`, 在 Actions 勾 `force` 即可立即发一条真实帖子验证整条链路。
+本地调试别把 `--force` 当成「只生成不发送」——它会真发。
 
 ## 节奏参数
 
