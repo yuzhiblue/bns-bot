@@ -304,16 +304,10 @@ function parseRss(xml, limit) {
 async function fetchTrending(cfg, state) {
   if (!cfg.trending?.enabled) return [];
   const today = todayStrTZ(cfg.schedule?.timezone);
-  if ((state.trendingDates ?? []).includes(today)) {
-    log("  热搜: 今天已发过, 跳过");
-    return [];
-  }
   try {
     const j = await fetchJson("https://api.coingecko.com/api/v3/search/trending", {}, 15000);
     const coins = j?.coins ?? [];
     if (!coins.length) return [];
-    // "今日已发"日期不再在此记 —— 每轮只发分最高的 1 条, 热搜常被新闻压过,
-    // 抓到就记账会导致当天再也无法参选。改到发帖成功后按 kind 记(见 runOnce)。
     const items = coins.slice(0, cfg.trending?.topN ?? 6).map((c) => {
       const item = c.item ?? {};
       return {
@@ -324,7 +318,8 @@ async function fetchTrending(cfg, state) {
       };
     }).filter((x) => x.sym);
     log(`  热搜: ${items.length} 个热搜币`);
-    return [{ id: `trending_${today}`, kind: "trending", items, ts: Date.now() }];
+    // id 按当天币种列表签名: 列表没变 → 同 id 被去重不再发; 列表有变 → 新内容可再发(一天可多条)。
+    return [{ id: `trending_${today}_${items.map((x) => x.sym).join("_")}`, kind: "trending", items, ts: Date.now() }];
   } catch (e) {
     log(`  热搜拉取失败: ${e.message}`);
     return [];
@@ -334,10 +329,6 @@ async function fetchTrending(cfg, state) {
 async function fetchMovers(cfg, state) {
   if (!cfg.movers?.enabled) return [];
   const today = todayStrTZ(cfg.schedule?.timezone);
-  if ((state.moversDates ?? []).includes(today)) {
-    log("  涨跌榜: 今天已发过, 跳过");
-    return [];
-  }
   const topN = cfg.movers?.topN ?? 6;
   const minAbsPct = cfg.movers?.minAbsPct ?? 4;
   try {
@@ -348,13 +339,13 @@ async function fetchMovers(cfg, state) {
     const losers = [...arr].sort((a, b) => a.price_change_percentage_24h - b.price_change_percentage_24h).slice(0, topN);
     const filtered = [...gainers, ...losers].filter((c) => Math.abs(c.price_change_percentage_24h ?? 0) >= minAbsPct);
     if (!filtered.length) { log(`  涨跌榜: 24h 波动均 < ${minAbsPct}%, 跳过`); return []; }
-    // 同热搜: 记账移到发帖成功后, 避免候选被新闻压过后当天被冤枉封杀。
     const items = filtered.map((c) => ({
       sym: (c.symbol || "").toUpperCase(), name: c.name,
       pct: c.price_change_percentage_24h ?? 0, price: c.current_price,
     }));
     log(`  涨跌榜: ${items.length} 个涨跌币(≥${minAbsPct}%)`);
-    return [{ id: `movers_${today}`, kind: "movers", items, ts: Date.now() }];
+    // 同热搜: id 按当天上榜币种签名, 榜单有变才算新内容。
+    return [{ id: `movers_${today}_${items.map((x) => x.sym).join("_")}`, kind: "movers", items, ts: Date.now() }];
   } catch (e) {
     log(`  涨跌榜拉取失败: ${e.message}`);
     return [];
@@ -670,27 +661,28 @@ function genNewsPost(m, cfg) {
 }
 
 // 热度评分: 事件强度 + 新鲜度, 只用于同一轮多条素材里挑一条发。
-// 分数没有跨类型严格可比性, 但规则固定、日志可见, 便于按需调整权重。
+// 类型优先级: 行情异动 > 热搜 > 涨跌榜 > 新闻; 各类一天可多条(按内容去重),
+// 相邻两条不能同类(选择逻辑见 runOnce)。
 function heatScore(m) {
   const ageHours = Math.max(0, (Date.now() - (m.ts ?? Date.now())) / 3600000);
   const freshBonus = Math.max(0, 20 - ageHours); // 越新越高, 20 分封顶
   let base;
   switch (m.kind) {
     case "market":
-      // 涨跌幅度 + 量比放大倍数, 异动越猛分越高
-      base = 40 + Math.min(40, Math.abs(m.pct ?? 0) * 8) + Math.min(20, (m.volMultiple ?? 1) * 4);
+      // 涨跌幅度 + 量比放大倍数, 异动越猛分越高; base 拉高确保触发态稳压其余类型
+      base = 70 + Math.min(40, Math.abs(m.pct ?? 0) * 8) + Math.min(20, (m.volMultiple ?? 1) * 4);
       break;
     case "newCoin":
       base = 90 - Math.min(30, Math.max(0, (Date.now() - (m.onboardDate ?? Date.now())) / 86400000) * 4);
       break;
     case "trending":
-      base = 52;
+      base = 60;
       break;
     case "movers":
-      base = 53;
+      base = 55;
       break;
     case "news":
-      base = 58;
+      base = 40;
       break;
     default:
       base = 10;
@@ -1154,7 +1146,13 @@ async function runOnce() {
   if (scored.length > 1) {
     log(`  本轮 ${scored.length} 条候选热度: ${scored.map(({ m, score }) => `${m.kind}:${score.toFixed(1)}`).join(" / ")}`);
   }
-  const material = scored[0].m;
+  // 相邻两条不能同类: 上一条发了 A 类, 本轮改发次高分的其它类; 只剩 A 类可选时仍发它(避免空轮)。
+  const lastKind = (state.postHistory ?? []).slice(-1)[0]?.kind;
+  let material = scored[0].m;
+  if (lastKind && scored.length > 1) {
+    const alt = scored.find(({ m }) => m.kind !== lastKind);
+    if (alt) material = alt.m;
+  }
   // 中文资讯帖在真实发帖前调 LLM 生成解读, 存入 material.take; 失败 / 英文 / 关 take / dryRun 时留空走 A 兜底
   if (material.kind === "news" && material.lang === "zh" && config.post?.take !== false && !config.dryRun) {
     log("→ 触发 LLM 解读(news/zh/非dryRun)");
@@ -1178,13 +1176,6 @@ async function runOnce() {
     state.todayPosted++;
     markUsed(state, material.id);
     if (config.schedule?.enabled) state.timelineSentCount = (state.timelineSentCount ?? 0) + 1;
-    // 热搜/涨跌榜一天一条的"已发"日期, 在发帖成功后才记(此前抓到就记, 候选被新闻
-    // 压过没发出去也照记, 导致当天永远轮不到它们)。
-    if (material.kind === "trending" || material.kind === "movers") {
-      const today = todayStrTZ(config.schedule?.timezone);
-      const key = material.kind === "trending" ? "trendingDates" : "moversDates";
-      state[key] = [...(state[key] ?? []), today].slice(-30);
-    }
     state.postHistory = state.postHistory ?? [];
     state.postHistory.push({
       id: result.data?.id,

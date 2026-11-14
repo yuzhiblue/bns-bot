@@ -307,11 +307,5 @@
     "topN": 16,
     "minUsd": 30000000,
     "updatedAt": 1794586106417
-  },
-  "trendingDates": [
-    "2026-11-13"
-  ],
-  "moversDates": [
-    "2026-11-13"
-  ]
+  }
 }
