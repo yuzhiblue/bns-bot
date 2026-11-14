@@ -44,11 +44,12 @@
     "news_id29rx",
     "news_fna8k1",
     "movers_2026-11-14_FIGR_HELOC_ADA_HYPE_SOL_ZEC_LINK_DOGE",
-    "trending_2026-11-15_BTC_KAVA_ETH_HYPE_XRP_PENGU"
+    "trending_2026-11-15_BTC_KAVA_ETH_HYPE_XRP_PENGU",
+    "news_5e2wpa"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794672519668,
-  "todayPosted": 1,
+  "lastPostAt": 1794676121773,
+  "todayPosted": 2,
   "todayKey": "Sun Nov 15 2026",
   "postHistory": [
     {
@@ -320,6 +321,12 @@
       "kind": "trending",
       "at": 1794672519668,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BTC (-4.7%)\n2. KAVA (-42.2%)\n3. ETH (-4.9%)\n4. HYPE (-7.5%)\n5. XRP (-4.9%)\n6. PENGU (-13.5%)\n\n榜单前列的BTC、ETH、XRP等主流资产普遍录得约5%左右的跌幅，显示大盘处于同步调整状态。Kava与PENGU跌幅显著深于主流币种，表明资金对中小市值及特定题材"
+    },
+    {
+      "id": 388239039083341,
+      "kind": "news",
+      "at": 1794676121773,
+      "text": "OpenAI、Anthropic、谷歌等AI巨头面临要求停止研发的诉讼，四个非营利倡导组织希望加州法院阻止主要人工智能开发商构建更强大的模型，声称他们的技术可能会在全球范围内造成灾难性伤害。这事儿挺意外，看来大家不只是在讨论技术边界了，直接想按暂停键，法院那边怎么判还得走着瞧。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -351,10 +358,10 @@
   ],
   "timelineKey": "2026-11-15",
   "timelineIdx": 0,
-  "timelineSentCount": 1,
+  "timelineSentCount": 2,
   "timelineDay": "2026-11-15",
-  "lastRunAt": 1794672495434,
-  "lastFetchAt": 1794672495434,
+  "lastRunAt": 1794676100902,
+  "lastFetchAt": 1794676100902,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -379,6 +386,6 @@
   "lastPostAtByKind": {
     "movers": 1794668922007,
     "trending": 1794672519668,
-    "news": 1794665310528
+    "news": 1794676121773
   }
 }
