@@ -1055,7 +1055,8 @@ async function refreshSymbolPoolIfNeeded(state) {
 async function runOnce() {
   log(`\n=== 开始一轮 @ ${new Date().toLocaleString("zh-CN", { hour12: false })}`);
   const state = loadState();
-  const forceMode = process.argv.includes("--force");
+  const forceMode = process.argv.includes("--force") || process.env.FORCE === "true";
+  log(`▶ forceMode=${forceMode} argv=[${process.argv.slice(2).join(" ")}] FORCE_env=${process.env.FORCE ?? ""}`);
 
   // 1. 先判节奏再抓接口: 没到发帖时点就零请求退出, 且完全不改动 state,
   //    GitHub Actions 也不会为这种空转轮次提交 state.json。

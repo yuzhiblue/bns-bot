@@ -72,7 +72,9 @@ jobs:
 
       - name: Run one cycle
         if: ${{ inputs.test_post != true }}
-        run: node bot.js --once ${{ inputs.force == true && '--force' || '' }}
+        env:
+          FORCE: ${{ inputs.force }}
+        run: node bot.js --once
 
       - name: Test image post
         if: ${{ inputs.test_image == true }}
