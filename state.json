@@ -32,11 +32,12 @@
     "news_1xhsq3t",
     "news_ss8mf3",
     "news_1f9pe3q",
-    "news_2nslvc"
+    "news_2nslvc",
+    "news_o1725t"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794625706922,
-  "todayPosted": 33,
+  "lastPostAt": 1794627891375,
+  "todayPosted": 34,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -236,6 +237,12 @@
       "kind": "news",
       "at": 1794625706922,
       "text": "Joe Carlasare 谈比特币的“极度恐惧”：“我是这里的买家”\n\n今年早些时候，比特币在不到 90 天的时间里从 57,000 涨到 82,000，乔·卡拉萨尔 (Joe Carlasare) 表示，这就是为什么他拒绝资本无法涌入的观点。\n\n#加密资讯"
+    },
+    {
+      "id": 388041487493890,
+      "kind": "news",
+      "at": 1794627891375,
+      "text": "比尔·米勒四世：“他们没有印制更多比特币”\n\nMiller Value Partners 董事长兼首席信息官 Bill Miller IV 与 Grace Remington 和 Sean Hagan 一起在 BMTV 上解释了为什么他仍然看好比特币，而情绪已接近 FTX 时代的低点。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -267,9 +274,9 @@
   ],
   "timelineKey": "2026-11-14",
   "timelineIdx": 0,
-  "timelineSentCount": 12,
+  "timelineSentCount": 13,
   "timelineDay": "2026-11-14",
-  "lastRunAt": 1794625699743,
+  "lastRunAt": 1794627885250,
   "lastFetchAt": 1794625699743,
   "symbols": [
     "BTCUSDT",
