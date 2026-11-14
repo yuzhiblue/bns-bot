@@ -36,11 +36,12 @@
     "news_o1725t",
     "news_1rvrjt5",
     "trending_2026-11-14_AKE_BTC_PEARL_PENGU_NEAR_ETH",
-    "movers_2026-11-14_FIGR_HELOC_SOL_ADA_ZEC"
+    "movers_2026-11-14_FIGR_HELOC_SOL_ADA_ZEC",
+    "trending_2026-11-14_BTC_AKE_SOL_HYPE_PENGU_ADA"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794640114225,
-  "todayPosted": 37,
+  "lastPostAt": 1794643712752,
+  "todayPosted": 38,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -264,6 +265,12 @@
       "kind": "movers",
       "at": 1794640114225,
       "text": "📊 24h 涨跌榜（全市场）\n\n领涨：FIGR_HELOC +4.5%\n领跌：SOL -5.9% / ADA -4.2% / ZEC -4.0%\n\n榜单领涨 1 个、领跌 3 个，涨跌分化说明资金在挑方向，不是整体单边。面对这类榜单先看大盘与杠杆清算，再逐个给个币找理由容易过度解读。\n\n极端波动时更要注意风险，别追在尖上。\n\n你更关注大盘还是个币差异？\n\n#涨跌榜单 #行情异动"
+    },
+    {
+      "id": 388106291778011,
+      "kind": "trending",
+      "at": 1794643712752,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BTC (-2.1%)\n2. AKE (+177.5%)\n3. SOL (-5.6%)\n4. HYPE (-2.1%)\n5. PENGU (-3.9%)\n6. ADA (-4.6%)\n\n主流币种整体承压，BTC、SOL及ADA等大盘资产均录得负收益，显示当前市场情绪偏向谨慎。榜单唯一的高涨幅标的AKE占据显著位置，反映出散户资金对低市值新项目的投机兴"
     }
   ],
   "newCoinIds": [],
@@ -295,10 +302,10 @@
   ],
   "timelineKey": "2026-11-14",
   "timelineIdx": 0,
-  "timelineSentCount": 16,
+  "timelineSentCount": 17,
   "timelineDay": "2026-11-14",
-  "lastRunAt": 1794640107496,
-  "lastFetchAt": 1794640107496,
+  "lastRunAt": 1794643700430,
+  "lastFetchAt": 1794643700430,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
