@@ -73,6 +73,8 @@ jobs:
         if: ${{ inputs.test_post != true }}
         env:
           FORCE: ${{ inputs.force }}
+          # 自定义 Secret 不会自动注入环境变量, 必须显式透传; 换 provider 改 config.llm.apiKeyEnv 时记得同步这里
+          AGNES_API_KEY: ${{ secrets.AGNES_API_KEY }}
         run: node bot.js --once
 
       - name: Test image post
