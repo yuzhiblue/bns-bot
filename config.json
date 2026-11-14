@@ -83,9 +83,9 @@
     },
     "llm": {
         "enabled": true,
-        "baseURL": "https://api.deepseek.com/v1",
-        "model": "deepseek-chat",
-        "apiKeyEnv": "DEEPSEEK_API_KEY",
+        "baseURL": "https://apihub.agnes-ai.com/v1",
+        "model": "agnes-3.0-flash",
+        "apiKeyEnv": "AGNES_API_KEY",
         "timeoutMs": 15000,
         "maxChars": 130
     }
