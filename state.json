@@ -40,11 +40,12 @@
     "trending_2026-11-14_BTC_AKE_SOL_HYPE_PENGU_ADA",
     "movers_2026-11-14_SOL_ADA_ZEC",
     "trending_2026-11-14_AKE_BTC_HYPE_ETH_PENGU_SOL",
-    "news_hq6cw6"
+    "news_hq6cw6",
+    "news_id29rx"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794658111553,
-  "todayPosted": 3,
+  "lastPostAt": 1794661732883,
+  "todayPosted": 4,
   "todayKey": "Sat Nov 14 2026",
   "postHistory": [
     {
@@ -292,6 +293,12 @@
       "kind": "news",
       "at": 1794658111553,
       "text": "微软刚发了公告，确认全球服务中断已经恢复，讲真这反应速度还挺快。他们把原因归结于网络容量升级问题，并特意强调这次事件和网络攻击或人工智能代理无关，算是排除了不少猜测。\n\n#加密资讯"
+    },
+    {
+      "id": 388180102269335,
+      "kind": "news",
+      "at": 1794661732883,
+      "text": "比特币政策研究所的报告提到，英国其实可以拿比特币挖矿去吸收苏格兰那些过剩的风电，这样就能省掉因为停机而付给风电场的钱，一年能砍掉13亿美元的电网费用，这事儿挺意外的。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -323,10 +330,10 @@
   ],
   "timelineKey": "2026-11-14",
   "timelineIdx": 0,
-  "timelineSentCount": 20,
+  "timelineSentCount": 21,
   "timelineDay": "2026-11-14",
-  "lastRunAt": 1794658098621,
-  "lastFetchAt": 1794658098621,
+  "lastRunAt": 1794661720353,
+  "lastFetchAt": 1794661720353,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -353,6 +360,6 @@
   "lastPostAtByKind": {
     "movers": 1794650910784,
     "trending": 1794654513337,
-    "news": 1794658111553
+    "news": 1794661732883
   }
 }
