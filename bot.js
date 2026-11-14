@@ -312,7 +312,8 @@ async function fetchTrending(cfg, state) {
     const j = await fetchJson("https://api.coingecko.com/api/v3/search/trending", {}, 15000);
     const coins = j?.coins ?? [];
     if (!coins.length) return [];
-    state.trendingDates = [...(state.trendingDates ?? []), today].slice(-30);
+    // "今日已发"日期不再在此记 —— 每轮只发分最高的 1 条, 热搜常被新闻压过,
+    // 抓到就记账会导致当天再也无法参选。改到发帖成功后按 kind 记(见 runOnce)。
     const items = coins.slice(0, cfg.trending?.topN ?? 6).map((c) => {
       const item = c.item ?? {};
       return {
@@ -347,7 +348,7 @@ async function fetchMovers(cfg, state) {
     const losers = [...arr].sort((a, b) => a.price_change_percentage_24h - b.price_change_percentage_24h).slice(0, topN);
     const filtered = [...gainers, ...losers].filter((c) => Math.abs(c.price_change_percentage_24h ?? 0) >= minAbsPct);
     if (!filtered.length) { log(`  涨跌榜: 24h 波动均 < ${minAbsPct}%, 跳过`); return []; }
-    state.moversDates = [...(state.moversDates ?? []), today].slice(-30);
+    // 同热搜: 记账移到发帖成功后, 避免候选被新闻压过后当天被冤枉封杀。
     const items = filtered.map((c) => ({
       sym: (c.symbol || "").toUpperCase(), name: c.name,
       pct: c.price_change_percentage_24h ?? 0, price: c.current_price,
@@ -1177,6 +1178,13 @@ async function runOnce() {
     state.todayPosted++;
     markUsed(state, material.id);
     if (config.schedule?.enabled) state.timelineSentCount = (state.timelineSentCount ?? 0) + 1;
+    // 热搜/涨跌榜一天一条的"已发"日期, 在发帖成功后才记(此前抓到就记, 候选被新闻
+    // 压过没发出去也照记, 导致当天永远轮不到它们)。
+    if (material.kind === "trending" || material.kind === "movers") {
+      const today = todayStrTZ(config.schedule?.timezone);
+      const key = material.kind === "trending" ? "trendingDates" : "moversDates";
+      state[key] = [...(state[key] ?? []), today].slice(-30);
+    }
     state.postHistory = state.postHistory ?? [];
     state.postHistory.push({
       id: result.data?.id,
