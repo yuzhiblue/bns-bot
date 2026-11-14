@@ -34,11 +34,12 @@
     "news_1f9pe3q",
     "news_2nslvc",
     "news_o1725t",
-    "news_1rvrjt5"
+    "news_1rvrjt5",
+    "trending_2026-11-14_AKE_BTC_PEARL_PENGU_NEAR_ETH"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794632903970,
-  "todayPosted": 35,
+  "lastPostAt": 1794636510826,
+  "todayPosted": 36,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -250,6 +251,12 @@
       "kind": "news",
       "at": 1794632903970,
       "text": "中本聪时代的钱包在一场价值 2600 亿美元的诉讼中转移了自 2011 年以来持有的 75 个比特币\n\n这笔大约 500 万美元的转账还花掉了 5 月份用于向该地址发送法庭通知的小额付款。\n\n#加密资讯"
+    },
+    {
+      "id": 388076792753442,
+      "kind": "trending",
+      "at": 1794636510826,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. AKE (+276.0%)\n2. BTC (-1.4%)\n3. PEARL (+17.7%)\n4. PENGU (+0.8%)\n5. NEAR (+0.9%)\n6. ETH (-0.3%)\n\n这份榜单里 6 个币有 4 个 24h 上涨，热度与价格同向，注意力确实跟着涨幅走。热搜排名反映的是注意力，不等于资金流向；注意力先到、资金未必跟。我更愿意把它"
     }
   ],
   "newCoinIds": [],
@@ -281,10 +288,10 @@
   ],
   "timelineKey": "2026-11-14",
   "timelineIdx": 0,
-  "timelineSentCount": 14,
+  "timelineSentCount": 15,
   "timelineDay": "2026-11-14",
-  "lastRunAt": 1794635210750,
-  "lastFetchAt": 1794632897008,
+  "lastRunAt": 1794636504573,
+  "lastFetchAt": 1794636504573,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
