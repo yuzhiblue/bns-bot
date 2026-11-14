@@ -41,8 +41,8 @@
   ],
   "lastMarketSnap": {},
   "lastPostAt": 1794643712752,
-  "todayPosted": 38,
-  "todayKey": "Wed Nov 04 2026",
+  "todayPosted": 0,
+  "todayKey": "Sat Nov 14 2026",
   "postHistory": [
     {
       "id": 384586116533396,
@@ -304,8 +304,8 @@
   "timelineIdx": 0,
   "timelineSentCount": 17,
   "timelineDay": "2026-11-14",
-  "lastRunAt": 1794643700430,
-  "lastFetchAt": 1794643700430,
+  "lastRunAt": 1794646750400,
+  "lastFetchAt": 1794646750400,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",

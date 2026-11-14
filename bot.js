@@ -3,13 +3,15 @@
  * bns-bot — 币安广场自动发帖机器人（GitHub Actions 纯云端单次模式）
  * 抓取行情异动 / 新币 / 热搜榜 / 涨跌榜 / 资讯 RSS → 生成带 $币种 的帖子 → 调官方 OpenAPI 发布
  *
- * 每次运行只跑一轮就退出, 由 workflow 的 cron 定时唤起; 状态靠 state.json 持久化,
+ * 每次运行只跑一轮就退出, 由外部定时器(CNB, 每 15 分钟 POST workflow_dispatch)唤起;
+ * 状态靠 state.json 持久化,
  * 配置: 仓库 config.json 为基准(不含 Key), 云端由 workflow 把 Secret 里的 openApiKey 注入;
  * 本地可放 config.local.json(含 Key, gitignore, 优先)。没有常驻进程、没有长连接。
  *
  * 用法:
  *   node bot.js            跑一轮(workflow 里写作 node bot.js --once, --once 为兼容参数)
- *   node bot.js --force    没素材时用实时行情造一条(仍受时间线约束)
+ *   node bot.js --force    强制发一条(绕过时间线/节奏/抓取冷却/类型冷却, 用于手动验证);
+ *                          没素材时用实时行情造一条
  *   node bot.js --test     发一条测试帖验发帖接口
  */
 
@@ -58,11 +60,6 @@ function loadState() {
 
 function saveState(state) {
   fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
-}
-
-function isSameDay(ts, now = new Date()) {
-  const d = new Date(ts);
-  return d.toDateString() === now.toDateString();
 }
 
 // 简易防重复:素材 id 去重
@@ -301,7 +298,7 @@ function parseRss(xml, limit) {
   return out;
 }
 
-async function fetchTrending(cfg, state) {
+async function fetchTrending(cfg) {
   if (!cfg.trending?.enabled) return [];
   const today = todayStrTZ(cfg.schedule?.timezone);
   try {
@@ -326,7 +323,7 @@ async function fetchTrending(cfg, state) {
   }
 }
 
-async function fetchMovers(cfg, state) {
+async function fetchMovers(cfg) {
   if (!cfg.movers?.enabled) return [];
   const today = todayStrTZ(cfg.schedule?.timezone);
   const topN = cfg.movers?.topN ?? 6;
@@ -403,43 +400,56 @@ async function translateText(text, to = "zh-CN") {
   } catch (e) { return text; }
 }
 
+// 统一的 LLM chat 调用: 超时/鉴权/响应解析集中在这里,
+// 三个调用方(标题翻译/榜单解读/资讯整帖改写)只负责拼 prompt 与后校验。
+// 返回 content 文本; 未启用 / 无 key / 失败 / 空 content 一律返回 null, 由调用方自行降级。
+async function llmChat(cfg, system, user, { temperature = 0.6, maxTokens = 200, label = "LLM" } = {}) {
+  const llm = cfg.llm;
+  if (!llm?.enabled) { log(`  ${label} 未启用`); return null; }
+  const key = process.env[llm.apiKeyEnv || "GITHUB_TOKEN"] || llm.apiKey;
+  if (!key) { log(`  ${label} 跳过: 未找到 API key(${llm.apiKeyEnv || "GITHUB_TOKEN"})`); return null; }
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), llm.timeoutMs ?? 15000);
+    const r = await fetch(`${llm.baseURL}/chat/completions`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
+      body: JSON.stringify({
+        model: llm.model,
+        messages: [{ role: "system", content: system }, { role: "user", content: user }],
+        temperature,
+        max_tokens: maxTokens,
+      }),
+      signal: ctrl.signal,
+    });
+    clearTimeout(t);
+    if (!r.ok) { log(`  ${label} 失败 HTTP ${r.status}: ${(await r.text()).slice(0, 200)}`); return null; }
+    const j = await r.json();
+    const text = (j?.choices?.[0]?.message?.content ?? "").trim();
+    if (!text) { log(`  ${label} 返回空 content`); return null; }
+    return text;
+  } catch (e) {
+    log(`  ${label} 异常 ${e.message}`);
+    return null;
+  }
+}
+
 // LLM 翻译新闻标题: 质量优于机翻(术语地道、语气中性化), 且结果更稳定。
 // 每轮 ≤8 个调用, 与解读 1 次合计 ≤9, 控制在 Agnes 10 RPM 内; 分批(每批 4 个)并发。
 // 单条失败 / 无 key / 返回非中文 → 回退 Google 机翻, 再失败英文 A 兜底(三层链)。
 async function translateTitlesWithLlm(raw, cfg) {
   const results = new Array(raw.length).fill("");
-  const llm = cfg.llm;
-  if (llm?.enabled) {
-    const key = process.env[llm.apiKeyEnv || "GITHUB_TOKEN"] || llm.apiKey;
-    if (key) {
-      const system = "你是专业的加密行业新闻编辑。把英文标题翻译成简体中文: 用地道的行业用语, 语气中性, 去掉夸大词和感叹号。只输出译文本身, 不加任何解释、引号或前后缀。";
-      const translateOne = async (i) => {
-        try {
-          const ctrl = new AbortController();
-          const t = setTimeout(() => ctrl.abort(), llm.timeoutMs ?? 15000);
-          const r = await fetch(`${llm.baseURL}/chat/completions`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
-            body: JSON.stringify({
-              model: llm.model,
-              messages: [{ role: "system", content: system }, { role: "user", content: (raw[i].title || "").trim() }],
-              temperature: 0.2,
-            }),
-            signal: ctrl.signal,
-          });
-          clearTimeout(t);
-          if (!r.ok) return;
-          const j = await r.json();
-          const text = (j?.choices?.[0]?.message?.content ?? "").trim()
-            .replace(/^["'「『]+/, "").replace(/["'」』]+$/, "");
-          // 防 LLM 偷懒原样返回: 译文必须含中文字符且不等于原文才算成功
-          if (text && /[\u4e00-\u9fff]/.test(text) && text !== (raw[i].title || "").trim()) results[i] = text;
-        } catch { /* 回退机翻 */ }
-      };
-      for (let start = 0; start < raw.length; start += 4) {
-        await Promise.all(raw.slice(start, start + 4).map((_, k) => translateOne(start + k)));
-      }
-    }
+  const system = "你是专业的加密行业新闻编辑。把英文标题翻译成简体中文: 用地道的行业用语, 语气中性, 去掉夸大词和感叹号。只输出译文本身, 不加任何解释、引号或前后缀。";
+  const translateOne = async (i) => {
+    const text = await llmChat(cfg, system, (raw[i].title || "").trim(), { temperature: 0.2, maxTokens: 100, label: "LLM 翻译" });
+    if (!text) return;
+    const clean = text.replace(/^["'「『]+/, "").replace(/["'」』]+$/, "");
+    // 防 LLM 偷懒原样返回: 译文必须含中文字符且不等于原文才算成功
+    if (clean && /[\u4e00-\u9fff]/.test(clean) && clean !== (raw[i].title || "").trim()) results[i] = clean;
+  };
+  // 分批(每批 4 个)并发, 控制 RPM
+  for (let start = 0; start < raw.length; start += 4) {
+    await Promise.all(raw.slice(start, start + 4).map((_, k) => translateOne(start + k)));
   }
   // LLM 没覆盖到的(无 key / 超时 / 校验不过)逐条回退 Google 机翻
   await Promise.all(raw.map(async (r, i) => {
@@ -448,25 +458,17 @@ async function translateTitlesWithLlm(raw, cfg) {
   return results;
 }
 
-// 资讯解读: 用 LLM 针对单条新闻生成有具体指向的中文短评。
-// 失败 / 超时 / 未配置 → 返回 null, 由 genNewsPost 走 A 兜底(不加解读与 CTA), 绝不回退到规则套话。
-// LLM 解读: 资讯按标题/摘要点评, 热搜/涨跌榜点评榜单结构。
+// 榜单解读: 热搜/涨跌榜由 LLM 点评榜单结构。
 // 硬约束: 只用给定数据, 不编造事实、不猜具体原因、不给买卖建议; 失败返回 null,
-// 热搜/涨跌榜回退 takes.js 规则推导, 资讯走 A 兜底。
+// 回退 takes.js 规则推导。资讯的解读走 genNewsRewrite(整帖改写), 不经过本函数。
 async function genTake(m, cfg) {
-  const llm = cfg.llm;
-  if (!llm?.enabled) { log("  LLM 未启用, 走规则推导/兜底"); return null; }
-  const key = process.env[llm.apiKeyEnv || "GITHUB_TOKEN"] || llm.apiKey;
-  if (!key) { log(`  LLM 跳过: 未找到 API key(${llm.apiKeyEnv || "GITHUB_TOKEN"})`); return null; }
   const system = [
     "你是币安广场一个加密资讯号的运营, 写有观点但不煽动的中文短评。",
     "只用给定的数据, 不编造新事实、不猜具体原因、不预测具体价格、不给买卖建议。",
     "不要用'暴跌/崩盘/狂潮'等煽动词; 控制在 3 句以内; 不要以问号结尾; 不要用'解读:'这类前缀, 直接给正文。",
   ].join("");
   let user;
-  if (m.kind === "news") {
-    user = `标题: ${m.title}\n摘要: ${m.summary}\n\n写一句有具体指向的点评: 例如这条对哪类参与者影响最大、市场为何这么反应、或接下来该看哪个信号。不要泛泛而谈"等后续数据"。`;
-  } else if (m.kind === "trending") {
+  if (m.kind === "trending") {
     const list = m.items.map((x, i) => {
       const chg = x.data?.price_change_percentage_24h?.usd;
       const pct = (typeof chg === "number") ? ` 24h${chg >= 0 ? "+" : ""}${chg.toFixed(1)}%` : "";
@@ -479,42 +481,17 @@ async function genTake(m, cfg) {
   } else {
     return null;
   }
-  try {
-    const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), llm.timeoutMs ?? 15000);
-    const r = await fetch(`${llm.baseURL}/chat/completions`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
-      body: JSON.stringify({
-        model: llm.model,
-        messages: [{ role: "system", content: system }, { role: "user", content: user }],
-        temperature: 0.6,
-        max_tokens: 200,
-      }),
-      signal: ctrl.signal,
-    });
-    clearTimeout(t);
-    log(`  LLM 请求 ${llm.baseURL}/chat/completions → HTTP ${r.status}`);
-    if (!r.ok) { log(`  LLM 解读失败 HTTP ${r.status}: ${(await r.text()).slice(0, 200)}`); return null; }
-    const j = await r.json();
-    const text = (j?.choices?.[0]?.message?.content ?? "").trim().replace(/\s+/g, " ");
-    if (!text) { log(`  LLM 返回空 content(choices=${j?.choices?.length}), 走 A 兜底`); return null; }
-    log(`  LLM 解读 OK(${text.length}字)`);
-    return text.slice(0, llm.maxChars ?? 130);
-  } catch (e) {
-    log(`  LLM 解读异常 ${e.message}`);
-    return null;
-  }
+  const text = await llmChat(cfg, system, user, { temperature: 0.6, maxTokens: 200, label: "LLM 解读" });
+  if (!text) return null;
+  const clean = text.replace(/\s+/g, " ");
+  log(`  LLM 解读 OK(${clean.length}字)`);
+  return clean.slice(0, cfg.llm?.maxChars ?? 130);
 }
 
 // LLM 整帖改写: 把新闻标题+摘要改写成口语化的个人分享帖, 降低"搬运"判定风险。
 // 硬约束: 事实只来自给定标题与摘要, 数字/日期/人名/机构名原样保留, 不编造细节或延伸事实,
 // 不给买卖建议, 不用煽动词, 2-4 句。失败返回 null 走 A 兜底(标题+摘要拼接)。
 async function genNewsRewrite(m, cfg) {
-  const llm = cfg.llm;
-  if (!llm?.enabled) { log("  LLM 未启用, 走 A 兜底"); return null; }
-  const key = process.env[llm.apiKeyEnv || "GITHUB_TOKEN"] || llm.apiKey;
-  if (!key) { log(`  LLM 跳过: 未找到 API key(${llm.apiKeyEnv || "GITHUB_TOKEN"})`); return null; }
   const system = [
     "你是币安广场上的一个加密老玩家, 用自己的口气把新闻改写成一条随手分享的个人帖。",
     "硬性要求: 事实只来自给定内容, 数字、日期、人名、机构名必须逐字原样保留(不得改写形式、加减修饰词, 如'5月份'不能写成'5月份之前'), 绝不编造细节或延伸事实;",
@@ -524,43 +501,23 @@ async function genNewsRewrite(m, cfg) {
     "不给买卖建议; 不以问号结尾; 不要用'解读:'这类前缀; 不要加任何话题标签。",
   ].join("");
   const user = `新闻标题: ${m.title}\n新闻摘要: ${m.summary}\n\n按系统要求把这条新闻改写成一条分享帖。`;
-  try {
-    const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), llm.timeoutMs ?? 15000);
-    const r = await fetch(`${llm.baseURL}/chat/completions`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
-      body: JSON.stringify({
-        model: llm.model,
-        messages: [{ role: "system", content: system }, { role: "user", content: user }],
-        temperature: 0.5,
-        max_tokens: 300,
-      }),
-      signal: ctrl.signal,
-    });
-    clearTimeout(t);
-    log(`  LLM 改写请求 → HTTP ${r.status}`);
-    if (!r.ok) { log(`  LLM 改写失败 HTTP ${r.status}: ${(await r.text()).slice(0, 200)}`); return null; }
-    const j = await r.json();
-    const text = (j?.choices?.[0]?.message?.content ?? "").trim().replace(/\s+/g, " ");
-    if (!text || !/[\u4e00-\u9fff]/.test(text) || text.length < 20) {
-      log("  LLM 改写结果无效, 走 A 兜底");
-      return null;
-    }
-    // 确定性校验: 原文里的所有数字(金额/百分比/年份/数量)必须原样出现在改写文本中,
-    // 防止 LLM 改写时丢数字或改数字——这是"不编造事实"的底线, 过不了就走 A 兜底。
-    const srcNums = `${m.title} ${m.summary}`.match(/\d[\d,.]*%?/g) ?? [];
-    const missing = srcNums.filter((n) => !text.includes(n.replace(/,$/, "")));
-    if (missing.length) {
-      log(`  LLM 改写丢失数字(${missing.join(", ")}), 走 A 兜底`);
-      return null;
-    }
-    log(`  LLM 改写 OK(${text.length}字)`);
-    return text;
-  } catch (e) {
-    log(`  LLM 改写异常 ${e.message}`);
+  const raw = await llmChat(cfg, system, user, { temperature: 0.5, maxTokens: 300, label: "LLM 改写" });
+  if (!raw) return null;
+  const text = raw.replace(/\s+/g, " ");
+  if (!/[\u4e00-\u9fff]/.test(text) || text.length < 20) {
+    log("  LLM 改写结果无效, 走 A 兜底");
     return null;
   }
+  // 确定性校验: 原文里的所有数字(金额/百分比/年份/数量)必须原样出现在改写文本中,
+  // 防止 LLM 改写时丢数字或改数字——这是"不编造事实"的底线, 过不了就走 A 兜底。
+  const srcNums = `${m.title} ${m.summary}`.match(/\d[\d,.]*%?/g) ?? [];
+  const missing = srcNums.filter((n) => !text.includes(n.replace(/,$/, "")));
+  if (missing.length) {
+    log(`  LLM 改写丢失数字(${missing.join(", ")}), 走 A 兜底`);
+    return null;
+  }
+  log(`  LLM 改写 OK(${text.length}字)`);
+  return text;
 }
 
 async function fetchRssNews(cfg, state) {
@@ -600,7 +557,7 @@ async function fetchRssNews(cfg, state) {
   }));
   // 英文媒体自带摘要: 标题用 LLM 翻译(门面 + 质量关键, 每轮 ≤8 调用, 加解读 1 次卡在 10 RPM 内),
   // 摘要维持免费 Google 机翻(正文细节, 机翻够用)。翻译失败回退英文原文直接发。
-  const zhTitles = await translateTitlesWithLlm(raw, config);
+  const zhTitles = await translateTitlesWithLlm(raw, cfg);
   const zhSummaries = await Promise.all(raw.map((r) => translateText(r.summary)));
   const out = [];
   for (let i = 0; i < raw.length; i++) {
@@ -640,25 +597,17 @@ function fmtPrice(p) {
   if (/e/i.test(s)) s = n.toFixed(20);
   return s.replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "");
 }
-// 简单去重: 记住最近 N 次用过的句子, 随机时优先跳过, 全撞过再放行
+// 简单去重: 记住最近 N 次用过的句子, 随机时优先从未用过的里挑, 全用过再放行
 const RECENT_DEPTH = 6;
 const recentUsed = { opener: [], closer: [], cta: [] };
 function pickFrom(list, slot) {
-  const tried = [];
-  for (let attempt = 0; attempt < list.length; attempt++) {
-    const s = list[Math.floor(Math.random() * list.length)];
-    if (!recentUsed[slot].includes(s)) {
-      tried.push(s);
-      break;
-    }
-    tried.push(s);
-  }
-  // 全撞过(列表比 recent 还短), 随机取
-  const chosen = (tried.length && tried[0] !== undefined) ? (tried[0] ?? list[Math.floor(Math.random()*list.length)]) : list[Math.floor(Math.random()*list.length)];
-  const final = recentUsed[slot].includes(chosen) && tried.length > 1 ? tried[1] : chosen;
-  recentUsed[slot].push(final);
-  if (recentUsed[slot].length > RECENT_DEPTH) recentUsed[slot].shift();
-  return final;
+  const recent = recentUsed[slot];
+  const fresh = list.filter((s) => !recent.includes(s));
+  const pool = fresh.length ? fresh : list;
+  const chosen = pool[Math.floor(Math.random() * pool.length)];
+  recent.push(chosen);
+  if (recent.length > RECENT_DEPTH) recent.shift();
+  return chosen;
 }
 
 function fill(template, data) {
@@ -667,12 +616,12 @@ function fill(template, data) {
   );
 }
 
-// 解读段: 由 takes.js 从素材真实数据推导; CTA: 一个开放式提问。
-// 受 post.take 控制(默认开); 英文原帖(翻译失败回退)解读段与 CTA 都不加, 避免再叠加中文。
+// 解读段: LLM 预生成的榜单点评(m.take, 仅热搜/涨跌榜走这里)优先, 回退 takes.js 规则推导;
+// CTA: 一个开放式提问。受 post.take 控制(默认开)。
+// 英文原帖(翻译失败回退)解读段与 CTA 都不加, 避免再叠加中文。
 // 关闭时返回空数组, 输出与改动前逐字一致, 便于一键回退。
 function takeLines(m, cfg) {
   if (cfg.post?.take === false || m.lang === "en") return [];
-  // LLM 预生成的解读优先(m.take, 热搜/涨跌榜/资讯), 没有则回退 takes.js 规则推导
   const take = m.take || buildTake(m);
   return take ? ["", take] : [];
 }
@@ -776,10 +725,6 @@ function genNewsPost(m, cfg) {
   }
   if (isOff) {
     lines.push("", "消息面仅供参考，操作看自己的判断。");
-  } else if (m.take) {
-    lines.push("", m.take);
-    lines.push("", pickFrom(TPL.newsClosers, "closer"));
-    lines.push(...ctaLines(m, cfg, m.take));
   }
   lines.push("", "#加密资讯");
   return lines.join("\n");
@@ -858,20 +803,26 @@ async function publishPost(text, imageList) {
   const body = imageList && imageList.length
     ? { contentType: 1, bodyTextOnly: text, imageList }
     : { bodyTextOnly: text };
-  const res = await fetch(
-    `${BAPI}/composite/v1/public/pgc/openApi/content/add`,
-    {
-      method: "POST",
-      headers: {
-        "X-Square-OpenAPI-Key": config.openApiKey,
-        "Content-Type": "application/json",
-        clienttype: "binanceSkill",
-      },
-      body: JSON.stringify(body),
-    }
-  );
-  const data = await res.json();
-  return data;
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), 20000);
+  try {
+    const res = await fetch(
+      `${BAPI}/composite/v1/public/pgc/openApi/content/add`,
+      {
+        method: "POST",
+        headers: {
+          "X-Square-OpenAPI-Key": config.openApiKey,
+          "Content-Type": "application/json",
+          clienttype: "binanceSkill",
+        },
+        body: JSON.stringify(body),
+        signal: ctrl.signal,
+      }
+    );
+    return await res.json();
+  } finally {
+    clearTimeout(t);
+  }
 }
 
 // 行情帖尝试配图: 本地生成行情卡片 -> 上传到币安 -> 返回 imageList
@@ -1162,7 +1113,6 @@ async function refreshSymbolPoolIfNeeded(state) {
     config.market.symbols = symbols;
     state.symbols = symbols;
     state.symbolsUpdatedAt = today;
-    state.symbolsMeta = { topN, minUsd, updatedAt: Date.now() };
     log(`币种池: 今日首次刷新, 24h 成交额前 ${symbols.length} 个(≥${minUsd / 1e6}M USDT): ${symbols.join(", ")}`);
   } catch (e) {
     // 刷新失败不阻断发帖: 沿用上次持久化的池子, 没有则沿用 Secret 里的初始值
@@ -1179,9 +1129,18 @@ async function runOnce() {
   const forceMode = process.argv.includes("--force") || process.env.FORCE === "true";
   log(`▶ forceMode=${forceMode} argv=[${process.argv.slice(2).join(" ")}] FORCE_env=${process.env.FORCE ?? ""}`);
 
+  // 今日计数按日翻转重置。必须在这里做而不能只依赖 canPostNow:
+  // schedule 模式不走 canPostNow, 之前 todayPosted 一路累加、todayKey 十天不翻转,
+  // 一旦切回非 schedule 模式, canPostNow 会因计数超限永久 false 而静默停摆。
+  const dayKey = new Date().toDateString();
+  if (state.todayKey !== dayKey) {
+    state.todayKey = dayKey;
+    state.todayPosted = 0;
+  }
+
   // 1. 先判节奏再抓接口: 没到发帖时点就零请求退出, 且完全不改动 state,
   //    GitHub Actions 也不会为这种空转轮次提交 state.json。
-  //    抓取频率从每 15 分钟一次降到每个 slot(默认 90min)一次。
+  //    抓取频率从 CNB 的每 15 分钟一次降到每个 slot(均分模式 = 1440/maxPerDay 分钟)一次。
   if (config.schedule?.enabled && !forceMode) {
     const gate = timelineGate(state);
     if (!gate.ok) {
@@ -1226,8 +1185,8 @@ async function runOnce() {
     await Promise.all([
       fetchMarketMove(config),
       fetchNewCoins(config, state),
-      fetchTrending(config, state),
-      fetchMovers(config, state),
+      fetchTrending(config),
+      fetchMovers(config),
       fetchRssNews(config, state),
     ]);
 
@@ -1243,7 +1202,7 @@ async function runOnce() {
       candidates.push({
         id: `force_${Date.now()}`, kind: "market", symbol: "BTCUSDT", baseSymbol: "BTC",
         pct: parseFloat(d.priceChangePercent), price: parseFloat(d.lastPrice),
-        volMultiple: 1, windowMinutes: 24, isForce: true,
+        volMultiple: 1, windowMinutes: 24,
       });
       log("--force: 用实时 BTC 数据造一条帖(真实价格)");
     } catch (e) {

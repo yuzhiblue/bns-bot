@@ -1,7 +1,6 @@
 {
   "openApiKey": "",
   "dryRun": false,
-  "cycleMinutes": 15,
   "postsPerDay": 24,
   "minIntervalMinutes": 60,
   "market": {
@@ -42,7 +41,10 @@
     "disclaimer": "",
     "imageCard": true,
     "take": true,
-    "kindCooldownMinutes": { "trending": 240, "movers": 240 }
+    "kindCooldownMinutes": {
+      "trending": 240,
+      "movers": 240
+    }
   },
   "_symbolsAuto": {
     "updated": "2026-11-05T00:46:23.801Z",
@@ -61,8 +63,33 @@
   "news": {
     "enabled": true,
     "perFeed": 2,
-    "cardFeeds": ["Cointelegraph"],
-    "skipWords": ["暴跌", "崩盘", "闪崩", "狂跌", "狂泻", "腰斩", "归零", "爆仓", "踩踏", "血洗", "屠杀", "疯涨", "暴力拉升", "史诗级", "惊天", "惨烈", "狂潮", "据传", "市场传言", "rumor", "unconfirmed", "allegedly"],
+    "cardFeeds": [
+      "Cointelegraph"
+    ],
+    "skipWords": [
+      "暴跌",
+      "崩盘",
+      "闪崩",
+      "狂跌",
+      "狂泻",
+      "腰斩",
+      "归零",
+      "爆仓",
+      "踩踏",
+      "血洗",
+      "屠杀",
+      "疯涨",
+      "暴力拉升",
+      "史诗级",
+      "惊天",
+      "惨烈",
+      "狂潮",
+      "据传",
+      "市场传言",
+      "rumor",
+      "unconfirmed",
+      "allegedly"
+    ],
     "feeds": [
       {
         "name": "Cointelegraph",
@@ -79,15 +106,15 @@
       {
         "name": "BitcoinMagazine",
         "url": "https://bitcoinmagazine.com/.rss/full/"
-        }
-        ]
-    },
-    "llm": {
-        "enabled": true,
-        "baseURL": "https://apihub.agnes-ai.com/v1",
-        "model": "agnes-3.0-flash",
-        "apiKeyEnv": "AGNES_API_KEY",
-        "timeoutMs": 15000,
-        "maxChars": 130
-    }
+      }
+    ]
+  },
+  "llm": {
+    "enabled": true,
+    "baseURL": "https://apihub.agnes-ai.com/v1",
+    "model": "agnes-3.0-flash",
+    "apiKeyEnv": "AGNES_API_KEY",
+    "timeoutMs": 15000,
+    "maxChars": 130
+  }
 }

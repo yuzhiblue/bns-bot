@@ -438,7 +438,7 @@ GitHub Actions 每次新建 runner, config.json 里的 `market.symbols` 只是**
 bot 在**每天第一次到点轮次**拉一次全所 `ticker/24hr`, 按 24h 成交额取前 `topN`
 （默认 16）个成交额 ≥ `minUsd`（默认 3000 万 USDT）的 USDT 交易对,
 排除稳定币包装 / ETF 股票包装 / 代币化黄金 / 跨链桥等壳币。结果写进 `state.json` 的
-`symbols` / `symbolsUpdatedAt` / `symbolsMeta`, 抓取时用 `state.symbols` 覆盖
+`symbols` / `symbolsUpdatedAt`, 抓取时用 `state.symbols` 覆盖
 `config.market.symbols`; 因为 `state.json` 每轮 commit 回仓库, 新 runner 能接着用。
 
 - **不需要改 config.json、不需要新 workflow**; 每天只多 1 次请求, 空转轮次仍然零请求。
