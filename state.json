@@ -35,11 +35,12 @@
     "news_2nslvc",
     "news_o1725t",
     "news_1rvrjt5",
-    "trending_2026-11-14_AKE_BTC_PEARL_PENGU_NEAR_ETH"
+    "trending_2026-11-14_AKE_BTC_PEARL_PENGU_NEAR_ETH",
+    "movers_2026-11-14_FIGR_HELOC_SOL_ADA_ZEC"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794636510826,
-  "todayPosted": 36,
+  "lastPostAt": 1794640114225,
+  "todayPosted": 37,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -257,6 +258,12 @@
       "kind": "trending",
       "at": 1794636510826,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. AKE (+276.0%)\n2. BTC (-1.4%)\n3. PEARL (+17.7%)\n4. PENGU (+0.8%)\n5. NEAR (+0.9%)\n6. ETH (-0.3%)\n\n这份榜单里 6 个币有 4 个 24h 上涨，热度与价格同向，注意力确实跟着涨幅走。热搜排名反映的是注意力，不等于资金流向；注意力先到、资金未必跟。我更愿意把它"
+    },
+    {
+      "id": 388091552039402,
+      "kind": "movers",
+      "at": 1794640114225,
+      "text": "📊 24h 涨跌榜（全市场）\n\n领涨：FIGR_HELOC +4.5%\n领跌：SOL -5.9% / ADA -4.2% / ZEC -4.0%\n\n榜单领涨 1 个、领跌 3 个，涨跌分化说明资金在挑方向，不是整体单边。面对这类榜单先看大盘与杠杆清算，再逐个给个币找理由容易过度解读。\n\n极端波动时更要注意风险，别追在尖上。\n\n你更关注大盘还是个币差异？\n\n#涨跌榜单 #行情异动"
     }
   ],
   "newCoinIds": [],
@@ -288,10 +295,10 @@
   ],
   "timelineKey": "2026-11-14",
   "timelineIdx": 0,
-  "timelineSentCount": 15,
+  "timelineSentCount": 16,
   "timelineDay": "2026-11-14",
-  "lastRunAt": 1794636504573,
-  "lastFetchAt": 1794636504573,
+  "lastRunAt": 1794640107496,
+  "lastFetchAt": 1794640107496,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
