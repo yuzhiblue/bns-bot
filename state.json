@@ -31,11 +31,12 @@
     "news_10yhmeh",
     "news_1xhsq3t",
     "news_ss8mf3",
-    "news_1f9pe3q"
+    "news_1f9pe3q",
+    "news_2nslvc"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794622126101,
-  "todayPosted": 32,
+  "lastPostAt": 1794625706922,
+  "todayPosted": 33,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -229,6 +230,12 @@
       "kind": "news",
       "at": 1794622126101,
       "text": "乔·卡拉萨尔谈比特币的“极度恐惧”：“我是这里的买家”\n\n今年早些时候，比特币在不到 90 天的时间里从 57,000 涨到 82,000，乔·卡拉萨尔 (Joe Carlasare) 表示，这就是为什么他拒绝资本无法涌入的观点。\n\n#加密资讯"
+    },
+    {
+      "id": 388032539842378,
+      "kind": "news",
+      "at": 1794625706922,
+      "text": "Joe Carlasare 谈比特币的“极度恐惧”：“我是这里的买家”\n\n今年早些时候，比特币在不到 90 天的时间里从 57,000 涨到 82,000，乔·卡拉萨尔 (Joe Carlasare) 表示，这就是为什么他拒绝资本无法涌入的观点。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -260,10 +267,10 @@
   ],
   "timelineKey": "2026-11-14",
   "timelineIdx": 0,
-  "timelineSentCount": 11,
+  "timelineSentCount": 12,
   "timelineDay": "2026-11-14",
-  "lastRunAt": 1794622120099,
-  "lastFetchAt": 1794622120099,
+  "lastRunAt": 1794625699743,
+  "lastFetchAt": 1794625699743,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
