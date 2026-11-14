@@ -507,6 +507,61 @@ async function genTake(m, cfg) {
   }
 }
 
+// LLM 整帖改写: 把新闻标题+摘要改写成口语化的个人分享帖, 降低"搬运"判定风险。
+// 硬约束: 事实只来自给定标题与摘要, 数字/日期/人名/机构名原样保留, 不编造细节或延伸事实,
+// 不给买卖建议, 不用煽动词, 2-4 句。失败返回 null 走 A 兜底(标题+摘要拼接)。
+async function genNewsRewrite(m, cfg) {
+  const llm = cfg.llm;
+  if (!llm?.enabled) { log("  LLM 未启用, 走 A 兜底"); return null; }
+  const key = process.env[llm.apiKeyEnv || "GITHUB_TOKEN"] || llm.apiKey;
+  if (!key) { log(`  LLM 跳过: 未找到 API key(${llm.apiKeyEnv || "GITHUB_TOKEN"})`); return null; }
+  const system = [
+    "你是币安广场上的一个加密老玩家, 用自己的口气把新闻改写成一条随手分享的个人帖。",
+    "硬性要求: 事实只来自给定内容, 数字、日期、人名、机构名必须逐字原样保留(不得改写形式、加减修饰词, 如'5月份'不能写成'5月份之前'), 绝不编造细节或延伸事实;",
+    "不要用'我'来表达对行情或资产的观点——新闻人物的观点要明确标注是谁说的(如'他认为'), 不能当成发帖人自己的判断;",
+    "口语化、有自然过渡, 像个人观察而不是新闻稿; 2 到 4 句; 不用'暴跌/崩盘/狂潮'等煽动词;",
+    "不给买卖建议; 不以问号结尾; 不要用'解读:'这类前缀; 不要加任何话题标签。",
+  ].join("");
+  const user = `新闻标题: ${m.title}\n新闻摘要: ${m.summary}\n\n按系统要求把这条新闻改写成一条分享帖。`;
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), llm.timeoutMs ?? 15000);
+    const r = await fetch(`${llm.baseURL}/chat/completions`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
+      body: JSON.stringify({
+        model: llm.model,
+        messages: [{ role: "system", content: system }, { role: "user", content: user }],
+        temperature: 0.5,
+        max_tokens: 300,
+      }),
+      signal: ctrl.signal,
+    });
+    clearTimeout(t);
+    log(`  LLM 改写请求 → HTTP ${r.status}`);
+    if (!r.ok) { log(`  LLM 改写失败 HTTP ${r.status}: ${(await r.text()).slice(0, 200)}`); return null; }
+    const j = await r.json();
+    const text = (j?.choices?.[0]?.message?.content ?? "").trim().replace(/\s+/g, " ");
+    if (!text || !/[\u4e00-\u9fff]/.test(text) || text.length < 20) {
+      log("  LLM 改写结果无效, 走 A 兜底");
+      return null;
+    }
+    // 确定性校验: 原文里的所有数字(金额/百分比/年份/数量)必须原样出现在改写文本中,
+    // 防止 LLM 改写时丢数字或改数字——这是"不编造事实"的底线, 过不了就走 A 兜底。
+    const srcNums = `${m.title} ${m.summary}`.match(/\d[\d,.]*%?/g) ?? [];
+    const missing = srcNums.filter((n) => !text.includes(n.replace(/,$/, "")));
+    if (missing.length) {
+      log(`  LLM 改写丢失数字(${missing.join(", ")}), 走 A 兜底`);
+      return null;
+    }
+    log(`  LLM 改写 OK(${text.length}字)`);
+    return text;
+  } catch (e) {
+    log(`  LLM 改写异常 ${e.message}`);
+    return null;
+  }
+}
+
 async function fetchRssNews(cfg, state) {
   if (!cfg.news?.enabled) return [];
   const feeds = cfg.news?.feeds ?? [];
@@ -704,9 +759,13 @@ function genMoversPost(m, cfg) {
 function genNewsPost(m, cfg) {
   // 不显示文章来源平台名(如 CoinDesk / Cointelegraph): 币安广场对"把用户引向第三方平台"敏感,
   // 帖首挂别家媒体名容易被当成引流。m.source 仅保留在素材里供日志排查, 不渲染。
-  // 中文资讯解读由 LLM 在发帖前预生成并存入 m.take; 按你的选择, LLM 不可用 / 英文回退 / 关闭 take 时:
+  // 中文资讯优先用 LLM 整帖改写(m.rewrite, 口语化分享帖, 降低搬运判定); 不加模板收尾/CTA——
+  // 固定话术本身就是"机器感"来源。改写失败 / 英文回退 / 关闭 take 时走 A 兜底:
   //   - take=false → 旧固定收尾, 与改动前逐字一致(一键回退);
-  //   - 其余 → 不加解读段与 CTA 的 A 兜底(仅标题 + 摘要 + 标签), 干净不公式化。
+  //   - 其余 → 标题 + 摘要 + 标签, 干净不公式化。
+  if (m.rewrite) {
+    return `${m.rewrite}\n\n#加密资讯`;
+  }
   const isOff = cfg.post?.take === false;
   const lines = [];
   if (m.title) lines.push(m.title);
@@ -1218,16 +1277,22 @@ async function runOnce() {
     const alt = scored.find(({ m }) => m.kind !== lastKind);
     if (alt) material = alt.m;
   }
-  // 中文资讯/热搜/涨跌榜在真实发帖前调 LLM 生成解读, 存入 material.take;
-  // 失败 / 英文资讯 / 关 take / dryRun 时留空: 热搜/涨跌榜回退规则推导, 资讯走 A 兜底。
-  // 行情异动与新币不用 LLM: 数字即信息, LLM 没有实时消息面, 硬凑观点只会是套话或编造。
+  // 中文资讯/热搜/涨跌榜在真实发帖前调 LLM; 行情异动与新币不用 LLM(数字即信息, 硬凑观点只会是套话)。
+  // 资讯: 整帖改写成口语化分享帖(m.rewrite, 降低搬运判定), 失败走 A 兜底;
+  // 热搜/涨跌榜: 榜单结构点评(m.take), 失败回退规则推导。
   const TAKE_KINDS = ["news", "trending", "movers"];
   if (TAKE_KINDS.includes(material.kind)
       && (material.kind !== "news" || material.lang === "zh")
       && config.post?.take !== false && !config.dryRun) {
-    log(`→ 触发 LLM 解读(${material.kind}${material.kind === "news" ? "/zh" : ""})`);
-    material.take = await genTake(material, config);
-    log(`← LLM 解读结果: ${material.take ? `OK(${material.take.length}字)` : "null(规则推导/兜底)"}`);
+    if (material.kind === "news") {
+      log("→ 触发 LLM 整帖改写(news/zh)");
+      material.rewrite = await genNewsRewrite(material, config);
+      log(`← LLM 改写结果: ${material.rewrite ? `OK(${material.rewrite.length}字)` : "null(A兜底)"}`);
+    } else {
+      log(`→ 触发 LLM 解读(${material.kind})`);
+      material.take = await genTake(material, config);
+      log(`← LLM 解读结果: ${material.take ? `OK(${material.take.length}字)` : "null(规则推导)"}`);
+    }
   }
   const text = buildPost(material, config);
   log(`本轮待发 [${material.kind}]:\n${text}`);
