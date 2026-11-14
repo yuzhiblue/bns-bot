@@ -41,11 +41,12 @@
     "movers_2026-11-14_SOL_ADA_ZEC",
     "trending_2026-11-14_AKE_BTC_HYPE_ETH_PENGU_SOL",
     "news_hq6cw6",
-    "news_id29rx"
+    "news_id29rx",
+    "news_fna8k1"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794661732883,
-  "todayPosted": 4,
+  "lastPostAt": 1794665310528,
+  "todayPosted": 5,
   "todayKey": "Sat Nov 14 2026",
   "postHistory": [
     {
@@ -299,6 +300,12 @@
       "kind": "news",
       "at": 1794661732883,
       "text": "比特币政策研究所的报告提到，英国其实可以拿比特币挖矿去吸收苏格兰那些过剩的风电，这样就能省掉因为停机而付给风电场的钱，一年能砍掉13亿美元的电网费用，这事儿挺意外的。\n\n#加密资讯"
+    },
+    {
+      "id": 388194756331473,
+      "kind": "news",
+      "at": 1794665310528,
+      "text": "做市商和交易商可能会因为比特币和以太币的交易价格范围而加剧市场波动。有意思的是，这种幕后力量往往比表面上的资金流动更影响短期的震荡节奏。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -330,10 +337,10 @@
   ],
   "timelineKey": "2026-11-14",
   "timelineIdx": 0,
-  "timelineSentCount": 21,
+  "timelineSentCount": 22,
   "timelineDay": "2026-11-14",
-  "lastRunAt": 1794661720353,
-  "lastFetchAt": 1794661720353,
+  "lastRunAt": 1794665298187,
+  "lastFetchAt": 1794665298187,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -360,6 +367,6 @@
   "lastPostAtByKind": {
     "movers": 1794650910784,
     "trending": 1794654513337,
-    "news": 1794661732883
+    "news": 1794665310528
   }
 }
