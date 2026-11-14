@@ -19,6 +19,8 @@ const SHELL_BASES = new Set([
   // ETF / 股票包装 (含 B 结尾的杠杆/反向)
   "SNDKB", "SNDLP", "SOXL", "SOXLB", "SPCX", "SPCXB", "SPCXLB", "SPCXLE",
   "CRCLB", "MSTRB", "COINB", "TSLAB", "NVDA", "AALB",
+  // 代币化真实资产(如 Figure 的 HELOC 信贷份额)
+  "FIGR_HELOC", "FIGR",
   // 代币化黄金/贵金属
   "XAUT", "PAXG", "GOLD", "XAUTI",
   // 跨链桥

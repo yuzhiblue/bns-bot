@@ -115,7 +115,9 @@ async function fetchMarketMove(cfg) {
 
         if (Math.abs(pct) >= priceChangePct && volMultiple >= volSpikeMultiple) {
           moves.push({
-            id: `market_${symbol}_${new Date(t0).toISOString().slice(0, 10)}`,
+            // id 用小时级时间桶: 同一币种一天内可因多次独立异动多次发帖(每次都是新内容);
+            // 不用更细粒度是防止相邻 slot 窗口重叠时把同一段行情当两条发。
+            id: `market_${symbol}_${new Date(t0).toISOString().slice(0, 13)}`,
             kind: "market",
             symbol,
             baseSymbol: symbol.replace("USDT", ""),
