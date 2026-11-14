@@ -1074,8 +1074,9 @@ async function runOnce() {
 
   // 按周期冷却: 一个 slot 周期内只抓一次接口。
   // 用「上次抓取时间戳」而不是「已发数量」做 key —— 后者在一帖都没发出去时
-  // 永远不变, 会让当天后续 slot 全被挡住(没素材时整天只抓一次)。
-  if (config.schedule?.enabled) {
+  // 永远不变, 会让当天后续 slot 全被挡住(没素材时整天只抓取一次)。
+  // --force 手动验证: 跳过抓取冷却, 直接抓素材发帖。
+  if (config.schedule?.enabled && !forceMode) {
     const s = config.schedule;
     const intervalMs = (s.evenSpread
       ? (24 * 60) / (s.maxPerDay ?? 15)
