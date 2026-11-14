@@ -48,11 +48,12 @@
     "news_5e2wpa",
     "news_1ygo9mx",
     "news_1mtoaf8",
-    "movers_2026-11-15_FIGR_HELOC_ZEC_HYPE_ADA_SOL_LINK_DOGE"
+    "movers_2026-11-15_FIGR_HELOC_ZEC_HYPE_ADA_SOL_LINK_DOGE",
+    "trending_2026-11-15_MIHAO_BTC_SOL_ASTER_ZEC_HYPE"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794686915472,
-  "todayPosted": 5,
+  "lastPostAt": 1794690517260,
+  "todayPosted": 6,
   "todayKey": "Sun Nov 15 2026",
   "postHistory": [
     {
@@ -348,6 +349,12 @@
       "kind": "movers",
       "at": 1794686915472,
       "text": "📊 24h 涨跌榜（全市场）\n\n领涨：FIGR_HELOC +4.3%\n领跌：ZEC -11.2% / HYPE -10.6% / ADA -10.3% / SOL -10.1% / LINK -9.5%\n\n榜单显示跌幅显著，Zcash、Hyperliquid、Cardano、Solana、Chainlink和Dogecoin等主流资产均下跌超9%，而领涨仅Figure Heloc一项且涨幅不足"
+    },
+    {
+      "id": 388298003034401,
+      "kind": "trending",
+      "at": 1794690517260,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. MIHAO (+3.5%)\n2. BTC (-5.3%)\n3. SOL (-11.0%)\n4. ASTER (-26.0%)\n5. ZEC (-13.6%)\n6. HYPE (-13.4%)\n\n榜单前列的 Solana、Zcash 和 Hyperliquid 等主流资产普遍呈现两位数跌幅，显示出当前市场主要关注点集中在头部项目的价格回调与风险释放上。"
     }
   ],
   "newCoinIds": [],
@@ -379,10 +386,10 @@
   ],
   "timelineKey": "2026-11-15",
   "timelineIdx": 0,
-  "timelineSentCount": 5,
+  "timelineSentCount": 6,
   "timelineDay": "2026-11-15",
-  "lastRunAt": 1794686902558,
-  "lastFetchAt": 1794686902558,
+  "lastRunAt": 1794690497986,
+  "lastFetchAt": 1794690497986,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -406,7 +413,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1794686915472,
-    "trending": 1794672519668,
+    "trending": 1794690517260,
     "news": 1794683318025
   }
 }
