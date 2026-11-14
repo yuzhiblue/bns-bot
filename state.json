@@ -29,11 +29,12 @@
     "news_18b1vxb",
     "news_a521j6",
     "news_10yhmeh",
-    "news_1xhsq3t"
+    "news_1xhsq3t",
+    "news_ss8mf3"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794614908374,
-  "todayPosted": 30,
+  "lastPostAt": 1794618504627,
+  "todayPosted": 31,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -215,6 +216,12 @@
       "kind": "news",
       "at": 1794614908375,
       "text": "比特币矿工每年向巴拉圭支付 3.5 亿美元，但人工智能正在将他们赶走\n\n以每兆瓦时 44 美元的价格向全球 4% 的比特币矿业公司出售电力的合同将于 2027 年 12 月 31 日到期。巴拉圭国家公用事业公司称该日期为最终日期，并且刚刚签署了一项为期 15 年的协议，为创始人基金支持的人工智能公司提供电力\n\n把一条价格变化放进更长的时间窗看，才知道是噪音还是结构变化。我会继续看后续几天的资金流与"
+    },
+    {
+      "id": 388003039324010,
+      "kind": "news",
+      "at": 1794618504627,
+      "text": "政府官员应该被禁止进入预测市场吗？众议院监督说也许\n\n众议院监督工作人员的一份备忘录援引了官员、军事人员和许可持有者的可疑交易，建议国会权衡对联邦人员在 Kalshi 和 Polymarket 等平台上进行投注的新限制。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -246,10 +253,10 @@
   ],
   "timelineKey": "2026-11-14",
   "timelineIdx": 0,
-  "timelineSentCount": 9,
+  "timelineSentCount": 10,
   "timelineDay": "2026-11-14",
-  "lastRunAt": 1794614900521,
-  "lastFetchAt": 1794614900521,
+  "lastRunAt": 1794618497959,
+  "lastFetchAt": 1794618497959,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
