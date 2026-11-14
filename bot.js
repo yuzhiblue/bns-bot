@@ -405,17 +405,35 @@ async function translateText(text, to = "zh-CN") {
 
 // 资讯解读: 用 LLM 针对单条新闻生成有具体指向的中文短评。
 // 失败 / 超时 / 未配置 → 返回 null, 由 genNewsPost 走 A 兜底(不加解读与 CTA), 绝不回退到规则套话。
-async function genNewsTake(m, cfg) {
+// LLM 解读: 资讯按标题/摘要点评, 热搜/涨跌榜点评榜单结构。
+// 硬约束: 只用给定数据, 不编造事实、不猜具体原因、不给买卖建议; 失败返回 null,
+// 热搜/涨跌榜回退 takes.js 规则推导, 资讯走 A 兜底。
+async function genTake(m, cfg) {
   const llm = cfg.llm;
-  if (!llm?.enabled) { log("  LLM 未启用, 走 A 兜底"); return null; }
+  if (!llm?.enabled) { log("  LLM 未启用, 走规则推导/兜底"); return null; }
   const key = process.env[llm.apiKeyEnv || "GITHUB_TOKEN"] || llm.apiKey;
   if (!key) { log(`  LLM 跳过: 未找到 API key(${llm.apiKeyEnv || "GITHUB_TOKEN"})`); return null; }
   const system = [
     "你是币安广场一个加密资讯号的运营, 写有观点但不煽动的中文短评。",
-    "只用给定的标题和摘要, 不编造新事实、不预测具体价格、不给买卖建议。",
+    "只用给定的数据, 不编造新事实、不猜具体原因、不预测具体价格、不给买卖建议。",
     "不要用'暴跌/崩盘/狂潮'等煽动词; 控制在 3 句以内; 不要以问号结尾; 不要用'解读:'这类前缀, 直接给正文。",
   ].join("");
-  const user = `标题: ${m.title}\n摘要: ${m.summary}\n\n写一句有具体指向的点评: 例如这条对哪类参与者影响最大、市场为何这么反应、或接下来该看哪个信号。不要泛泛而谈"等后续数据"。`;
+  let user;
+  if (m.kind === "news") {
+    user = `标题: ${m.title}\n摘要: ${m.summary}\n\n写一句有具体指向的点评: 例如这条对哪类参与者影响最大、市场为何这么反应、或接下来该看哪个信号。不要泛泛而谈"等后续数据"。`;
+  } else if (m.kind === "trending") {
+    const list = m.items.map((x, i) => {
+      const chg = x.data?.price_change_percentage_24h?.usd;
+      const pct = (typeof chg === "number") ? ` 24h${chg >= 0 ? "+" : ""}${chg.toFixed(1)}%` : "";
+      return `${i + 1}. ${x.name}(${x.sym})${pct}`;
+    }).join("\n");
+    user = `CoinGecko 当前热搜榜:\n${list}\n\n点评这个榜单的结构: 例如哪类板块/主题占主导、榜单反映的市场关注点(只基于榜单数据, 不猜具体原因)。`;
+  } else if (m.kind === "movers") {
+    const list = m.items.map((x) => `${x.name}(${x.sym}) 24h ${x.pct >= 0 ? "+" : ""}${(x.pct ?? 0).toFixed(1)}%`).join("\n");
+    user = `24h 领涨/领跌榜(波动≥4%):\n${list}\n\n点评榜单结构: 例如领涨和领跌各集中在哪类资产、多空两边力量对比(只基于榜单数据, 不猜原因)。`;
+  } else {
+    return null;
+  }
   try {
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), llm.timeoutMs ?? 15000);
@@ -552,7 +570,8 @@ function fill(template, data) {
 // 关闭时返回空数组, 输出与改动前逐字一致, 便于一键回退。
 function takeLines(m, cfg) {
   if (cfg.post?.take === false || m.lang === "en") return [];
-  const take = buildTake(m);
+  // LLM 预生成的解读优先(m.take, 热搜/涨跌榜/资讯), 没有则回退 takes.js 规则推导
+  const take = m.take || buildTake(m);
   return take ? ["", take] : [];
 }
 // 收尾话术本身已是提问时不再叠加 CTA, 避免连续两个问句
@@ -1153,11 +1172,16 @@ async function runOnce() {
     const alt = scored.find(({ m }) => m.kind !== lastKind);
     if (alt) material = alt.m;
   }
-  // 中文资讯帖在真实发帖前调 LLM 生成解读, 存入 material.take; 失败 / 英文 / 关 take / dryRun 时留空走 A 兜底
-  if (material.kind === "news" && material.lang === "zh" && config.post?.take !== false && !config.dryRun) {
-    log("→ 触发 LLM 解读(news/zh/非dryRun)");
-    material.take = await genNewsTake(material, config);
-    log(`← LLM 解读结果: ${material.take ? `OK(${material.take.length}字)` : "null(A兜底)"}`);
+  // 中文资讯/热搜/涨跌榜在真实发帖前调 LLM 生成解读, 存入 material.take;
+  // 失败 / 英文资讯 / 关 take / dryRun 时留空: 热搜/涨跌榜回退规则推导, 资讯走 A 兜底。
+  // 行情异动与新币不用 LLM: 数字即信息, LLM 没有实时消息面, 硬凑观点只会是套话或编造。
+  const TAKE_KINDS = ["news", "trending", "movers"];
+  if (TAKE_KINDS.includes(material.kind)
+      && (material.kind !== "news" || material.lang === "zh")
+      && config.post?.take !== false && !config.dryRun) {
+    log(`→ 触发 LLM 解读(${material.kind}${material.kind === "news" ? "/zh" : ""})`);
+    material.take = await genTake(material, config);
+    log(`← LLM 解读结果: ${material.take ? `OK(${material.take.length}字)` : "null(规则推导/兜底)"}`);
   }
   const text = buildPost(material, config);
   log(`本轮待发 [${material.kind}]:\n${text}`);

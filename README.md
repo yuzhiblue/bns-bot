@@ -64,7 +64,7 @@ GitHub 自带 `schedule` 已移除, 仅 CNB 触发）:
 | `post.take` | 是否在帖子里加**数据解读段 + 开放式提问**, 默认 `true`; 设 `false` 可一键退回纯短文案 |
 | `news.cardFeeds` | 哪些资讯源改用**自生成卡片**；填 `news.feeds[].name` 的原值、大小写需一致（当前 `["Cointelegraph"]`，不是 URL）；其余源仍用 RSS 自带配图 |
 | `news.skipWords` | 资讯标题含这些强情绪 / 传言词（暴跌、崩盘、狂潮、据传、rumor…）时**直接跳过该条**，规避平台限流与「需核查」标记 |
-| `llm` | 资讯解读由 LLM 生成（`enabled` / `baseURL` / `model` / `apiKeyEnv` / `apiKey`）；默认走 Agnes（`apiKeyEnv` 指向仓库 Secret `AGNES_API_KEY`，本地调试可在 `config.local.json` 的 `llm.apiKey` 填明文）；失败 / 超时 / 未配置时自动降级为「只发标题+摘要」的 A 方案 |
+| `llm` | 资讯 / 热搜榜 / 涨跌榜的解读由 LLM 生成（`enabled` / `baseURL` / `model` / `apiKeyEnv` / `apiKey`）；默认走 Agnes（`apiKeyEnv` 指向仓库 Secret `AGNES_API_KEY`，本地调试可在 `config.local.json` 的 `llm.apiKey` 填明文）；资讯失败时走 A 兜底，热搜 / 涨跌榜失败时回退 takes.js 规则推导 |
 
 ### 文案结构与字数
 
@@ -78,7 +78,7 @@ GitHub 自带 `schedule` 已移除, 仅 CNB 触发）:
 ```
 数据 / 事件（首行钩子）
 ↓
-解读段（行情/新币/热搜/涨跌由 takes.js 推导；资讯由 LLM 生成，见下）
+解读段（行情 / 新币由 takes.js 推导；资讯 / 热搜榜 / 涨跌榜由 LLM 生成，见下，失败回退规则推导）
 ↓
 收尾话术（templates.js 词库随机）
 ↓
@@ -92,6 +92,9 @@ GitHub 自带 `schedule` 已移除, 仅 CNB 触发）:
 - 资讯帖解读由 **LLM 针对该条新闻生成**有具体指向的中文短评（GitHub Models，零新增账号），不再用规则模板——
   规则只能生成句式、生成不出观点，之前按主题套话被读者判定为公式化。LLM 失败 / 超时 / 未配置时**不回退到规则套话**，
   而是降级为 A 方案（只发标题+摘要，不加收尾与 CTA）；`post.take=false` 才回到旧固定收尾。
+- **热搜榜 / 涨跌榜解读也由 LLM 点评榜单结构**（如哪类板块占主导、多空力量对比），同样约束：只用榜单给定数据、
+  不猜具体原因、不给买卖建议；失败回退 takes.js 规则推导。**行情异动与新币不用 LLM**——数字即信息，
+  LLM 没有实时消息面，硬凑观点只会是套话或编造。
 - `post.take=false` 时资讯帖仍**逐字回到改动前**的固定收尾，便于一键回退。
 - 不显示文章来源平台名，不输出外链，配图/去重/发帖频率均不受影响。
 - RSS 里**没有新闻事实的栏目导语 / 引流话术**（如 Cointelegraph 每日汇总的
