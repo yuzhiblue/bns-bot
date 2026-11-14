@@ -41,7 +41,8 @@
     "hashtags": [],
     "disclaimer": "",
     "imageCard": true,
-    "take": true
+    "take": true,
+    "kindCooldownMinutes": { "trending": 240, "movers": 240 }
   },
   "_symbolsAuto": {
     "updated": "2026-11-05T00:46:23.801Z",

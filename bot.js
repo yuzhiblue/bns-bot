@@ -1271,11 +1271,31 @@ async function runOnce() {
   if (scored.length > 1) {
     log(`  本轮 ${scored.length} 条候选热度: ${scored.map(({ m, score }) => `${m.kind}:${score.toFixed(1)}`).join(" / ")}`);
   }
+  // 类型冷却: 榜单类(trending/movers)分数高(新鲜度加成每轮拿满)且榜单变化频繁,
+  // 不节流会来回刷屏、把新闻挤没。发帖成功后按类型记时间戳, 冷却期内该类不参选;
+  // 冷却结束但榜单没变化(id 相同已发过)时该类自然无候选, 新闻顶上 —— 上限控制 + 内容驱动。
+  // 全部候选都在冷却中且没有新闻时本轮空转; --force 忽略冷却(手动验证不受限)。
+  const cooldownCfg = config.post?.kindCooldownMinutes ?? {};
+  const inCooldown = (kind) => {
+    const ms = (cooldownCfg[kind] ?? 0) * 60000;
+    if (!ms) return false;
+    const last = (state.lastPostAtByKind ?? {})[kind] ?? 0;
+    return Date.now() - last < ms;
+  };
+  const eligible = forceMode ? scored : scored.filter(({ m }) => !inCooldown(m.kind));
+  if (!eligible.length) {
+    log("  所有候选类型都在冷却中, 本轮不发, 等下个 slot");
+    saveState(state);
+    return;
+  }
+  if (eligible.length !== scored.length) {
+    log(`  类型冷却中: ${scored.filter(({ m }) => inCooldown(m.kind)).map(({ m }) => m.kind).join(", ")}`);
+  }
   // 相邻两条不能同类: 上一条发了 A 类, 本轮改发次高分的其它类; 只剩 A 类可选时仍发它(避免空轮)。
   const lastKind = (state.postHistory ?? []).slice(-1)[0]?.kind;
-  let material = scored[0].m;
-  if (lastKind && scored.length > 1) {
-    const alt = scored.find(({ m }) => m.kind !== lastKind);
+  let material = eligible[0].m;
+  if (lastKind && eligible.length > 1) {
+    const alt = eligible.find(({ m }) => m.kind !== lastKind);
     if (alt) material = alt.m;
   }
   // 中文资讯/热搜/涨跌榜在真实发帖前调 LLM; 行情异动与新币不用 LLM(数字即信息, 硬凑观点只会是套话)。
@@ -1312,6 +1332,9 @@ async function runOnce() {
     state.todayPosted++;
     markUsed(state, material.id);
     if (config.schedule?.enabled) state.timelineSentCount = (state.timelineSentCount ?? 0) + 1;
+    // 按类型记发帖时间戳, 供类型冷却判断(见上方 eligible 过滤)
+    state.lastPostAtByKind = state.lastPostAtByKind ?? {};
+    state.lastPostAtByKind[material.kind] = Date.now();
     state.postHistory = state.postHistory ?? [];
     state.postHistory.push({
       id: result.data?.id,
