@@ -30,11 +30,12 @@
     "news_a521j6",
     "news_10yhmeh",
     "news_1xhsq3t",
-    "news_ss8mf3"
+    "news_ss8mf3",
+    "news_1f9pe3q"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794618504627,
-  "todayPosted": 31,
+  "lastPostAt": 1794622126101,
+  "todayPosted": 32,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -222,6 +223,12 @@
       "kind": "news",
       "at": 1794618504627,
       "text": "政府官员应该被禁止进入预测市场吗？众议院监督说也许\n\n众议院监督工作人员的一份备忘录援引了官员、军事人员和许可持有者的可疑交易，建议国会权衡对联邦人员在 Kalshi 和 Polymarket 等平台上进行投注的新限制。\n\n#加密资讯"
+    },
+    {
+      "id": 388017872964464,
+      "kind": "news",
+      "at": 1794622126101,
+      "text": "乔·卡拉萨尔谈比特币的“极度恐惧”：“我是这里的买家”\n\n今年早些时候，比特币在不到 90 天的时间里从 57,000 涨到 82,000，乔·卡拉萨尔 (Joe Carlasare) 表示，这就是为什么他拒绝资本无法涌入的观点。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -253,10 +260,10 @@
   ],
   "timelineKey": "2026-11-14",
   "timelineIdx": 0,
-  "timelineSentCount": 10,
+  "timelineSentCount": 11,
   "timelineDay": "2026-11-14",
-  "lastRunAt": 1794618497959,
-  "lastFetchAt": 1794618497959,
+  "lastRunAt": 1794622120099,
+  "lastFetchAt": 1794622120099,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
