@@ -38,11 +38,12 @@
     "trending_2026-11-14_AKE_BTC_PEARL_PENGU_NEAR_ETH",
     "movers_2026-11-14_FIGR_HELOC_SOL_ADA_ZEC",
     "trending_2026-11-14_BTC_AKE_SOL_HYPE_PENGU_ADA",
-    "movers_2026-11-14_SOL_ADA_ZEC"
+    "movers_2026-11-14_SOL_ADA_ZEC",
+    "trending_2026-11-14_AKE_BTC_HYPE_ETH_PENGU_SOL"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794650910784,
-  "todayPosted": 1,
+  "lastPostAt": 1794654513337,
+  "todayPosted": 2,
   "todayKey": "Sat Nov 14 2026",
   "postHistory": [
     {
@@ -278,6 +279,12 @@
       "kind": "movers",
       "at": 1794650910784,
       "text": "📊 24h 涨跌榜（全市场）\n\n领跌：SOL -5.4% / ADA -4.1% / ZEC -4.1%\n\n本轮领跌榜单清一色为高市值主流资产，波动集中在SOL、ADA和ZEC等老牌公链与隐私币。数据显示空头力量明显占优，所有列出的标的跌幅均突破4%且未见反弹，市场短期呈现单边下行态势。\n\n极端波动时更要注意风险，别追在尖上。\n\n这种同步波动你先看什么？\n\n#涨跌榜单 #行情异动"
+    },
+    {
+      "id": 388150531047997,
+      "kind": "trending",
+      "at": 1794654513338,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. AKE (+108.3%)\n2. BTC (-3.0%)\n3. HYPE (-5.2%)\n4. ETH (-2.2%)\n5. PENGU (-4.3%)\n6. SOL (-5.9%)\n\n主流币整体承压，比特币、以太坊、Solana及Hyperliquid均录得超2%的负收益。榜单中仅Akedo单点大幅上涨，而Pudgy Penguins表现偏弱。数据"
     }
   ],
   "newCoinIds": [],
@@ -309,10 +316,10 @@
   ],
   "timelineKey": "2026-11-14",
   "timelineIdx": 0,
-  "timelineSentCount": 18,
+  "timelineSentCount": 19,
   "timelineDay": "2026-11-14",
-  "lastRunAt": 1794650897075,
-  "lastFetchAt": 1794650897075,
+  "lastRunAt": 1794654497498,
+  "lastFetchAt": 1794654497498,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -337,6 +344,7 @@
     "updatedAt": 1794586106417
   },
   "lastPostAtByKind": {
-    "movers": 1794650910784
+    "movers": 1794650910784,
+    "trending": 1794654513337
   }
 }
