@@ -415,9 +415,9 @@ async function translateText(text, to = "zh-CN") {
 // 失败 / 超时 / 未配置 → 返回 null, 由 genNewsPost 走 A 兜底(不加解读与 CTA), 绝不回退到规则套话。
 async function genNewsTake(m, cfg) {
   const llm = cfg.llm;
-  if (!llm?.enabled) return null;
+  if (!llm?.enabled) { log("  LLM 未启用, 走 A 兜底"); return null; }
   const key = process.env[llm.apiKeyEnv || "GITHUB_TOKEN"] || llm.apiKey;
-  if (!key) return null;
+  if (!key) { log(`  LLM 跳过: 未找到 API key(${llm.apiKeyEnv || "GITHUB_TOKEN"})`); return null; }
   const system = [
     "你是币安广场一个加密资讯号的运营, 写有观点但不煽动的中文短评。",
     "只用给定的标题和摘要, 不编造新事实、不预测具体价格、不给买卖建议。",
@@ -439,10 +439,13 @@ async function genNewsTake(m, cfg) {
       signal: ctrl.signal,
     });
     clearTimeout(t);
-    if (!r.ok) { log(`  LLM 解读失败 HTTP ${r.status}`); return null; }
+    log(`  LLM 请求 ${llm.baseURL}/chat/completions → HTTP ${r.status}`);
+    if (!r.ok) { log(`  LLM 解读失败 HTTP ${r.status}: ${(await r.text()).slice(0, 200)}`); return null; }
     const j = await r.json();
     const text = (j?.choices?.[0]?.message?.content ?? "").trim().replace(/\s+/g, " ");
-    return text ? text.slice(0, llm.maxChars ?? 130) : null;
+    if (!text) { log(`  LLM 返回空 content(choices=${j?.choices?.length}), 走 A 兜底`); return null; }
+    log(`  LLM 解读 OK(${text.length}字)`);
+    return text.slice(0, llm.maxChars ?? 130);
   } catch (e) {
     log(`  LLM 解读异常 ${e.message}`);
     return null;
@@ -1153,7 +1156,9 @@ async function runOnce() {
   const material = scored[0].m;
   // 中文资讯帖在真实发帖前调 LLM 生成解读, 存入 material.take; 失败 / 英文 / 关 take / dryRun 时留空走 A 兜底
   if (material.kind === "news" && material.lang === "zh" && config.post?.take !== false && !config.dryRun) {
+    log("→ 触发 LLM 解读(news/zh/非dryRun)");
     material.take = await genNewsTake(material, config);
+    log(`← LLM 解读结果: ${material.take ? `OK(${material.take.length}字)` : "null(A兜底)"}`);
   }
   const text = buildPost(material, config);
   log(`本轮待发 [${material.kind}]:\n${text}`);

@@ -27,7 +27,6 @@ on:
 # 需要把 state.json 推回仓库
 permissions:
   contents: write
-  models: read
 
 # 同一时刻只允许一个实例写状态文件, 避免并发覆盖
 concurrency:
