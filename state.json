@@ -50,19 +50,14 @@
     "news_1mtoaf8",
     "movers_2026-11-15_FIGR_HELOC_ZEC_HYPE_ADA_SOL_LINK_DOGE",
     "trending_2026-11-15_MIHAO_BTC_SOL_ASTER_ZEC_HYPE",
-    "news_1cl5115"
+    "news_1cl5115",
+    "news_io2rt3"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794694108202,
-  "todayPosted": 7,
+  "lastPostAt": 1794697720308,
+  "todayPosted": 8,
   "todayKey": "Sun Nov 15 2026",
   "postHistory": [
-    {
-      "id": 384803347410080,
-      "kind": "whale",
-      "at": 1793837289876,
-      "text": "🐋 BTC 仓位异动\n· 当前多空比: 1.9162\n· 多头持仓明显占优\n\n空头持仓占优，反弹是逃命不是追涨。\n\n$BTC #多空比\n#行情异动"
-    },
     {
       "id": 384816485913021,
       "kind": "whale",
@@ -356,6 +351,12 @@
       "kind": "news",
       "at": 1794694108202,
       "text": "MegaETH 刚裁了 20% 的人手，目的是推进 AI 业务。更扎眼的是，他们锁定的去中心化金融总价值从 2.45 亿美元以上大幅掉到了 880 万美元，讲真这收缩幅度还挺大。\n\n#加密资讯"
+    },
+    {
+      "id": 388327506743125,
+      "kind": "news",
+      "at": 1794697720308,
+      "text": "有意思的是，比特币已经跌到了三个月低点，6.4 万美元下方，詹姆斯·切克在文中指出这是第四波恐慌抛售。他写道：“他们现在的售价正是他们希望三个月前能利用的价格。”\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -387,10 +388,10 @@
   ],
   "timelineKey": "2026-11-15",
   "timelineIdx": 0,
-  "timelineSentCount": 7,
+  "timelineSentCount": 8,
   "timelineDay": "2026-11-15",
-  "lastRunAt": 1794694099981,
-  "lastFetchAt": 1794694099981,
+  "lastRunAt": 1794697716757,
+  "lastFetchAt": 1794697716757,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -415,6 +416,6 @@
   "lastPostAtByKind": {
     "movers": 1794686915472,
     "trending": 1794690517260,
-    "news": 1794694108202
+    "news": 1794697720308
   }
 }
