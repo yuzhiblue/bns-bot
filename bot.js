@@ -403,6 +403,51 @@ async function translateText(text, to = "zh-CN") {
   } catch (e) { return text; }
 }
 
+// LLM 翻译新闻标题: 质量优于机翻(术语地道、语气中性化), 且结果更稳定。
+// 每轮 ≤8 个调用, 与解读 1 次合计 ≤9, 控制在 Agnes 10 RPM 内; 分批(每批 4 个)并发。
+// 单条失败 / 无 key / 返回非中文 → 回退 Google 机翻, 再失败英文 A 兜底(三层链)。
+async function translateTitlesWithLlm(raw, cfg) {
+  const results = new Array(raw.length).fill("");
+  const llm = cfg.llm;
+  if (llm?.enabled) {
+    const key = process.env[llm.apiKeyEnv || "GITHUB_TOKEN"] || llm.apiKey;
+    if (key) {
+      const system = "你是专业的加密行业新闻编辑。把英文标题翻译成简体中文: 用地道的行业用语, 语气中性, 去掉夸大词和感叹号。只输出译文本身, 不加任何解释、引号或前后缀。";
+      const translateOne = async (i) => {
+        try {
+          const ctrl = new AbortController();
+          const t = setTimeout(() => ctrl.abort(), llm.timeoutMs ?? 15000);
+          const r = await fetch(`${llm.baseURL}/chat/completions`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
+            body: JSON.stringify({
+              model: llm.model,
+              messages: [{ role: "system", content: system }, { role: "user", content: (raw[i].title || "").trim() }],
+              temperature: 0.2,
+            }),
+            signal: ctrl.signal,
+          });
+          clearTimeout(t);
+          if (!r.ok) return;
+          const j = await r.json();
+          const text = (j?.choices?.[0]?.message?.content ?? "").trim()
+            .replace(/^["'「『]+/, "").replace(/["'」』]+$/, "");
+          // 防 LLM 偷懒原样返回: 译文必须含中文字符且不等于原文才算成功
+          if (text && /[\u4e00-\u9fff]/.test(text) && text !== (raw[i].title || "").trim()) results[i] = text;
+        } catch { /* 回退机翻 */ }
+      };
+      for (let start = 0; start < raw.length; start += 4) {
+        await Promise.all(raw.slice(start, start + 4).map((_, k) => translateOne(start + k)));
+      }
+    }
+  }
+  // LLM 没覆盖到的(无 key / 超时 / 校验不过)逐条回退 Google 机翻
+  await Promise.all(raw.map(async (r, i) => {
+    if (!results[i]) results[i] = await translateText(r.title);
+  }));
+  return results;
+}
+
 // 资讯解读: 用 LLM 针对单条新闻生成有具体指向的中文短评。
 // 失败 / 超时 / 未配置 → 返回 null, 由 genNewsPost 走 A 兜底(不加解读与 CTA), 绝不回退到规则套话。
 // LLM 解读: 资讯按标题/摘要点评, 热搜/涨跌榜点评榜单结构。
@@ -497,11 +542,10 @@ async function fetchRssNews(cfg, state) {
       log(`  RSS ${feed.name}: 拉取失败(${e.message})`);
     }
   }));
-  // 英文媒体自带摘要, 统一翻译为中文; 翻译失败则回退英文原文直接发
-  const [zhTitles, zhSummaries] = await Promise.all([
-    Promise.all(raw.map((r) => translateText(r.title))),
-    Promise.all(raw.map((r) => translateText(r.summary))),
-  ]);
+  // 英文媒体自带摘要: 标题用 LLM 翻译(门面 + 质量关键, 每轮 ≤8 调用, 加解读 1 次卡在 10 RPM 内),
+  // 摘要维持免费 Google 机翻(正文细节, 机翻够用)。翻译失败回退英文原文直接发。
+  const zhTitles = await translateTitlesWithLlm(raw, config);
+  const zhSummaries = await Promise.all(raw.map((r) => translateText(r.summary)));
   const out = [];
   for (let i = 0; i < raw.length; i++) {
     const zhT = (zhTitles[i] || "").trim();
@@ -516,7 +560,9 @@ async function fetchRssNews(cfg, state) {
       || (raw[i].summary && zhS === (raw[i].summary || "").trim());
     // titleEn 保留 RSS 英文原标题: 资讯卡片只渲染 ASCII, 中文翻译标题仍放帖子正文
     out.push({
-      id: `news_${hashStr(normalizeText(zhT))}`,
+      // 去重 id 用英文原标题的 hash 而非中文译文: LLM 翻译有轻微不确定性, 同一文章两次
+      // 抓取的中文措辞可能微变导致 hash 漂移、重复发帖; 英文原题来自 RSS 源, 是文章的稳定身份。
+      id: `news_${hashStr(normalizeText(raw[i].title || ""))}`,
       kind: "news", source: raw[i].source, title: zhT, titleEn: raw[i].title, link: raw[i].link,
       image: raw[i].image, summary: zhS, ts: raw[i].ts,
       lang: fallback ? "en" : "zh",
