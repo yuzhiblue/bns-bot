@@ -28,11 +28,12 @@
     "news_1mgpnp7",
     "news_18b1vxb",
     "news_a521j6",
-    "news_10yhmeh"
+    "news_10yhmeh",
+    "news_1xhsq3t"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794611305371,
-  "todayPosted": 29,
+  "lastPostAt": 1794614908374,
+  "todayPosted": 30,
   "todayKey": "Wed Nov 04 2026",
   "postHistory": [
     {
@@ -208,6 +209,12 @@
       "kind": "news",
       "at": 1794611305371,
       "text": "英伟达前高管能否取代黄仁勋？ Arm 的雷内·哈斯 (Rene Haas) 成为候选人\n\n据报道，英伟达董事会已与 Arm 首席执行官接洽，寻找黄仁勋的继任者，同时一些员工正在努力让这家芯片制造商的创始人重新担任首席执行官。\n\n这类资讯缺少可核对的后续指标，我会先看有没有独立数据或第二方确认，而不是急着给结论。\n\n标题给的是结论，正文里的条件才值得细看。\n\n你的观察清单里会放哪些指标？\n\n#加密资"
+    },
+    {
+      "id": 387988309053845,
+      "kind": "news",
+      "at": 1794614908375,
+      "text": "比特币矿工每年向巴拉圭支付 3.5 亿美元，但人工智能正在将他们赶走\n\n以每兆瓦时 44 美元的价格向全球 4% 的比特币矿业公司出售电力的合同将于 2027 年 12 月 31 日到期。巴拉圭国家公用事业公司称该日期为最终日期，并且刚刚签署了一项为期 15 年的协议，为创始人基金支持的人工智能公司提供电力\n\n把一条价格变化放进更长的时间窗看，才知道是噪音还是结构变化。我会继续看后续几天的资金流与"
     }
   ],
   "newCoinIds": [],
@@ -239,10 +246,10 @@
   ],
   "timelineKey": "2026-11-14",
   "timelineIdx": 0,
-  "timelineSentCount": 8,
+  "timelineSentCount": 9,
   "timelineDay": "2026-11-14",
-  "lastRunAt": 1794611296937,
-  "lastFetchAt": 1794611296937,
+  "lastRunAt": 1794614900521,
+  "lastFetchAt": 1794614900521,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
