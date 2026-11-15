@@ -68,19 +68,14 @@
     "trending_2026-11-15_IMD_GATO_BTC_KAVA_SOL_XRP",
     "news_120bo7f",
     "movers_2026-11-15_DOGE_XMR",
-    "news_1kzls42"
+    "news_1kzls42",
+    "news_zq2w2n"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794758906282,
-  "todayPosted": 1,
+  "lastPostAt": 1794762505863,
+  "todayPosted": 2,
   "todayKey": "Mon Nov 16 2026",
   "postHistory": [
-    {
-      "id": 387840957470533,
-      "kind": "news",
-      "at": 1794578933853,
-      "text": "在 FATF 审查之前，加密货币洗钱对英国构成“重大风险”：RUSI\n\n评估人员将于 2027 年 6 月进行访问，距离完整的加密货币规则生效还有几个月，这将让英国证明其可以打击加密货币洗钱。\n\n这类资讯缺少可核对的后续指标，我会先看有没有独立数据或第二方确认，而不是急着给结论。\n\n单条报道能提供的信息有限，多看几方口径更稳妥。\n\n这类报道你一般会另外查哪些背景？\n\n#加密资讯"
-    },
     {
       "id": 387855589222943,
       "kind": "news",
@@ -374,6 +369,12 @@
       "kind": "news",
       "at": 1794758906282,
       "text": "讲真，传统金融这波动作挺大，高盛和花旗那个 2.7 亿美元的“Project Faro”刚出来，SoFi、Anchorage、Mastercard、Visa 和 Circle 也都在忙着布局。以前链上美元这块基本被 Tether 和 Circle 把控，现在整个格局看着有点意思。\n\n#加密资讯"
+    },
+    {
+      "id": 388592868380326,
+      "kind": "news",
+      "at": 1794762505863,
+      "text": "讲真，现在企业区块链这块好像快活过来了，主要得益于可扩展性、隐私工具和链上流动性的改善。很多人认为，企业最终可能拥有使企业区块链发挥作用的基础设施。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -405,10 +406,10 @@
   ],
   "timelineKey": "2026-11-16",
   "timelineIdx": 0,
-  "timelineSentCount": 1,
+  "timelineSentCount": 2,
   "timelineDay": "2026-11-16",
-  "lastRunAt": 1794758895521,
-  "lastFetchAt": 1794758895521,
+  "lastRunAt": 1794762497528,
+  "lastFetchAt": 1794762497528,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -436,7 +437,7 @@
   "lastPostAtByKind": {
     "movers": 1794755314125,
     "trending": 1794748107464,
-    "news": 1794758906282,
+    "news": 1794762505863,
     "market": 1794708520741
   }
 }
