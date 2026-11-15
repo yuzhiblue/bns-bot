@@ -56,19 +56,14 @@
     "movers_2026-11-15_ADA_DOGE_HYPE_XMR_LINK_SOL",
     "market_UNIUSDT_2026-11-15T01",
     "trending_2026-11-15_BTC_SOL_ETH_NEAR_HYPE_PEARL",
-    "news_19zfv2m"
+    "news_19zfv2m",
+    "movers_2026-11-15_ADA_DOGE_SOL_XMR_LINK_ETH"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794715710397,
-  "todayPosted": 13,
+  "lastPostAt": 1794719328853,
+  "todayPosted": 14,
   "todayKey": "Sun Nov 15 2026",
   "postHistory": [
-    {
-      "id": 387663916811313,
-      "kind": "market",
-      "at": 1794535711042,
-      "text": "📊 $PEPE 30 分钟涨 2.2%\n· 多头发力了\n· 现价 0\n· 成交量放大 2.3 倍\n\n这波节奏不错，持有观望\n\n$PEPE #行情异动"
-    },
     {
       "id": 387678635496759,
       "kind": "news",
@@ -362,6 +357,12 @@
       "kind": "news",
       "at": 1794715710397,
       "text": "这轮资金撤离的压力比预期的大，ETF 流出叠加稳定币供应减少，直接把 XRP 砸到了 2024 年 11 月以来的最低水平。看现在的盘面，市场情绪确实被这两块短板给拖住了，懂的都懂。\n\n#加密资讯"
+    },
+    {
+      "id": 388416015382941,
+      "kind": "movers",
+      "at": 1794719328853,
+      "text": "📊 24h 涨跌榜（全市场）\n\n领跌：ADA -8.2% / DOGE -7.1% / SOL -6.0% / XMR -5.8% / LINK -5.1%\n\n榜单中所有上榜资产均为下跌，且波动幅度集中在4.6%至8.2%区间，呈现出全市场普跌的结构特征。主要跌幅集中在Cardano、Dogecoin等高市值或主流币种，显示空头力量在头部资产上占绝对主导，缺乏明显的领涨对冲板块。\n\n极端波动时更"
     }
   ],
   "newCoinIds": [],
@@ -393,10 +394,10 @@
   ],
   "timelineKey": "2026-11-15",
   "timelineIdx": 0,
-  "timelineSentCount": 13,
+  "timelineSentCount": 14,
   "timelineDay": "2026-11-15",
-  "lastRunAt": 1794715698277,
-  "lastFetchAt": 1794715698277,
+  "lastRunAt": 1794719316134,
+  "lastFetchAt": 1794719316134,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -419,7 +420,7 @@
     "updatedAt": 1794586106417
   },
   "lastPostAtByKind": {
-    "movers": 1794704912017,
+    "movers": 1794719328853,
     "trending": 1794712123227,
     "news": 1794715710397,
     "market": 1794708520741
