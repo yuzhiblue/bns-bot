@@ -74,19 +74,14 @@
     "news_1sbtfyr",
     "movers_2026-11-16_ZEC",
     "market_ASTERUSDT_2026-11-15T20",
-    "news_55lslb"
+    "news_55lslb",
+    "trending_2026-11-16_MACCA_DACITYCOIN_GATO_BTC_PENGU_SOL"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794780508748,
-  "todayPosted": 7,
+  "lastPostAt": 1794784114507,
+  "todayPosted": 8,
   "todayKey": "Mon Nov 16 2026",
   "postHistory": [
-    {
-      "id": 387929388044758,
-      "kind": "news",
-      "at": 1794600523376,
-      "text": "沉睡 16 年后比特币钱包苏醒，转移 690 万美元\n\n2010 年 9 月的两次比特币挖矿奖励相差几分钟。这些硬币的价值接近原市场价值的115万倍。\n\n目前能确认的只有报道里给出的这些事实，还不足以判断影响范围。我会等后续数据或官方口径佐证，在此之前不做方向判断。\n\n先记下能确认的部分，结论留到有更多数据的时候。\n\n你的观察清单里会放哪些指标？\n\n#加密资讯"
-    },
     {
       "id": 387944056750555,
       "kind": "news",
@@ -380,6 +375,12 @@
       "kind": "news",
       "at": 1794780508749,
       "text": "到 2026 年选举周期结束时，预测市场和民意调查基本一致，而且都出现了明显的失误。这事儿挺意外，通常大家觉得预测市场靠钱投票更准，结果和传统民调一块儿翻车了。\n\n#加密资讯"
+    },
+    {
+      "id": 388681377492951,
+      "kind": "trending",
+      "at": 1794784114508,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. MACCA (+302.1%)\n2. DACITYCOIN (+8.6%)\n3. GATO (+30.0%)\n4. BTC (+2.9%)\n5. PENGU (+6.3%)\n6. SOL (+5.4%)\n\nMeme与主题概念币占据了热搜榜的主导位置，其中MACCA以302.1%的涨幅领跑，显示出散户对高波动性小市值标的的强烈关注度。相比之下，比特币、"
     }
   ],
   "newCoinIds": [],
@@ -411,10 +412,10 @@
   ],
   "timelineKey": "2026-11-16",
   "timelineIdx": 0,
-  "timelineSentCount": 7,
+  "timelineSentCount": 8,
   "timelineDay": "2026-11-16",
-  "lastRunAt": 1794780499262,
-  "lastFetchAt": 1794780499262,
+  "lastRunAt": 1794784105816,
+  "lastFetchAt": 1794784105816,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -441,7 +442,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1794773307229,
-    "trending": 1794766114453,
+    "trending": 1794784114508,
     "news": 1794780508749,
     "market": 1794776904856
   }
