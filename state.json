@@ -64,19 +64,14 @@
     "news_1mfoysy",
     "movers_2026-11-15_DOGE_ADA_XMR_SOL_ETH",
     "news_d1u32r",
-    "news_1cu1wl6"
+    "news_1cu1wl6",
+    "trending_2026-11-15_IMD_GATO_BTC_KAVA_SOL_XRP"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794744507005,
-  "todayPosted": 21,
+  "lastPostAt": 1794748107464,
+  "todayPosted": 22,
   "todayKey": "Sun Nov 15 2026",
   "postHistory": [
-    {
-      "id": 387781867692986,
-      "kind": "news",
-      "at": 1794564507652,
-      "text": "Unocoin 因可疑转账而暂停存款和取款\n\nUnocoin 表示，这些转账是在 BitGo 平台之外签署的，而其账户被冻结，可能是通过钱包恢复功能进行的。\n\n安全与服务类事件，先确认影响范围、以及是否仍在持续，比讨论市场反应更有意义。我会等官方口径和后续通报，不据此推断方向。\n\n事实和推测分开看，别让一条报道替代自己的判断。\n\n看到这类标题，你第一反应会先确认什么？\n\n#加密资讯"
-    },
     {
       "id": 387796688520492,
       "kind": "news",
@@ -370,6 +365,12 @@
       "kind": "news",
       "at": 1794744507005,
       "text": "讲真，上周比特币跌了14%直接看到6.5万美元，这周又缩水约13%。周末抛压有点猛，价格已经跌破周五低点，目前周六交易价在65,600美元附近。\n\n#加密资讯"
+    },
+    {
+      "id": 388533892481902,
+      "kind": "trending",
+      "at": 1794748107464,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. IMD (+44.7%)\n2. GATO (+46.0%)\n3. BTC (-1.9%)\n4. KAVA (-7.6%)\n5. SOL (-3.3%)\n6. XRP (-1.9%)\n\n榜单呈现明显的分化格局，头部为两个涨幅超44%的小市值项目，而排名后四位的主流资产均处于24小时下跌状态。这种结构显示市场当前热点集中在小币种的高波动行情，与主流板块的"
     }
   ],
   "newCoinIds": [],
@@ -401,10 +402,10 @@
   ],
   "timelineKey": "2026-11-15",
   "timelineIdx": 0,
-  "timelineSentCount": 21,
+  "timelineSentCount": 22,
   "timelineDay": "2026-11-15",
-  "lastRunAt": 1794744498911,
-  "lastFetchAt": 1794744498911,
+  "lastRunAt": 1794748096496,
+  "lastFetchAt": 1794748096496,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -428,7 +429,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1794737310802,
-    "trending": 1794730112323,
+    "trending": 1794748107464,
     "news": 1794744507005,
     "market": 1794708520741
   }
