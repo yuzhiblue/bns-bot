@@ -69,19 +69,14 @@
     "news_120bo7f",
     "movers_2026-11-15_DOGE_XMR",
     "news_1kzls42",
-    "news_zq2w2n"
+    "news_zq2w2n",
+    "trending_2026-11-16_MACCA_MIHAO_GATO_DACITYCOIN_IMD_PENGU"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794762505863,
-  "todayPosted": 2,
+  "lastPostAt": 1794766114453,
+  "todayPosted": 3,
   "todayKey": "Mon Nov 16 2026",
   "postHistory": [
-    {
-      "id": 387855589222943,
-      "kind": "news",
-      "at": 1794582506075,
-      "text": "特朗普总统在美国证券交易委员会和美国商品期货交易委员会的两党提名名单中任命了两名民主党人，因为这两个机构都人手不足\n\n周四，白宫向参议院派出了四名 SEC 和 CFTC 提名人，其中包括前 CFTC 专员克里斯汀·约翰逊 (Kristin Johnson) 和两名参与《澄清法案》工作的工作人员。\n\n监管与人事变化的影响通常不在公布当天，而在后续的执行细则和落地节奏。我会盯配套文件与时间表，不把表态"
-    },
     {
       "id": 387870363552285,
       "kind": "news",
@@ -375,6 +370,12 @@
       "kind": "news",
       "at": 1794762505863,
       "text": "讲真，现在企业区块链这块好像快活过来了，主要得益于可扩展性、隐私工具和链上流动性的改善。很多人认为，企业最终可能拥有使企业区块链发挥作用的基础设施。\n\n#加密资讯"
+    },
+    {
+      "id": 388607649138450,
+      "kind": "trending",
+      "at": 1794766114453,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. MACCA (+0.0%)\n2. MIHAO (+108.4%)\n3. GATO (+29.5%)\n4. DACITYCOIN (+294.2%)\n5. IMD (+19.7%)\n6. PENGU (-4.9%)\n\nAudaCity以294.2%的涨幅居首，ni hao cat和Gato The Cat紧随其后，表明Meme与动物题材仍是当前热度核心"
     }
   ],
   "newCoinIds": [],
@@ -406,10 +407,10 @@
   ],
   "timelineKey": "2026-11-16",
   "timelineIdx": 0,
-  "timelineSentCount": 2,
+  "timelineSentCount": 3,
   "timelineDay": "2026-11-16",
-  "lastRunAt": 1794762497528,
-  "lastFetchAt": 1794762497528,
+  "lastRunAt": 1794766106122,
+  "lastFetchAt": 1794766106122,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -436,7 +437,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1794755314125,
-    "trending": 1794748107464,
+    "trending": 1794766114453,
     "news": 1794762505863,
     "market": 1794708520741
   }
