@@ -70,19 +70,14 @@
     "movers_2026-11-15_DOGE_XMR",
     "news_1kzls42",
     "news_zq2w2n",
-    "trending_2026-11-16_MACCA_MIHAO_GATO_DACITYCOIN_IMD_PENGU"
+    "trending_2026-11-16_MACCA_MIHAO_GATO_DACITYCOIN_IMD_PENGU",
+    "news_1sbtfyr"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794766114453,
-  "todayPosted": 3,
+  "lastPostAt": 1794769707621,
+  "todayPosted": 4,
   "todayKey": "Mon Nov 16 2026",
   "postHistory": [
-    {
-      "id": 387870363552285,
-      "kind": "news",
-      "at": 1794586113101,
-      "text": "随着 Anthropic 的重磅 IPO 临近，比特币将连续第六周下跌\n\n由于投资者权衡 Anthropic 的上市预期、英伟达的领导层变动以及美联储加息预期的上升，比特币今年下跌了 21%。\n\n这类借贷与持仓结构，风险往往集中在抵押品和触发线上。我会关注后续公告是否调整了相关条款，而不是只看当天的价格反应。\n\n标题给的是结论，正文里的条件才值得细看。\n\n你判断一条资讯值不值得跟，通常看哪一点？\n"
-    },
     {
       "id": 387885076564553,
       "kind": "news",
@@ -376,6 +371,12 @@
       "kind": "trending",
       "at": 1794766114453,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. MACCA (+0.0%)\n2. MIHAO (+108.4%)\n3. GATO (+29.5%)\n4. DACITYCOIN (+294.2%)\n5. IMD (+19.7%)\n6. PENGU (-4.9%)\n\nAudaCity以294.2%的涨幅居首，ni hao cat和Gato The Cat紧随其后，表明Meme与动物题材仍是当前热度核心"
+    },
+    {
+      "id": 388622366755788,
+      "kind": "news",
+      "at": 1794769707621,
+      "text": "最近圈里有个说法挺实在，加密行业内部人士基本不指望国会“跛脚鸭”届期能带来利好。毕竟民主党准备在明年追求自己的加密货币和技术议程，本届会议的最后几周估计难有惊喜，懂行的都把这阶段当静默期看了。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -407,10 +408,10 @@
   ],
   "timelineKey": "2026-11-16",
   "timelineIdx": 0,
-  "timelineSentCount": 3,
+  "timelineSentCount": 4,
   "timelineDay": "2026-11-16",
-  "lastRunAt": 1794766106122,
-  "lastFetchAt": 1794766106122,
+  "lastRunAt": 1794769698914,
+  "lastFetchAt": 1794769698914,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -438,7 +439,7 @@
   "lastPostAtByKind": {
     "movers": 1794755314125,
     "trending": 1794766114453,
-    "news": 1794762505863,
+    "news": 1794769707621,
     "market": 1794708520741
   }
 }
