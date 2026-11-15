@@ -63,19 +63,14 @@
     "trending_2026-11-15_BTC_KAVA_HYPE_XRP_ETH_PEARL",
     "news_1mfoysy",
     "movers_2026-11-15_DOGE_ADA_XMR_SOL_ETH",
-    "news_d1u32r"
+    "news_d1u32r",
+    "news_1cu1wl6"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794740909518,
-  "todayPosted": 20,
+  "lastPostAt": 1794744507005,
+  "todayPosted": 21,
   "todayKey": "Sun Nov 15 2026",
   "postHistory": [
-    {
-      "id": 387767119473071,
-      "kind": "news",
-      "at": 1794560907025,
-      "text": "全球范围内的 Microsoft 365 中断影响了 Outlook 电子邮件和 Teams 日历\n\n由于中断中断了政府电子邮件以及 ChatGPT 和 Claude 中的 Microsoft 365 连接器，微软于周五开始了更广泛的补丁发布。\n\n这条属于消息面驱动。值得跟踪的是后续成交量能否放大、以及这则消息在未来 24–48 小时是否被数据验证；单日消息本身很难改写趋势，我不据此推断方向。\n\n"
-    },
     {
       "id": 387781867692986,
       "kind": "news",
@@ -369,6 +364,12 @@
       "kind": "news",
       "at": 1794740909518,
       "text": "全球加密货币市值 24 小时内下跌 4% 至 2.26 万亿美元，比特币也跌至约6.2万美元的四个月低点。有意思的是 Ether 和 Solana 的周跌幅竟然达到了两位数。\n\n#加密资讯"
+    },
+    {
+      "id": 388519145134436,
+      "kind": "news",
+      "at": 1794744507005,
+      "text": "讲真，上周比特币跌了14%直接看到6.5万美元，这周又缩水约13%。周末抛压有点猛，价格已经跌破周五低点，目前周六交易价在65,600美元附近。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -400,10 +401,10 @@
   ],
   "timelineKey": "2026-11-15",
   "timelineIdx": 0,
-  "timelineSentCount": 20,
+  "timelineSentCount": 21,
   "timelineDay": "2026-11-15",
-  "lastRunAt": 1794740901571,
-  "lastFetchAt": 1794740901571,
+  "lastRunAt": 1794744498911,
+  "lastFetchAt": 1794744498911,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -428,7 +429,7 @@
   "lastPostAtByKind": {
     "movers": 1794737310802,
     "trending": 1794730112323,
-    "news": 1794740909518,
+    "news": 1794744507005,
     "market": 1794708520741
   }
 }
