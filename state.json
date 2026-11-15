@@ -60,19 +60,14 @@
     "movers_2026-11-15_ADA_DOGE_SOL_XMR_LINK_ETH",
     "news_1kj6pm3",
     "news_jgxeb5",
-    "trending_2026-11-15_BTC_KAVA_HYPE_XRP_ETH_PEARL"
+    "trending_2026-11-15_BTC_KAVA_HYPE_XRP_ETH_PEARL",
+    "news_1mfoysy"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794730112323,
-  "todayPosted": 17,
+  "lastPostAt": 1794733714320,
+  "todayPosted": 18,
   "todayKey": "Sun Nov 15 2026",
   "postHistory": [
-    {
-      "id": 387722874160972,
-      "kind": "news",
-      "at": 1794550104935,
-      "text": "📰 Cointelegraph\n\n由于流动性稀薄、ETF 流出，比特币跌破 7 万美元\n\n随着加密货币情绪跌至四个多月以来的最低水平，分析师警告机构资金外流、流动性稀薄和杠杆率上升，比特币跌破 70,000 美元。\n\n消息面仅供参考，操作看自己的判断。\n\n#加密资讯"
-    },
     {
       "id": 387737621746935,
       "kind": "news",
@@ -366,6 +361,12 @@
       "kind": "trending",
       "at": 1794730112323,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BTC (-4.8%)\n2. KAVA (-47.0%)\n3. HYPE (-6.9%)\n4. XRP (-3.6%)\n5. ETH (-6.2%)\n6. PEARL (-2.5%)\n\n榜单中BTC、ETH等主流资产悉数出现，且全线飘绿，反映出市场整体情绪偏向防守。KAVA与HYPE居前，表明除主流币外，部分高波动或特定生态项目仍占据着较高的短线关注"
+    },
+    {
+      "id": 388474938276413,
+      "kind": "news",
+      "at": 1794733714320,
+      "text": "Coinone 说客户数据泄露后出现了钓鱼攻击与身份盗用风险，可能暴露的信息包括密码、银行帐号、身份证号码和加密钱包地址。这事儿挺意外，韩国加密货币交易所直接承认了这些敏感信息的风险。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -397,10 +398,10 @@
   ],
   "timelineKey": "2026-11-15",
   "timelineIdx": 0,
-  "timelineSentCount": 17,
+  "timelineSentCount": 18,
   "timelineDay": "2026-11-15",
-  "lastRunAt": 1794730102813,
-  "lastFetchAt": 1794730102813,
+  "lastRunAt": 1794733701775,
+  "lastFetchAt": 1794733701775,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -425,7 +426,7 @@
   "lastPostAtByKind": {
     "movers": 1794719328853,
     "trending": 1794730112323,
-    "news": 1794726509577,
+    "news": 1794733714320,
     "market": 1794708520741
   }
 }
