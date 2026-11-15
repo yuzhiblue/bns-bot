@@ -51,19 +51,14 @@
     "movers_2026-11-15_FIGR_HELOC_ZEC_HYPE_ADA_SOL_LINK_DOGE",
     "trending_2026-11-15_MIHAO_BTC_SOL_ASTER_ZEC_HYPE",
     "news_1cl5115",
-    "news_io2rt3"
+    "news_io2rt3",
+    "market_SHELLUSDT_2026-11-14T23"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794697720308,
-  "todayPosted": 8,
+  "lastPostAt": 1794701326035,
+  "todayPosted": 9,
   "todayKey": "Sun Nov 15 2026",
   "postHistory": [
-    {
-      "id": 384816485913021,
-      "kind": "whale",
-      "at": 1793840497475,
-      "text": "🐋 XRP 多头占优了\n· 当前多空比: 2.3024\n· 多头持仓明显占优\n\n多头付费，持仓成本不低，留意。\n\n$XRP #多空比\n#行情异动"
-    },
     {
       "id": 387065525916056,
       "kind": "announcement",
@@ -357,6 +352,12 @@
       "kind": "news",
       "at": 1794697720308,
       "text": "有意思的是，比特币已经跌到了三个月低点，6.4 万美元下方，詹姆斯·切克在文中指出这是第四波恐慌抛售。他写道：“他们现在的售价正是他们希望三个月前能利用的价格。”\n\n#加密资讯"
+    },
+    {
+      "id": 388342275814991,
+      "kind": "market",
+      "at": 1794701326035,
+      "text": "📊 $SHELL 30 分钟涨 3.8%\n· 资金明显进来了\n· 现价 0.0293\n· 成交量放大 4.6 倍\n\n30 分钟内涨 3.8%，成交量放大到 4.6 倍，属于量价同步的短时脉冲。这类走势我会先看回踩时的量能：缩量回踩说明抛压有限，放量回踩更像获利了结。短窗口只反映当下，还不能当作趋势确认。\n\n短线注意别追高，回踩再看\n\n这个位置你会关注哪些数据？\n\n$SHELL #行情异动"
     }
   ],
   "newCoinIds": [],
@@ -388,10 +389,10 @@
   ],
   "timelineKey": "2026-11-15",
   "timelineIdx": 0,
-  "timelineSentCount": 8,
+  "timelineSentCount": 9,
   "timelineDay": "2026-11-15",
-  "lastRunAt": 1794697716757,
-  "lastFetchAt": 1794697716757,
+  "lastRunAt": 1794701315183,
+  "lastFetchAt": 1794701315183,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -416,6 +417,7 @@
   "lastPostAtByKind": {
     "movers": 1794686915472,
     "trending": 1794690517260,
-    "news": 1794697720308
+    "news": 1794697720308,
+    "market": 1794701326035
   }
 }
