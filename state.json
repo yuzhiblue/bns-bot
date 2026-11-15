@@ -73,19 +73,14 @@
     "trending_2026-11-16_MACCA_MIHAO_GATO_DACITYCOIN_IMD_PENGU",
     "news_1sbtfyr",
     "movers_2026-11-16_ZEC",
-    "market_ASTERUSDT_2026-11-15T20"
+    "market_ASTERUSDT_2026-11-15T20",
+    "news_55lslb"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794776904856,
-  "todayPosted": 6,
+  "lastPostAt": 1794780508748,
+  "todayPosted": 7,
   "todayKey": "Mon Nov 16 2026",
   "postHistory": [
-    {
-      "id": 387914570279851,
-      "kind": "news",
-      "at": 1794596905746,
-      "text": "Anthropic IPO 狂潮加剧市场不安，比特币暴跌至 68,000 美元\n\n分析师认为英伟达和比特币的下跌之间没有直接联系，而是指出投资者资金流入 Anthropic 以及更广泛的避险举措。\n\n把一条价格变化放进更长的时间窗看，才知道是噪音还是结构变化。我会继续看后续几天的资金流与成交量，当下不下判断。\n\n标题给的是结论，正文里的条件才值得细看。\n\n这类报道你一般会另外查哪些背景？\n\n#加密"
-    },
     {
       "id": 387929388044758,
       "kind": "news",
@@ -379,6 +374,12 @@
       "kind": "market",
       "at": 1794776904856,
       "text": "📊 $ASTER 30 分钟涨 17.1%\n· 动能起来了\n· 现价 0.6955\n· 成交量放大 3.5 倍\n\n30 分钟内涨 17.1%，成交量放大到 3.5 倍，属于量价同步的短时脉冲。这类走势我会先看回踩时的量能：缩量回踩说明抛压有限，放量回踩更像获利了结。短窗口只反映当下，还不能当作趋势确认。\n\n这波节奏不错，持有观望\n\n这种短时脉冲你一般怎么确认？\n\n$ASTER #行情异动"
+    },
+    {
+      "id": 388666608161547,
+      "kind": "news",
+      "at": 1794780508749,
+      "text": "到 2026 年选举周期结束时，预测市场和民意调查基本一致，而且都出现了明显的失误。这事儿挺意外，通常大家觉得预测市场靠钱投票更准，结果和传统民调一块儿翻车了。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -410,10 +411,10 @@
   ],
   "timelineKey": "2026-11-16",
   "timelineIdx": 0,
-  "timelineSentCount": 6,
+  "timelineSentCount": 7,
   "timelineDay": "2026-11-16",
-  "lastRunAt": 1794776897150,
-  "lastFetchAt": 1794776897150,
+  "lastRunAt": 1794780499262,
+  "lastFetchAt": 1794780499262,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -441,7 +442,7 @@
   "lastPostAtByKind": {
     "movers": 1794773307229,
     "trending": 1794766114453,
-    "news": 1794769707621,
+    "news": 1794780508749,
     "market": 1794776904856
   }
 }
