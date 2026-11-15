@@ -66,19 +66,14 @@
     "news_d1u32r",
     "news_1cu1wl6",
     "trending_2026-11-15_IMD_GATO_BTC_KAVA_SOL_XRP",
-    "news_120bo7f"
+    "news_120bo7f",
+    "movers_2026-11-15_DOGE_XMR"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794751716406,
-  "todayPosted": 23,
+  "lastPostAt": 1794755314125,
+  "todayPosted": 24,
   "todayKey": "Sun Nov 15 2026",
   "postHistory": [
-    {
-      "id": 387811358814958,
-      "kind": "news",
-      "at": 1794571707613,
-      "text": "数字信用：比较六种比特币优先股\n\n用于评估数字信贷的简单的四部分投资者框架。\n\n目前能确认的只有报道里给出的这些事实，还不足以判断影响范围。我会等后续数据或官方口径佐证，在此之前不做方向判断。\n\n事实和推测分开看，别让一条报道替代自己的判断。\n\n你的观察清单里会放哪些指标？\n\n#加密资讯"
-    },
     {
       "id": 387826116514196,
       "kind": "news",
@@ -372,6 +367,12 @@
       "kind": "news",
       "at": 1794751716406,
       "text": "比特币ETF11月净流出21亿美元 连续7日流出\n\n周五，现货比特币 ETF 损失 1.854 亿美元，这是连续第七天资金流出，随着比特币跌向 64,000 美元，11 月份的损失扩大至约 21 亿美元。\n\n#加密资讯"
+    },
+    {
+      "id": 388563411048405,
+      "kind": "movers",
+      "at": 1794755314125,
+      "text": "📊 24h 涨跌榜（全市场）\n\n领跌：DOGE -4.9% / XMR -4.6%\n\n这份榜单仅呈现了领跌方向，且涉及4%以上波动率的资产全部为负收益，未见任何领涨标的。Dogecoin和Monero的同步下行显示，无论主流山寨还是隐私币种，市场当前主要受空头情绪主导。基于现有数据，短期资金呈现明显的避险或离场特征，缺乏多头对冲力量。\n\n极端波动时更要注意风险，别追在尖上。\n\n榜单里你会怎么筛掉"
     }
   ],
   "newCoinIds": [],
@@ -403,10 +404,10 @@
   ],
   "timelineKey": "2026-11-15",
   "timelineIdx": 0,
-  "timelineSentCount": 23,
+  "timelineSentCount": 24,
   "timelineDay": "2026-11-15",
-  "lastRunAt": 1794751706832,
-  "lastFetchAt": 1794751706832,
+  "lastRunAt": 1794755302763,
+  "lastFetchAt": 1794755302763,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -429,7 +430,7 @@
     "updatedAt": 1794586106417
   },
   "lastPostAtByKind": {
-    "movers": 1794737310802,
+    "movers": 1794755314125,
     "trending": 1794748107464,
     "news": 1794751716406,
     "market": 1794708520741
