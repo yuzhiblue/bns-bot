@@ -52,19 +52,14 @@
     "trending_2026-11-15_MIHAO_BTC_SOL_ASTER_ZEC_HYPE",
     "news_1cl5115",
     "news_io2rt3",
-    "market_SHELLUSDT_2026-11-14T23"
+    "market_SHELLUSDT_2026-11-14T23",
+    "movers_2026-11-15_ADA_DOGE_HYPE_XMR_LINK_SOL"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794701326035,
-  "todayPosted": 9,
+  "lastPostAt": 1794704912017,
+  "todayPosted": 10,
   "todayKey": "Sun Nov 15 2026",
   "postHistory": [
-    {
-      "id": 387065525916056,
-      "kind": "announcement",
-      "at": 1794389619524,
-      "text": "📢 币安公告更新\n\nFund Your First Recurring Buy - Deposit USD and Earn Rewards\n\n新消息，注意你的持仓。\n\n#币安公告\n#行情异动"
-    },
     {
       "id": 387300177648720,
       "kind": "fearGreed",
@@ -358,6 +353,12 @@
       "kind": "market",
       "at": 1794701326035,
       "text": "📊 $SHELL 30 分钟涨 3.8%\n· 资金明显进来了\n· 现价 0.0293\n· 成交量放大 4.6 倍\n\n30 分钟内涨 3.8%，成交量放大到 4.6 倍，属于量价同步的短时脉冲。这类走势我会先看回踩时的量能：缩量回踩说明抛压有限，放量回踩更像获利了结。短窗口只反映当下，还不能当作趋势确认。\n\n短线注意别追高，回踩再看\n\n这个位置你会关注哪些数据？\n\n$SHELL #行情异动"
+    },
+    {
+      "id": 388356963967794,
+      "kind": "movers",
+      "at": 1794704912017,
+      "text": "📊 24h 涨跌榜（全市场）\n\n领跌：ADA -12.9% / DOGE -12.3% / HYPE -11.2% / XMR -10.6% / LINK -10.6%\n\n榜单前六名均为跌幅超10%的资产，显示当前市场空方力量占绝对主导且覆盖多类主流币种。领跌名单中同时包含比特币生态（SOL、DOGE）、主流公链（ADA、LINK）及新兴DeFi协议（HYPE），反映出抛售压力并非局限于单一板块"
     }
   ],
   "newCoinIds": [],
@@ -389,10 +390,10 @@
   ],
   "timelineKey": "2026-11-15",
   "timelineIdx": 0,
-  "timelineSentCount": 9,
+  "timelineSentCount": 10,
   "timelineDay": "2026-11-15",
-  "lastRunAt": 1794701315183,
-  "lastFetchAt": 1794701315183,
+  "lastRunAt": 1794704902372,
+  "lastFetchAt": 1794704902372,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -415,7 +416,7 @@
     "updatedAt": 1794586106417
   },
   "lastPostAtByKind": {
-    "movers": 1794686915472,
+    "movers": 1794704912017,
     "trending": 1794690517260,
     "news": 1794697720308,
     "market": 1794701326035
