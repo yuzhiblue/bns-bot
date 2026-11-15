@@ -55,19 +55,14 @@
     "market_SHELLUSDT_2026-11-14T23",
     "movers_2026-11-15_ADA_DOGE_HYPE_XMR_LINK_SOL",
     "market_UNIUSDT_2026-11-15T01",
-    "trending_2026-11-15_BTC_SOL_ETH_NEAR_HYPE_PEARL"
+    "trending_2026-11-15_BTC_SOL_ETH_NEAR_HYPE_PEARL",
+    "news_19zfv2m"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794712123227,
-  "todayPosted": 12,
+  "lastPostAt": 1794715710397,
+  "todayPosted": 13,
   "todayKey": "Sun Nov 15 2026",
   "postHistory": [
-    {
-      "id": 387627043322211,
-      "kind": "fearGreed",
-      "at": 1794526708737,
-      "text": "🌡️ 今天的指数：恐惧 (28)\n\n情绪面仅供参考，基本面才是根本。\n\n#恐惧贪婪指数 #行情异动"
-    },
     {
       "id": 387663916811313,
       "kind": "market",
@@ -361,6 +356,12 @@
       "kind": "trending",
       "at": 1794712123227,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BTC (-3.3%)\n2. SOL (-5.6%)\n3. ETH (-4.4%)\n4. NEAR (-7.8%)\n5. HYPE (-5.9%)\n6. PEARL (-2.3%)\n\n当前热搜榜被主流加密货币占据，反映出市场关注度仍高度集中于比特币、Solana和以太坊等头部资产。尽管整体呈现下跌态势，但Pearl等小市值项目跌幅相对较小，显示资金在"
+    },
+    {
+      "id": 388401194080576,
+      "kind": "news",
+      "at": 1794715710397,
+      "text": "这轮资金撤离的压力比预期的大，ETF 流出叠加稳定币供应减少，直接把 XRP 砸到了 2024 年 11 月以来的最低水平。看现在的盘面，市场情绪确实被这两块短板给拖住了，懂的都懂。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -392,10 +393,10 @@
   ],
   "timelineKey": "2026-11-15",
   "timelineIdx": 0,
-  "timelineSentCount": 12,
+  "timelineSentCount": 13,
   "timelineDay": "2026-11-15",
-  "lastRunAt": 1794712105695,
-  "lastFetchAt": 1794712105695,
+  "lastRunAt": 1794715698277,
+  "lastFetchAt": 1794715698277,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -420,7 +421,7 @@
   "lastPostAtByKind": {
     "movers": 1794704912017,
     "trending": 1794712123227,
-    "news": 1794697720308,
+    "news": 1794715710397,
     "market": 1794708520741
   }
 }
