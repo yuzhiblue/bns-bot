@@ -61,19 +61,14 @@
     "news_1kj6pm3",
     "news_jgxeb5",
     "trending_2026-11-15_BTC_KAVA_HYPE_XRP_ETH_PEARL",
-    "news_1mfoysy"
+    "news_1mfoysy",
+    "movers_2026-11-15_DOGE_ADA_XMR_SOL_ETH"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794733714320,
-  "todayPosted": 18,
+  "lastPostAt": 1794737310802,
+  "todayPosted": 19,
   "todayKey": "Sun Nov 15 2026",
   "postHistory": [
-    {
-      "id": 387737621746935,
-      "kind": "news",
-      "at": 1794553705421,
-      "text": "这是今天加密货币领域发生的事情\n\n需要知道今天加密货币领域发生了什么吗？以下是影响比特币价格、区块链、DeFi、Web3 和加密货币监管的每日趋势和事件的最新新闻。\n\n消息面仅供参考，操作看自己的判断。\n\n#加密资讯"
-    },
     {
       "id": 387752366070757,
       "kind": "news",
@@ -367,6 +362,12 @@
       "kind": "news",
       "at": 1794733714320,
       "text": "Coinone 说客户数据泄露后出现了钓鱼攻击与身份盗用风险，可能暴露的信息包括密码、银行帐号、身份证号码和加密钱包地址。这事儿挺意外，韩国加密货币交易所直接承认了这些敏感信息的风险。\n\n#加密资讯"
+    },
+    {
+      "id": 388489669339419,
+      "kind": "movers",
+      "at": 1794737310802,
+      "text": "📊 24h 涨跌榜（全市场）\n\n领跌：DOGE -6.5% / ADA -6.1% / XMR -5.4% / SOL -5.0% / ETH -4.3%\n\n这份榜单仅展示领跌板块，缺乏领涨数据，无法构成完整的对比结构。所有列示的资产跌幅均在4%至6.5%区间，显示主流币与部分大市值山寨币同步下行。整体呈现单边的下行压力特征，未见明显的多头对冲迹象。\n\n极端波动时更要注意风险，别追在尖上。\n\n你"
     }
   ],
   "newCoinIds": [],
@@ -398,10 +399,10 @@
   ],
   "timelineKey": "2026-11-15",
   "timelineIdx": 0,
-  "timelineSentCount": 18,
+  "timelineSentCount": 19,
   "timelineDay": "2026-11-15",
-  "lastRunAt": 1794733701775,
-  "lastFetchAt": 1794733701775,
+  "lastRunAt": 1794737301728,
+  "lastFetchAt": 1794737301728,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -424,7 +425,7 @@
     "updatedAt": 1794586106417
   },
   "lastPostAtByKind": {
-    "movers": 1794719328853,
+    "movers": 1794737310802,
     "trending": 1794730112323,
     "news": 1794733714320,
     "market": 1794708520741
