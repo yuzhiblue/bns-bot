@@ -54,19 +54,14 @@
     "news_io2rt3",
     "market_SHELLUSDT_2026-11-14T23",
     "movers_2026-11-15_ADA_DOGE_HYPE_XMR_LINK_SOL",
-    "market_UNIUSDT_2026-11-15T01"
+    "market_UNIUSDT_2026-11-15T01",
+    "trending_2026-11-15_BTC_SOL_ETH_NEAR_HYPE_PEARL"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794708520741,
-  "todayPosted": 11,
+  "lastPostAt": 1794712123227,
+  "todayPosted": 12,
   "todayKey": "Sun Nov 15 2026",
   "postHistory": [
-    {
-      "id": 387343136962541,
-      "kind": "announcement",
-      "at": 1794457395668,
-      "text": "📢 币安又有新动作\n\nUpdates on Step Size for Spot Trading Pairs (2026-11-19)\n\n先别慌，看完公告再动手。\n\n#币安公告\n#行情异动"
-    },
     {
       "id": 387627043322211,
       "kind": "fearGreed",
@@ -360,6 +355,12 @@
       "kind": "market",
       "at": 1794708520741,
       "text": "📊 $UNI 30 分钟涨 3.5%\n· 多头开始动手了\n· 现价 4.879\n· 成交量放大 3.1 倍\n\n30 分钟内涨 3.5%，成交量放大到 3.1 倍，属于量价同步的短时脉冲。这类走势我会先看回踩时的量能：缩量回踩说明抛压有限，放量回踩更像获利了结。短窗口只反映当下，还不能当作趋势确认。\n\n量价配合好，趋势还在\n\n你更看重量能还是价格结构？\n\n$UNI #行情异动"
+    },
+    {
+      "id": 388386501198231,
+      "kind": "trending",
+      "at": 1794712123227,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BTC (-3.3%)\n2. SOL (-5.6%)\n3. ETH (-4.4%)\n4. NEAR (-7.8%)\n5. HYPE (-5.9%)\n6. PEARL (-2.3%)\n\n当前热搜榜被主流加密货币占据，反映出市场关注度仍高度集中于比特币、Solana和以太坊等头部资产。尽管整体呈现下跌态势，但Pearl等小市值项目跌幅相对较小，显示资金在"
     }
   ],
   "newCoinIds": [],
@@ -391,10 +392,10 @@
   ],
   "timelineKey": "2026-11-15",
   "timelineIdx": 0,
-  "timelineSentCount": 11,
+  "timelineSentCount": 12,
   "timelineDay": "2026-11-15",
-  "lastRunAt": 1794708513938,
-  "lastFetchAt": 1794708513938,
+  "lastRunAt": 1794712105695,
+  "lastFetchAt": 1794712105695,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -418,7 +419,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1794704912017,
-    "trending": 1794690517260,
+    "trending": 1794712123227,
     "news": 1794697720308,
     "market": 1794708520741
   }
