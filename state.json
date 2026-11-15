@@ -58,19 +58,14 @@
     "trending_2026-11-15_BTC_SOL_ETH_NEAR_HYPE_PEARL",
     "news_19zfv2m",
     "movers_2026-11-15_ADA_DOGE_SOL_XMR_LINK_ETH",
-    "news_1kj6pm3"
+    "news_1kj6pm3",
+    "news_jgxeb5"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794722907806,
-  "todayPosted": 15,
+  "lastPostAt": 1794726509577,
+  "todayPosted": 16,
   "todayKey": "Sun Nov 15 2026",
   "postHistory": [
-    {
-      "id": 387693382154447,
-      "kind": "news",
-      "at": 1794542904746,
-      "text": "📰 CoinDesk\n\nBitcoin dips below $70,000 as Dollar Index hits 19-month high\nhttps://www.coindesk.com/markets/2026/11/13/bitcoin-dips-below-usd70-000-as-selloff-gathers-pace\n\n消息面仅供参考，操作看自己的判断。\n\n#加密资讯 #行"
-    },
     {
       "id": 387708127101399,
       "kind": "news",
@@ -364,6 +359,12 @@
       "kind": "news",
       "at": 1794722907806,
       "text": "比特币跌破6.3万美元，创三个月新低。詹姆斯·切克写道：“他们现在的售价正是他们希望三个月前能利用的价格。”分析师指出第四次投降抛售已现，有意思的是，现在的价格结构正好印证了这句话。\n\n#加密资讯"
+    },
+    {
+      "id": 388445427630487,
+      "kind": "news",
+      "at": 1794726509577,
+      "text": "RWA协议stUSDT在TVL峰值达23亿美元三年后宣布收尾，这事儿挺意外。stUSDT 团队没有透露终止 RWA 协议的原因，但向持有者保证所有基础资产仍得到充分支持。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -395,10 +396,10 @@
   ],
   "timelineKey": "2026-11-15",
   "timelineIdx": 0,
-  "timelineSentCount": 15,
+  "timelineSentCount": 16,
   "timelineDay": "2026-11-15",
-  "lastRunAt": 1794722898870,
-  "lastFetchAt": 1794722898870,
+  "lastRunAt": 1794726497992,
+  "lastFetchAt": 1794726497992,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -423,7 +424,7 @@
   "lastPostAtByKind": {
     "movers": 1794719328853,
     "trending": 1794712123227,
-    "news": 1794722907806,
+    "news": 1794726509577,
     "market": 1794708520741
   }
 }
