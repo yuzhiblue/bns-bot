@@ -62,19 +62,14 @@
     "news_jgxeb5",
     "trending_2026-11-15_BTC_KAVA_HYPE_XRP_ETH_PEARL",
     "news_1mfoysy",
-    "movers_2026-11-15_DOGE_ADA_XMR_SOL_ETH"
+    "movers_2026-11-15_DOGE_ADA_XMR_SOL_ETH",
+    "news_d1u32r"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794737310802,
-  "todayPosted": 19,
+  "lastPostAt": 1794740909518,
+  "todayPosted": 20,
   "todayKey": "Sun Nov 15 2026",
   "postHistory": [
-    {
-      "id": 387752366070757,
-      "kind": "news",
-      "at": 1794557305108,
-      "text": "以太坊财务公司 BTCS 亏本出售以太币，以保持 6400 万美元的 Aave 贷款健康\n\n这家在纳斯达克上市的公司有 46,676 ETH 来支持其借款，如果 ETH 跌至 1,700 美元左右，这笔贷款可能会被清算。\n\n这条属于消息面驱动。文中提到的 1,700美元只是当下快照。值得跟踪的是后续成交量能否放大、以及这则消息在未来 24–48 小时是否被数据验证；单日消息本身很难改写趋势，我不据"
-    },
     {
       "id": 387767119473071,
       "kind": "news",
@@ -368,6 +363,12 @@
       "kind": "movers",
       "at": 1794737310802,
       "text": "📊 24h 涨跌榜（全市场）\n\n领跌：DOGE -6.5% / ADA -6.1% / XMR -5.4% / SOL -5.0% / ETH -4.3%\n\n这份榜单仅展示领跌板块，缺乏领涨数据，无法构成完整的对比结构。所有列示的资产跌幅均在4%至6.5%区间，显示主流币与部分大市值山寨币同步下行。整体呈现单边的下行压力特征，未见明显的多头对冲迹象。\n\n极端波动时更要注意风险，别追在尖上。\n\n你"
+    },
+    {
+      "id": 388504409752389,
+      "kind": "news",
+      "at": 1794740909518,
+      "text": "全球加密货币市值 24 小时内下跌 4% 至 2.26 万亿美元，比特币也跌至约6.2万美元的四个月低点。有意思的是 Ether 和 Solana 的周跌幅竟然达到了两位数。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -399,10 +400,10 @@
   ],
   "timelineKey": "2026-11-15",
   "timelineIdx": 0,
-  "timelineSentCount": 19,
+  "timelineSentCount": 20,
   "timelineDay": "2026-11-15",
-  "lastRunAt": 1794737301728,
-  "lastFetchAt": 1794737301728,
+  "lastRunAt": 1794740901571,
+  "lastFetchAt": 1794740901571,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -427,7 +428,7 @@
   "lastPostAtByKind": {
     "movers": 1794737310802,
     "trending": 1794730112323,
-    "news": 1794733714320,
+    "news": 1794740909518,
     "market": 1794708520741
   }
 }
