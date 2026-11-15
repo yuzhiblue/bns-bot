@@ -59,19 +59,14 @@
     "news_19zfv2m",
     "movers_2026-11-15_ADA_DOGE_SOL_XMR_LINK_ETH",
     "news_1kj6pm3",
-    "news_jgxeb5"
+    "news_jgxeb5",
+    "trending_2026-11-15_BTC_KAVA_HYPE_XRP_ETH_PEARL"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794726509577,
-  "todayPosted": 16,
+  "lastPostAt": 1794730112323,
+  "todayPosted": 17,
   "todayKey": "Sun Nov 15 2026",
   "postHistory": [
-    {
-      "id": 387708127101399,
-      "kind": "news",
-      "at": 1794546504570,
-      "text": "📰 CoinDesk\n\n美元指数创 19 个月新高，比特币跌破 70,000 美元\n\n周五早些时候，加密货币市场的抛售步伐加快。比特币跌破7万美元，以太币跌破2000美元，引发期货市场大规模清算。\n\n消息面仅供参考，操作看自己的判断。\n\n#加密资讯 #行情异动"
-    },
     {
       "id": 387722874160972,
       "kind": "news",
@@ -365,6 +360,12 @@
       "kind": "news",
       "at": 1794726509577,
       "text": "RWA协议stUSDT在TVL峰值达23亿美元三年后宣布收尾，这事儿挺意外。stUSDT 团队没有透露终止 RWA 协议的原因，但向持有者保证所有基础资产仍得到充分支持。\n\n#加密资讯"
+    },
+    {
+      "id": 388460184492099,
+      "kind": "trending",
+      "at": 1794730112323,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BTC (-4.8%)\n2. KAVA (-47.0%)\n3. HYPE (-6.9%)\n4. XRP (-3.6%)\n5. ETH (-6.2%)\n6. PEARL (-2.5%)\n\n榜单中BTC、ETH等主流资产悉数出现，且全线飘绿，反映出市场整体情绪偏向防守。KAVA与HYPE居前，表明除主流币外，部分高波动或特定生态项目仍占据着较高的短线关注"
     }
   ],
   "newCoinIds": [],
@@ -396,10 +397,10 @@
   ],
   "timelineKey": "2026-11-15",
   "timelineIdx": 0,
-  "timelineSentCount": 16,
+  "timelineSentCount": 17,
   "timelineDay": "2026-11-15",
-  "lastRunAt": 1794726497992,
-  "lastFetchAt": 1794726497992,
+  "lastRunAt": 1794730102813,
+  "lastFetchAt": 1794730102813,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -423,7 +424,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1794719328853,
-    "trending": 1794712123227,
+    "trending": 1794730112323,
     "news": 1794726509577,
     "market": 1794708520741
   }
