@@ -53,19 +53,14 @@
     "news_1cl5115",
     "news_io2rt3",
     "market_SHELLUSDT_2026-11-14T23",
-    "movers_2026-11-15_ADA_DOGE_HYPE_XMR_LINK_SOL"
+    "movers_2026-11-15_ADA_DOGE_HYPE_XMR_LINK_SOL",
+    "market_UNIUSDT_2026-11-15T01"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794704912017,
-  "todayPosted": 10,
+  "lastPostAt": 1794708520741,
+  "todayPosted": 11,
   "todayKey": "Sun Nov 15 2026",
   "postHistory": [
-    {
-      "id": 387300177648720,
-      "kind": "fearGreed",
-      "at": 1794446907549,
-      "text": "🌡️ 市场温度计：28\n\n极度恐惧区，往往是别人恐惧我贪婪的时候。\n\n#恐惧贪婪指数\n#行情异动"
-    },
     {
       "id": 387343136962541,
       "kind": "announcement",
@@ -359,6 +354,12 @@
       "kind": "movers",
       "at": 1794704912017,
       "text": "📊 24h 涨跌榜（全市场）\n\n领跌：ADA -12.9% / DOGE -12.3% / HYPE -11.2% / XMR -10.6% / LINK -10.6%\n\n榜单前六名均为跌幅超10%的资产，显示当前市场空方力量占绝对主导且覆盖多类主流币种。领跌名单中同时包含比特币生态（SOL、DOGE）、主流公链（ADA、LINK）及新兴DeFi协议（HYPE），反映出抛售压力并非局限于单一板块"
+    },
+    {
+      "id": 388371745273586,
+      "kind": "market",
+      "at": 1794708520741,
+      "text": "📊 $UNI 30 分钟涨 3.5%\n· 多头开始动手了\n· 现价 4.879\n· 成交量放大 3.1 倍\n\n30 分钟内涨 3.5%，成交量放大到 3.1 倍，属于量价同步的短时脉冲。这类走势我会先看回踩时的量能：缩量回踩说明抛压有限，放量回踩更像获利了结。短窗口只反映当下，还不能当作趋势确认。\n\n量价配合好，趋势还在\n\n你更看重量能还是价格结构？\n\n$UNI #行情异动"
     }
   ],
   "newCoinIds": [],
@@ -390,10 +391,10 @@
   ],
   "timelineKey": "2026-11-15",
   "timelineIdx": 0,
-  "timelineSentCount": 10,
+  "timelineSentCount": 11,
   "timelineDay": "2026-11-15",
-  "lastRunAt": 1794704902372,
-  "lastFetchAt": 1794704902372,
+  "lastRunAt": 1794708513938,
+  "lastFetchAt": 1794708513938,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -419,6 +420,6 @@
     "movers": 1794704912017,
     "trending": 1794690517260,
     "news": 1794697720308,
-    "market": 1794701326035
+    "market": 1794708520741
   }
 }
