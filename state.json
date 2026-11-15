@@ -65,19 +65,14 @@
     "movers_2026-11-15_DOGE_ADA_XMR_SOL_ETH",
     "news_d1u32r",
     "news_1cu1wl6",
-    "trending_2026-11-15_IMD_GATO_BTC_KAVA_SOL_XRP"
+    "trending_2026-11-15_IMD_GATO_BTC_KAVA_SOL_XRP",
+    "news_120bo7f"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794748107464,
-  "todayPosted": 22,
+  "lastPostAt": 1794751716406,
+  "todayPosted": 23,
   "todayKey": "Sun Nov 15 2026",
   "postHistory": [
-    {
-      "id": 387796688520492,
-      "kind": "news",
-      "at": 1794568126006,
-      "text": "国会因向中国出口芯片问题传唤前英伟达首席执行官黄仁勋和卢特尼克\n\n随着审查转向商务部对芯片出口的监管，众议院小组要求在 12 月份采访黄仁勋和 Nvidia 的高级律师。\n\n监管与人事变化的影响通常不在公布当天，而在后续的执行细则和落地节奏。我会盯配套文件与时间表，不把表态直接换算成行情。\n\n标题给的是结论，正文里的条件才值得细看。\n\n你判断一条资讯值不值得跟，通常看哪一点？\n\n#加密资讯"
-    },
     {
       "id": 387811358814958,
       "kind": "news",
@@ -371,6 +366,12 @@
       "kind": "trending",
       "at": 1794748107464,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. IMD (+44.7%)\n2. GATO (+46.0%)\n3. BTC (-1.9%)\n4. KAVA (-7.6%)\n5. SOL (-3.3%)\n6. XRP (-1.9%)\n\n榜单呈现明显的分化格局，头部为两个涨幅超44%的小市值项目，而排名后四位的主流资产均处于24小时下跌状态。这种结构显示市场当前热点集中在小币种的高波动行情，与主流板块的"
+    },
+    {
+      "id": 388548674845953,
+      "kind": "news",
+      "at": 1794751716406,
+      "text": "比特币ETF11月净流出21亿美元 连续7日流出\n\n周五，现货比特币 ETF 损失 1.854 亿美元，这是连续第七天资金流出，随着比特币跌向 64,000 美元，11 月份的损失扩大至约 21 亿美元。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -402,10 +403,10 @@
   ],
   "timelineKey": "2026-11-15",
   "timelineIdx": 0,
-  "timelineSentCount": 22,
+  "timelineSentCount": 23,
   "timelineDay": "2026-11-15",
-  "lastRunAt": 1794748096496,
-  "lastFetchAt": 1794748096496,
+  "lastRunAt": 1794751706832,
+  "lastFetchAt": 1794751706832,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -430,7 +431,7 @@
   "lastPostAtByKind": {
     "movers": 1794737310802,
     "trending": 1794748107464,
-    "news": 1794744507005,
+    "news": 1794751716406,
     "market": 1794708520741
   }
 }
