@@ -86,19 +86,14 @@
     "news_tg5gpz",
     "news_1nqygal",
     "trending_2026-11-16_PEARL_BTC_HYPE_ASTER_ZEC_PENGU",
-    "news_1e0tipj"
+    "news_1e0tipj",
+    "news_18hb6g6"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794823722813,
-  "todayPosted": 19,
+  "lastPostAt": 1794827313008,
+  "todayPosted": 20,
   "todayKey": "Mon Nov 16 2026",
   "postHistory": [
-    {
-      "id": 388106291778011,
-      "kind": "trending",
-      "at": 1794643712752,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BTC (-2.1%)\n2. AKE (+177.5%)\n3. SOL (-5.6%)\n4. HYPE (-2.1%)\n5. PENGU (-3.9%)\n6. ADA (-4.6%)\n\n主流币种整体承压，BTC、SOL及ADA等大盘资产均录得负收益，显示当前市场情绪偏向谨慎。榜单唯一的高涨幅标的AKE占据显著位置，反映出散户资金对低市值新项目的投机兴"
-    },
     {
       "id": 388135774987187,
       "kind": "movers",
@@ -392,6 +387,12 @@
       "kind": "news",
       "at": 1794823722813,
       "text": "DBS和摩根大通旗下的Kinexys刚推了个全天候代币化存款转账服务，有意思的是蚂蚁国际成了第一个用的客户。这事儿让美元存款能直接在新加坡和美国之间转移，感觉传统银行和加密基础设施的结合又往前走了一步。\n\n你们看到这条消息的第一反应是什么？\n\n$DBS #加密资讯"
+    },
+    {
+      "id": 388858318416013,
+      "kind": "news",
+      "at": 1794827313008,
+      "text": "这事儿挺意外，新加坡和德国居然开始测试跨境数字货币外汇结算了。Simbolon 项目想通过这套机制降低成本和时间，顺便把支付和外汇的共同标准推起来。\n\n这个方向你们之前有留意吗？\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -423,10 +424,10 @@
   ],
   "timelineKey": "2026-11-16",
   "timelineIdx": 0,
-  "timelineSentCount": 19,
+  "timelineSentCount": 20,
   "timelineDay": "2026-11-16",
-  "lastRunAt": 1794823712399,
-  "lastFetchAt": 1794823712399,
+  "lastRunAt": 1794827301834,
+  "lastFetchAt": 1794827301834,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -454,7 +455,7 @@
   "lastPostAtByKind": {
     "movers": 1794791309777,
     "trending": 1794820114341,
-    "news": 1794823722813,
+    "news": 1794827313008,
     "market": 1794787708928
   }
 }
