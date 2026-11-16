@@ -899,7 +899,7 @@ function genNewCoinPost(m, cfg) {
 }
 
 function genTrendingPost(m, cfg) {
-  const closer = "热度是情绪不是建议，仓位自己拿主意。";
+  const closer = "热度反映了目光在哪，但目光和资金不是一回事，后面能不能持续还得再看。";
   const lines = [];
   lines.push("🔥 24 小时热搜币种（大家都在看）");
   lines.push("");
@@ -916,7 +916,7 @@ function genTrendingPost(m, cfg) {
 }
 
 function genMoversPost(m, cfg) {
-  const closer = "极端波动时更要注意风险，别追在尖上。";
+  const closer = "涨跌两头都拉得挺开，说明今天分歧不小；这种分化能维持多久，单看一天的榜单说不准。";
   const lines = [];
   const up = m.items.filter((i) => i.pct >= 0).sort((a, b) => b.pct - a.pct);
   const down = m.items.filter((i) => i.pct < 0).sort((a, b) => a.pct - b.pct);
@@ -939,7 +939,12 @@ function genFundingPost(m, cfg) {
   lines.push("");
   for (const x of m.hi) lines.push(`${x.sym} 费率 ${pct1(x.rate * 100)}，多头在付钱`);
   for (const x of m.lo) lines.push(`${x.sym} 费率 ${pct1(x.rate * 100)}，空头在付钱`);
-  lines.push("", "费率是持仓情绪的读数，不是价格方向的答案。");
+  // 结论: 只解读当前情绪状态, 用"更像/倾向"留余地, 不指向价格或操作
+  const extreme = m.hi[0] && Math.abs(m.hi[0].rate) >= Math.abs(m.lo?.[0]?.rate ?? 0) ? m.hi[0] : m.lo[0];
+  const view = extreme && extreme.rate < 0
+    ? "这种费率结构更像是空头愿意付钱维持仓位，情绪上偏谨慎，但能不能持续不好说。"
+    : "这种费率结构更像是多头愿意付钱维持仓位，情绪上偏热，后面怎么走还得看价格配不配合。";
+  lines.push("", view);
   const closer = "极端费率能持续多久，还得看行情配不配合。";
   lines.push("", closer);
   lines.push(...ctaLines(m, cfg, closer));
@@ -953,7 +958,11 @@ function genOiPost(m, cfg) {
   for (const x of m.items) {
     lines.push(`${x.sym} 持仓 ${x.pct >= 0 ? "增加" : "减少"} ${Math.abs(x.pct).toFixed(1)}%`);
   }
-  lines.push("", "持仓变重说明有人在加仓，但加的是多还是空，单看这个数分不出来。");
+  const top = m.items[0];
+  const view = top && top.pct > 0
+    ? `持仓在变重，倾向于认为有资金在往里进，但进的是多还是空单看这个数分不出来，价格反应才是验证。`
+    : `持仓在变轻，更像是部分资金在撤，不过也可能只是换手，得看后面几天是不是持续下降。`;
+  lines.push("", view);
   const closer = "量变之后看价格配不配合，比单盯一个数字有用。";
   lines.push("", closer);
   lines.push(...ctaLines(m, cfg, closer));
@@ -968,7 +977,11 @@ function genLongShortPost(m, cfg) {
     const r = x.retail > x.top ? "散户更看多" : "大户更看多";
     lines.push(`${x.sym} 散户多空比 ${x.retail.toFixed(2)} / 大户 ${x.top.toFixed(2)}，${r}`);
   }
-  lines.push("", "两边观点不一致的时候不少见，谁对谁错要等行情走出来才知道。");
+  const x = m.items[0];
+  const view = x && x.retail > x.top
+    ? "散户这边明显更乐观，不过两边看法差这么多，本身就说明当下行情不够清晰，谁更准得走出来才知道。"
+    : "大户这边比散户更乐观，这种分歧挺有意思，但也只能说明当下两边看法不同，不代表谁一定对。";
+  lines.push("", view);
   const closer = "你们一般参考哪边的持仓数据？";
   lines.push("", closer);
   lines.push(...ctaLines(m, cfg, closer));
@@ -982,7 +995,10 @@ function genBreakoutPost(m, cfg) {
   for (const x of m.items) {
     lines.push(`${x.sym} 今天摸到 ${x.dir === "high" ? `${x.lookback ?? 20} 日新高` : `${x.lookback ?? 20} 日新低`}，现价 ${fmtPrice(x.price)}`);
   }
-  lines.push("", "突破本身只是价格走到了边界，能不能站稳还得后面几天验证。");
+  const hi = m.items.some((x) => x.dir === "high");
+  lines.push("", hi
+    ? "价格摸到区间上沿，说明买盘确实推了一把，但能不能在这里站稳，单看今天这根线还不够，得后面几天确认。"
+    : "价格探到区间下沿，卖压是有的，不过破位之后能不能延续，还得看接下来几天的成交能不能跟上。");
   const closer = "这种位置你们一般怎么看？";
   lines.push("", closer);
   lines.push(...ctaLines(m, cfg, closer));
@@ -995,7 +1011,10 @@ function genBinanceMoversPost(m, cfg) {
   lines.push("");
   if (m.up.length) lines.push("领涨：" + m.up.map((i) => `${i.sym} ${pct1(i.pct)}`).join(" / "));
   if (m.down.length) lines.push("领跌：" + m.down.map((i) => `${i.sym} ${pct1(i.pct)}`).join(" / "));
-  lines.push("", "合约市场的波动带着杠杆，同样的涨跌背后风险比现货大。");
+  const lead = m.up[0]?.pct ?? 0, lag = m.down[0]?.pct ?? 0;
+  lines.push("", Math.abs(lead) > Math.abs(lag)
+    ? "领涨这边的波动更猛一些，不过合约带杠杆，涨得急的往往回撤也快，榜单只能当天的快照看。"
+    : "领跌这边的幅度更极端，合约市场情绪起落都快，这种榜单看看就好，隔天可能就换一批。");
   const closer = "看合约榜的时候你们会额外注意什么？";
   lines.push("", closer);
   lines.push(...ctaLines(m, cfg, closer));
@@ -1018,7 +1037,24 @@ function genTrendPost(m, cfg) {
   } else {
     lines.push(`${m.maCross}，现价在 ${m.aboveShort ? "两条均线之上" : "两条均线之下"}，区间位置 ${m.pos.toFixed(0)}%。`);
   }
-  lines.push("", "这些只是已经发生的数字，不是对方向的判断。");
+  // 结论: 由当天的分档事实自然推出一个"倾向", 但不用保证语气、不给点位、不给操作。
+  let view;
+  if (Math.abs(m.chg7) >= 12) {
+    view = m.chg7 > 0
+      ? "短线涨得这么急，倾向于认为情绪偏热，不过这种速度能不能维持，单看一根周线说不准。"
+      : "一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。";
+  } else if (Math.abs(m.volChg) >= 30) {
+    view = m.volChg > 0
+      ? "量能明显放大而价格没走多远，这种量价背离值得多留意几天，现在下结论还早。"
+      : "成交比上周冷清不少，关注的人可能少了，但缩量之后往哪走，光看量是判断不出来的。";
+  } else if (m.pos >= 75) {
+    view = "价格靠着区间上沿走，看起来偏强，不过在这个位置能不能撑住，得看后续成交跟不跟。";
+  } else if (m.pos <= 25) {
+    view = "价格贴着区间下沿，确实偏弱，但低位本身不代表什么，有没有资金接才是关键。";
+  } else {
+    view = "价格夹在区间中间，短期看不出明显倾向，这种时候与其猜方向，不如等数据再清晰一点。";
+  }
+  lines.push("", view);
   const closer = pickFrom(TPL.trendClosers, "closer");
   lines.push("", closer);
   lines.push(...ctaLines(m, cfg, closer));
