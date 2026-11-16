@@ -82,19 +82,14 @@
     "news_pqkpf8",
     "trending_2026-11-16_BTC_AKE_ZEC_PENGU_PEARL_SOL",
     "news_1pox4r7",
-    "news_1htew7i"
+    "news_1htew7i",
+    "news_tg5gpz"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794809326126,
-  "todayPosted": 15,
+  "lastPostAt": 1794812917224,
+  "todayPosted": 16,
   "todayKey": "Mon Nov 16 2026",
   "postHistory": [
-    {
-      "id": 388041487493890,
-      "kind": "news",
-      "at": 1794627891375,
-      "text": "比尔·米勒四世：“他们没有印制更多比特币”\n\nMiller Value Partners 董事长兼首席信息官 Bill Miller IV 与 Grace Remington 和 Sean Hagan 一起在 BMTV 上解释了为什么他仍然看好比特币，而情绪已接近 FTX 时代的低点。\n\n#加密资讯"
-    },
     {
       "id": 388062018977651,
       "kind": "news",
@@ -388,6 +383,12 @@
       "kind": "news",
       "at": 1794809326126,
       "text": "特朗普政府将英伟达、OpenAI等数家企业列为AI领域国家龙头企业\n\nThe Wall Street Journal reported that the move aims to help the firms expand overseas and compete with global rivals, though nothing has been confirmed.\n\n#加密资讯"
+    },
+    {
+      "id": 388799353391823,
+      "kind": "news",
+      "at": 1794812917224,
+      "text": "乔·卡拉萨尔 (Joe Carlasare) 提到今年早些时候比特币在不到 90 天的时间里从 57,000 涨到 82,000，他表示这就是为什么他拒绝资本无法涌入的观点。这事儿挺意外，当时市场情绪确实很极致。\n\n这类消息你会马上调整关注列表吗？\n\n$BTC #加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -419,10 +420,10 @@
   ],
   "timelineKey": "2026-11-16",
   "timelineIdx": 0,
-  "timelineSentCount": 15,
+  "timelineSentCount": 16,
   "timelineDay": "2026-11-16",
-  "lastRunAt": 1794809318682,
-  "lastFetchAt": 1794809318682,
+  "lastRunAt": 1794812908934,
+  "lastFetchAt": 1794812908934,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -450,7 +451,7 @@
   "lastPostAtByKind": {
     "movers": 1794791309777,
     "trending": 1794802114478,
-    "news": 1794809326126,
+    "news": 1794812917224,
     "market": 1794787708928
   }
 }
