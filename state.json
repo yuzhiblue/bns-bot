@@ -76,19 +76,14 @@
     "market_ASTERUSDT_2026-11-15T20",
     "news_55lslb",
     "trending_2026-11-16_MACCA_DACITYCOIN_GATO_BTC_PENGU_SOL",
-    "market_ASTERUSDT_2026-11-15T23"
+    "market_ASTERUSDT_2026-11-15T23",
+    "movers_2026-11-16_HYPE_ADA_ZEC_XRP_DOGE_XMR"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794787708928,
-  "todayPosted": 9,
+  "lastPostAt": 1794791309777,
+  "todayPosted": 10,
   "todayKey": "Mon Nov 16 2026",
   "postHistory": [
-    {
-      "id": 387958804512058,
-      "kind": "news",
-      "at": 1794607705130,
-      "text": "OpenAI 与 Visa、Mastercard 和 Amex 合作在 ChatGPT 中推出人工智能支付\n\nOpenAI 的新支付钱包允许人工智能代理使用现有的卡网络完成购买，并计划最终允许预授权交易。\n\n目前能确认的只有报道里给出的这些事实，还不足以判断影响范围。我会等后续数据或官方口径佐证，在此之前不做方向判断。\n\n标题给的是结论，正文里的条件才值得细看。\n\n你的观察清单里会放哪些指标？\n\n"
-    },
     {
       "id": 387973551143481,
       "kind": "news",
@@ -382,6 +377,12 @@
       "kind": "market",
       "at": 1794787708928,
       "text": "📊 $ASTER 30 分钟跌 2.1%\n· 空头发力了\n· 现价 0.5048\n· 成交量放大 3.1 倍\n\n30 分钟内跌 2.1%，成交量放大到 3.1 倍，属于量价同步的短时脉冲。这类走势我会先看反弹时的量能：缩量反弹说明承接有限，放量反弹才更像有资金接。短窗口只反映当下，还不能当作趋势确认。\n\n空头占优，反弹是逃命不是追涨\n\n这种短时脉冲你一般怎么确认？\n\n$ASTER #行情异动"
+    },
+    {
+      "id": 388710849140578,
+      "kind": "movers",
+      "at": 1794791309777,
+      "text": "📊 24h 涨跌榜（全市场）\n\n领涨：HYPE +5.5% / ADA +5.4% / ZEC +5.2% / XRP +5.1% / DOGE +5.1%\n\n这份24h领涨榜仅展示了正向涨幅数据，缺乏领跌资产信息，无法评估完整的多空力量对比或市场结构。从现有数据看，领涨阵营由Hyperliquid、Cardano、Zcash、XRP、Dogecoin和Monero组成，涵盖了部分Layer 1"
     }
   ],
   "newCoinIds": [],
@@ -413,10 +414,10 @@
   ],
   "timelineKey": "2026-11-16",
   "timelineIdx": 0,
-  "timelineSentCount": 9,
+  "timelineSentCount": 10,
   "timelineDay": "2026-11-16",
-  "lastRunAt": 1794787700713,
-  "lastFetchAt": 1794787700713,
+  "lastRunAt": 1794791299751,
+  "lastFetchAt": 1794791299751,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -442,7 +443,7 @@
     "updatedAt": 1794586106417
   },
   "lastPostAtByKind": {
-    "movers": 1794773307229,
+    "movers": 1794791309777,
     "trending": 1794784114508,
     "news": 1794780508749,
     "market": 1794787708928
