@@ -89,19 +89,14 @@
     "news_1e0tipj",
     "news_18hb6g6",
     "news_vrf4cy",
-    "movers_2026-11-16_ZEC_HYPE"
+    "movers_2026-11-16_ZEC_HYPE",
+    "trending_2026-11-16_MACCA_GATO_LIT_BTC_SOL_HYPE"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794834513860,
-  "todayPosted": 22,
+  "lastPostAt": 1794838111937,
+  "todayPosted": 23,
   "todayKey": "Mon Nov 16 2026",
   "postHistory": [
-    {
-      "id": 388165269320178,
-      "kind": "news",
-      "at": 1794658111553,
-      "text": "微软刚发了公告，确认全球服务中断已经恢复，讲真这反应速度还挺快。他们把原因归结于网络容量升级问题，并特意强调这次事件和网络攻击或人工智能代理无关，算是排除了不少猜测。\n\n#加密资讯"
-    },
     {
       "id": 388180102269335,
       "kind": "news",
@@ -395,6 +390,12 @@
       "kind": "movers",
       "at": 1794834513860,
       "text": "📊 24h 涨跌榜（全市场）\n\n领跌：ZEC -6.0% / HYPE -4.1%\n\n榜单显示跌幅榜由ZEC（-6.0%）和HYPE（-4.1%）占据，且两枚代币波动率均超4%。由于数据中未包含任何上涨资产，当前可见的市场情绪明显偏向空头主导。\n\n极端波动时更要注意风险，别追在尖上。\n\n这种同步波动你先看什么？\n\n#涨跌榜单 #行情异动"
+    },
+    {
+      "id": 388902550813516,
+      "kind": "trending",
+      "at": 1794838111937,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. MACCA (+72.1%)\n2. GATO (+16.0%)\n3. LIT (-12.9%)\n4. BTC (-2.0%)\n5. SOL (-2.6%)\n6. HYPE (-3.8%)\n\n热搜榜前五名中，有两只代币（Macca the Gator、Gato The Cat）涨幅显著，而其余头部主流资产（BTC、SOL、HYPE）及Lighter均呈"
     }
   ],
   "newCoinIds": [],
@@ -426,10 +427,10 @@
   ],
   "timelineKey": "2026-11-16",
   "timelineIdx": 0,
-  "timelineSentCount": 22,
+  "timelineSentCount": 23,
   "timelineDay": "2026-11-16",
-  "lastRunAt": 1794834505355,
-  "lastFetchAt": 1794834505355,
+  "lastRunAt": 1794838102460,
+  "lastFetchAt": 1794838102460,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -456,7 +457,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1794834513860,
-    "trending": 1794820114341,
+    "trending": 1794838111937,
     "news": 1794830928391,
     "market": 1794787708928
   }
