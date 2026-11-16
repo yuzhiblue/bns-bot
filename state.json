@@ -84,19 +84,14 @@
     "news_1pox4r7",
     "news_1htew7i",
     "news_tg5gpz",
-    "news_1nqygal"
+    "news_1nqygal",
+    "trending_2026-11-16_PEARL_BTC_HYPE_ASTER_ZEC_PENGU"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794816511964,
-  "todayPosted": 17,
+  "lastPostAt": 1794820114341,
+  "todayPosted": 18,
   "todayKey": "Mon Nov 16 2026",
   "postHistory": [
-    {
-      "id": 388076792753442,
-      "kind": "trending",
-      "at": 1794636510826,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. AKE (+276.0%)\n2. BTC (-1.4%)\n3. PEARL (+17.7%)\n4. PENGU (+0.8%)\n5. NEAR (+0.9%)\n6. ETH (-0.3%)\n\n这份榜单里 6 个币有 4 个 24h 上涨，热度与价格同向，注意力确实跟着涨幅走。热搜排名反映的是注意力，不等于资金流向；注意力先到、资金未必跟。我更愿意把它"
-    },
     {
       "id": 388091552039402,
       "kind": "movers",
@@ -390,6 +385,12 @@
       "kind": "news",
       "at": 1794816511964,
       "text": "卢克索说这次比特币矿工遭劫持，导致 BTC 收益被重定向至攻击者，只有十几名客户受到影响。他表示那些机器被重定向到另一个矿池后将得到补偿。\n\n这个方向你们之前有留意吗？\n\n$BTC #加密资讯"
+    },
+    {
+      "id": 388828832658977,
+      "kind": "trending",
+      "at": 1794820114341,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. PEARL (+11.9%)\n2. BTC (-1.9%)\n3. HYPE (-0.6%)\n4. ASTER (+1.9%)\n5. ZEC (-2.9%)\n6. PENGU (-2.7%)\n\n榜单显示中小市值代币（如 PEARL、ASTER）与主流币呈现涨跌互现的离散结构，缺乏统一的板块主导趋势。市场关注点分散，既有对新项目 Pearl 的短线热度，"
     }
   ],
   "newCoinIds": [],
@@ -421,10 +422,10 @@
   ],
   "timelineKey": "2026-11-16",
   "timelineIdx": 0,
-  "timelineSentCount": 17,
+  "timelineSentCount": 18,
   "timelineDay": "2026-11-16",
-  "lastRunAt": 1794816501591,
-  "lastFetchAt": 1794816501591,
+  "lastRunAt": 1794820103036,
+  "lastFetchAt": 1794820103036,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -451,7 +452,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1794791309777,
-    "trending": 1794802114478,
+    "trending": 1794820114341,
     "news": 1794816511964,
     "market": 1794787708928
   }
