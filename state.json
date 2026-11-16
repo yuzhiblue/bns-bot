@@ -92,19 +92,14 @@
     "movers_2026-11-16_ZEC_HYPE",
     "trending_2026-11-16_MACCA_GATO_LIT_BTC_SOL_HYPE",
     "market_ZECUSDT_2026-11-16T14",
-    "trend_UNI_2026-11-17"
+    "trend_UNI_2026-11-17",
+    "trend_PEPE_2026-11-17"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794845312500,
-  "todayPosted": 1,
+  "lastPostAt": 1794848909166,
+  "todayPosted": 2,
   "todayKey": "Tue Nov 17 2026",
   "postHistory": [
-    {
-      "id": 388209548890459,
-      "kind": "movers",
-      "at": 1794668922007,
-      "text": "📊 24h 涨跌榜（全市场）\n\n领涨：FIGR_HELOC +4.4%\n领跌：ADA -8.7% / HYPE -8.6% / SOL -8.0% / ZEC -7.5% / LINK -7.0%\n\n榜单中唯一的领涨标的为单一代币FIGR_HELOC，其余资产全部录得跌幅。领跌阵营涵盖了Cardano、Solana、Hyperliquid等多条主流公链，以及Zcash、Chainlink和Dog"
-    },
     {
       "id": 388224284940641,
       "kind": "trending",
@@ -398,6 +393,12 @@
       "kind": "trend",
       "at": 1794845312500,
       "text": "📉 $UNI 日线数据快照（30 天）\n\n现价 5.127，7 日 -26.6%，30 日 -28.8%。\n7 日波动不小，现价处在 16% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n说到底都是过去式，后面怎么走还得看盘面。\n\n你们会不会拿均线当参考？\n\n$UNI #行情分析\n\n以上只是数据记录和个人观察"
+    },
+    {
+      "id": 388946776266363,
+      "kind": "trend",
+      "at": 1794848909166,
+      "text": "📉 $PEPE 日线数据快照（30 天）\n\n现价 0.00000388，7 日 -24.2%，30 日 -3.2%。\n7 日波动不小，现价处在 10% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n这种快照看看就好，没什么结论。\n\n你更看重价格还是量能？\n\n$PEPE #行情分析\n\n以上只是数据记录和个人观察"
     }
   ],
   "newCoinIds": [],
@@ -429,10 +430,10 @@
   ],
   "timelineKey": "2026-11-17",
   "timelineIdx": 0,
-  "timelineSentCount": 1,
+  "timelineSentCount": 2,
   "timelineDay": "2026-11-17",
-  "lastRunAt": 1794845305342,
-  "lastFetchAt": 1794845305342,
+  "lastRunAt": 1794848901812,
+  "lastFetchAt": 1794848901812,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -460,6 +461,6 @@
     "trending": 1794838111937,
     "news": 1794830928391,
     "market": 1794841771320,
-    "trend": 1794845312500
+    "trend": 1794848909166
   }
 }
