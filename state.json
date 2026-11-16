@@ -77,19 +77,14 @@
     "news_55lslb",
     "trending_2026-11-16_MACCA_DACITYCOIN_GATO_BTC_PENGU_SOL",
     "market_ASTERUSDT_2026-11-15T23",
-    "movers_2026-11-16_HYPE_ADA_ZEC_XRP_DOGE_XMR"
+    "movers_2026-11-16_HYPE_ADA_ZEC_XRP_DOGE_XMR",
+    "news_14cht7l"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794791309777,
-  "todayPosted": 10,
+  "lastPostAt": 1794794929555,
+  "todayPosted": 11,
   "todayKey": "Mon Nov 16 2026",
   "postHistory": [
-    {
-      "id": 387973551143481,
-      "kind": "news",
-      "at": 1794611305371,
-      "text": "英伟达前高管能否取代黄仁勋？ Arm 的雷内·哈斯 (Rene Haas) 成为候选人\n\n据报道，英伟达董事会已与 Arm 首席执行官接洽，寻找黄仁勋的继任者，同时一些员工正在努力让这家芯片制造商的创始人重新担任首席执行官。\n\n这类资讯缺少可核对的后续指标，我会先看有没有独立数据或第二方确认，而不是急着给结论。\n\n标题给的是结论，正文里的条件才值得细看。\n\n你的观察清单里会放哪些指标？\n\n#加密资"
-    },
     {
       "id": 387988309053845,
       "kind": "news",
@@ -383,6 +378,12 @@
       "kind": "movers",
       "at": 1794791309777,
       "text": "📊 24h 涨跌榜（全市场）\n\n领涨：HYPE +5.5% / ADA +5.4% / ZEC +5.2% / XRP +5.1% / DOGE +5.1%\n\n这份24h领涨榜仅展示了正向涨幅数据，缺乏领跌资产信息，无法评估完整的多空力量对比或市场结构。从现有数据看，领涨阵营由Hyperliquid、Cardano、Zcash、XRP、Dogecoin和Monero组成，涵盖了部分Layer 1"
+    },
+    {
+      "id": 388725675872921,
+      "kind": "news",
+      "at": 1794794929555,
+      "text": "黄仁勋在《金融时报》报道里说英伟达即将重返，毕竟之前可是突然离场过。有意思的是，硅谷高管们现在正组织一场把他带回去的运动，还打算争取白宫的支持。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -414,10 +415,10 @@
   ],
   "timelineKey": "2026-11-16",
   "timelineIdx": 0,
-  "timelineSentCount": 10,
+  "timelineSentCount": 11,
   "timelineDay": "2026-11-16",
-  "lastRunAt": 1794791299751,
-  "lastFetchAt": 1794791299751,
+  "lastRunAt": 1794794917351,
+  "lastFetchAt": 1794794917351,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -445,7 +446,7 @@
   "lastPostAtByKind": {
     "movers": 1794791309777,
     "trending": 1794784114508,
-    "news": 1794780508749,
+    "news": 1794794929555,
     "market": 1794787708928
   }
 }
