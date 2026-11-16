@@ -83,19 +83,14 @@
     "trending_2026-11-16_BTC_AKE_ZEC_PENGU_PEARL_SOL",
     "news_1pox4r7",
     "news_1htew7i",
-    "news_tg5gpz"
+    "news_tg5gpz",
+    "news_1nqygal"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794812917224,
-  "todayPosted": 16,
+  "lastPostAt": 1794816511964,
+  "todayPosted": 17,
   "todayKey": "Mon Nov 16 2026",
   "postHistory": [
-    {
-      "id": 388062018977651,
-      "kind": "news",
-      "at": 1794632903970,
-      "text": "中本聪时代的钱包在一场价值 2600 亿美元的诉讼中转移了自 2011 年以来持有的 75 个比特币\n\n这笔大约 500 万美元的转账还花掉了 5 月份用于向该地址发送法庭通知的小额付款。\n\n#加密资讯"
-    },
     {
       "id": 388076792753442,
       "kind": "trending",
@@ -389,6 +384,12 @@
       "kind": "news",
       "at": 1794812917224,
       "text": "乔·卡拉萨尔 (Joe Carlasare) 提到今年早些时候比特币在不到 90 天的时间里从 57,000 涨到 82,000，他表示这就是为什么他拒绝资本无法涌入的观点。这事儿挺意外，当时市场情绪确实很极致。\n\n这类消息你会马上调整关注列表吗？\n\n$BTC #加密资讯"
+    },
+    {
+      "id": 388814077305216,
+      "kind": "news",
+      "at": 1794816511964,
+      "text": "卢克索说这次比特币矿工遭劫持，导致 BTC 收益被重定向至攻击者，只有十几名客户受到影响。他表示那些机器被重定向到另一个矿池后将得到补偿。\n\n这个方向你们之前有留意吗？\n\n$BTC #加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -420,10 +421,10 @@
   ],
   "timelineKey": "2026-11-16",
   "timelineIdx": 0,
-  "timelineSentCount": 16,
+  "timelineSentCount": 17,
   "timelineDay": "2026-11-16",
-  "lastRunAt": 1794812908934,
-  "lastFetchAt": 1794812908934,
+  "lastRunAt": 1794816501591,
+  "lastFetchAt": 1794816501591,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -451,7 +452,7 @@
   "lastPostAtByKind": {
     "movers": 1794791309777,
     "trending": 1794802114478,
-    "news": 1794812917224,
+    "news": 1794816511964,
     "market": 1794787708928
   }
 }
