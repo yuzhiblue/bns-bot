@@ -90,19 +90,14 @@
     "news_18hb6g6",
     "news_vrf4cy",
     "movers_2026-11-16_ZEC_HYPE",
-    "trending_2026-11-16_MACCA_GATO_LIT_BTC_SOL_HYPE"
+    "trending_2026-11-16_MACCA_GATO_LIT_BTC_SOL_HYPE",
+    "market_ZECUSDT_2026-11-16T14"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794838111937,
-  "todayPosted": 23,
+  "lastPostAt": 1794841771320,
+  "todayPosted": 24,
   "todayKey": "Mon Nov 16 2026",
   "postHistory": [
-    {
-      "id": 388180102269335,
-      "kind": "news",
-      "at": 1794661732883,
-      "text": "比特币政策研究所的报告提到，英国其实可以拿比特币挖矿去吸收苏格兰那些过剩的风电，这样就能省掉因为停机而付给风电场的钱，一年能砍掉13亿美元的电网费用，这事儿挺意外的。\n\n#加密资讯"
-    },
     {
       "id": 388194756331473,
       "kind": "news",
@@ -396,6 +391,12 @@
       "kind": "trending",
       "at": 1794838111937,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. MACCA (+72.1%)\n2. GATO (+16.0%)\n3. LIT (-12.9%)\n4. BTC (-2.0%)\n5. SOL (-2.6%)\n6. HYPE (-3.8%)\n\n热搜榜前五名中，有两只代币（Macca the Gator、Gato The Cat）涨幅显著，而其余头部主流资产（BTC、SOL、HYPE）及Lighter均呈"
+    },
+    {
+      "id": 388917539650924,
+      "kind": "market",
+      "at": 1794841771320,
+      "text": "📊 $ZEC 30 分钟跌 4.0%\n多头有点撑不住，现在 855.36，成交量放大到 2.3 倍。\n\n跌 4.0% 幅度不大，可量能比平时高，有点不对劲。不过就这几十分钟的事，先别急着下结论。\n\n这跌速确实有点猛\n\n这波动静你们注意到了吗？\n\n$ZEC #行情异动\n\n以上只是数据记录和个人观察，不构成投资建议；市场变化快，请自行判断、DYOR。"
     }
   ],
   "newCoinIds": [],
@@ -427,10 +428,10 @@
   ],
   "timelineKey": "2026-11-16",
   "timelineIdx": 0,
-  "timelineSentCount": 23,
+  "timelineSentCount": 24,
   "timelineDay": "2026-11-16",
-  "lastRunAt": 1794838102460,
-  "lastFetchAt": 1794838102460,
+  "lastRunAt": 1794841764532,
+  "lastFetchAt": 1794841764532,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -459,6 +460,6 @@
     "movers": 1794834513860,
     "trending": 1794838111937,
     "news": 1794830928391,
-    "market": 1794787708928
+    "market": 1794841771320
   }
 }
