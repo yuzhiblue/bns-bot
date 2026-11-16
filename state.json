@@ -85,19 +85,14 @@
     "news_1htew7i",
     "news_tg5gpz",
     "news_1nqygal",
-    "trending_2026-11-16_PEARL_BTC_HYPE_ASTER_ZEC_PENGU"
+    "trending_2026-11-16_PEARL_BTC_HYPE_ASTER_ZEC_PENGU",
+    "news_1e0tipj"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794820114341,
-  "todayPosted": 18,
+  "lastPostAt": 1794823722813,
+  "todayPosted": 19,
   "todayKey": "Mon Nov 16 2026",
   "postHistory": [
-    {
-      "id": 388091552039402,
-      "kind": "movers",
-      "at": 1794640114225,
-      "text": "📊 24h 涨跌榜（全市场）\n\n领涨：FIGR_HELOC +4.5%\n领跌：SOL -5.9% / ADA -4.2% / ZEC -4.0%\n\n榜单领涨 1 个、领跌 3 个，涨跌分化说明资金在挑方向，不是整体单边。面对这类榜单先看大盘与杠杆清算，再逐个给个币找理由容易过度解读。\n\n极端波动时更要注意风险，别追在尖上。\n\n你更关注大盘还是个币差异？\n\n#涨跌榜单 #行情异动"
-    },
     {
       "id": 388106291778011,
       "kind": "trending",
@@ -391,6 +386,12 @@
       "kind": "trending",
       "at": 1794820114341,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. PEARL (+11.9%)\n2. BTC (-1.9%)\n3. HYPE (-0.6%)\n4. ASTER (+1.9%)\n5. ZEC (-2.9%)\n6. PENGU (-2.7%)\n\n榜单显示中小市值代币（如 PEARL、ASTER）与主流币呈现涨跌互现的离散结构，缺乏统一的板块主导趋势。市场关注点分散，既有对新项目 Pearl 的短线热度，"
+    },
+    {
+      "id": 388843613002892,
+      "kind": "news",
+      "at": 1794823722813,
+      "text": "DBS和摩根大通旗下的Kinexys刚推了个全天候代币化存款转账服务，有意思的是蚂蚁国际成了第一个用的客户。这事儿让美元存款能直接在新加坡和美国之间转移，感觉传统银行和加密基础设施的结合又往前走了一步。\n\n你们看到这条消息的第一反应是什么？\n\n$DBS #加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -422,10 +423,10 @@
   ],
   "timelineKey": "2026-11-16",
   "timelineIdx": 0,
-  "timelineSentCount": 18,
+  "timelineSentCount": 19,
   "timelineDay": "2026-11-16",
-  "lastRunAt": 1794820103036,
-  "lastFetchAt": 1794820103036,
+  "lastRunAt": 1794823712399,
+  "lastFetchAt": 1794823712399,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -453,7 +454,7 @@
   "lastPostAtByKind": {
     "movers": 1794791309777,
     "trending": 1794820114341,
-    "news": 1794816511964,
+    "news": 1794823722813,
     "market": 1794787708928
   }
 }
