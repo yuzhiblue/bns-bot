@@ -81,19 +81,14 @@
     "news_14cht7l",
     "news_pqkpf8",
     "trending_2026-11-16_BTC_AKE_ZEC_PENGU_PEARL_SOL",
-    "news_1pox4r7"
+    "news_1pox4r7",
+    "news_1htew7i"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794805709233,
-  "todayPosted": 14,
+  "lastPostAt": 1794809326126,
+  "todayPosted": 15,
   "todayKey": "Mon Nov 16 2026",
   "postHistory": [
-    {
-      "id": 388032539842378,
-      "kind": "news",
-      "at": 1794625706922,
-      "text": "Joe Carlasare 谈比特币的“极度恐惧”：“我是这里的买家”\n\n今年早些时候，比特币在不到 90 天的时间里从 57,000 涨到 82,000，乔·卡拉萨尔 (Joe Carlasare) 表示，这就是为什么他拒绝资本无法涌入的观点。\n\n#加密资讯"
-    },
     {
       "id": 388041487493890,
       "kind": "news",
@@ -387,6 +382,12 @@
       "kind": "news",
       "at": 1794805709233,
       "text": "英伟达三季度财报公布前，亚洲芯片股集体下挫，这轮区域股市的更广泛抛售让日经 225 指数下跌 2%，韩国综合指数也跟着下跌 2.6%。讲真，在正式数据出来之前，市场情绪被压得挺低，资金似乎在提前规避不确定性。\n\n#加密资讯"
+    },
+    {
+      "id": 388784644197478,
+      "kind": "news",
+      "at": 1794809326126,
+      "text": "特朗普政府将英伟达、OpenAI等数家企业列为AI领域国家龙头企业\n\nThe Wall Street Journal reported that the move aims to help the firms expand overseas and compete with global rivals, though nothing has been confirmed.\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -418,10 +419,10 @@
   ],
   "timelineKey": "2026-11-16",
   "timelineIdx": 0,
-  "timelineSentCount": 14,
+  "timelineSentCount": 15,
   "timelineDay": "2026-11-16",
-  "lastRunAt": 1794805700360,
-  "lastFetchAt": 1794805700360,
+  "lastRunAt": 1794809318682,
+  "lastFetchAt": 1794809318682,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -449,7 +450,7 @@
   "lastPostAtByKind": {
     "movers": 1794791309777,
     "trending": 1794802114478,
-    "news": 1794805709233,
+    "news": 1794809326126,
     "market": 1794787708928
   }
 }
