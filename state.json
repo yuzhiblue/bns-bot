@@ -98,19 +98,14 @@
     "trend_ZEC_2026-11-17",
     "trend_SOL_2026-11-17",
     "trend_DOGE_2026-11-17",
-    "trend_ETH_2026-11-17"
+    "trend_ETH_2026-11-17",
+    "trending_2026-11-17_BP_SOL_BTC_TAO_AERO_PENGU"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794866913383,
-  "todayPosted": 7,
+  "lastPostAt": 1794870517096,
+  "todayPosted": 8,
   "todayKey": "Tue Nov 17 2026",
   "postHistory": [
-    {
-      "id": 388298003034401,
-      "kind": "trending",
-      "at": 1794690517260,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. MIHAO (+3.5%)\n2. BTC (-5.3%)\n3. SOL (-11.0%)\n4. ASTER (-26.0%)\n5. ZEC (-13.6%)\n6. HYPE (-13.4%)\n\n榜单前列的 Solana、Zcash 和 Hyperliquid 等主流资产普遍呈现两位数跌幅，显示出当前市场主要关注点集中在头部项目的价格回调与风险释放上。"
-    },
     {
       "id": 388312711576679,
       "kind": "news",
@@ -404,6 +399,12 @@
       "kind": "trend",
       "at": 1794866913384,
       "text": "📉 $ETH 日线数据快照（30 天）\n\n现价 1,835.54，7 日 -14.0%，30 日 -23.8%。\n7 日波动不小，现价处在 15% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n说到底都是过去式，后面怎么走还得看盘面。\n\n你们会不会拿均线当参考？\n\n$ETH #行情分析\n\n以上只是数据记录和个"
+    },
+    {
+      "id": 389035282301047,
+      "kind": "trending",
+      "at": 1794870517096,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BP (+38.2%)\n2. SOL (-0.7%)\n3. BTC (+0.4%)\n4. TAO (-1.4%)\n5. AERO (+0.1%)\n6. PENGU (-1.1%)\n\n榜单前列由单币种大幅异动（Backpack 24小时上涨38.2%）与主流资产（BTC、SOL）的微幅震荡并存，显示市场注意力向个别高波动项目集中而非全板块普涨。主流币价"
     }
   ],
   "newCoinIds": [],
@@ -435,10 +436,10 @@
   ],
   "timelineKey": "2026-11-17",
   "timelineIdx": 0,
-  "timelineSentCount": 7,
+  "timelineSentCount": 8,
   "timelineDay": "2026-11-17",
-  "lastRunAt": 1794866906826,
-  "lastFetchAt": 1794866906826,
+  "lastRunAt": 1794870508798,
+  "lastFetchAt": 1794870508798,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -463,7 +464,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1794834513860,
-    "trending": 1794852572365,
+    "trending": 1794870517096,
     "news": 1794830928391,
     "market": 1794841771320,
     "trend": 1794866913384
