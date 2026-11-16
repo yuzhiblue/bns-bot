@@ -80,19 +80,14 @@
     "movers_2026-11-16_HYPE_ADA_ZEC_XRP_DOGE_XMR",
     "news_14cht7l",
     "news_pqkpf8",
-    "trending_2026-11-16_BTC_AKE_ZEC_PENGU_PEARL_SOL"
+    "trending_2026-11-16_BTC_AKE_ZEC_PENGU_PEARL_SOL",
+    "news_1pox4r7"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794802114478,
-  "todayPosted": 13,
+  "lastPostAt": 1794805709233,
+  "todayPosted": 14,
   "todayKey": "Mon Nov 16 2026",
   "postHistory": [
-    {
-      "id": 388017872964464,
-      "kind": "news",
-      "at": 1794622126101,
-      "text": "乔·卡拉萨尔谈比特币的“极度恐惧”：“我是这里的买家”\n\n今年早些时候，比特币在不到 90 天的时间里从 57,000 涨到 82,000，乔·卡拉萨尔 (Joe Carlasare) 表示，这就是为什么他拒绝资本无法涌入的观点。\n\n#加密资讯"
-    },
     {
       "id": 388032539842378,
       "kind": "news",
@@ -386,6 +381,12 @@
       "kind": "trending",
       "at": 1794802114478,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BTC (+0.4%)\n2. AKE (-9.7%)\n3. ZEC (-1.6%)\n4. PENGU (+0.3%)\n5. PEARL (+6.6%)\n6. SOL (+1.0%)\n\n榜单头部由主流币种占据，显示BTC和SOL仍主导市场基础关注点。中位数出现显著分化，Pearl大涨6.6%与Akedo下跌9.7%形成鲜明对比，反映出资金在热门标的间快"
+    },
+    {
+      "id": 388769829421261,
+      "kind": "news",
+      "at": 1794805709233,
+      "text": "英伟达三季度财报公布前，亚洲芯片股集体下挫，这轮区域股市的更广泛抛售让日经 225 指数下跌 2%，韩国综合指数也跟着下跌 2.6%。讲真，在正式数据出来之前，市场情绪被压得挺低，资金似乎在提前规避不确定性。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -417,10 +418,10 @@
   ],
   "timelineKey": "2026-11-16",
   "timelineIdx": 0,
-  "timelineSentCount": 13,
+  "timelineSentCount": 14,
   "timelineDay": "2026-11-16",
-  "lastRunAt": 1794802105356,
-  "lastFetchAt": 1794802105356,
+  "lastRunAt": 1794805700360,
+  "lastFetchAt": 1794805700360,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -448,7 +449,7 @@
   "lastPostAtByKind": {
     "movers": 1794791309777,
     "trending": 1794802114478,
-    "news": 1794798510245,
+    "news": 1794805709233,
     "market": 1794787708928
   }
 }
