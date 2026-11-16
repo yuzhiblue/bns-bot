@@ -18,7 +18,8 @@ const SHELL_BASES = new Set([
   "RLUSD", "USDP", "BUSD", "USDS", "USDF", "USDJ", "USDT0",
   // ETF / 股票包装 (含 B 结尾的杠杆/反向)
   "SNDKB", "SNDLP", "SOXL", "SOXLB", "SPCX", "SPCXB", "SPCXLB", "SPCXLE",
-  "CRCLB", "MSTRB", "COINB", "TSLAB", "NVDA", "AALB",
+  "CRCLB", "MSTRB", "COINB", "TSLAB", "NVDA", "AALB", "SAMSUNGEM", "SAMSUNG", "AAPL", "GOOGL", "AMZN", "META", "MSFT",
+  "SKHYNIX", "TSM", "NVIDIA", "TESLA", "MICROSOFT", "INTEL", "AMD", "OPENAI", "ORACLE",
   // 代币化真实资产(如 Figure 的 HELOC 信贷份额)
   "FIGR_HELOC", "FIGR",
   // 代币化黄金/贵金属

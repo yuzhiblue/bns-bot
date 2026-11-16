@@ -19,9 +19,9 @@ const fs = require("fs");
 const path = require("path");
 const TPL = require("./templates");
 const { buildTake } = require("./takes");
-const { fetchSymbolPool, DEFAULT_TOP_N, DEFAULT_MIN_USD } = require("./symbolPool");
+const { fetchSymbolPool, SHELL_BASES, DEFAULT_TOP_N, DEFAULT_MIN_USD } = require("./symbolPool");
 const { uploadImage } = require("./squareMedia");
-const { makeMarketCard, makeTrendingCard, makeMoversCard, makeNewCoinCard, makeNewsCard } = require("./imageCard");
+const { makeMarketCard, makeTrendingCard, makeMoversCard, makeNewCoinCard, makeNewsCard, makeDataCard } = require("./imageCard");
 
 const ROOT = __dirname;
 // 本地若有 config.local.json(含 Key, gitignore)则优先; 否则用仓库 config.json(CI 已注入 Key)
@@ -347,6 +347,153 @@ async function fetchMovers(cfg) {
     return [{ id: `movers_${today}_${items.map((x) => x.sym).join("_")}`, kind: "movers", items, ts: Date.now() }];
   } catch (e) {
     log(`  涨跌榜拉取失败: ${e.message}`);
+    return [];
+  }
+}
+
+// ---------- 合约情绪 / 形态 / 币安榜 素材源(全部公开接口, 零 key) ----------
+// 每个源失败一律 return [], 不影响其它素材; id 用"日期桶 + 触发对称名"做去重, 一天同类最多 1 条。
+const FAPI = "https://fapi.binance.com";
+const todayKey = () => todayStrTZ(config.schedule?.timezone);
+// 全市场扫描的源复用 symbolPool 的壳币表, 排除股票代币/稳定币包装/杠杆代币等
+// (实测资金费率极值常抓到 SAMSUNGEM 这类股票代币, 发出去没意义)
+const isShell = (sym) => SHELL_BASES.has(String(sym ?? "").replace(/USDT$/, ""));
+
+// 1. 资金费率: 一次请求拿全市场 596 个合约, 取最正/最负各 2 个极端值。
+// 只发超过阈值的(默认 ±0.05%), 避免日常千分之一的无聊费率刷屏。
+async function fetchFunding(cfg) {
+  if (!cfg.funding?.enabled) return [];
+  try {
+    // 费率极值常落在股票代币/超小币上, 光靠 SHELL_BASES 枚举不全。
+    // 再拉一次合约全市场 ticker, 用成交额门槛做通用流动性过滤(一次请求, 与合约榜那次独立)。
+    const [arr, tickers] = await Promise.all([
+      fetchJson(`${FAPI}/fapi/v1/premiumIndex`, {}, 15000),
+      fetchJson(`${FAPI}/fapi/v1/ticker/24hr`, {}, 15000),
+    ]);
+    if (!Array.isArray(arr)) return [];
+    const minAbs = cfg.funding?.minAbsRate ?? 0.0005;
+    const minUsd = cfg.funding?.minUsd ?? 1e8;
+    const volMap = new Map((Array.isArray(tickers) ? tickers : []).map((x) => [x.symbol, Number(x.quoteVolume) || 0]));
+    const rows = arr
+      .filter((x) => Number.isFinite(Number(x.lastFundingRate)) && Number(x.lastFundingRate) !== 0)
+      .map((x) => ({ sym: String(x.symbol ?? "").replace(/USDT$/, ""), rate: Number(x.lastFundingRate), mark: Number(x.markPrice) }))
+      .filter((x) => x.sym && !isShell(x.sym) && Math.abs(x.rate) >= minAbs
+        && (volMap.get(`${x.sym}USDT`) ?? 0) >= minUsd);
+    if (!rows.length) { log("  资金费率: 无超过阈值的极端值, 跳过"); return []; }
+    const hi = [...rows].sort((a, b) => b.rate - a.rate).slice(0, cfg.funding?.topN ?? 2);
+    const lo = [...rows].sort((a, b) => a.rate - b.rate).slice(0, cfg.funding?.topN ?? 2);
+    log(`  资金费率: ${rows.length} 个超阈值, 取高 ${hi.map((x) => x.sym).join("/")} 低 ${lo.map((x) => x.sym).join("/")}`);
+    return [{
+      id: `funding_${todayKey()}_${[...hi, ...lo].map((x) => x.sym).join("_")}`,
+      kind: "funding", hi, lo, ts: Date.now(),
+    }];
+  } catch (e) {
+    log(`  资金费率拉取失败: ${e.message}`);
+    return [];
+  }
+}
+
+// 2. 持仓量 OI: 主流币 1d 历史(接口验证通), 取 7 日变化超阈值的。
+// 一次请求一个币, 默认 4 个主流, 控制请求量。
+async function fetchOi(cfg) {
+  if (!cfg.oi?.enabled) return [];
+  const symbols = cfg.oi?.symbols ?? ["BTCUSDT", "ETHUSDT", "SOLUSDT", "BNBUSDT"];
+  const minPct = cfg.oi?.minChangePct ?? 15;
+  try {
+    const results = await Promise.all(symbols.map(async (sym) => {
+      const arr = await fetchJson(`${FAPI}/futures/data/openInterestHist?symbol=${sym}&period=1d&limit=8`, {}, 15000);
+      if (!Array.isArray(arr) || arr.length < 2) return null;
+      const last = Number(arr[arr.length - 1].sumOpenInterestValue);
+      const first = Number(arr[0].sumOpenInterestValue);
+      if (!Number.isFinite(last) || !Number.isFinite(first) || !first) return null;
+      const pct = (last - first) / first * 100;
+      return { sym: sym.replace(/USDT$/, ""), pct, value: last };
+    }));
+    const changed = results.filter((x) => x && Math.abs(x.pct) >= minPct)
+      .sort((a, b) => Math.abs(b.pct) - Math.abs(a.pct)).slice(0, cfg.oi?.topN ?? 2);
+    if (!changed.length) { log(`  持仓量: 7 日变化均 < ${minPct}%, 跳过`); return []; }
+    log(`  持仓量: ${changed.map((x) => `${x.sym} ${x.pct >= 0 ? "+" : ""}${x.pct.toFixed(1)}%`).join(" / ")}`);
+    return [{ id: `oi_${todayKey()}_${changed.map((x) => x.sym).join("_")}`, kind: "oi", items: changed, ts: Date.now() }];
+  } catch (e) {
+    log(`  持仓量拉取失败: ${e.message}`);
+    return [];
+  }
+}
+
+// 3. 多空比: 散户账号比 + 大户持仓比, 两边背离时才发(散户看多/大户看空 或反之)。
+async function fetchLongShort(cfg) {
+  if (!cfg.longShort?.enabled) return [];
+  const symbols = cfg.longShort?.symbols ?? ["BTCUSDT", "ETHUSDT", "SOLUSDT"];
+  try {
+    const results = await Promise.all(symbols.map(async (sym) => {
+      const [retail, top] = await Promise.all([
+        fetchJson(`${FAPI}/futures/data/globalLongShortAccountRatio?symbol=${sym}&period=1h&limit=1`, {}, 15000),
+        fetchJson(`${FAPI}/futures/data/topLongShortPositionRatio?symbol=${sym}&period=1h&limit=1`, {}, 15000),
+      ]);
+      const r = Number(retail?.[0]?.longShortRatio), t = Number(top?.[0]?.longShortRatio);
+      if (!Number.isFinite(r) || !Number.isFinite(t)) return null;
+      return { sym: sym.replace(/USDT$/, ""), retail: r, top: t };
+    }));
+    // 背离判定: 散户偏多(r>1.2)且大户偏空(t<1) → 反之亦然
+    const diverged = results.filter((x) => x && ((x.retail > 1.2 && x.top < 1) || (x.retail < 1 && x.top > 1.2)));
+    if (!diverged.length) { log("  多空比: 散户与大户方向一致, 跳过"); return []; }
+    log(`  多空比背离: ${diverged.map((x) => `${x.sym} 散户${x.retail.toFixed(2)} 大户${x.top.toFixed(2)}`).join(" / ")}`);
+    return [{ id: `longshort_${todayKey()}_${diverged.map((x) => x.sym).join("_")}`, kind: "longShort", items: diverged.slice(0, 2), ts: Date.now() }];
+  } catch (e) {
+    log(`  多空比拉取失败: ${e.message}`);
+    return [];
+  }
+}
+
+// 4. 形态突破: 监控池每币拉 1d klines(21 根), 今日高/低破前 20 日高低则触发。
+async function fetchBreakout(cfg) {
+  if (!cfg.breakout?.enabled) return [];
+  const symbols = (cfg.market?.symbols ?? []).slice(0, cfg.breakout?.maxCheck ?? 16);
+  const lookback = cfg.breakout?.lookbackDays ?? 20;
+  try {
+    const results = await Promise.all(symbols.map(async (sym) => {
+      const arr = await fetchJson(`${BINANCE_API}/api/v3/klines?symbol=${sym}&interval=1d&limit=${lookback + 1}`, {}, 15000);
+      if (!Array.isArray(arr) || arr.length < lookback + 1) return null;
+      const prev = arr.slice(0, -1);
+      const cur = arr[arr.length - 1];
+      const maxHigh = Math.max(...prev.map((k) => Number(k[2])));
+      const minLow = Math.min(...prev.map((k) => Number(k[3])));
+      const high = Number(cur[2]), low = Number(cur[3]), close = Number(cur[4]);
+      if (high > maxHigh) return { sym: sym.replace(/USDT$/, ""), dir: "high", price: close, level: maxHigh, lookback, ts: Number(cur[0]) };
+      if (low < minLow) return { sym: sym.replace(/USDT$/, ""), dir: "low", price: close, level: minLow, lookback, ts: Number(cur[0]) };
+      return null;
+    }));
+    const hits = results.filter(Boolean).slice(0, cfg.breakout?.topN ?? 3);
+    if (!hits.length) { log(`  形态: ${symbols.length} 个币无 ${lookback} 日突破, 跳过`); return []; }
+    log(`  形态突破: ${hits.map((x) => `${x.sym} ${x.dir === "high" ? "新高" : "新低"}`).join(" / ")}`);
+    return [{ id: `breakout_${todayKey()}_${hits.map((x) => x.sym + x.dir).join("_")}`, kind: "breakout", items: hits, ts: Date.now() }];
+  } catch (e) {
+    log(`  形态突破拉取失败: ${e.message}`);
+    return [];
+  }
+}
+
+// 5. 币安合约涨跌榜: 一次请求拿合约全市场 24h 涨跌 Top5, 反映杠杆盘的方向。
+async function fetchBinanceMovers(cfg) {
+  if (!cfg.binanceMovers?.enabled) return [];
+  try {
+    const arr = await fetchJson(`${FAPI}/fapi/v1/ticker/24hr`, {}, 15000);
+    if (!Array.isArray(arr)) return [];
+    const rows = arr
+      .filter((x) => x.symbol.endsWith("USDT") && !isShell(x.symbol) && Number(x.quoteVolume) >= (cfg.binanceMovers?.minUsd ?? 5e7))
+      .map((x) => ({ sym: x.symbol.replace(/USDT$/, ""), pct: Number(x.priceChangePercent), price: Number(x.lastPrice) }))
+      .filter((x) => Number.isFinite(x.pct));
+    const topN = cfg.binanceMovers?.topN ?? 5;
+    const up = [...rows].sort((a, b) => b.pct - a.pct).slice(0, topN);
+    const down = [...rows].sort((a, b) => a.pct - b.pct).slice(0, topN);
+    if (!up.length && !down.length) return [];
+    log(`  币安合约榜: 领涨 ${up.map((x) => x.sym).join("/")} 领跌 ${down.map((x) => x.sym).join("/")}`);
+    return [{
+      id: `bmovers_${todayKey()}_${[...up, ...down].map((x) => x.sym + x.pct.toFixed(0)).join("_")}`,
+      kind: "binanceMovers", up, down, ts: Date.now(),
+    }];
+  } catch (e) {
+    log(`  币安合约榜拉取失败: ${e.message}`);
     return [];
   }
 }
@@ -724,6 +871,78 @@ function genMoversPost(m, cfg) {
   return lines.join("\n");
 }
 
+// ---------- 新素材类型的帖子生成(数据驱动, 不用 LLM; 不给买卖建议) ----------
+const pct1 = (n) => `${n >= 0 ? "+" : ""}${Number(n).toFixed(1)}%`;
+
+function genFundingPost(m, cfg) {
+  const lines = ["💰 合约资金费率异动"];
+  lines.push("");
+  for (const x of m.hi) lines.push(`${x.sym} 费率 ${pct1(x.rate * 100)}，多头在付钱`);
+  for (const x of m.lo) lines.push(`${x.sym} 费率 ${pct1(x.rate * 100)}，空头在付钱`);
+  lines.push("", "费率是持仓情绪的读数，不是价格方向的答案。");
+  const closer = "极端费率能持续多久，还得看行情配不配合。";
+  lines.push("", closer);
+  lines.push(...ctaLines(m, cfg, closer));
+  lines.push("", "#资金费率 #合约情绪");
+  return lines.join("\n");
+}
+
+function genOiPost(m, cfg) {
+  const lines = ["📈 主流币持仓量（7 日变化）"];
+  lines.push("");
+  for (const x of m.items) {
+    lines.push(`${x.sym} 持仓 ${x.pct >= 0 ? "增加" : "减少"} ${Math.abs(x.pct).toFixed(1)}%`);
+  }
+  lines.push("", "持仓变重说明有人在加仓，但加的是多还是空，单看这个数分不出来。");
+  const closer = "量变之后看价格配不配合，比单盯一个数字有用。";
+  lines.push("", closer);
+  lines.push(...ctaLines(m, cfg, closer));
+  lines.push("", "#持仓量 #合约情绪");
+  return lines.join("\n");
+}
+
+function genLongShortPost(m, cfg) {
+  const lines = ["⚖️ 多空分歧：散户和大户这次没站一边"];
+  lines.push("");
+  for (const x of m.items) {
+    const r = x.retail > x.top ? "散户更看多" : "大户更看多";
+    lines.push(`${x.sym} 散户多空比 ${x.retail.toFixed(2)} / 大户 ${x.top.toFixed(2)}，${r}`);
+  }
+  lines.push("", "两边观点不一致的时候不少见，谁对谁错要等行情走出来才知道。");
+  const closer = "你们一般参考哪边的持仓数据？";
+  lines.push("", closer);
+  lines.push(...ctaLines(m, cfg, closer));
+  lines.push("", "#多空比 #合约情绪");
+  return lines.join("\n");
+}
+
+function genBreakoutPost(m, cfg) {
+  const lines = ["🔺 日线突破监控"];
+  lines.push("");
+  for (const x of m.items) {
+    lines.push(`${x.sym} 今天摸到 ${x.dir === "high" ? `${x.lookback ?? 20} 日新高` : `${x.lookback ?? 20} 日新低`}，现价 ${fmtPrice(x.price)}`);
+  }
+  lines.push("", "突破本身只是价格走到了边界，能不能站稳还得后面几天验证。");
+  const closer = "这种位置你们一般怎么看？";
+  lines.push("", closer);
+  lines.push(...ctaLines(m, cfg, closer));
+  lines.push("", "#行情异动 #技术分析");
+  return lines.join("\n");
+}
+
+function genBinanceMoversPost(m, cfg) {
+  const lines = ["📊 币安合约 24h 涨跌榜"];
+  lines.push("");
+  if (m.up.length) lines.push("领涨：" + m.up.map((i) => `${i.sym} ${pct1(i.pct)}`).join(" / "));
+  if (m.down.length) lines.push("领跌：" + m.down.map((i) => `${i.sym} ${pct1(i.pct)}`).join(" / "));
+  lines.push("", "合约市场的波动带着杠杆，同样的涨跌背后风险比现货大。");
+  const closer = "看合约榜的时候你们会额外注意什么？";
+  lines.push("", closer);
+  lines.push(...ctaLines(m, cfg, closer));
+  lines.push("", "#涨跌榜单 #合约情绪");
+  return lines.join("\n");
+}
+
 // 从文本里提取币种符号 → $cashtag(进币安广场对应币种的讨论区, 是比泛标签更大的流量入口)。
 // 只认明确的大写符号和几个高置信全称, 避免把普通英文词当币; 最多 2 个防止堆砌。
 const KNOWN_COINS = {
@@ -810,6 +1029,22 @@ function heatScore(m) {
     case "movers":
       base = 55;
       break;
+    case "funding":
+      // 极端费率才有内容价值, 按最高绝对费率加分(2% 费率比 0.05% 更值得发)
+      base = 58 + Math.min(12, Math.max(Math.abs(m.hi?.[0]?.rate ?? 0), Math.abs(m.lo?.[0]?.rate ?? 0)) * 100 * 6);
+      break;
+    case "oi":
+      base = 56 + Math.min(10, Math.max(...(m.items ?? []).map((x) => Math.abs(x.pct ?? 0)), 0) / 3);
+      break;
+    case "longShort":
+      base = 54;
+      break;
+    case "breakout":
+      base = 57;
+      break;
+    case "binanceMovers":
+      base = 55;
+      break;
     case "news":
       // P1: 选题价值分直接叠加到 base —— 交易相关帖能压过热搜榜, 政治监管冷门帖沉底
       base = 40 + (m.topicScore ?? 0);
@@ -828,6 +1063,11 @@ function buildPost(material, cfg) {
     case "trending": text = genTrendingPost(material, cfg); break;
     case "movers": text = genMoversPost(material, cfg); break;
     case "news": text = genNewsPost(material, cfg); break;
+    case "funding": text = genFundingPost(material, cfg); break;
+    case "oi": text = genOiPost(material, cfg); break;
+    case "longShort": text = genLongShortPost(material, cfg); break;
+    case "breakout": text = genBreakoutPost(material, cfg); break;
+    case "binanceMovers": text = genBinanceMoversPost(material, cfg); break;
     default: return null;
   }
 
@@ -937,6 +1177,38 @@ async function tryImageForMaterial(material, cfg) {
       newCoin: () => makeNewCoinCard({
         baseAsset: material.baseAsset, symbol: material.symbol,
         onboardDate: material.onboardDate, at: material.ts,
+      }),
+      // 五类新素材共用通用数据卡, 行内容全 ASCII(币名+数字+英文标签)
+      funding: () => makeDataCard({
+        title: "FUNDING RATE", subtitle: "extreme readings",
+        rows: [
+          ...material.hi.map((x) => `${x.sym} ${(x.rate * 100).toFixed(4)}% LONG PAYS`),
+          ...material.lo.map((x) => `${x.sym} ${(x.rate * 100).toFixed(4)}% SHORT PAYS`),
+        ],
+        accent: "#f0b90b", at: material.ts,
+      }),
+      oi: () => makeDataCard({
+        title: "OPEN INTEREST 7D", subtitle: "value change",
+        rows: material.items.map((x) => `${x.sym} ${x.pct >= 0 ? "+" : ""}${x.pct.toFixed(1)}%`),
+        accent: "#f0b90b", at: material.ts,
+      }),
+      longShort: () => makeDataCard({
+        title: "LONG / SHORT", subtitle: "retail vs top",
+        rows: material.items.map((x) => `${x.sym} R ${x.retail.toFixed(2)}  T ${x.top.toFixed(2)}`),
+        accent: "#f0b90b", at: material.ts,
+      }),
+      breakout: () => makeDataCard({
+        title: "20D BREAKOUT", subtitle: "daily high / low",
+        rows: material.items.map((x) => `${x.sym} ${x.dir === "high" ? "NEW HIGH" : "NEW LOW"} ${fmtPrice(x.price)}`),
+        accent: "#f0b90b", at: material.ts,
+      }),
+      binanceMovers: () => makeDataCard({
+        title: "FUTURES MOVERS 24H", subtitle: "top gainers / losers",
+        rows: [
+          ...material.up.map((x) => `${x.sym} ${pct1(x.pct)}`),
+          ...material.down.map((x) => `${x.sym} ${pct1(x.pct)}`),
+        ],
+        accent: "#f0b90b", at: material.ts,
       }),
     };
     if (cardBuilders[material.kind]) {
@@ -1241,18 +1513,24 @@ async function runOnce() {
 
   // 2. 抓全部素材(并行拉)。所有抓取共享同一个 state 对象, 由本函数结尾统一落盘,
   //    避免并发写文件互相覆盖。
-  const [marketMoves, newCoins, trending, movers, newsRss] =
+  const [marketMoves, newCoins, trending, movers, newsRss, funding, oi, longShort, breakout, binanceMovers] =
     await Promise.all([
       fetchMarketMove(config),
       fetchNewCoins(config, state),
       fetchTrending(config),
       fetchMovers(config),
       fetchRssNews(config, state),
+      fetchFunding(config),
+      fetchOi(config),
+      fetchLongShort(config),
+      fetchBreakout(config),
+      fetchBinanceMovers(config),
     ]);
 
   const candidates = [
     ...marketMoves, ...newCoins,
     ...trending, ...movers, ...newsRss,
+    ...funding, ...oi, ...longShort, ...breakout, ...binanceMovers,
   ];
 
   // --force 模式: 没素材时用实时真实数据造一条行情帖(不用假数字, 避免虚假消息)
@@ -1275,7 +1553,9 @@ async function runOnce() {
   // 3. 去重(素材 id 没发过)
   const seen = new Set(state.postedMaterialIds);
   const fresh = candidates.filter((c) => !seen.has(c.id));
-  log(`素材: 行情 ${marketMoves.length} / 新币 ${newCoins.length} / 热搜 ${trending.length} / 涨跌 ${movers.length} / 资讯 ${newsRss.length} = 共 ${fresh.length} 条未发`);
+  log(`素材: 行情 ${marketMoves.length} / 新币 ${newCoins.length} / 热搜 ${trending.length} / 涨跌 ${movers.length} / 资讯 ${newsRss.length}`
+    + ` / 费率 ${funding.length} / 持仓 ${oi.length} / 多空 ${longShort.length} / 形态 ${breakout.length} / 合约榜 ${binanceMovers.length}`
+    + ` = 共 ${fresh.length} 条未发`);
 
   if (fresh.length === 0) {
     log("没有新素材, 本轮不发帖");

@@ -272,4 +272,18 @@ function makeNewsCard({ titleZh, titleEn, at }) {
   });
 }
 
-module.exports = { makeMarketCard, makeTrendingCard, makeMoversCard, makeNewCoinCard, makeNewsCard };
+// 通用数据卡: 给资金费率/持仓/多空/形态/合约榜五类新素材共用。
+// 只渲染 ASCII(币种+数字), 中文说明放正文; 行内容由 bot.js 传纯文本, 不渲染中文。
+function makeDataCard({ title, subtitle, rows = [], accent = GOLD, at }) {
+  return makeCard((ctx) => {
+    drawChrome(ctx, { title: ascii(title, 24), subtitle: ascii(subtitle, 40), accent, at });
+    ctx.font = 'bold 44px "DejaVuSansBold", sans-serif';
+    rows.slice(0, 8).forEach((row, i) => {
+      const y = 320 + i * 88;
+      ctx.fillStyle = i % 2 === 0 ? FG : SUB;
+      ctx.fillText(ascii(row, 42), 90, y);
+    });
+  });
+}
+
+module.exports = { makeMarketCard, makeTrendingCard, makeMoversCard, makeNewCoinCard, makeNewsCard, makeDataCard };
