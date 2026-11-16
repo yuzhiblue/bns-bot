@@ -75,19 +75,14 @@
     "movers_2026-11-16_ZEC",
     "market_ASTERUSDT_2026-11-15T20",
     "news_55lslb",
-    "trending_2026-11-16_MACCA_DACITYCOIN_GATO_BTC_PENGU_SOL"
+    "trending_2026-11-16_MACCA_DACITYCOIN_GATO_BTC_PENGU_SOL",
+    "market_ASTERUSDT_2026-11-15T23"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794784114507,
-  "todayPosted": 8,
+  "lastPostAt": 1794787708928,
+  "todayPosted": 9,
   "todayKey": "Mon Nov 16 2026",
   "postHistory": [
-    {
-      "id": 387944056750555,
-      "kind": "news",
-      "at": 1794604104606,
-      "text": "中国 32 亿美元的人工智能管道仍需要 Nvidia 芯片 华盛顿限制\n\n尽管北京方面大力推行国内替代品，但中国的数据中心项目仍在围绕受限的英伟达处理器进行设计。\n\n目前能确认的只有报道里给出的这些事实，还不足以判断影响范围。我会等后续数据或官方口径佐证，在此之前不做方向判断。\n\n单条报道能提供的信息有限，多看几方口径更稳妥。\n\n看到这类标题，你第一反应会先确认什么？\n\n#加密资讯"
-    },
     {
       "id": 387958804512058,
       "kind": "news",
@@ -381,6 +376,12 @@
       "kind": "trending",
       "at": 1794784114508,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. MACCA (+302.1%)\n2. DACITYCOIN (+8.6%)\n3. GATO (+30.0%)\n4. BTC (+2.9%)\n5. PENGU (+6.3%)\n6. SOL (+5.4%)\n\nMeme与主题概念币占据了热搜榜的主导位置，其中MACCA以302.1%的涨幅领跑，显示出散户对高波动性小市值标的的强烈关注度。相比之下，比特币、"
+    },
+    {
+      "id": 388696100170958,
+      "kind": "market",
+      "at": 1794787708928,
+      "text": "📊 $ASTER 30 分钟跌 2.1%\n· 空头发力了\n· 现价 0.5048\n· 成交量放大 3.1 倍\n\n30 分钟内跌 2.1%，成交量放大到 3.1 倍，属于量价同步的短时脉冲。这类走势我会先看反弹时的量能：缩量反弹说明承接有限，放量反弹才更像有资金接。短窗口只反映当下，还不能当作趋势确认。\n\n空头占优，反弹是逃命不是追涨\n\n这种短时脉冲你一般怎么确认？\n\n$ASTER #行情异动"
     }
   ],
   "newCoinIds": [],
@@ -412,10 +413,10 @@
   ],
   "timelineKey": "2026-11-16",
   "timelineIdx": 0,
-  "timelineSentCount": 8,
+  "timelineSentCount": 9,
   "timelineDay": "2026-11-16",
-  "lastRunAt": 1794784105816,
-  "lastFetchAt": 1794784105816,
+  "lastRunAt": 1794787700713,
+  "lastFetchAt": 1794787700713,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -444,6 +445,6 @@
     "movers": 1794773307229,
     "trending": 1794784114508,
     "news": 1794780508749,
-    "market": 1794776904856
+    "market": 1794787708928
   }
 }
