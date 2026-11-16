@@ -97,19 +97,14 @@
     "trending_2026-11-17_MACCA_DACITYCOIN_GATO_BTC_PENGU_LIT",
     "trend_ZEC_2026-11-17",
     "trend_SOL_2026-11-17",
-    "trend_DOGE_2026-11-17"
+    "trend_DOGE_2026-11-17",
+    "trend_ETH_2026-11-17"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794863362928,
-  "todayPosted": 6,
+  "lastPostAt": 1794866913383,
+  "todayPosted": 7,
   "todayKey": "Tue Nov 17 2026",
   "postHistory": [
-    {
-      "id": 388283250067213,
-      "kind": "movers",
-      "at": 1794686915472,
-      "text": "📊 24h 涨跌榜（全市场）\n\n领涨：FIGR_HELOC +4.3%\n领跌：ZEC -11.2% / HYPE -10.6% / ADA -10.3% / SOL -10.1% / LINK -9.5%\n\n榜单显示跌幅显著，Zcash、Hyperliquid、Cardano、Solana、Chainlink和Dogecoin等主流资产均下跌超9%，而领涨仅Figure Heloc一项且涨幅不足"
-    },
     {
       "id": 388298003034401,
       "kind": "trending",
@@ -403,6 +398,12 @@
       "kind": "trend",
       "at": 1794863362928,
       "text": "📉 $DOGE 日线数据快照（30 天）\n\n现价 0.05932，7 日 -15.3%，30 日 -25.3%。\n7 日波动不小，现价处在 14% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n我一般把这种快照当背景，不当信号。\n\n你们平时看日线数据吗？\n\n$DOGE #行情分析\n\n以上只是数据记录和个人观察"
+    },
+    {
+      "id": 389020521621787,
+      "kind": "trend",
+      "at": 1794866913384,
+      "text": "📉 $ETH 日线数据快照（30 天）\n\n现价 1,835.54，7 日 -14.0%，30 日 -23.8%。\n7 日波动不小，现价处在 15% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n说到底都是过去式，后面怎么走还得看盘面。\n\n你们会不会拿均线当参考？\n\n$ETH #行情分析\n\n以上只是数据记录和个"
     }
   ],
   "newCoinIds": [],
@@ -434,10 +435,10 @@
   ],
   "timelineKey": "2026-11-17",
   "timelineIdx": 0,
-  "timelineSentCount": 6,
+  "timelineSentCount": 7,
   "timelineDay": "2026-11-17",
-  "lastRunAt": 1794863355216,
-  "lastFetchAt": 1794863355216,
+  "lastRunAt": 1794866906826,
+  "lastFetchAt": 1794866906826,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -465,6 +466,6 @@
     "trending": 1794852572365,
     "news": 1794830928391,
     "market": 1794841771320,
-    "trend": 1794863362928
+    "trend": 1794866913384
   }
 }
