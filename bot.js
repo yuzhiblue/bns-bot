@@ -658,11 +658,11 @@ function genMarketPost(m, cfg) {
   const opener = pickFrom(bucket.openers, "opener");
   const closer = pickFrom(bucket.closers, "closer");
 
+  // 数据用自然句连起来写, 不用"· 现价 / · 成交量"的列报表式排版——那种一看就是机器填模板。
+  // 数据全来自素材真实字段, 不编造。
   const lines = [];
   lines.push(`📊 ${coin} ${m.windowMinutes} 分钟${up ? "涨" : "跌"} ${Math.abs(m.pct).toFixed(1)}%`);
-  lines.push(`· ${opener}`);
-  lines.push(`· 现价 ${fmtPrice(m.price)}`);
-  lines.push(`· 成交量放大 ${m.volMultiple} 倍`);
+  lines.push(`${opener}，现在 ${fmtPrice(m.price)}，成交量放大到 ${m.volMultiple} 倍。`);
   lines.push(...takeLines(m, cfg));
   lines.push("", closer);
   lines.push(...ctaLines(m, cfg, closer));
