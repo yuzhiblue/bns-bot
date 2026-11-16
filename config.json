@@ -54,7 +54,7 @@
   },
   "_symbolsAuto": {
     "updated": "2026-11-05T00:46:23.801Z",
-    "topN": 16,
+    "topN": 20,
     "minUsd": 30000000
   },
   "trending": {
@@ -232,5 +232,11 @@
     "enabled": true,
     "topN": 5,
     "minUsd": 50000000
+  },
+  "trend": {
+    "enabled": true,
+    "limitDays": 30,
+    "maShort": 7,
+    "maLong": 30
   }
 }
