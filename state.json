@@ -94,19 +94,14 @@
     "market_ZECUSDT_2026-11-16T14",
     "trend_UNI_2026-11-17",
     "trend_PEPE_2026-11-17",
-    "trending_2026-11-17_MACCA_DACITYCOIN_GATO_BTC_PENGU_LIT"
+    "trending_2026-11-17_MACCA_DACITYCOIN_GATO_BTC_PENGU_LIT",
+    "trend_ZEC_2026-11-17"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794852572365,
-  "todayPosted": 3,
+  "lastPostAt": 1794856114002,
+  "todayPosted": 4,
   "todayKey": "Tue Nov 17 2026",
   "postHistory": [
-    {
-      "id": 388239039083341,
-      "kind": "news",
-      "at": 1794676121773,
-      "text": "OpenAI、Anthropic、谷歌等AI巨头面临要求停止研发的诉讼，四个非营利倡导组织希望加州法院阻止主要人工智能开发商构建更强大的模型，声称他们的技术可能会在全球范围内造成灾难性伤害。这事儿挺意外，看来大家不只是在讨论技术边界了，直接想按暂停键，法院那边怎么判还得走着瞧。\n\n#加密资讯"
-    },
     {
       "id": 388253738283446,
       "kind": "news",
@@ -400,6 +395,12 @@
       "kind": "trending",
       "at": 1794852572365,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. MACCA (+22.6%)\n2. DACITYCOIN (-17.7%)\n3. GATO (+16.8%)\n4. BTC (+0.5%)\n5. PENGU (-0.2%)\n6. LIT (-6.6%)\n\n这份榜单涨跌各半（3 涨 / 3 跌），热度并没有指向一致方向。热搜排名反映的是注意力，不等于资金流向；注意力先到、资金未必跟。说白了就是个观察名"
+    },
+    {
+      "id": 388976287360607,
+      "kind": "trend",
+      "at": 1794856114002,
+      "text": "📉 $ZEC 日线数据快照（30 天）\n\n现价 891.43，7 日 -23.4%，30 日 -21.2%。\n7 日波动不小，现价处在 15% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n数字不会说谎，但也没法告诉你下一步。\n\n这类数据你们多久看一次？\n\n$ZEC #行情分析\n\n以上只是数据记录和个人观察，"
     }
   ],
   "newCoinIds": [],
@@ -431,10 +432,10 @@
   ],
   "timelineKey": "2026-11-17",
   "timelineIdx": 0,
-  "timelineSentCount": 3,
+  "timelineSentCount": 4,
   "timelineDay": "2026-11-17",
-  "lastRunAt": 1794852561939,
-  "lastFetchAt": 1794852561939,
+  "lastRunAt": 1794856107413,
+  "lastFetchAt": 1794856107413,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -462,6 +463,6 @@
     "trending": 1794852572365,
     "news": 1794830928391,
     "market": 1794841771320,
-    "trend": 1794848909166
+    "trend": 1794856114002
   }
 }
