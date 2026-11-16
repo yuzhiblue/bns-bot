@@ -84,6 +84,8 @@ async function fetchJson(url, opts = {}, timeoutMs = 10000) {
 
 // 行情异动:对比 N 分钟前的价格 + 成交量放大(各币种并行拉)
 async function fetchMarketMove(cfg) {
+  // 与其它 9 个源一致的可选开关; 默认开(省略 enabled 时照常工作)
+  if (cfg.market?.enabled === false) return [];
   const { symbols, priceChangePct, windowMinutes, volSpikeMultiple } = cfg.market;
   const moves = [];
 

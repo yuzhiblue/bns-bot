@@ -24,7 +24,8 @@
     ],
     "priceChangePct": 2,
     "windowMinutes": 30,
-    "volSpikeMultiple": 2
+    "volSpikeMultiple": 2,
+    "enabled": true
   },
   "newCoin": {
     "enabled": true,
