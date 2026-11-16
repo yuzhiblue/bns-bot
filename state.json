@@ -78,19 +78,14 @@
     "trending_2026-11-16_MACCA_DACITYCOIN_GATO_BTC_PENGU_SOL",
     "market_ASTERUSDT_2026-11-15T23",
     "movers_2026-11-16_HYPE_ADA_ZEC_XRP_DOGE_XMR",
-    "news_14cht7l"
+    "news_14cht7l",
+    "news_pqkpf8"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794794929555,
-  "todayPosted": 11,
+  "lastPostAt": 1794798510245,
+  "todayPosted": 12,
   "todayKey": "Mon Nov 16 2026",
   "postHistory": [
-    {
-      "id": 387988309053845,
-      "kind": "news",
-      "at": 1794614908375,
-      "text": "比特币矿工每年向巴拉圭支付 3.5 亿美元，但人工智能正在将他们赶走\n\n以每兆瓦时 44 美元的价格向全球 4% 的比特币矿业公司出售电力的合同将于 2027 年 12 月 31 日到期。巴拉圭国家公用事业公司称该日期为最终日期，并且刚刚签署了一项为期 15 年的协议，为创始人基金支持的人工智能公司提供电力\n\n把一条价格变化放进更长的时间窗看，才知道是噪音还是结构变化。我会继续看后续几天的资金流与"
-    },
     {
       "id": 388003039324010,
       "kind": "news",
@@ -384,6 +379,12 @@
       "kind": "news",
       "at": 1794794929555,
       "text": "黄仁勋在《金融时报》报道里说英伟达即将重返，毕竟之前可是突然离场过。有意思的是，硅谷高管们现在正组织一场把他带回去的运动，还打算争取白宫的支持。\n\n#加密资讯"
+    },
+    {
+      "id": 388740342409284,
+      "kind": "news",
+      "at": 1794798510245,
+      "text": "有意思的是，Luxor 的首席执行官最近挺焦虑，因为攻击者通过 Luxor 的 Commander 平台重定向了客户的比特币挖矿能力。他据此向加密企业发出警告，称比特币矿机遭劫持后可能会形成人工智能“暗森林”。这事儿挺意外，看来算力被挪用背后的隐患比想象中复杂。\n\n#加密资讯"
     }
   ],
   "newCoinIds": [],
@@ -415,10 +416,10 @@
   ],
   "timelineKey": "2026-11-16",
   "timelineIdx": 0,
-  "timelineSentCount": 11,
+  "timelineSentCount": 12,
   "timelineDay": "2026-11-16",
-  "lastRunAt": 1794794917351,
-  "lastFetchAt": 1794794917351,
+  "lastRunAt": 1794798501140,
+  "lastFetchAt": 1794798501140,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -446,7 +447,7 @@
   "lastPostAtByKind": {
     "movers": 1794791309777,
     "trending": 1794784114508,
-    "news": 1794794929555,
+    "news": 1794798510245,
     "market": 1794787708928
   }
 }
