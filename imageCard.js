@@ -1,16 +1,23 @@
 // 卡片 PNG 生成(纯 Node, 依赖 @napi-rs/canvas)。
-// 卡片只用英文/数字(币种、涨跌幅、现价、量比、时间), 不渲染中文,
-// 这样无需中文字体; 完整中文免责声明仍放在文字帖正文里。
+// 行情/榜单卡只用英文数字(免中文字体); 资讯卡渲染中文标题, 需注册 CJK 字体。
 const { createCanvas, GlobalFonts } = require("@napi-rs/canvas");
 
-// GitHub Actions ubuntu 自带 DejaVu; 本地/其它环境若没有, 注册失败会 fallback 到 sans-serif。
-// 字体缺失时字会渲染不出, 所以 bot.yml 里也确保安装了 fonts-dejavu-core。
+// DejaVu: 英文/数字; CI(bot.yml)装 fonts-dejavu-core。
+// CJK: 资讯中文标题; CI 装 fonts-noto-cjk, Windows 本地用系统微软雅黑。
+// 注册失败不抛错——资讯卡会回退到英文标题(见 makeNewsCard)。
 for (const [p, family] of [
   ["/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", "DejaVuSansBold"],
   ["/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", "DejaVuSans"],
+  ["/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc", "CJK"],
+  ["/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc", "CJKBold"],
+  ["C:/Windows/Fonts/msyh.ttc", "CJK"],
+  ["C:/Windows/Fonts/msyhbd.ttc", "CJKBold"],
 ]) {
   try { GlobalFonts.registerFromPath(p, family); } catch (_) {}
 }
+const HAS_CJK = GlobalFonts.families.some((f) => f.family === "CJK");
+const CJK_FONT = HAS_CJK ? '"CJK"' : '"DejaVuSans"';
+const CJK_BOLD = GlobalFonts.families.some((f) => f.family === "CJKBold") ? '"CJKBold"' : CJK_FONT;
 
 const BG = "#0b0e11", CARD = "#181a20", FG = "#eaecef", SUB = "#848e9c";
 const GREEN = "#0ecb81", RED = "#f6465d";
@@ -228,14 +235,40 @@ function wrapAscii(ctx, text, maxWidth, maxLines) {
   return kept;
 }
 
-function makeNewsCard({ titleEn, at }) {
+// 中文按字符折行(中文没有空格, wrapAscii 按词折行对中文无效)
+function wrapCjk(ctx, text, maxWidth, maxLines) {
+  const lines = [];
+  let cur = "";
+  for (const ch of String(text)) {
+    const next = cur + ch;
+    if (cur && ctx.measureText(next).width > maxWidth) { lines.push(cur); cur = ch; }
+    else cur = next;
+  }
+  if (cur) lines.push(cur);
+  if (lines.length <= maxLines) return lines;
+  const kept = lines.slice(0, maxLines);
+  let last = kept[maxLines - 1];
+  while (last.length && ctx.measureText(`${last}…`).width > maxWidth) last = last.slice(0, -1);
+  kept[maxLines - 1] = `${last.trimEnd()}…`;
+  return kept;
+}
+
+function makeNewsCard({ titleZh, titleEn, at }) {
   return makeCard((ctx) => {
     // 不写来源媒体名: 卡片上挂第三方平台标识容易被当成引流
-    drawChrome(ctx, { title: "CRYPTO NEWS", subtitle: "Latest headlines", accent: GOLD, at });
-    const title = asciiTitle(titleEn) || "No headline available";
+    drawChrome(ctx, { title: HAS_CJK ? "加密资讯" : "CRYPTO NEWS", subtitle: "Latest headlines", accent: GOLD, at });
+    // 有中文字体 + 有中文标题 → 渲染中文(实测英文标题卡对中文用户是劝退项);
+    // 否则回退英文原题(无 CJK 字体的环境仍可用)。
+    const useZh = HAS_CJK && titleZh && /[\u4e00-\u9fff]/.test(titleZh);
     ctx.fillStyle = FG;
-    ctx.font = 'bold 60px "DejaVuSansBold", sans-serif';
-    wrapAscii(ctx, title, 900, 5).forEach((line, i) => ctx.fillText(line, 90, 430 + i * 92));
+    if (useZh) {
+      ctx.font = `54px ${CJK_FONT}, sans-serif`;
+      wrapCjk(ctx, String(titleZh).replace(/\s+/g, " "), 910, 6).forEach((line, i) => ctx.fillText(line, 90, 400 + i * 100));
+    } else {
+      const title = asciiTitle(titleEn) || "No headline available";
+      ctx.font = 'bold 60px "DejaVuSansBold", sans-serif';
+      wrapAscii(ctx, title, 900, 5).forEach((line, i) => ctx.fillText(line, 90, 430 + i * 92));
+    }
   });
 }
 

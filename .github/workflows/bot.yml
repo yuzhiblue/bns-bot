@@ -48,11 +48,11 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Install deps (canvas) and font
-        # @napi-rs/canvas 用于本地生成行情卡片 PNG; 字体确保卡片文字可渲染。
+      - name: Install deps (canvas) and fonts
+        # @napi-rs/canvas 生成卡片 PNG; DejaVu 渲染英文/数字, Noto CJK 渲染资讯中文标题。
         run: |
           sudo apt-get update -y >/dev/null 2>&1 || true
-          sudo apt-get install -y fonts-dejavu-core >/dev/null 2>&1 || true
+          sudo apt-get install -y fonts-dejavu-core fonts-noto-cjk >/dev/null 2>&1 || true
           npm install
 
       # 仓库 config.json(已 checkout, 不含 Key) + Secret 里的 Key 注入 openApiKey

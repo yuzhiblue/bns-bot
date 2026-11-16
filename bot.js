@@ -570,9 +570,9 @@ async function fetchRssNews(cfg, state) {
     if (skipRe && skipRe.test(zhT)) { log(`  过滤煽动/传言标题: ${zhT.slice(0, 30)}`); continue; }
     // 英文规则没覆盖到、但翻译产物变成中文引流话术时在这里兜底跳过
     if (isPromoSummary(zhS)) { log(`  过滤空壳摘要: ${zhT.slice(0, 30)}`); continue; }
-    // 标题或摘要仍是原文 = 翻译失败, 标记英文原帖, 生成文案时不加中文解读段与 CTA, 避免再叠加中文
-    const fallback = zhT === (raw[i].title || "").trim()
-      || (raw[i].summary && zhS === (raw[i].summary || "").trim());
+    // 只看标题是否翻译失败: 标题是门面, 标题翻成中文就是中文帖(可加提问/cashtag/LLM 改写);
+    // 摘要机翻失败仍保留英文原文也没关系(正文细节, 读者能看懂), 不该因此把整帖判成英文帖。
+    const fallback = zhT === (raw[i].title || "").trim();
     // titleEn 保留 RSS 英文原标题: 资讯卡片只渲染 ASCII, 中文翻译标题仍放帖子正文
     out.push({
       // 去重 id 用英文原标题的 hash 而非中文译文: LLM 翻译有轻微不确定性, 同一文章两次
@@ -582,6 +582,22 @@ async function fetchRssNews(cfg, state) {
       image: raw[i].image, summary: zhS, ts: raw[i].ts,
       lang: fallback ? "en" : "zh",
     });
+  }
+  // P1: 选题价值打分。交易者关心价格/上线/资金流, 政治流程/监管诉讼/矿机安全帖互动极低
+  // (实测浏览 35-84、0 评论)。打分只影响同一轮的相对优先级, 不硬删候选, 保留素材多样性。
+  const boostWords = cfg.news?.topicBoostWords ?? [];
+  const penaltyWords = cfg.news?.topicPenaltyWords ?? [];
+  const maxBoost = cfg.news?.topicMaxBoost ?? 20;
+  const maxPenalty = cfg.news?.topicMaxPenalty ?? 25;
+  for (const item of out) {
+    const text = `${item.titleEn ?? ""} ${item.title ?? ""} ${item.summary ?? ""}`.toLowerCase();
+    const hits = (words) => words.filter((w) => text.includes(String(w).toLowerCase()));
+    const boost = Math.min(maxBoost, hits(boostWords).length * 8);
+    const penalty = Math.min(maxPenalty, hits(penaltyWords).length * 12);
+    item.topicScore = boost - penalty;
+    if (item.topicScore <= -12) {
+      log(`  选题降权 ${item.topicScore}: ${(item.title ?? "").slice(0, 34)}`);
+    }
   }
   log(`  资讯: ${out.length} 条候选(中文, ${feeds.map((f) => f.name).join("/")})`);
   return out;
@@ -708,15 +724,54 @@ function genMoversPost(m, cfg) {
   return lines.join("\n");
 }
 
+// 从文本里提取币种符号 → $cashtag(进币安广场对应币种的讨论区, 是比泛标签更大的流量入口)。
+// 只认明确的大写符号和几个高置信全称, 避免把普通英文词当币; 最多 2 个防止堆砌。
+const KNOWN_COINS = {
+  bitcoin: "BTC", ethereum: "ETH", solana: "SOL", ripple: "XRP", binance: "BNB",
+  dogecoin: "DOGE", cardano: "ADA", avalanche: "AVAX", chainlink: "LINK",
+  polkadot: "DOT", litecoin: "LTC", toncoin: "TON",
+};
+function extractCashtags(text) {
+  const s = String(text ?? "");
+  const out = [];
+  // 大写币种符号(3-10 位), 排除常见大写噪音词
+  const NOISE = new Set(["AI", "CEO", "ETF", "US", "UK", "SEC", "FED", "GDP", "CPI", "NFT", "USD", "DXY", "IPO"]);
+  for (const m of s.matchAll(/\b([A-Z]{2,10})\b/g)) {
+    const sym = m[1];
+    if (!NOISE.has(sym) && !out.includes(sym)) out.push(sym);
+  }
+  // 英文全称(bitcoin/ethereum...)与中文全称
+  for (const [name, sym] of Object.entries(KNOWN_COINS)) {
+    if (new RegExp(`\\b${name}\\b`, "i").test(s) && !out.includes(sym)) out.push(sym);
+  }
+  for (const [name, sym] of [["比特币", "BTC"], ["以太坊", "ETH"], [" solana ", "SOL"]]) {
+    if (s.includes(name.trim()) && !out.includes(sym)) out.push(sym);
+  }
+  return out.slice(0, 2).map((sym) => `$${sym}`);
+}
+
+// 资讯帖的互动提问: 纯陈述帖 0 评论 → 平台算法不给量。以一条紧扣新闻的问题收尾。
+// 用开放式提问(不引导方向、不给买卖建议); 关闭 take 或英文原帖时不加(与旧行为一致)。
+function newsQuestion(m, cfg) {
+  if (cfg.post?.take === false || m.lang === "en") return "";
+  return pickFrom(TPL.newsQuestions, "cta");
+}
+
 function genNewsPost(m, cfg) {
   // 不显示文章来源平台名(如 CoinDesk / Cointelegraph): 币安广场对"把用户引向第三方平台"敏感,
   // 帖首挂别家媒体名容易被当成引流。m.source 仅保留在素材里供日志排查, 不渲染。
-  // 中文资讯优先用 LLM 整帖改写(m.rewrite, 口语化分享帖, 降低搬运判定); 不加模板收尾/CTA——
-  // 固定话术本身就是"机器感"来源。改写失败 / 英文回退 / 关闭 take 时走 A 兜底:
-  //   - take=false → 旧固定收尾, 与改动前逐字一致(一键回退);
-  //   - 其余 → 标题 + 摘要 + 标签, 干净不公式化。
+  // 中文资讯优先用 LLM 整帖改写(m.rewrite, 口语化分享帖, 降低搬运判定)。
+  // 流量优化: ① 结尾加一条紧扣新闻的开放式提问(纯陈述帖 0 评论会被算法降权);
+  //           ② 末行带 $cashtag 进币种讨论区(币安广场主要自然流量入口)。
+  // 两项都受配置开关控制(cfg.news.engagementQuestion / autoCashtag)。
+  // 改写失败走 A 兜底(标题+摘要, 同样带提问和 cashtag); 英文原帖/关闭 take 时都省略(尊重原文)。
+  const tags = cfg.news?.autoCashtag === false ? [] : extractCashtags(`${m.title ?? ""} ${m.summary ?? ""}`);
+  const tagLine = [...tags, "#加密资讯"].join(" ");
+  const question = cfg.news?.engagementQuestion === false ? "" : newsQuestion(m, cfg);
   if (m.rewrite) {
-    return `${m.rewrite}\n\n#加密资讯`;
+    // LLM 改写里若已自带问号, 不再叠加(避免连续两个问句)
+    const end = question && !/[？?]/.test(m.rewrite) ? `\n\n${question}` : "";
+    return `${m.rewrite}${end}\n\n${tagLine}`;
   }
   const isOff = cfg.post?.take === false;
   const lines = [];
@@ -727,8 +782,10 @@ function genNewsPost(m, cfg) {
   }
   if (isOff) {
     lines.push("", "消息面仅供参考，操作看自己的判断。");
+  } else if (question) {
+    lines.push("", question);
   }
-  lines.push("", "#加密资讯");
+  lines.push("", tagLine);
   return lines.join("\n");
 }
 
@@ -754,7 +811,8 @@ function heatScore(m) {
       base = 55;
       break;
     case "news":
-      base = 40;
+      // P1: 选题价值分直接叠加到 base —— 交易相关帖能压过热搜榜, 政治监管冷门帖沉底
+      base = 40 + (m.topicScore ?? 0);
       break;
     default:
       base = 10;
@@ -892,7 +950,7 @@ async function tryImageForMaterial(material, cfg) {
     // 以后发现别的源也有水印, 只需把源名加进 news.cardFeeds, 不用改代码。
     if (material.kind === "news") {
       if ((cfg.news?.cardFeeds ?? []).includes(material.source)) {
-        const buf = makeNewsCard({ titleEn: material.titleEn, at: material.ts });
+        const buf = makeNewsCard({ titleZh: material.title, titleEn: material.titleEn, at: material.ts });
         const url = await uploadImage(cfg.openApiKey, buf, "png");
         log(`  配图: news 卡片上传成功 ${url}`);
         return [url];
@@ -1230,7 +1288,9 @@ async function runOnce() {
     .map((m) => ({ m, score: heatScore(m) }))
     .sort((a, b) => b.score - a.score);
   if (scored.length > 1) {
-    log(`  本轮 ${scored.length} 条候选热度: ${scored.map(({ m, score }) => `${m.kind}:${score.toFixed(1)}`).join(" / ")}`);
+    log(`  本轮 ${scored.length} 条候选热度: ${scored.map(({ m, score }) =>
+      `${m.kind}${m.kind === "news" && m.topicScore ? `(选题${m.topicScore > 0 ? "+" : ""}${m.topicScore})` : ""}:${score.toFixed(1)}`
+    ).join(" / ")}`);
   }
   // 类型冷却: 榜单类(trending/movers)分数高(新鲜度加成每轮拿满)且榜单变化频繁,
   // 不节流会来回刷屏、把新闻挤没。发帖成功后按类型记时间戳, 冷却期内该类不参选;
@@ -1243,14 +1303,27 @@ async function runOnce() {
     const last = (state.lastPostAtByKind ?? {})[kind] ?? 0;
     return Date.now() - last < ms;
   };
-  const eligible = forceMode ? scored : scored.filter(({ m }) => !inCooldown(m.kind));
+  // 资讯低谷时段: 资讯帖互动率本就低, 发在北京时间凌晨等于白发(实测凌晨帖只有 30-50 浏览)。
+  // 低谷时段的 slot 让给其它素材; 没有其它素材就空转, 资讯留给白天的 slot 再发。
+  // --force 不受限(手动验证要能发任意类型)。
+  const tz = config.schedule?.timezone ?? "Asia/Shanghai";
+  const hourNow = Number(new Intl.DateTimeFormat("en-US", { timeZone: tz, hour: "2-digit", hour12: false }).format(new Date()));
+  const quietHours = config.news?.quietHours ?? [];
+  const newsQuiet = quietHours.includes(hourNow);
+  const eligible = forceMode ? scored : scored.filter(({ m }) => {
+    if (inCooldown(m.kind)) return false;
+    if (m.kind === "news" && newsQuiet) return false;
+    return true;
+  });
   if (!eligible.length) {
-    log("  所有候选类型都在冷却中, 本轮不发, 等下个 slot");
+    log(newsQuiet ? "  资讯低谷时段且无其它素材, 本轮不发, 等白天 slot" : "  所有候选类型都在冷却中, 本轮不发, 等下个 slot");
     saveState(state);
     return;
   }
   if (eligible.length !== scored.length) {
-    log(`  类型冷却中: ${scored.filter(({ m }) => inCooldown(m.kind)).map(({ m }) => m.kind).join(", ")}`);
+    const skipped = scored.filter(({ m }) => inCooldown(m.kind)).map(({ m }) => m.kind);
+    if (newsQuiet && scored.some(({ m }) => m.kind === "news")) skipped.push("news(低谷时段)");
+    if (skipped.length) log(`  本轮不参选: ${skipped.join(", ")}`);
   }
   // 相邻两条不能同类: 上一条发了 A 类, 本轮改发次高分的其它类; 只剩 A 类可选时仍发它(避免空轮)。
   const lastKind = (state.postHistory ?? []).slice(-1)[0]?.kind;
