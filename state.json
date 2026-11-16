@@ -88,19 +88,14 @@
     "trending_2026-11-16_PEARL_BTC_HYPE_ASTER_ZEC_PENGU",
     "news_1e0tipj",
     "news_18hb6g6",
-    "news_vrf4cy"
+    "news_vrf4cy",
+    "movers_2026-11-16_ZEC_HYPE"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794830928391,
-  "todayPosted": 21,
+  "lastPostAt": 1794834513860,
+  "todayPosted": 22,
   "todayKey": "Mon Nov 16 2026",
   "postHistory": [
-    {
-      "id": 388150531047997,
-      "kind": "trending",
-      "at": 1794654513338,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. AKE (+108.3%)\n2. BTC (-3.0%)\n3. HYPE (-5.2%)\n4. ETH (-2.2%)\n5. PENGU (-4.3%)\n6. SOL (-5.9%)\n\n主流币整体承压，比特币、以太坊、Solana及Hyperliquid均录得超2%的负收益。榜单中仅Akedo单点大幅上涨，而Pudgy Penguins表现偏弱。数据"
-    },
     {
       "id": 388165269320178,
       "kind": "news",
@@ -394,6 +389,12 @@
       "kind": "news",
       "at": 1794830928391,
       "text": "新加坡和德国最近启动了跨境支付测试，主要是为了降低结算风险。零知识证明技术在这里的作用是让每个账本都能验证另一条腿是否被锁定，讲真，这意味着除非双方都这么做，否则两种货币根本不会结算。整个过程中既没有共享账本，也不需要中介。\n\n这事儿后面你会重点盯哪个信号？\n\n#加密资讯"
+    },
+    {
+      "id": 388887813126606,
+      "kind": "movers",
+      "at": 1794834513860,
+      "text": "📊 24h 涨跌榜（全市场）\n\n领跌：ZEC -6.0% / HYPE -4.1%\n\n榜单显示跌幅榜由ZEC（-6.0%）和HYPE（-4.1%）占据，且两枚代币波动率均超4%。由于数据中未包含任何上涨资产，当前可见的市场情绪明显偏向空头主导。\n\n极端波动时更要注意风险，别追在尖上。\n\n这种同步波动你先看什么？\n\n#涨跌榜单 #行情异动"
     }
   ],
   "newCoinIds": [],
@@ -425,10 +426,10 @@
   ],
   "timelineKey": "2026-11-16",
   "timelineIdx": 0,
-  "timelineSentCount": 21,
+  "timelineSentCount": 22,
   "timelineDay": "2026-11-16",
-  "lastRunAt": 1794830918466,
-  "lastFetchAt": 1794830918466,
+  "lastRunAt": 1794834505355,
+  "lastFetchAt": 1794834505355,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -454,7 +455,7 @@
     "updatedAt": 1794586106417
   },
   "lastPostAtByKind": {
-    "movers": 1794791309777,
+    "movers": 1794834513860,
     "trending": 1794820114341,
     "news": 1794830928391,
     "market": 1794787708928
