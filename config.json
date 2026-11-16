@@ -67,7 +67,7 @@
     "minAbsPct": 4
   },
   "news": {
-    "enabled": true,
+    "enabled": false,
     "perFeed": 2,
     "cardFeeds": [
       "Cointelegraph"
