@@ -109,19 +109,14 @@
     "trend_XRP_2026-11-17",
     "trend_NVDAB_2026-11-17",
     "trend_HYPE_2026-11-17",
-    "trending_2026-11-17_BP_SOL_BTC_ZEC_EVAA_NEAR"
+    "trending_2026-11-17_BP_SOL_BTC_ZEC_EVAA_NEAR",
+    "movers_2026-11-17_ZEC_XMR"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794906572189,
-  "todayPosted": 18,
+  "lastPostAt": 1794910114202,
+  "todayPosted": 19,
   "todayKey": "Tue Nov 17 2026",
   "postHistory": [
-    {
-      "id": 388460184492099,
-      "kind": "trending",
-      "at": 1794730112323,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BTC (-4.8%)\n2. KAVA (-47.0%)\n3. HYPE (-6.9%)\n4. XRP (-3.6%)\n5. ETH (-6.2%)\n6. PEARL (-2.5%)\n\n榜单中BTC、ETH等主流资产悉数出现，且全线飘绿，反映出市场整体情绪偏向防守。KAVA与HYPE居前，表明除主流币外，部分高波动或特定生态项目仍占据着较高的短线关注"
-    },
     {
       "id": 388474938276413,
       "kind": "news",
@@ -415,6 +410,12 @@
       "kind": "trending",
       "at": 1794906572189,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BP (+31.4%)\n2. SOL (+2.1%)\n3. BTC (-0.4%)\n4. ZEC (+2.9%)\n5. EVAA (+26.6%)\n6. NEAR (+1.7%)\n\n小市值代币 Backpack 和 EVAA Protocol 占据头部位置，显示短线资金正追逐高波动标的。头部资产中 Solana 与 Zcash 保持微涨，而 Bitc"
+    },
+    {
+      "id": 389197472089336,
+      "kind": "movers",
+      "at": 1794910114202,
+      "text": "📊 24h 涨跌榜（全市场）\n\n领涨：ZEC +5.0% / XMR +4.7%\n\n当前榜单仅呈现隐私币板块的集中上涨，缺乏跌方数据以观察多空力量对比。Zcash与Monero同步走强显示该细分领域内部波动幅度相对均衡。\n\n涨跌两头都拉得挺开，说明今天分歧不小；这种分化能维持多久，单看一天的榜单说不准。\n\n你更关注大盘还是个币差异？\n\n#涨跌榜单 #行情异动\n\n以上只是数据记录和个人观察，不构成"
     }
   ],
   "newCoinIds": [],
@@ -446,10 +447,10 @@
   ],
   "timelineKey": "2026-11-17",
   "timelineIdx": 0,
-  "timelineSentCount": 18,
+  "timelineSentCount": 19,
   "timelineDay": "2026-11-17",
-  "lastRunAt": 1794906564412,
-  "lastFetchAt": 1794906564412,
+  "lastRunAt": 1794910105047,
+  "lastFetchAt": 1794910105047,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -473,7 +474,7 @@
     "updatedAt": 1794586106417
   },
   "lastPostAtByKind": {
-    "movers": 1794892113202,
+    "movers": 1794910114202,
     "trending": 1794906572189,
     "news": 1794830928391,
     "market": 1794841771320,
