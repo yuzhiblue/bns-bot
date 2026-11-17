@@ -112,19 +112,14 @@
     "trending_2026-11-17_BP_SOL_BTC_ZEC_EVAA_NEAR",
     "movers_2026-11-17_ZEC_XMR",
     "trend_MUB_2026-11-17",
-    "trending_2026-11-17_GATO_BP_BTC_SOL_PEARL_INJ"
+    "trending_2026-11-17_GATO_BP_BTC_SOL_PEARL_INJ",
+    "movers_2026-11-17_ZEC_HYPE"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794924513693,
-  "todayPosted": 21,
+  "lastPostAt": 1794928147344,
+  "todayPosted": 22,
   "todayKey": "Tue Nov 17 2026",
   "postHistory": [
-    {
-      "id": 388504409752389,
-      "kind": "news",
-      "at": 1794740909518,
-      "text": "全球加密货币市值 24 小时内下跌 4% 至 2.26 万亿美元，比特币也跌至约6.2万美元的四个月低点。有意思的是 Ether 和 Solana 的周跌幅竟然达到了两位数。\n\n#加密资讯"
-    },
     {
       "id": 388519145134436,
       "kind": "news",
@@ -418,6 +413,12 @@
       "kind": "trending",
       "at": 1794924513693,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. GATO (-1.1%)\n2. BP (+30.4%)\n3. BTC (+1.2%)\n4. SOL (+3.9%)\n5. PEARL (+6.8%)\n6. INJ (+11.5%)\n\n榜单前两名出现小市值代币与主流公链钱包，显示资金关注度正在向长尾项目与基础设施层分散。排名靠后的主流资产BTC和SOL涨幅相对温和，表明当前市场热点并非由顶级蓝筹单一主"
+    },
+    {
+      "id": 389271335941262,
+      "kind": "movers",
+      "at": 1794928147344,
+      "text": "📊 24h 涨跌榜（全市场）\n\n领涨：ZEC +9.1% / HYPE +4.2%\n\n本时段榜单仅列出Zcash和Hyperliquid两枚上涨超4%的资产，且无资产因跌幅超4%被收录，显示多头力量相对占优。领涨品种涵盖隐私币与去中心化交易所代币，结构上偏向特定功能型资产。整体波动率门槛下，市场呈现出温和上涨而非全面普涨的态势。\n\n涨跌两头都拉得挺开，说明今天分歧不小；这种分化能维持多久，单看一"
     }
   ],
   "newCoinIds": [],
@@ -449,10 +450,10 @@
   ],
   "timelineKey": "2026-11-17",
   "timelineIdx": 0,
-  "timelineSentCount": 21,
+  "timelineSentCount": 22,
   "timelineDay": "2026-11-17",
-  "lastRunAt": 1794924504645,
-  "lastFetchAt": 1794924504645,
+  "lastRunAt": 1794928140194,
+  "lastFetchAt": 1794928140194,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -476,7 +477,7 @@
     "updatedAt": 1794586106417
   },
   "lastPostAtByKind": {
-    "movers": 1794910114202,
+    "movers": 1794928147344,
     "trending": 1794924513693,
     "news": 1794830928391,
     "market": 1794841771320,
