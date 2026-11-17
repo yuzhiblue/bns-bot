@@ -108,19 +108,14 @@
     "movers_2026-11-17_HYPE_ZEC",
     "trend_XRP_2026-11-17",
     "trend_NVDAB_2026-11-17",
-    "trend_HYPE_2026-11-17"
+    "trend_HYPE_2026-11-17",
+    "trending_2026-11-17_BP_SOL_BTC_ZEC_EVAA_NEAR"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794902912391,
-  "todayPosted": 17,
+  "lastPostAt": 1794906572189,
+  "todayPosted": 18,
   "todayKey": "Tue Nov 17 2026",
   "postHistory": [
-    {
-      "id": 388445427630487,
-      "kind": "news",
-      "at": 1794726509577,
-      "text": "RWA协议stUSDT在TVL峰值达23亿美元三年后宣布收尾，这事儿挺意外。stUSDT 团队没有透露终止 RWA 协议的原因，但向持有者保证所有基础资产仍得到充分支持。\n\n#加密资讯"
-    },
     {
       "id": 388460184492099,
       "kind": "trending",
@@ -414,6 +409,12 @@
       "kind": "trend",
       "at": 1794902912391,
       "text": "📉 $HYPE 日线数据快照（30 天）\n\n现价 69.32，7 日 -4.1%，30 日 -12.6%。\n死叉排列，现价在 两条均线之下，区间位置 25%。\n\n价格贴着区间下沿，确实偏弱，但低位本身不代表什么，有没有资金接才是关键。\n\n我一般把这种快照当背景，不当信号。\n\n你们会不会拿均线当参考？\n\n$HYPE #行情分析\n\n以上只是数据记录和个人观察，不构成投资建议；市场变化快，请自行判断、"
+    },
+    {
+      "id": 389182964126722,
+      "kind": "trending",
+      "at": 1794906572189,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BP (+31.4%)\n2. SOL (+2.1%)\n3. BTC (-0.4%)\n4. ZEC (+2.9%)\n5. EVAA (+26.6%)\n6. NEAR (+1.7%)\n\n小市值代币 Backpack 和 EVAA Protocol 占据头部位置，显示短线资金正追逐高波动标的。头部资产中 Solana 与 Zcash 保持微涨，而 Bitc"
     }
   ],
   "newCoinIds": [],
@@ -445,10 +446,10 @@
   ],
   "timelineKey": "2026-11-17",
   "timelineIdx": 0,
-  "timelineSentCount": 17,
+  "timelineSentCount": 18,
   "timelineDay": "2026-11-17",
-  "lastRunAt": 1794902901829,
-  "lastFetchAt": 1794902901829,
+  "lastRunAt": 1794906564412,
+  "lastFetchAt": 1794906564412,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -473,7 +474,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1794892113202,
-    "trending": 1794888544904,
+    "trending": 1794906572189,
     "news": 1794830928391,
     "market": 1794841771320,
     "trend": 1794902912391
