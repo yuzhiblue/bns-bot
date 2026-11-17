@@ -104,19 +104,14 @@
     "trend_NEAR_2026-11-17",
     "trend_BTC_2026-11-17",
     "trend_ASTER_2026-11-17",
-    "trending_2026-11-17_BLESS_BTC_LIT_BP_HYPE_NEAR"
+    "trending_2026-11-17_BLESS_BTC_LIT_BP_HYPE_NEAR",
+    "movers_2026-11-17_HYPE_ZEC"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794888544904,
-  "todayPosted": 13,
+  "lastPostAt": 1794892113202,
+  "todayPosted": 14,
   "todayKey": "Tue Nov 17 2026",
   "postHistory": [
-    {
-      "id": 388386501198231,
-      "kind": "trending",
-      "at": 1794712123227,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BTC (-3.3%)\n2. SOL (-5.6%)\n3. ETH (-4.4%)\n4. NEAR (-7.8%)\n5. HYPE (-5.9%)\n6. PEARL (-2.3%)\n\n当前热搜榜被主流加密货币占据，反映出市场关注度仍高度集中于比特币、Solana和以太坊等头部资产。尽管整体呈现下跌态势，但Pearl等小市值项目跌幅相对较小，显示资金在"
-    },
     {
       "id": 388401194080576,
       "kind": "news",
@@ -410,6 +405,12 @@
       "kind": "trending",
       "at": 1794888544904,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BLESS (+39.1%)\n2. BTC (-0.0%)\n3. LIT (+8.5%)\n4. BP (+19.0%)\n5. HYPE (+5.6%)\n6. NEAR (+1.7%)\n\n榜单前列以Meme及新兴协议代币为主，BLESS和BP的涨幅显示短线资金正聚集于高弹性标的。BTC与NEAR等主流资产表现平稳，暗示当前市场热度更多集中在中小市值的新"
+    },
+    {
+      "id": 389123739945201,
+      "kind": "movers",
+      "at": 1794892113202,
+      "text": "📊 24h 涨跌榜（全市场）\n\n领涨：HYPE +5.9% / ZEC +4.5%\n\n本轮领涨榜单由去中心化衍生品HYPE和隐私币ZEC领衔，显示出市场流动性正流向新兴交易赛道及隐私叙事资产。由于榜单中缺乏显著跌幅标的，短期多头力量明显占优，市场情绪偏向积极修复。\n\n涨跌两头都拉得挺开，说明今天分歧不小；这种分化能维持多久，单看一天的榜单说不准。\n\n这种同步波动你先看什么？\n\n#涨跌榜单 #行情"
     }
   ],
   "newCoinIds": [],
@@ -441,10 +442,10 @@
   ],
   "timelineKey": "2026-11-17",
   "timelineIdx": 0,
-  "timelineSentCount": 13,
+  "timelineSentCount": 14,
   "timelineDay": "2026-11-17",
-  "lastRunAt": 1794888536934,
-  "lastFetchAt": 1794888536934,
+  "lastRunAt": 1794892104520,
+  "lastFetchAt": 1794892104520,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -468,7 +469,7 @@
     "updatedAt": 1794586106417
   },
   "lastPostAtByKind": {
-    "movers": 1794834513860,
+    "movers": 1794892113202,
     "trending": 1794888544904,
     "news": 1794830928391,
     "market": 1794841771320,
