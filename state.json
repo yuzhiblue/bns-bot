@@ -99,19 +99,14 @@
     "trend_SOL_2026-11-17",
     "trend_DOGE_2026-11-17",
     "trend_ETH_2026-11-17",
-    "trending_2026-11-17_BP_SOL_BTC_TAO_AERO_PENGU"
+    "trending_2026-11-17_BP_SOL_BTC_TAO_AERO_PENGU",
+    "trend_BNB_2026-11-17"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794870517096,
-  "todayPosted": 8,
+  "lastPostAt": 1794874108467,
+  "todayPosted": 9,
   "todayKey": "Tue Nov 17 2026",
   "postHistory": [
-    {
-      "id": 388312711576679,
-      "kind": "news",
-      "at": 1794694108202,
-      "text": "MegaETH 刚裁了 20% 的人手，目的是推进 AI 业务。更扎眼的是，他们锁定的去中心化金融总价值从 2.45 亿美元以上大幅掉到了 880 万美元，讲真这收缩幅度还挺大。\n\n#加密资讯"
-    },
     {
       "id": 388327506743125,
       "kind": "news",
@@ -405,6 +400,12 @@
       "kind": "trending",
       "at": 1794870517096,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BP (+38.2%)\n2. SOL (-0.7%)\n3. BTC (+0.4%)\n4. TAO (-1.4%)\n5. AERO (+0.1%)\n6. PENGU (-1.1%)\n\n榜单前列由单币种大幅异动（Backpack 24小时上涨38.2%）与主流资产（BTC、SOL）的微幅震荡并存，显示市场注意力向个别高波动项目集中而非全板块普涨。主流币价"
+    },
+    {
+      "id": 389049992655227,
+      "kind": "trend",
+      "at": 1794874108468,
+      "text": "📉 $BNB 日线数据快照（30 天）\n\n现价 590.62，7 日 -13.2%，30 日 -19.3%。\n7 日波动不小，现价处在 13% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n这指标就当个参考，别当成答案。\n\n你们平时看日线数据吗？\n\n$BNB #行情分析\n\n以上只是数据记录和个人观察，不构成投"
     }
   ],
   "newCoinIds": [],
@@ -436,10 +437,10 @@
   ],
   "timelineKey": "2026-11-17",
   "timelineIdx": 0,
-  "timelineSentCount": 8,
+  "timelineSentCount": 9,
   "timelineDay": "2026-11-17",
-  "lastRunAt": 1794870508798,
-  "lastFetchAt": 1794870508798,
+  "lastRunAt": 1794874101832,
+  "lastFetchAt": 1794874101832,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -467,6 +468,6 @@
     "trending": 1794870517096,
     "news": 1794830928391,
     "market": 1794841771320,
-    "trend": 1794866913384
+    "trend": 1794874108468
   }
 }
