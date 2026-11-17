@@ -120,19 +120,14 @@
     "trend_BNB_2026-11-18",
     "trend_BTC_2026-11-18",
     "trend_ETH_2026-11-18",
-    "trending_2026-11-18_BP_BTC_PEARL_SOL_VVV_LIT"
+    "trending_2026-11-18_BP_BTC_PEARL_SOL_VVV_LIT",
+    "movers_2026-11-18_ZEC_SOL"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794953404939,
-  "todayPosted": 7,
+  "lastPostAt": 1794956910892,
+  "todayPosted": 8,
   "todayKey": "Wed Nov 18 2026",
   "postHistory": [
-    {
-      "id": 388622366755788,
-      "kind": "news",
-      "at": 1794769707621,
-      "text": "最近圈里有个说法挺实在，加密行业内部人士基本不指望国会“跛脚鸭”届期能带来利好。毕竟民主党准备在明年追求自己的加密货币和技术议程，本届会议的最后几周估计难有惊喜，懂行的都把这阶段当静默期看了。\n\n#加密资讯"
-    },
     {
       "id": 388637110886358,
       "kind": "movers",
@@ -426,6 +421,12 @@
       "kind": "trending",
       "at": 1794953404939,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BP (+17.8%)\n2. BTC (-1.8%)\n3. PEARL (+11.3%)\n4. SOL (+1.9%)\n5. VVV (-1.1%)\n6. LIT (+0.6%)\n\n榜单前列由Backpack和Pearl等中小市值代币占据，显示短线资金正集中于特定高波动标的。传统主流币种如BTC和SOL虽在列但涨幅有限，反映出市场注意力目前更偏向于具"
+    },
+    {
+      "id": 389389151368894,
+      "kind": "movers",
+      "at": 1794956910892,
+      "text": "📊 24h 涨跌榜（全市场）\n\n领涨：ZEC +4.6% / SOL +4.2%\n\nZcash和Solana均录得超4%的正收益，表明当前领涨榜由隐私币与高性能公链共同驱动。榜单中缺失明确的领跌数据，反映出市场短线内多头发力明显，且缺乏同量级的做空对冲。这种结构显示资金正集中在特定板块内轮动，而非全面普涨。\n\n涨跌两头都拉得挺开，说明今天分歧不小；这种分化能维持多久，单看一天的榜单说不准。\n\n你"
     }
   ],
   "newCoinIds": [],
@@ -457,10 +458,10 @@
   ],
   "timelineKey": "2026-11-18",
   "timelineIdx": 0,
-  "timelineSentCount": 7,
+  "timelineSentCount": 8,
   "timelineDay": "2026-11-18",
-  "lastRunAt": 1794953396487,
-  "lastFetchAt": 1794953396487,
+  "lastRunAt": 1794956899293,
+  "lastFetchAt": 1794956899293,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -481,7 +482,7 @@
     "updatedAt": 1794586106417
   },
   "lastPostAtByKind": {
-    "movers": 1794928147344,
+    "movers": 1794956910892,
     "trending": 1794953404939,
     "news": 1794830928391,
     "market": 1794841771320,
