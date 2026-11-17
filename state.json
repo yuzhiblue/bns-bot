@@ -103,19 +103,14 @@
     "trend_BNB_2026-11-17",
     "trend_NEAR_2026-11-17",
     "trend_BTC_2026-11-17",
-    "trend_ASTER_2026-11-17"
+    "trend_ASTER_2026-11-17",
+    "trending_2026-11-17_BLESS_BTC_LIT_BP_HYPE_NEAR"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794884911725,
-  "todayPosted": 12,
+  "lastPostAt": 1794888544904,
+  "todayPosted": 13,
   "todayKey": "Tue Nov 17 2026",
   "postHistory": [
-    {
-      "id": 388371745273586,
-      "kind": "market",
-      "at": 1794708520741,
-      "text": "📊 $UNI 30 分钟涨 3.5%\n· 多头开始动手了\n· 现价 4.879\n· 成交量放大 3.1 倍\n\n30 分钟内涨 3.5%，成交量放大到 3.1 倍，属于量价同步的短时脉冲。这类走势我会先看回踩时的量能：缩量回踩说明抛压有限，放量回踩更像获利了结。短窗口只反映当下，还不能当作趋势确认。\n\n量价配合好，趋势还在\n\n你更看重量能还是价格结构？\n\n$UNI #行情异动"
-    },
     {
       "id": 388386501198231,
       "kind": "trending",
@@ -409,6 +404,12 @@
       "kind": "trend",
       "at": 1794884911725,
       "text": "📉 $ASTER 日线数据快照（30 天）\n\n现价 0.5799，7 日 -9.2%，30 日 -17.7%。\n7 日波动不小，现价处在 40% 分位（0 = 区间最低，100 = 最高）。\n\n量能明显放大而价格没走多远，这种量价背离值得多留意几天，现在下结论还早。\n\n我一般把这种快照当背景，不当信号。\n\n你们平时看日线数据吗？\n\n$ASTER #行情分析\n\n以上只是数据记录和个人观察，不构成投"
+    },
+    {
+      "id": 389109124311482,
+      "kind": "trending",
+      "at": 1794888544904,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BLESS (+39.1%)\n2. BTC (-0.0%)\n3. LIT (+8.5%)\n4. BP (+19.0%)\n5. HYPE (+5.6%)\n6. NEAR (+1.7%)\n\n榜单前列以Meme及新兴协议代币为主，BLESS和BP的涨幅显示短线资金正聚集于高弹性标的。BTC与NEAR等主流资产表现平稳，暗示当前市场热度更多集中在中小市值的新"
     }
   ],
   "newCoinIds": [],
@@ -440,10 +441,10 @@
   ],
   "timelineKey": "2026-11-17",
   "timelineIdx": 0,
-  "timelineSentCount": 12,
+  "timelineSentCount": 13,
   "timelineDay": "2026-11-17",
-  "lastRunAt": 1794884904702,
-  "lastFetchAt": 1794884904702,
+  "lastRunAt": 1794888536934,
+  "lastFetchAt": 1794888536934,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -468,7 +469,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1794834513860,
-    "trending": 1794870517096,
+    "trending": 1794888544904,
     "news": 1794830928391,
     "market": 1794841771320,
     "trend": 1794884911725
