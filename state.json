@@ -119,19 +119,14 @@
     "trending_2026-11-18_BP_BTC_PEARL_HYPE_SOL_BREV",
     "trend_BNB_2026-11-18",
     "trend_BTC_2026-11-18",
-    "trend_ETH_2026-11-18"
+    "trend_ETH_2026-11-18",
+    "trending_2026-11-18_BP_BTC_PEARL_SOL_VVV_LIT"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794949750063,
-  "todayPosted": 6,
+  "lastPostAt": 1794953404939,
+  "todayPosted": 7,
   "todayKey": "Wed Nov 18 2026",
   "postHistory": [
-    {
-      "id": 388607649138450,
-      "kind": "trending",
-      "at": 1794766114453,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. MACCA (+0.0%)\n2. MIHAO (+108.4%)\n3. GATO (+29.5%)\n4. DACITYCOIN (+294.2%)\n5. IMD (+19.7%)\n6. PENGU (-4.9%)\n\nAudaCity以294.2%的涨幅居首，ni hao cat和Gato The Cat紧随其后，表明Meme与动物题材仍是当前热度核心"
-    },
     {
       "id": 388622366755788,
       "kind": "news",
@@ -425,6 +420,12 @@
       "kind": "trend",
       "at": 1794949750063,
       "text": "📉 $ETH 日线数据快照（30 天）\n\n现价 1,798.66，7 日 -12.4%，30 日 -25.3%。\n7 日波动不小，现价处在 11% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n这种快照看看就好，没什么结论。\n\n这种快照你会重点看哪几项？\n\n$ETH #行情分析\n\n以上只是数据记录和个人观察，"
+    },
+    {
+      "id": 389374791059833,
+      "kind": "trending",
+      "at": 1794953404939,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BP (+17.8%)\n2. BTC (-1.8%)\n3. PEARL (+11.3%)\n4. SOL (+1.9%)\n5. VVV (-1.1%)\n6. LIT (+0.6%)\n\n榜单前列由Backpack和Pearl等中小市值代币占据，显示短线资金正集中于特定高波动标的。传统主流币种如BTC和SOL虽在列但涨幅有限，反映出市场注意力目前更偏向于具"
     }
   ],
   "newCoinIds": [],
@@ -456,10 +457,10 @@
   ],
   "timelineKey": "2026-11-18",
   "timelineIdx": 0,
-  "timelineSentCount": 6,
+  "timelineSentCount": 7,
   "timelineDay": "2026-11-18",
-  "lastRunAt": 1794949743237,
-  "lastFetchAt": 1794949743237,
+  "lastRunAt": 1794953396487,
+  "lastFetchAt": 1794953396487,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -481,7 +482,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1794928147344,
-    "trending": 1794938938088,
+    "trending": 1794953404939,
     "news": 1794830928391,
     "market": 1794841771320,
     "trend": 1794949750063
