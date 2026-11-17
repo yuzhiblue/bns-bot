@@ -116,19 +116,14 @@
     "movers_2026-11-17_ZEC_HYPE",
     "trend_UNI_2026-11-18",
     "trend_ASTER_2026-11-18",
-    "trending_2026-11-18_BP_BTC_PEARL_HYPE_SOL_BREV"
+    "trending_2026-11-18_BP_BTC_PEARL_HYPE_SOL_BREV",
+    "trend_BNB_2026-11-18"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794938938087,
-  "todayPosted": 3,
+  "lastPostAt": 1794942519337,
+  "todayPosted": 4,
   "todayKey": "Wed Nov 18 2026",
   "postHistory": [
-    {
-      "id": 388563411048405,
-      "kind": "movers",
-      "at": 1794755314125,
-      "text": "📊 24h 涨跌榜（全市场）\n\n领跌：DOGE -4.9% / XMR -4.6%\n\n这份榜单仅呈现了领跌方向，且涉及4%以上波动率的资产全部为负收益，未见任何领涨标的。Dogecoin和Monero的同步下行显示，无论主流山寨还是隐私币种，市场当前主要受空头情绪主导。基于现有数据，短期资金呈现明显的避险或离场特征，缺乏多头对冲力量。\n\n极端波动时更要注意风险，别追在尖上。\n\n榜单里你会怎么筛掉"
-    },
     {
       "id": 388578124519866,
       "kind": "news",
@@ -422,6 +417,12 @@
       "kind": "trending",
       "at": 1794938938088,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BP (+22.0%)\n2. BTC (-1.7%)\n3. PEARL (+4.0%)\n4. HYPE (+2.6%)\n5. SOL (+1.6%)\n6. BREV (+81.3%)\n\n榜单头部由Brevis(BREV)和Backpack(BP)等高涨幅代币占据，显示短线热点向特定项目集中。主流币方面，Bitcoin(BTC)微跌与Solana(SO"
+    },
+    {
+      "id": 389330203517246,
+      "kind": "trend",
+      "at": 1794942519337,
+      "text": "📉 $BNB 日线数据快照（30 天）\n\n现价 588.04，7 日 -13.6%，30 日 -19.7%。\n7 日波动不小，现价处在 11% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n数据摆这儿了，怎么解读看各自的系统。\n\n你们平时看日线数据吗？\n\n$BNB #行情分析\n\n以上只是数据记录和个人观察，不"
     }
   ],
   "newCoinIds": [],
@@ -453,10 +454,10 @@
   ],
   "timelineKey": "2026-11-18",
   "timelineIdx": 0,
-  "timelineSentCount": 3,
+  "timelineSentCount": 4,
   "timelineDay": "2026-11-18",
-  "lastRunAt": 1794938930256,
-  "lastFetchAt": 1794938930256,
+  "lastRunAt": 1794942509062,
+  "lastFetchAt": 1794942509062,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -481,6 +482,6 @@
     "trending": 1794938938088,
     "news": 1794830928391,
     "market": 1794841771320,
-    "trend": 1794935312469
+    "trend": 1794942519337
   }
 }
