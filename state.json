@@ -111,19 +111,14 @@
     "trend_HYPE_2026-11-17",
     "trending_2026-11-17_BP_SOL_BTC_ZEC_EVAA_NEAR",
     "movers_2026-11-17_ZEC_XMR",
-    "trend_MUB_2026-11-17"
+    "trend_MUB_2026-11-17",
+    "trending_2026-11-17_GATO_BP_BTC_SOL_PEARL_INJ"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794913707609,
-  "todayPosted": 20,
+  "lastPostAt": 1794924513693,
+  "todayPosted": 21,
   "todayKey": "Tue Nov 17 2026",
   "postHistory": [
-    {
-      "id": 388489669339419,
-      "kind": "movers",
-      "at": 1794737310802,
-      "text": "📊 24h 涨跌榜（全市场）\n\n领跌：DOGE -6.5% / ADA -6.1% / XMR -5.4% / SOL -5.0% / ETH -4.3%\n\n这份榜单仅展示领跌板块，缺乏领涨数据，无法构成完整的对比结构。所有列示的资产跌幅均在4%至6.5%区间，显示主流币与部分大市值山寨币同步下行。整体呈现单边的下行压力特征，未见明显的多头对冲迹象。\n\n极端波动时更要注意风险，别追在尖上。\n\n你"
-    },
     {
       "id": 388504409752389,
       "kind": "news",
@@ -417,6 +412,12 @@
       "kind": "trend",
       "at": 1794913707609,
       "text": "📉 $MUB 日线数据快照（30 天）\n\n现价 717.31，7 日 -2.1%，30 日 -20.8%。\n死叉排列，现价在 两条均线之下，区间位置 20%。\n\n价格贴着区间下沿，确实偏弱，但低位本身不代表什么，有没有资金接才是关键。\n\n这指标就当个参考，别当成答案。\n\n这类数据你们多久看一次？\n\n$MUB #行情分析\n\n以上只是数据记录和个人观察，不构成投资建议；市场变化快，请自行判断、DYO"
+    },
+    {
+      "id": 389256452493046,
+      "kind": "trending",
+      "at": 1794924513693,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. GATO (-1.1%)\n2. BP (+30.4%)\n3. BTC (+1.2%)\n4. SOL (+3.9%)\n5. PEARL (+6.8%)\n6. INJ (+11.5%)\n\n榜单前两名出现小市值代币与主流公链钱包，显示资金关注度正在向长尾项目与基础设施层分散。排名靠后的主流资产BTC和SOL涨幅相对温和，表明当前市场热点并非由顶级蓝筹单一主"
     }
   ],
   "newCoinIds": [],
@@ -448,10 +449,10 @@
   ],
   "timelineKey": "2026-11-17",
   "timelineIdx": 0,
-  "timelineSentCount": 20,
+  "timelineSentCount": 21,
   "timelineDay": "2026-11-17",
-  "lastRunAt": 1794920924472,
-  "lastFetchAt": 1794920924472,
+  "lastRunAt": 1794924504645,
+  "lastFetchAt": 1794924504645,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -476,7 +477,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1794910114202,
-    "trending": 1794906572189,
+    "trending": 1794924513693,
     "news": 1794830928391,
     "market": 1794841771320,
     "trend": 1794913707609
