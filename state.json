@@ -115,19 +115,14 @@
     "trending_2026-11-17_GATO_BP_BTC_SOL_PEARL_INJ",
     "movers_2026-11-17_ZEC_HYPE",
     "trend_UNI_2026-11-18",
-    "trend_ASTER_2026-11-18"
+    "trend_ASTER_2026-11-18",
+    "trending_2026-11-18_BP_BTC_PEARL_HYPE_SOL_BREV"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794935312468,
-  "todayPosted": 2,
+  "lastPostAt": 1794938938087,
+  "todayPosted": 3,
   "todayKey": "Wed Nov 18 2026",
   "postHistory": [
-    {
-      "id": 388548674845953,
-      "kind": "news",
-      "at": 1794751716406,
-      "text": "比特币ETF11月净流出21亿美元 连续7日流出\n\n周五，现货比特币 ETF 损失 1.854 亿美元，这是连续第七天资金流出，随着比特币跌向 64,000 美元，11 月份的损失扩大至约 21 亿美元。\n\n#加密资讯"
-    },
     {
       "id": 388563411048405,
       "kind": "movers",
@@ -421,6 +416,12 @@
       "kind": "trend",
       "at": 1794935312469,
       "text": "📉 $ASTER 日线数据快照（30 天）\n\n现价 0.5423，7 日 -15.1%，30 日 -23.1%。\n7 日波动不小，现价处在 25% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n这指标就当个参考，别当成答案。\n\n你们平时看日线数据吗？\n\n$ASTER #行情分析\n\n以上只是数据记录和个人观察，"
+    },
+    {
+      "id": 389315534705368,
+      "kind": "trending",
+      "at": 1794938938088,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BP (+22.0%)\n2. BTC (-1.7%)\n3. PEARL (+4.0%)\n4. HYPE (+2.6%)\n5. SOL (+1.6%)\n6. BREV (+81.3%)\n\n榜单头部由Brevis(BREV)和Backpack(BP)等高涨幅代币占据，显示短线热点向特定项目集中。主流币方面，Bitcoin(BTC)微跌与Solana(SO"
     }
   ],
   "newCoinIds": [],
@@ -452,10 +453,10 @@
   ],
   "timelineKey": "2026-11-18",
   "timelineIdx": 0,
-  "timelineSentCount": 2,
+  "timelineSentCount": 3,
   "timelineDay": "2026-11-18",
-  "lastRunAt": 1794935305849,
-  "lastFetchAt": 1794935305849,
+  "lastRunAt": 1794938930256,
+  "lastFetchAt": 1794938930256,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -477,7 +478,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1794928147344,
-    "trending": 1794924513693,
+    "trending": 1794938938088,
     "news": 1794830928391,
     "market": 1794841771320,
     "trend": 1794935312469
