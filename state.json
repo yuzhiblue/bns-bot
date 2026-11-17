@@ -117,19 +117,14 @@
     "trend_UNI_2026-11-18",
     "trend_ASTER_2026-11-18",
     "trending_2026-11-18_BP_BTC_PEARL_HYPE_SOL_BREV",
-    "trend_BNB_2026-11-18"
+    "trend_BNB_2026-11-18",
+    "trend_BTC_2026-11-18"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794942519337,
-  "todayPosted": 4,
+  "lastPostAt": 1794946143698,
+  "todayPosted": 5,
   "todayKey": "Wed Nov 18 2026",
   "postHistory": [
-    {
-      "id": 388578124519866,
-      "kind": "news",
-      "at": 1794758906282,
-      "text": "讲真，传统金融这波动作挺大，高盛和花旗那个 2.7 亿美元的“Project Faro”刚出来，SoFi、Anchorage、Mastercard、Visa 和 Circle 也都在忙着布局。以前链上美元这块基本被 Tether 和 Circle 把控，现在整个格局看着有点意思。\n\n#加密资讯"
-    },
     {
       "id": 388592868380326,
       "kind": "news",
@@ -423,6 +418,12 @@
       "kind": "trend",
       "at": 1794942519337,
       "text": "📉 $BNB 日线数据快照（30 天）\n\n现价 588.04，7 日 -13.6%，30 日 -19.7%。\n7 日波动不小，现价处在 11% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n数据摆这儿了，怎么解读看各自的系统。\n\n你们平时看日线数据吗？\n\n$BNB #行情分析\n\n以上只是数据记录和个人观察，不"
+    },
+    {
+      "id": 389345049050005,
+      "kind": "trend",
+      "at": 1794946143698,
+      "text": "📉 $BTC 日线数据快照（30 天）\n\n现价 63,784.78，7 日 -13.6%，30 日 -22.2%。\n7 日波动不小，现价处在 8% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n说到底都是过去式，后面怎么走还得看盘面。\n\n你更看重价格还是量能？\n\n$BTC #行情分析\n\n以上只是数据记录和个人"
     }
   ],
   "newCoinIds": [],
@@ -454,10 +455,10 @@
   ],
   "timelineKey": "2026-11-18",
   "timelineIdx": 0,
-  "timelineSentCount": 4,
+  "timelineSentCount": 5,
   "timelineDay": "2026-11-18",
-  "lastRunAt": 1794942509062,
-  "lastFetchAt": 1794942509062,
+  "lastRunAt": 1794946137501,
+  "lastFetchAt": 1794946137501,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -482,6 +483,6 @@
     "trending": 1794938938088,
     "news": 1794830928391,
     "market": 1794841771320,
-    "trend": 1794942519337
+    "trend": 1794946143698
   }
 }
