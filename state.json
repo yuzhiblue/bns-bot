@@ -125,19 +125,14 @@
     "trend_SOL_2026-11-18",
     "trend_XRP_2026-11-18",
     "bmovers_2026-11-18_BREV87_BTW36_MMT26_龙虾22_ARIA9_BLESS-43_HUMA-21_EVAA-10_RARE-7_ANTHROPIC-6",
-    "trending_2026-11-18_BREV_BTC_NEAR_ETH_PENGU_JUP"
+    "trending_2026-11-18_BREV_BTC_NEAR_ETH_PENGU_JUP",
+    "news_52k5gf"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794971357397,
-  "todayPosted": 12,
+  "lastPostAt": 1794974934125,
+  "todayPosted": 13,
   "todayKey": "Wed Nov 18 2026",
   "postHistory": [
-    {
-      "id": 388696100170958,
-      "kind": "market",
-      "at": 1794787708928,
-      "text": "📊 $ASTER 30 分钟跌 2.1%\n· 空头发力了\n· 现价 0.5048\n· 成交量放大 3.1 倍\n\n30 分钟内跌 2.1%，成交量放大到 3.1 倍，属于量价同步的短时脉冲。这类走势我会先看反弹时的量能：缩量反弹说明承接有限，放量反弹才更像有资金接。短窗口只反映当下，还不能当作趋势确认。\n\n空头占优，反弹是逃命不是追涨\n\n这种短时脉冲你一般怎么确认？\n\n$ASTER #行情异动"
-    },
     {
       "id": 388710849140578,
       "kind": "movers",
@@ -431,6 +426,12 @@
       "kind": "trending",
       "at": 1794971357397,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BREV (+104.2%)\n2. BTC (-0.5%)\n3. NEAR (+5.5%)\n4. ETH (-0.8%)\n5. PENGU (-1.7%)\n6. JUP (+6.3%)\n\n这份榜单涨跌各半（3 涨 / 3 跌），热度并没有指向一致方向。热搜排名反映的是注意力，不等于资金流向；注意力先到、资金未必跟。说白了就是个观察名单，别把它当信号。"
+    },
+    {
+      "id": 389462974462521,
+      "kind": "news",
+      "at": 1794974934126,
+      "text": "币安现货和闪兑交易平台新增7个bStocks交易对\n\nPANews 11月18日消息，据币安公告，币安现货和闪兑交易平台将上线bStocks代币化证券交易对，包括iShares MSCI Japan ETF（EWJB）、iShares MSCI Taiwan ETF（EWTB）、iShares MSCI Brazil ETF（EWZB）、iShares MSCI Brazil Small-Cap "
     }
   ],
   "timeline": [
@@ -461,10 +462,10 @@
   ],
   "timelineKey": "2026-11-18",
   "timelineIdx": 0,
-  "timelineSentCount": 12,
+  "timelineSentCount": 13,
   "timelineDay": "2026-11-18",
-  "lastRunAt": 1794971347342,
-  "lastFetchAt": 1794971347342,
+  "lastRunAt": 1794974909318,
+  "lastFetchAt": 1794974909318,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -487,7 +488,7 @@
   "lastPostAtByKind": {
     "movers": 1794956910892,
     "trending": 1794971357397,
-    "news": 1794830928391,
+    "news": 1794974934126,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1794967724086
