@@ -141,19 +141,14 @@
     "breakout_2026-11-19_MMThigh",
     "news_o3na43",
     "bmovers_2026-11-19_PIPPIN82_MMT71_PIEVERSE59_ICNT41_ZKC24_BREV-14_LIT-5_PUMP-5_ENA-3_INJ-2",
-    "news_11msypl"
+    "news_11msypl",
+    "trending_2026-11-19_WASTED_WSTAR_LUCIA_TRUMP_PENGU_PEARL"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795028914734,
-  "todayPosted": 4,
+  "lastPostAt": 1795036111166,
+  "todayPosted": 5,
   "todayKey": "Thu Nov 19 2026",
   "postHistory": [
-    {
-      "id": 388932044429687,
-      "kind": "trend",
-      "at": 1794845312500,
-      "text": "📉 $UNI 日线数据快照（30 天）\n\n现价 5.127，7 日 -26.6%，30 日 -28.8%。\n7 日波动不小，现价处在 16% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n说到底都是过去式，后面怎么走还得看盘面。\n\n你们会不会拿均线当参考？\n\n$UNI #行情分析\n\n以上只是数据记录和个人观察"
-    },
     {
       "id": 388946776266363,
       "kind": "trend",
@@ -447,6 +442,12 @@
       "kind": "news",
       "at": 1795028914734,
       "text": "分析师：比特币跌破7万美元是市场馈赠\n\nK33 Research 表示，比特币在每周下跌 14% 后已进入“深度价值区域”，因为 ETF 流出、清算和对冲需求达到接近过去底部的水平。\n\n$BTC #加密资讯"
+    },
+    {
+      "id": 389713555652458,
+      "kind": "trending",
+      "at": 1795036111166,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. WASTED (+0.0%)\n2. WSTAR (+0.0%)\n3. LUCIA (+0.0%)\n4. TRUMP (-1.4%)\n5. PENGU (-0.2%)\n6. PEARL (+24.5%)\n\n榜单整体走势平淡，仅Pearl录得24h上涨24.5%，而TRUMP和PENGU小幅下跌，其余币种基本持平。从结构看，热搜榜被大量中小市值项目占据，"
     }
   ],
   "timeline": [
@@ -477,10 +478,10 @@
   ],
   "timelineKey": "2026-11-19",
   "timelineIdx": 0,
-  "timelineSentCount": 4,
+  "timelineSentCount": 5,
   "timelineDay": "2026-11-19",
-  "lastRunAt": 1795028905416,
-  "lastFetchAt": 1795028905416,
+  "lastRunAt": 1795036101119,
+  "lastFetchAt": 1795036101119,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -502,7 +503,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1794996546611,
-    "trending": 1795010927490,
+    "trending": 1795036111166,
     "news": 1795028914734,
     "market": 1794841771320,
     "trend": 1794964121240,
