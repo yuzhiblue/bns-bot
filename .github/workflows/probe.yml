@@ -39,6 +39,8 @@ jobs:
             "https://decrypt.co/feed"
             "https://bitcoinmagazine.com/.rss/full/"
             "https://cryptopanic.com/api/v1/posts/?auth_token=demo&public=true"
+            "https://info.qianyuwing.com/"
+            "https://info.qianyuwing.com/api/tickers?type=crypto"
           )
           for u in "${urls[@]}"; do
             code=$(curl -s -A "Mozilla/5.0 (compatible; bns-bot/1.0)" -o /tmp/probe_body -w '%{http_code}' --max-time 10 "$u" 2>/dev/null) || code="ERR"
