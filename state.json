@@ -126,19 +126,14 @@
     "trend_XRP_2026-11-18",
     "bmovers_2026-11-18_BREV87_BTW36_MMT26_龙虾22_ARIA9_BLESS-43_HUMA-21_EVAA-10_RARE-7_ANTHROPIC-6",
     "trending_2026-11-18_BREV_BTC_NEAR_ETH_PENGU_JUP",
-    "news_52k5gf"
+    "news_52k5gf",
+    "news_1i4f90r"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794974934125,
-  "todayPosted": 13,
+  "lastPostAt": 1794978530455,
+  "todayPosted": 14,
   "todayKey": "Wed Nov 18 2026",
   "postHistory": [
-    {
-      "id": 388710849140578,
-      "kind": "movers",
-      "at": 1794791309777,
-      "text": "📊 24h 涨跌榜（全市场）\n\n领涨：HYPE +5.5% / ADA +5.4% / ZEC +5.2% / XRP +5.1% / DOGE +5.1%\n\n这份24h领涨榜仅展示了正向涨幅数据，缺乏领跌资产信息，无法评估完整的多空力量对比或市场结构。从现有数据看，领涨阵营由Hyperliquid、Cardano、Zcash、XRP、Dogecoin和Monero组成，涵盖了部分Layer 1"
-    },
     {
       "id": 388725675872921,
       "kind": "news",
@@ -432,6 +427,12 @@
       "kind": "news",
       "at": 1794974934126,
       "text": "币安现货和闪兑交易平台新增7个bStocks交易对\n\nPANews 11月18日消息，据币安公告，币安现货和闪兑交易平台将上线bStocks代币化证券交易对，包括iShares MSCI Japan ETF（EWJB）、iShares MSCI Taiwan ETF（EWTB）、iShares MSCI Brazil ETF（EWZB）、iShares MSCI Brazil Small-Cap "
+    },
+    {
+      "id": 389477705061167,
+      "kind": "news",
+      "at": 1794978530455,
+      "text": "币安将于11月20日移除GAS/TRY、HBAR/BNB等5个现货交易对\n\nPANews 11月18日消息，据币安公告，根据近期审核结果，将于2026年11月20日11:00（东八区时间）移除GAS/TRY、HBAR/BNB、HIVE/TRY、KSM/TRY和ZAMA/TRY现货交易对并停止交易。币安表示会定期审核所有上线现货交易对，可能因流动性、交易量不佳等多种因素下架部分交易对，以保护用户并维"
     }
   ],
   "timeline": [
@@ -462,10 +463,10 @@
   ],
   "timelineKey": "2026-11-18",
   "timelineIdx": 0,
-  "timelineSentCount": 13,
+  "timelineSentCount": 14,
   "timelineDay": "2026-11-18",
-  "lastRunAt": 1794974909318,
-  "lastFetchAt": 1794974909318,
+  "lastRunAt": 1794978513454,
+  "lastFetchAt": 1794978513454,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -488,7 +489,7 @@
   "lastPostAtByKind": {
     "movers": 1794956910892,
     "trending": 1794971357397,
-    "news": 1794974934126,
+    "news": 1794978530455,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1794967724086
