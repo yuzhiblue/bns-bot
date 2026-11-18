@@ -599,32 +599,41 @@ async function fetchRssNews(cfg, state) {
         // 币安广场禁止链接/推广其他交易平台, 保守过滤含竞品交易所名的条目
         if (mentionsCompetitor(text, link)) { log(`  过滤竞品帖: ${(it.title || "").slice(0, 30)}`); continue; }
         if (!it.summary) continue; // 无正文摘要的空壳帖不发
-        raw.push({ source: feed.name, title: it.title, link, image: it.image, summary: it.summary, ts: it.ts });
+        raw.push({ source: feed.name, lang: feed.lang === "zh" ? "zh" : "en", title: it.title, link, image: it.image, summary: it.summary, ts: it.ts });
       }
     } catch (e) {
       log(`  RSS ${feed.name}: 拉取失败(${e.message})`);
     }
   }));
-  // 英文媒体自带摘要: 标题用 LLM 翻译(门面 + 质量关键, 每轮 ≤8 调用, 加解读 1 次卡在 10 RPM 内),
-  // 摘要维持免费 Google 机翻(正文细节, 机翻够用)。翻译失败回退英文原文直接发。
-  const zhTitles = await translateTitlesWithLlm(raw, cfg);
-  const zhSummaries = await Promise.all(raw.map((r) => translateText(r.summary)));
+  // 中文源(PANews/Odaily, feed.lang="zh")正文已是中文, 直接原文, 不调 LLM/机翻:
+  // 既省调用额度(卡在 Agnes 10 RPM 内), 也避免中文标题被"英译中"prompt 无意义改写。
+  // 英文源照旧: 标题 LLM 翻译(门面), 摘要 Google 机翻, 失败回退英文原文。
+  const enIdx = raw.map((r, i) => (r.lang === "zh" ? -1 : i)).filter((i) => i >= 0);
+  const enRaw = enIdx.map((i) => raw[i]);
+  const enTitles = await translateTitlesWithLlm(enRaw, cfg);
+  const enSummaries = await Promise.all(enRaw.map((r) => translateText(r.summary)));
+  const zhTitleMap = new Map(), zhSummaryMap = new Map();
+  enIdx.forEach((rawIdx, j) => {
+    zhTitleMap.set(rawIdx, enTitles[j] || "");
+    zhSummaryMap.set(rawIdx, enSummaries[j] || "");
+  });
   const out = [];
   for (let i = 0; i < raw.length; i++) {
-    const zhT = (zhTitles[i] || "").trim();
-    const zhS = (zhSummaries[i] || "").trim();
+    const isZh = raw[i].lang === "zh";
+    const zhT = (isZh ? raw[i].title : zhTitleMap.get(i) || "").trim();
+    const zhS = (isZh ? raw[i].summary : zhSummaryMap.get(i) || "").trim();
     if (!zhT) continue; // 标题为空才跳过(翻译失败回退英文原文, 直接发英文帖)
     // 选题过滤: 资讯标题含强煽动词 / 未证实传闻时跳过, 平台易限流且易被打"需核查"标
     if (skipRe && skipRe.test(zhT)) { log(`  过滤煽动/传言标题: ${zhT.slice(0, 30)}`); continue; }
     // 英文规则没覆盖到、但翻译产物变成中文引流话术时在这里兜底跳过
     if (isPromoSummary(zhS)) { log(`  过滤空壳摘要: ${zhT.slice(0, 30)}`); continue; }
-    // 只看标题是否翻译失败: 标题是门面, 标题翻成中文就是中文帖(可加提问/cashtag/LLM 改写);
-    // 摘要机翻失败仍保留英文原文也没关系(正文细节, 读者能看懂), 不该因此把整帖判成英文帖。
-    const fallback = zhT === (raw[i].title || "").trim();
-    // titleEn 保留 RSS 英文原标题: 资讯卡片只渲染 ASCII, 中文翻译标题仍放帖子正文
+    // 只看英文源标题是否翻译失败: 标题是门面, 翻成中文就是中文帖(可加提问/cashtag/LLM 改写)。
+    // 中文源标题本来就=原文, 不能据此判成英文帖; 摘要机翻失败也不该把整帖判成英文帖。
+    const fallback = !isZh && zhT === (raw[i].title || "").trim();
+    // titleEn 保留原标题供资讯卡片使用(卡片只渲染 ASCII): 中文源标题是中文, 卡片会走 fallback
     out.push({
-      // 去重 id 用英文原标题的 hash 而非中文译文: LLM 翻译有轻微不确定性, 同一文章两次
-      // 抓取的中文措辞可能微变导致 hash 漂移、重复发帖; 英文原题来自 RSS 源, 是文章的稳定身份。
+      // 去重 id 用原标题 hash 而非译文: LLM 翻译有轻微不确定性, 同一文章两次抓取措辞可能微变
+      // 导致 hash 漂移、重复发帖; RSS 原标题是文章的稳定身份。
       id: `news_${hashStr(normalizeText(raw[i].title || ""))}`,
       kind: "news", source: raw[i].source, title: zhT, titleEn: raw[i].title, link: raw[i].link,
       image: raw[i].image, summary: zhS, ts: raw[i].ts,
@@ -675,7 +684,9 @@ async function fetchForesight(cfg) {
     for (const x of list) {
       const d = x[x.source_type] ?? x;
       const title = String(d.title ?? "").trim();
-      const content = String(d.content ?? d.brief ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+      // 与 RSS 源一致截到 240 字: 全文太长会让 LLM 改写因数字校验失败必走兜底,
+      // 且兜底长正文会被发帖上限(950字)截断在句中、丢掉末尾标签
+      const content = String(d.content ?? d.brief ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 240);
       const link = d.id ? `https://foresightnews.pro/news/detail/${d.id}` : "";
       if (!title || !content) continue;
       if (skipRe && skipRe.test(title)) { log(`  Foresight 过滤煽动/传言: ${title.slice(0, 30)}`); continue; }
@@ -1395,7 +1406,7 @@ async function runOnce() {
       candidates.push({
         id: `force_${Date.now()}`, kind: "market", symbol: "BTCUSDT", baseSymbol: "BTC",
         pct: parseFloat(d.priceChangePercent), price: parseFloat(d.lastPrice),
-        volMultiple: 1, windowMinutes: 24,
+        volMultiple: 1, windowMinutes: 24, ts: Date.now(),
       });
       log("--force: 用实时 BTC 数据造一条帖(真实价格)");
     } catch (e) {
@@ -1441,7 +1452,9 @@ async function runOnce() {
   // 低谷时段的 slot 让给其它素材; 没有其它素材就空转, 资讯留给白天的 slot 再发。
   // --force 不受限(手动验证要能发任意类型)。
   const tz = config.schedule?.timezone ?? "Asia/Shanghai";
-  const hourNow = Number(new Intl.DateTimeFormat("en-US", { timeZone: tz, hour: "2-digit", hour12: false }).format(new Date()));
+  // h24 时钟下午夜会格式化成 "24"(部分 Node/locale 组合), 归一到 0 才能匹配 quietHours 的 0
+  const hourRaw = new Intl.DateTimeFormat("en-US", { timeZone: tz, hour: "2-digit", hour12: false }).format(new Date());
+  const hourNow = hourRaw === "24" ? 0 : Number(hourRaw);
   const quietHours = config.news?.quietHours ?? [];
   const newsQuiet = quietHours.includes(hourNow);
   const eligible = forceMode ? scored : scored.filter(({ m }) => {

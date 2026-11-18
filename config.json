@@ -109,11 +109,13 @@
       },
       {
         "name": "PANews",
-        "url": "https://www.panewslab.com/rss.xml?lang=zh&type=NEWS"
+        "url": "https://www.panewslab.com/rss.xml?lang=zh&type=NEWS",
+        "lang": "zh"
       },
       {
         "name": "Odaily",
-        "url": "https://rss.odaily.news/rss/newsflash"
+        "url": "https://rss.odaily.news/rss/newsflash",
+        "lang": "zh"
       }
     ],
     "quietHours": [
