@@ -484,8 +484,9 @@ CloudFront 拦截, 要么自己出口也被币安 451; 币安测试网 `testnet.
 2026-11-18 probe 实测 GitHub runner 出口访问该接口返回 **200**（run `44218267823`），云端可用已确认。
 
 **当前实际会有内容的素材源**: 行情异动、热搜榜、涨跌榜、形态突破、币安合约涨跌榜、资讯 RSS
-（2026-11-18 已开启, 4 个英文源 Cointelegraph / Decrypt / CoinDesk / BitcoinMagazine + 1 个中文源 PANews
-`/rss.xml?lang=zh&type=NEWS`（加密垂直、中文正文完整、云端 probe 实测 200）, `perFeed=2`）。
+（2026-11-18 已开启, 4 个英文源 Cointelegraph / Decrypt / CoinDesk / BitcoinMagazine + 2 个中文源:
+PANews `/rss.xml?lang=zh&type=NEWS`、Odaily `rss.odaily.news/rss/newsflash`（官方 RSS, 无配图走纯文本,
+云端 probe 实测 200）, `perFeed=2`）。
 资金费率 / 持仓量 OI / 多空比 / 趋势快照 / 新币五个源因 451、低流量或字段失效已全部移除。
 新币源移除原因: `data-api.binance.vision` 的 `exchangeInfo` 不含 `onboardDate` 字段（0/3743），
 7 天内上线筛选永远为 false；币安公告接口虽可用但只有标题没有正文，内容撑不起一条帖子。
