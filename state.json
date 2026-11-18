@@ -127,19 +127,14 @@
     "bmovers_2026-11-18_BREV87_BTW36_MMT26_龙虾22_ARIA9_BLESS-43_HUMA-21_EVAA-10_RARE-7_ANTHROPIC-6",
     "trending_2026-11-18_BREV_BTC_NEAR_ETH_PENGU_JUP",
     "news_52k5gf",
-    "news_1i4f90r"
+    "news_1i4f90r",
+    "bmovers_2026-11-18_MMT88_BREV82_BTW10_CROSS10_NEAR5_HUMA-22_龙虾-18_ANTHROPIC-6_ASTER-5_EVAA-5"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794978530455,
-  "todayPosted": 14,
+  "lastPostAt": 1794982171675,
+  "todayPosted": 15,
   "todayKey": "Wed Nov 18 2026",
   "postHistory": [
-    {
-      "id": 388725675872921,
-      "kind": "news",
-      "at": 1794794929555,
-      "text": "黄仁勋在《金融时报》报道里说英伟达即将重返，毕竟之前可是突然离场过。有意思的是，硅谷高管们现在正组织一场把他带回去的运动，还打算争取白宫的支持。\n\n#加密资讯"
-    },
     {
       "id": 388740342409284,
       "kind": "news",
@@ -433,6 +428,12 @@
       "kind": "news",
       "at": 1794978530455,
       "text": "币安将于11月20日移除GAS/TRY、HBAR/BNB等5个现货交易对\n\nPANews 11月18日消息，据币安公告，根据近期审核结果，将于2026年11月20日11:00（东八区时间）移除GAS/TRY、HBAR/BNB、HIVE/TRY、KSM/TRY和ZAMA/TRY现货交易对并停止交易。币安表示会定期审核所有上线现货交易对，可能因流动性、交易量不佳等多种因素下架部分交易对，以保护用户并维"
+    },
+    {
+      "id": 389492619632031,
+      "kind": "binanceMovers",
+      "at": 1794982171675,
+      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：MMT +88.0% / BREV +82.3% / BTW +10.2% / CROSS +10.0% / NEAR +5.4%\n领跌：HUMA -22.3% / 龙虾 -17.8% / ANTHROPIC -6.0% / ASTER -5.2% / EVAA -5.1%\n\n领涨这边的波动更猛一些，不过合约带杠杆，涨得急的往往回撤也快，榜单只能当天的快照看"
     }
   ],
   "timeline": [
@@ -463,10 +464,10 @@
   ],
   "timelineKey": "2026-11-18",
   "timelineIdx": 0,
-  "timelineSentCount": 14,
+  "timelineSentCount": 15,
   "timelineDay": "2026-11-18",
-  "lastRunAt": 1794978513454,
-  "lastFetchAt": 1794978513454,
+  "lastRunAt": 1794982160230,
+  "lastFetchAt": 1794982160230,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -492,6 +493,6 @@
     "news": 1794978530455,
     "market": 1794841771320,
     "trend": 1794964121240,
-    "binanceMovers": 1794967724086
+    "binanceMovers": 1794982171675
   }
 }
