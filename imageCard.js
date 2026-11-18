@@ -78,7 +78,7 @@ function makeMarketCard({ baseSymbol, pct, price, volMultiple, windowMinutes, at
   return canvas.toBuffer("image/png");
 }
 
-// ---------- 热搜榜 / 涨跌榜 / 新币卡片 ----------
+// ---------- 热搜榜 / 涨跌榜卡片 ----------
 // 与行情卡共用同一套视觉规格: 1080×1080 深色底、纯 ASCII 文本、绿涨红跌、底部免责条。
 // 只渲染 ASCII(币种符号等), 避免 runner 缺中文字体时出现方块字; 中文说明放在帖子正文里。
 const GOLD = "#f0b90b";
@@ -185,24 +185,6 @@ function makeMoversCard({ items = [], at }) {
   });
 }
 
-function makeNewCoinCard({ baseAsset, symbol, onboardDate, at }) {
-  return makeCard((ctx) => {
-    drawChrome(ctx, { title: "NEW LISTING", subtitle: "Binance Spot", accent: GREEN, at });
-    const coin = ascii(baseAsset, 12);
-    const size = coin.length > 8 ? 110 : coin.length > 5 ? 140 : 170;
-    ctx.fillStyle = FG;
-    ctx.font = `bold ${size}px "DejaVuSansBold", sans-serif`;
-    ctx.fillText(`$${coin}`, 90, 500);
-    ctx.fillStyle = SUB;
-    ctx.font = '46px "DejaVuSans", sans-serif';
-    ctx.fillText(`Pair   ${ascii(symbol, 16)}`, 90, 600);
-    const days = Number(onboardDate)
-      ? Math.max(0, Math.round((Date.now() - Number(onboardDate)) / 86400000))
-      : 0;
-    ctx.fillText(`Listed   ${days}d ago`, 90, 670);
-  });
-}
-
 // ---------- 资讯卡片 ----------
 // 只渲染 RSS 的英文原标题(翻译前), 中文标题/摘要仍在帖子正文里, 因此无需中文字体。
 // 弯引号 / 破折号等先换成 ASCII 等价字符, 其余非 ASCII 直接剔除, 避免出现方块字。
@@ -286,4 +268,4 @@ function makeDataCard({ title, subtitle, rows = [], accent = GOLD, at }) {
   });
 }
 
-module.exports = { makeMarketCard, makeTrendingCard, makeMoversCard, makeNewCoinCard, makeNewsCard, makeDataCard };
+module.exports = { makeMarketCard, makeTrendingCard, makeMoversCard, makeNewsCard, makeDataCard };

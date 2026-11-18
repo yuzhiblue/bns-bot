@@ -1,5 +1,5 @@
 /**
- * 帖子解读段: 只从素材已有字段推导(行情/新币/热搜/涨跌), 不编造数据、不给买卖建议。
+ * 帖子解读段: 只从素材已有字段推导(行情/热搜/涨跌), 不编造数据、不给买卖建议。
  * 依据币安创作者学院《How to Post for Better Reach》: 字数不是重点,
  * 关键是要有"自己的判断"而非纯搬运; 红线是不做结论式预测、不给投资建议。
  * 无网络、不编造数据; 档内随机二选一增加变化(不联网、不耗 LLM 额度)。
@@ -53,16 +53,6 @@ function marketTake(m) {
   return body + pick2("不过就这几十分钟的事，先别急着下结论。", "当然，短时间说明不了太多，继续看着就是。");
 }
 
-function newCoinTake(m) {
-  const onboard = Number(m.onboardDate);
-  const hasOnboard = Number.isFinite(onboard) && onboard > 0;
-  const days = hasOnboard ? Math.max(1, Math.round((Date.now() - onboard) / 86400000)) : 0;
-  const lead = days ? `上线才 ${days} 天，` : "刚上线不久，";
-  return lead
-    + "这种币基本没有历史走势能参考，涨跌全看筹码怎么分布、盘口有多深。"
-    + "拿老币那套波动率去套它，很容易看走眼。";
-}
-
 function trendingTake(m) {
   const chgs = (m.items ?? []).slice(0, 6)
     .map((it) => it.data?.price_change_percentage_24h?.usd)
@@ -107,7 +97,6 @@ function moversTake(m) {
 function buildTake(m) {
   switch (m.kind) {
     case "market": return marketTake(m);
-    case "newCoin": return newCoinTake(m);
     case "trending": return trendingTake(m);
     case "movers": return moversTake(m);
     default: return "";

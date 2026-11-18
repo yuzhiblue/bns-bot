@@ -27,10 +27,6 @@
     "volSpikeMultiple": 2,
     "enabled": true
   },
-  "newCoin": {
-    "enabled": true,
-    "checkEveryMinutes": 30
-  },
   "schedule": {
     "enabled": true,
     "evenSpread": true,
@@ -45,9 +41,6 @@
     "kindCooldownMinutes": {
       "trending": 240,
       "movers": 240,
-      "funding": 180,
-      "oi": 360,
-      "longShort": 240,
       "breakout": 240,
       "binanceMovers": 240
     }
@@ -67,7 +60,7 @@
     "minAbsPct": 4
   },
   "news": {
-    "enabled": false,
+    "enabled": true,
     "perFeed": 2,
     "cardFeeds": [
       "Cointelegraph"
@@ -197,31 +190,6 @@
     "timeoutMs": 15000,
     "maxChars": 130
   },
-  "funding": {
-    "enabled": true,
-    "minAbsRate": 0.0005,
-    "topN": 2,
-    "minUsd": 100000000
-  },
-  "oi": {
-    "enabled": true,
-    "symbols": [
-      "BTCUSDT",
-      "ETHUSDT",
-      "SOLUSDT",
-      "BNBUSDT"
-    ],
-    "minChangePct": 15,
-    "topN": 2
-  },
-  "longShort": {
-    "enabled": true,
-    "symbols": [
-      "BTCUSDT",
-      "ETHUSDT",
-      "SOLUSDT"
-    ]
-  },
   "breakout": {
     "enabled": true,
     "lookbackDays": 20,
@@ -232,11 +200,5 @@
     "enabled": true,
     "topN": 5,
     "minUsd": 50000000
-  },
-  "trend": {
-    "enabled": true,
-    "limitDays": 30,
-    "maShort": 7,
-    "maLong": 30
   }
 }
