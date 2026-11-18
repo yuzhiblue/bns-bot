@@ -943,8 +943,9 @@ function heatScore(m) {
       base = 55;
       break;
     case "news":
-      // P1: 选题价值分直接叠加到 base —— 交易相关帖能压过热搜榜, 政治监管冷门帖沉底
-      base = 40 + (m.topicScore ?? 0);
+      // P1: 选题价值分直接叠加到 base —— 交易相关帖能压过热搜榜, 政治监管冷门帖沉底。
+      // 中文资讯加权: 走 LLM 整帖改写(质量更高), 英文仅机翻兜底; 同轮中文优先于英文。
+      base = 40 + (m.topicScore ?? 0) + (m.lang === "zh" ? 10 : 0);
       break;
     default:
       base = 10;
