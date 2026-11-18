@@ -132,19 +132,14 @@
     "news_1kf0c0",
     "trending_2026-11-18_BTC_SOL_MMT_ETH_PEARL_PENGU",
     "foresight_118008",
-    "movers_2026-11-18_XRP"
+    "movers_2026-11-18_XRP",
+    "news_1wcnc1b"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794996546610,
-  "todayPosted": 19,
+  "lastPostAt": 1795000110819,
+  "todayPosted": 20,
   "todayKey": "Wed Nov 18 2026",
   "postHistory": [
-    {
-      "id": 388799353391823,
-      "kind": "news",
-      "at": 1794812917224,
-      "text": "乔·卡拉萨尔 (Joe Carlasare) 提到今年早些时候比特币在不到 90 天的时间里从 57,000 涨到 82,000，他表示这就是为什么他拒绝资本无法涌入的观点。这事儿挺意外，当时市场情绪确实很极致。\n\n这类消息你会马上调整关注列表吗？\n\n$BTC #加密资讯"
-    },
     {
       "id": 388814077305216,
       "kind": "news",
@@ -438,6 +433,12 @@
       "kind": "movers",
       "at": 1794996546611,
       "text": "📊 24h 涨跌榜（全市场）\n\n领涨：XRP +4.6%\n\nXRP以24小时4.6%的涨幅独占领涨榜，而该时段波动幅度超过4%的币种中未见领跌标的。榜单呈现出显著的长尾缺失，仅单一标的具备显著波动特征，显示出市场短线交投的极度分散与低活跃度。这种结构反映出当前缺乏明确的板块轮动或共振效应。\n\n涨跌两头都拉得挺开，说明今天分歧不小；这种分化能维持多久，单看一天的榜单说不准。\n\n#涨跌榜单 #行情异"
+    },
+    {
+      "id": 389566098253260,
+      "kind": "news",
+      "at": 1795000110819,
+      "text": "币安黑客相关钱包集群过去24小时转移约5000万美元BTC，资金经由Chainflip和WabiSabi CoinJoin洗钱\n\nOdaily星球日报讯 据 Onchain Lens 监测，币安黑客相关钱包集群在过去 24 小时内还转移了约 5000 万美元的 BTC，资金经由 Chainflip 和 WabiSabi CoinJoin 进行洗钱。约 2 小时前，该钱包集群通过 7 笔转账将 7."
     }
   ],
   "timeline": [
@@ -468,10 +469,10 @@
   ],
   "timelineKey": "2026-11-18",
   "timelineIdx": 0,
-  "timelineSentCount": 19,
+  "timelineSentCount": 20,
   "timelineDay": "2026-11-18",
-  "lastRunAt": 1794996534477,
-  "lastFetchAt": 1794996534477,
+  "lastRunAt": 1795000101651,
+  "lastFetchAt": 1795000101651,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -494,7 +495,7 @@
   "lastPostAtByKind": {
     "movers": 1794996546611,
     "trending": 1794989327623,
-    "news": 1794992915949,
+    "news": 1795000110819,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1794982171675
