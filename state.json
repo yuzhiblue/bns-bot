@@ -139,19 +139,14 @@
     "trending_2026-11-18_TRUMP_BTC_HYPE_MMT_SOL_PENGU",
     "foresight_118043",
     "breakout_2026-11-19_MMThigh",
-    "news_o3na43"
+    "news_o3na43",
+    "bmovers_2026-11-19_PIPPIN82_MMT71_PIEVERSE59_ICNT41_ZKC24_BREV-14_LIT-5_PUMP-5_ENA-3_INJ-2"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795021708303,
-  "todayPosted": 2,
+  "lastPostAt": 1795025314765,
+  "todayPosted": 3,
   "todayKey": "Thu Nov 19 2026",
   "postHistory": [
-    {
-      "id": 388902550813516,
-      "kind": "trending",
-      "at": 1794838111937,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. MACCA (+72.1%)\n2. GATO (+16.0%)\n3. LIT (-12.9%)\n4. BTC (-2.0%)\n5. SOL (-2.6%)\n6. HYPE (-3.8%)\n\n热搜榜前五名中，有两只代币（Macca the Gator、Gato The Cat）涨幅显著，而其余头部主流资产（BTC、SOL、HYPE）及Lighter均呈"
-    },
     {
       "id": 388917539650924,
       "kind": "market",
@@ -445,6 +440,12 @@
       "kind": "news",
       "at": 1795021708303,
       "text": "沃勒释放激进加息信号，美元升至19个月新高\n\nOdaily星球日报讯 周三，美联储理事沃勒发表鹰派言论，叠加近期经济数据强化市场对下月加息的预期，美元升至 19 个月来新高。沃勒周三接受 CNBC 采访时表示，如果美联储希望降低通胀，就需要采取更具“进攻性”的行动，可以选择在 12 月会议上加息 50 个基点，也可以通过会后声明引导市场形成对进一步加息的预期。Monex USA 驻华盛顿交易业务高"
+    },
+    {
+      "id": 389669333728179,
+      "kind": "binanceMovers",
+      "at": 1795025314765,
+      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：PIPPIN +82.3% / MMT +71.4% / PIEVERSE +58.9% / ICNT +40.7% / ZKC +23.9%\n领跌：BREV -13.5% / LIT -4.7% / PUMP -4.5% / ENA -3.3% / INJ -2.2%\n\n领涨这边的波动更猛一些，不过合约带杠杆，涨得急的往往回撤也快，榜单只能当天的快照看。\n"
     }
   ],
   "timeline": [
@@ -475,10 +476,10 @@
   ],
   "timelineKey": "2026-11-19",
   "timelineIdx": 0,
-  "timelineSentCount": 2,
+  "timelineSentCount": 3,
   "timelineDay": "2026-11-19",
-  "lastRunAt": 1795021702627,
-  "lastFetchAt": 1795021702627,
+  "lastRunAt": 1795025306463,
+  "lastFetchAt": 1795025306463,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -504,7 +505,7 @@
     "news": 1795021708303,
     "market": 1794841771320,
     "trend": 1794964121240,
-    "binanceMovers": 1795003723827,
+    "binanceMovers": 1795025314765,
     "breakout": 1795018143734
   }
 }
