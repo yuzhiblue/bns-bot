@@ -131,19 +131,14 @@
     "bmovers_2026-11-18_MMT88_BREV82_BTW10_CROSS10_NEAR5_HUMA-22_龙虾-18_ANTHROPIC-6_ASTER-5_EVAA-5",
     "news_1kf0c0",
     "trending_2026-11-18_BTC_SOL_MMT_ETH_PEARL_PENGU",
-    "foresight_118008"
+    "foresight_118008",
+    "movers_2026-11-18_XRP"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794992915949,
-  "todayPosted": 18,
+  "lastPostAt": 1794996546610,
+  "todayPosted": 19,
   "todayKey": "Wed Nov 18 2026",
   "postHistory": [
-    {
-      "id": 388784644197478,
-      "kind": "news",
-      "at": 1794809326126,
-      "text": "特朗普政府将英伟达、OpenAI等数家企业列为AI领域国家龙头企业\n\nThe Wall Street Journal reported that the move aims to help the firms expand overseas and compete with global rivals, though nothing has been confirmed.\n\n#加密资讯"
-    },
     {
       "id": 388799353391823,
       "kind": "news",
@@ -437,6 +432,12 @@
       "kind": "news",
       "at": 1794992915949,
       "text": "日前新加坡区块链周 2026 上，孙宇晨以视频形式讲了波场 TRON 的最新情况，他提到链上账户已超过 4.1 亿，日均处理近 1200 万笔交易。有意思的是，2026 年第三季度稳定币转账额达 2.21 万亿美元，约占全链稳定币交易量的 73%，USDT 在波场 TRON 网络上的占比也相当可观，看得出机构金融和 AI 基础设施的布局正在加速。\n\n$TRON $USDT #加密资讯"
+    },
+    {
+      "id": 389551499265738,
+      "kind": "movers",
+      "at": 1794996546611,
+      "text": "📊 24h 涨跌榜（全市场）\n\n领涨：XRP +4.6%\n\nXRP以24小时4.6%的涨幅独占领涨榜，而该时段波动幅度超过4%的币种中未见领跌标的。榜单呈现出显著的长尾缺失，仅单一标的具备显著波动特征，显示出市场短线交投的极度分散与低活跃度。这种结构反映出当前缺乏明确的板块轮动或共振效应。\n\n涨跌两头都拉得挺开，说明今天分歧不小；这种分化能维持多久，单看一天的榜单说不准。\n\n#涨跌榜单 #行情异"
     }
   ],
   "timeline": [
@@ -467,10 +468,10 @@
   ],
   "timelineKey": "2026-11-18",
   "timelineIdx": 0,
-  "timelineSentCount": 18,
+  "timelineSentCount": 19,
   "timelineDay": "2026-11-18",
-  "lastRunAt": 1794992905188,
-  "lastFetchAt": 1794992905188,
+  "lastRunAt": 1794996534477,
+  "lastFetchAt": 1794996534477,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -491,7 +492,7 @@
     "updatedAt": 1794586106417
   },
   "lastPostAtByKind": {
-    "movers": 1794956910892,
+    "movers": 1794996546611,
     "trending": 1794989327623,
     "news": 1794992915949,
     "market": 1794841771320,
