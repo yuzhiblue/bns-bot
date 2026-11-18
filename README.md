@@ -60,7 +60,7 @@ GitHub 自带 `schedule` 已移除, 仅 CNB 触发）:
 | `market.priceChangePct` | N 分钟内涨跌多少算异动 |
 | `market.volSpikeMultiple` | 成交量放大几倍才算(避免假异动) |
 | `post.hashtags` | 追加到每条帖子的**全局通用**话题, 默认留空; 各类型帖子已自带贴切标签, 别填类型专属标签 |
-| `post.disclaimer` | 帖子结尾追加的免责声明 |
+| `post.disclaimer` | 帖子结尾追加的免责声明；当前**留空**（2026-11-18 移除，固定每帖同一句声明易被判机器模板、触发降权）；留空即不追加 |
 | `post.take` | 是否在帖子里加**数据解读段 + 开放式提问**, 默认 `true`; 设 `false` 可一键退回纯短文案 |
 | `news.cardFeeds` | 哪些资讯源改用**自生成卡片**；填 `news.feeds[].name` 的原值、大小写需一致（当前 `["Cointelegraph","PANews"]`，不是 URL）；其余源仍用 RSS 自带配图 |
 | `news.skipWords` | 资讯标题含这些强情绪 / 传言词（暴跌、崩盘、狂潮、据传、rumor…）时**直接跳过该条**，规避平台限流与「需核查」标记 |
@@ -156,7 +156,7 @@ GitHub 自带 `schedule` 已移除, 仅 CNB 触发）:
 
 | code | 含义 | 处理 |
 |---|---|---|
-| 20002 / 20022 | 敏感词 | 检查帖子内容, 加 `post.disclaimer` 或改词库 |
+| 20002 / 20022 | 敏感词 | 检查帖子内容、调整词库（当前不加免责声明，固定话术同样易触发机器判定） |
 | 220009 | 当日限额 | 停到明天 |
 | 30008 | 违规禁言 | 去币安 App 申诉 |
 | 220004 | Key 过期 | 重新生成 Key 后更新 Secret BNS_CONFIG（本地调试则改 config.local.json） |
