@@ -47,6 +47,9 @@ jobs:
             "https://rss.odaily.news/rss/post"
             "https://api.odaily.news/api/v1/newsflash?page=1&size=2"
             "https://api.odaily.news/api/v1/newsflash/on-chain-data?page=1&size=2"
+            "https://api.theblockbeats.news/v2/rss/newsflash"
+            "https://api.theblockbeats.news/v2/rss/article"
+            "https://www.theblockbeats.info/"
           )
           for u in "${urls[@]}"; do
             code=$(curl -s -A "Mozilla/5.0 (compatible; bns-bot/1.0)" -o /tmp/probe_body -w '%{http_code}' --max-time 10 "$u" 2>/dev/null) || code="ERR"
