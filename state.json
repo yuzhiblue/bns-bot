@@ -128,19 +128,14 @@
     "trending_2026-11-18_BREV_BTC_NEAR_ETH_PENGU_JUP",
     "news_52k5gf",
     "news_1i4f90r",
-    "bmovers_2026-11-18_MMT88_BREV82_BTW10_CROSS10_NEAR5_HUMA-22_龙虾-18_ANTHROPIC-6_ASTER-5_EVAA-5"
+    "bmovers_2026-11-18_MMT88_BREV82_BTW10_CROSS10_NEAR5_HUMA-22_龙虾-18_ANTHROPIC-6_ASTER-5_EVAA-5",
+    "news_1kf0c0"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794982171675,
-  "todayPosted": 15,
+  "lastPostAt": 1794985719658,
+  "todayPosted": 16,
   "todayKey": "Wed Nov 18 2026",
   "postHistory": [
-    {
-      "id": 388740342409284,
-      "kind": "news",
-      "at": 1794798510245,
-      "text": "有意思的是，Luxor 的首席执行官最近挺焦虑，因为攻击者通过 Luxor 的 Commander 平台重定向了客户的比特币挖矿能力。他据此向加密企业发出警告，称比特币矿机遭劫持后可能会形成人工智能“暗森林”。这事儿挺意外，看来算力被挪用背后的隐患比想象中复杂。\n\n#加密资讯"
-    },
     {
       "id": 388755105322364,
       "kind": "trending",
@@ -434,6 +429,12 @@
       "kind": "binanceMovers",
       "at": 1794982171675,
       "text": "📊 币安合约 24h 涨跌榜\n\n领涨：MMT +88.0% / BREV +82.3% / BTW +10.2% / CROSS +10.0% / NEAR +5.4%\n领跌：HUMA -22.3% / 龙虾 -17.8% / ANTHROPIC -6.0% / ASTER -5.2% / EVAA -5.1%\n\n领涨这边的波动更猛一些，不过合约带杠杆，涨得急的往往回撤也快，榜单只能当天的快照看"
+    },
+    {
+      "id": 389507152111483,
+      "kind": "news",
+      "at": 1794985719659,
+      "text": "滚仓交易员AguilaTrades加仓约543万美元BTC多单，持仓价值增至1.29亿美元\n\nOdaily星球日报讯 据 Odaily 监测，2026 年 11 月 18 日 14:17 至 14:58，滚仓交易员 AguilaTrades 增持 84.01 枚 BTC 多单，净增仓估值约 543 万美元，当前持有 2,000 枚 BTC 多单，价值约 1.29 亿美元。 地址：0x1f250df"
     }
   ],
   "timeline": [
@@ -464,10 +465,10 @@
   ],
   "timelineKey": "2026-11-18",
   "timelineIdx": 0,
-  "timelineSentCount": 15,
+  "timelineSentCount": 16,
   "timelineDay": "2026-11-18",
-  "lastRunAt": 1794982160230,
-  "lastFetchAt": 1794982160230,
+  "lastRunAt": 1794985704567,
+  "lastFetchAt": 1794985704567,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -490,7 +491,7 @@
   "lastPostAtByKind": {
     "movers": 1794956910892,
     "trending": 1794971357397,
-    "news": 1794978530455,
+    "news": 1794985719659,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1794982171675
