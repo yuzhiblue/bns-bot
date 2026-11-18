@@ -133,19 +133,14 @@
     "trending_2026-11-18_BTC_SOL_MMT_ETH_PEARL_PENGU",
     "foresight_118008",
     "movers_2026-11-18_XRP",
-    "news_1wcnc1b"
+    "news_1wcnc1b",
+    "bmovers_2026-11-18_MMT104_PIPPIN71_BREV51_ICNT37_PIEVERSE26_HUMA-14_EVAA-9_AKE-8_ASTER-6_LIT-5"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795000110819,
-  "todayPosted": 20,
+  "lastPostAt": 1795003723827,
+  "todayPosted": 21,
   "todayKey": "Wed Nov 18 2026",
   "postHistory": [
-    {
-      "id": 388814077305216,
-      "kind": "news",
-      "at": 1794816511964,
-      "text": "卢克索说这次比特币矿工遭劫持，导致 BTC 收益被重定向至攻击者，只有十几名客户受到影响。他表示那些机器被重定向到另一个矿池后将得到补偿。\n\n这个方向你们之前有留意吗？\n\n$BTC #加密资讯"
-    },
     {
       "id": 388828832658977,
       "kind": "trending",
@@ -439,6 +434,12 @@
       "kind": "news",
       "at": 1795000110819,
       "text": "币安黑客相关钱包集群过去24小时转移约5000万美元BTC，资金经由Chainflip和WabiSabi CoinJoin洗钱\n\nOdaily星球日报讯 据 Onchain Lens 监测，币安黑客相关钱包集群在过去 24 小时内还转移了约 5000 万美元的 BTC，资金经由 Chainflip 和 WabiSabi CoinJoin 进行洗钱。约 2 小时前，该钱包集群通过 7 笔转账将 7."
+    },
+    {
+      "id": 389580897165613,
+      "kind": "binanceMovers",
+      "at": 1795003723827,
+      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：MMT +103.6% / PIPPIN +71.1% / BREV +51.4% / ICNT +37.1% / PIEVERSE +26.3%\n领跌：HUMA -14.4% / EVAA -8.5% / AKE -8.3% / ASTER -5.7% / LIT -5.4%\n\n领涨这边的波动更猛一些，不过合约带杠杆，涨得急的往往回撤也快，榜单只能当天的快"
     }
   ],
   "timeline": [
@@ -469,10 +470,10 @@
   ],
   "timelineKey": "2026-11-18",
   "timelineIdx": 0,
-  "timelineSentCount": 20,
+  "timelineSentCount": 21,
   "timelineDay": "2026-11-18",
-  "lastRunAt": 1795000101651,
-  "lastFetchAt": 1795000101651,
+  "lastRunAt": 1795003715926,
+  "lastFetchAt": 1795003715926,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -498,6 +499,6 @@
     "news": 1795000110819,
     "market": 1794841771320,
     "trend": 1794964121240,
-    "binanceMovers": 1794982171675
+    "binanceMovers": 1795003723827
   }
 }
