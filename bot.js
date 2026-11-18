@@ -888,8 +888,8 @@ function extractCashtags(text) {
   return out.slice(0, 2).map((sym) => `$${sym}`);
 }
 
-// 资讯帖的互动提问: 纯陈述帖 0 评论 → 平台算法不给量。以一条紧扣新闻的问题收尾。
-// 用开放式提问(不引导方向、不给买卖建议); 关闭 take 或英文原帖时不加(与旧行为一致)。
+// 资讯帖的互动提问: 默认关闭(见 post.cta), 恢复时才生效。
+// 专属中文资讯; 英文原帖与关闭 take 时不加。
 function newsQuestion(m, cfg) {
   if (cfg.post?.cta !== true || cfg.post?.take === false || m.lang === "en") return "";
   return pickFrom(TPL.newsQuestions, "cta");
@@ -899,13 +899,11 @@ function genNewsPost(m, cfg) {
   // 不显示文章来源平台名(如 CoinDesk / Cointelegraph): 币安广场对"把用户引向第三方平台"敏感,
   // 帖首挂别家媒体名容易被当成引流。m.source 仅保留在素材里供日志排查, 不渲染。
   // 中文资讯优先用 LLM 整帖改写(m.rewrite, 口语化分享帖, 降低搬运判定)。
-  // 流量优化: ① 结尾加一条紧扣新闻的开放式提问(纯陈述帖 0 评论会被算法降权);
-  //           ② 末行带 $cashtag 进币种讨论区(币安广场主要自然流量入口)。
-  // 两项都受配置开关控制(cfg.news.engagementQuestion / autoCashtag)。
-  // 改写失败走 A 兜底(标题+摘要, 同样带提问和 cashtag); 英文原帖/关闭 take 时都省略(尊重原文)。
+  // 流量优化: 末行带 $cashtag 进币种讨论区(币安广场主要自然流量入口), 受 autoCashtag 控制。
+  // 结尾提问已随 post.cta 默认关闭; 改写失败走 A 兜底(标题+摘要+cashtag)。
   const tags = cfg.news?.autoCashtag === false ? [] : extractCashtags(`${m.title ?? ""} ${m.summary ?? ""}`);
   const tagLine = [...tags, "#加密资讯"].join(" ");
-  const question = cfg.news?.engagementQuestion === false ? "" : newsQuestion(m, cfg);
+  const question = newsQuestion(m, cfg);
   if (m.rewrite) {
     // LLM 改写里若已自带问号, 不再叠加(避免连续两个问句)
     const end = question && !/[？?]/.test(m.rewrite) ? `\n\n${question}` : "";
