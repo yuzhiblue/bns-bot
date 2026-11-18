@@ -54,25 +54,43 @@ function marketTake(m) {
 }
 
 function trendingTake(m) {
-  const chgs = (m.items ?? []).slice(0, 6)
-    .map((it) => it.data?.price_change_percentage_24h?.usd)
-    .filter((x) => typeof x === "number" && Number.isFinite(x));
-  let lead;
-  if (!chgs.length) {
-    lead = "这份榜单没有可用的 24h 涨跌数据，单凭搜索排名看不出方向。";
-  } else {
-    const down = chgs.filter((x) => x < 0).length;
-    const up = chgs.length - down;
-    if (down > up) {
-      lead = `这份榜单里 ${chgs.length} 个币有 ${down} 个 24h 下跌，搜索热度更像是回撤带来的关注，而不是资金追涨。`;
-    } else if (up > down) {
-      lead = `这份榜单里 ${chgs.length} 个币有 ${up} 个 24h 上涨，热度与价格同向，注意力确实跟着涨幅走。`;
-    } else {
-      lead = `这份榜单涨跌各半（${up} 涨 / ${down} 跌），热度并没有指向一致方向。`;
-    }
-    lead += "热搜排名反映的是注意力，不等于资金流向；注意力先到、资金未必跟。";
+  const rows = (m.items ?? []).slice(0, 6)
+    .map((it) => ({ sym: it.sym || it.name || "该币", chg: it.data?.price_change_percentage_24h?.usd }))
+    .filter((r) => typeof r.chg === "number" && Number.isFinite(r.chg));
+  if (!rows.length) {
+    return "这份榜单没有可用的 24h 涨跌数据，单凭搜索排名看不出方向。";
   }
-  return lead + "说白了就是个观察名单，别把它当信号。";
+  const signed = (n) => `${n >= 0 ? "+" : "-"}${p1(n)}`;
+  const down = rows.filter((r) => r.chg < 0).length;
+  const up = rows.filter((r) => r.chg > 0).length;
+  const biggest = rows.reduce((a, b) => Math.abs(b.chg) > Math.abs(a.chg) ? b : a);
+  const tiedBig = rows.filter((r) => Math.abs(Math.abs(r.chg) - Math.abs(biggest.chg)) < 0.05).length > 1;
+  const highlight = tiedBig
+    ? "几个币波动幅度接近，没有谁特别突出"
+    : `${biggest.sym} ${signed(biggest.chg)}% 波动最突出`;
+  const majors = new Set(["BTC", "ETH", "SOL", "BNB", "XRP", "DOGE", "ADA", "AVAX", "LINK", "DOT"]);
+  const majorCount = rows.filter((r) => majors.has(r.sym)).length;
+
+  // 单个币波动明显大出一截：点名说清热度集中在谁身上, 不猜原因
+  const rest = rows.filter((r) => r !== biggest);
+  const runnerUp = rest.length ? Math.max(...rest.map((r) => Math.abs(r.chg))) : 0;
+  if (Math.abs(biggest.chg) >= 8 && Math.abs(biggest.chg) > runnerUp * 3) {
+    if (!rest.length) return `榜单里只有 ${biggest.sym} 有可用的 24h 数据（${signed(biggest.chg)}%），单一样本看不出榜单方向。`;
+    const restDown = rest.filter((r) => r.chg < 0).length;
+    return `榜单里 ${biggest.sym} 24h ${signed(biggest.chg)}%，波动比其余币都大出一截；另外 ${rest.length} 个里有 ${restDown} 个在跌，热搜多半是冲着这一个币去的。`;
+  }
+  // 主流币占多数：说清注意力的底盘, 不推断板块轮动
+  if (majorCount >= Math.ceil(rows.length / 2)) {
+    const mix = majorCount === rows.length ? "清一色主流币" : `里 ${majorCount} 个主流币夹着几个中小市值`;
+    return `榜单${mix}，注意力还是围着熟悉的几个名字转，没有明显挤向单一方向。`;
+  }
+  // 涨跌分布: 只陈述方向和波动, 不推断资金意图(最大波动可能是反向的)
+  if (!up && !down) return `${rows.length} 个币 24h 基本持平，这份榜单看不出方向。`;
+  if (down > up) return `榜单里 ${down} 个在跌、${up} 个在涨，跌的一方占多数；${highlight}。`;
+  if (up > down) return `榜单里 ${up} 个在涨、${down} 个在跌，涨的一方占多数；${highlight}。`;
+  const topUp = rows.reduce((a, b) => b.chg > a.chg ? b : a);
+  const topDown = rows.reduce((a, b) => b.chg < a.chg ? b : a);
+  return `${rows.length} 个币涨跌各半，涨得最多的是 ${topUp.sym} ${signed(topUp.chg)}%，跌得最狠的是 ${topDown.sym} ${signed(topDown.chg)}%，方向对不上；这份榜单更像观察名单。`;
 }
 
 function moversTake(m) {

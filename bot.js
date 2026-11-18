@@ -524,14 +524,19 @@ async function genTake(m, cfg) {
       const pct = (typeof chg === "number") ? ` 24h${chg >= 0 ? "+" : ""}${chg.toFixed(1)}%` : "";
       return `${i + 1}. ${x.name}(${x.sym})${pct}`;
     }).join("\n");
-    user = `CoinGecko 当前热搜榜:\n${list}\n\n点评这个榜单的结构: 例如哪类板块/主题占主导、榜单反映的市场关注点(只基于榜单数据, 不猜具体原因)。`;
+    user = `CoinGecko 当前热搜榜:\n${list}\n\n点评这个榜单: 点名 1-2 个具体币种及其 24h 涨跌幅, 再说榜单结构(涨跌分布、主流币还是中小市值占多数、热度是否集中在个别币)。只陈述榜单里有的数据, 不猜原因、不给买卖建议; 2-3 句, 不要用"热搜排名反映的是注意力"这类空泛套话, 不要以问号结尾。`;
   } else if (m.kind === "movers") {
     const list = m.items.map((x) => `${x.name}(${x.sym}) 24h ${x.pct >= 0 ? "+" : ""}${(x.pct ?? 0).toFixed(1)}%`).join("\n");
-    user = `24h 领涨/领跌榜(波动≥4%):\n${list}\n\n点评榜单结构: 例如领涨和领跌各集中在哪类资产、多空两边力量对比(只基于榜单数据, 不猜原因)。`;
+    user = `24h 领涨/领跌榜(波动≥4%):\n${list}\n\n点评榜单结构: 点名领涨和领跌各 1 个具体币种及涨跌幅, 再说双方数量对比和集中度。只基于榜单数据, 不猜原因、不给买卖建议; 2-3 句, 不用空泛套话, 不要以问号结尾。`;
   } else {
     return null;
   }
-  const text = await llmChat(cfg, system, user, { temperature: 0.6, maxTokens: 200, label: "LLM 解读" });
+  const opts = { temperature: 0.6, maxTokens: 200 };
+  let text = await llmChat(cfg, system, user, { ...opts, label: "LLM 解读" });
+  if (!text) {
+    log("  LLM 解读首次失败, 重试一次");
+    text = await llmChat(cfg, system, user, { ...opts, label: "LLM 解读重试" });
+  }
   if (!text) return null;
   const clean = text.replace(/\s+/g, " ");
   log(`  LLM 解读 OK(${clean.length}字)`);
@@ -794,7 +799,6 @@ function genMarketPost(m, cfg) {
 }
 
 function genTrendingPost(m, cfg) {
-  const closer = "热度反映了目光在哪，但目光和资金不是一回事，后面能不能持续还得再看。";
   const lines = [];
   lines.push("🔥 24 小时热搜币种（大家都在看）");
   lines.push("");
@@ -804,8 +808,7 @@ function genTrendingPost(m, cfg) {
     lines.push(`${i + 1}. ${it.sym}${pct}`);
   });
   lines.push(...takeLines(m, cfg));
-  lines.push("", closer);
-  lines.push(...ctaLines(m, cfg, closer));
+  lines.push(...ctaLines(m, cfg, ""));
   lines.push("", "#热搜币种 #加密资讯");
   return lines.join("\n");
 }
