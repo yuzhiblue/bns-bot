@@ -123,19 +123,14 @@
     "trending_2026-11-18_BP_BTC_PEARL_SOL_VVV_LIT",
     "movers_2026-11-18_ZEC_SOL",
     "trend_SOL_2026-11-18",
-    "trend_XRP_2026-11-18"
+    "trend_XRP_2026-11-18",
+    "bmovers_2026-11-18_BREV87_BTW36_MMT26_龙虾22_ARIA9_BLESS-43_HUMA-21_EVAA-10_RARE-7_ANTHROPIC-6"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794964121240,
-  "todayPosted": 10,
+  "lastPostAt": 1794967724086,
+  "todayPosted": 11,
   "todayKey": "Wed Nov 18 2026",
   "postHistory": [
-    {
-      "id": 388666608161547,
-      "kind": "news",
-      "at": 1794780508749,
-      "text": "到 2026 年选举周期结束时，预测市场和民意调查基本一致，而且都出现了明显的失误。这事儿挺意外，通常大家觉得预测市场靠钱投票更准，结果和传统民调一块儿翻车了。\n\n#加密资讯"
-    },
     {
       "id": 388681377492951,
       "kind": "trending",
@@ -429,6 +424,12 @@
       "kind": "trend",
       "at": 1794964121240,
       "text": "📉 $XRP 日线数据快照（30 天）\n\n现价 0.9771，7 日 -7.2%，30 日 -26.9%。\n死叉排列，现价在 两条均线之下，区间位置 17%。\n\n价格贴着区间下沿，确实偏弱，但低位本身不代表什么，有没有资金接才是关键。\n\n我一般把这种快照当背景，不当信号。\n\n你们会不会拿均线当参考？\n\n$XRP #行情分析\n\n以上只是数据记录和个人观察，不构成投资建议；市场变化快，请自行判断、D"
+    },
+    {
+      "id": 389433442054940,
+      "kind": "binanceMovers",
+      "at": 1794967724086,
+      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：BREV +87.3% / BTW +35.8% / MMT +25.9% / 龙虾 +21.6% / ARIA +9.0%\n领跌：BLESS -43.3% / HUMA -20.7% / EVAA -10.1% / RARE -6.9% / ANTHROPIC -6.0%\n\n领涨这边的波动更猛一些，不过合约带杠杆，涨得急的往往回撤也快，榜单只能当天的快照看"
     }
   ],
   "timeline": [
@@ -459,10 +460,10 @@
   ],
   "timelineKey": "2026-11-18",
   "timelineIdx": 0,
-  "timelineSentCount": 10,
+  "timelineSentCount": 11,
   "timelineDay": "2026-11-18",
-  "lastRunAt": 1794964114312,
-  "lastFetchAt": 1794964114312,
+  "lastRunAt": 1794967714564,
+  "lastFetchAt": 1794967714564,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -487,6 +488,7 @@
     "trending": 1794953404939,
     "news": 1794830928391,
     "market": 1794841771320,
-    "trend": 1794964121240
+    "trend": 1794964121240,
+    "binanceMovers": 1794967724086
   }
 }
