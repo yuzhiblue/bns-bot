@@ -62,7 +62,7 @@ GitHub 自带 `schedule` 已移除, 仅 CNB 触发）:
 | `post.hashtags` | 追加到每条帖子的**全局通用**话题, 默认留空; 各类型帖子已自带贴切标签, 别填类型专属标签 |
 | `post.disclaimer` | 帖子结尾追加的免责声明 |
 | `post.take` | 是否在帖子里加**数据解读段 + 开放式提问**, 默认 `true`; 设 `false` 可一键退回纯短文案 |
-| `news.cardFeeds` | 哪些资讯源改用**自生成卡片**；填 `news.feeds[].name` 的原值、大小写需一致（当前 `["Cointelegraph"]`，不是 URL）；其余源仍用 RSS 自带配图 |
+| `news.cardFeeds` | 哪些资讯源改用**自生成卡片**；填 `news.feeds[].name` 的原值、大小写需一致（当前 `["Cointelegraph","PANews"]`，不是 URL）；其余源仍用 RSS 自带配图 |
 | `news.skipWords` | 资讯标题含这些强情绪 / 传言词（暴跌、崩盘、狂潮、据传、rumor…）时**直接跳过该条**，规避平台限流与「需核查」标记 |
 | `llm` | 资讯 / 热搜榜 / 涨跌榜的解读由 LLM 生成（`enabled` / `baseURL` / `model` / `apiKeyEnv` / `apiKey`）；默认走 Agnes（`apiKeyEnv` 指向仓库 Secret `AGNES_API_KEY`，本地调试可在 `config.local.json` 的 `llm.apiKey` 填明文）；资讯失败时走 A 兜底，热搜 / 涨跌榜失败时回退 takes.js 规则推导 |
 
@@ -173,7 +173,7 @@ GitHub 自带 `schedule` 已移除, 仅 CNB 触发）:
 | 资讯（Cointelegraph） | RSS **英文原标题**折行 + CST 时间；不出现来源媒体名 |
 
 以上卡片共用同一套视觉规格（1080×1080 深色底、绿涨红跌、CST 时间、底部免责条）。
-`news.cardFeeds` 里的源（当前仅 Cointelegraph）用自生成卡片，不再下载第三方封面——
+`news.cardFeeds` 里的源（当前 Cointelegraph / PANews）用自生成卡片，不再下载第三方封面——
 其封面左上角有半透明媒体 logo，抹掉别家水印比带水印转载更不合适；
 其余资讯源仍按 RSS 自带 jpg/png 配图随帖发一张；都不满足时发纯文本。
 若以后发现其它源也有水印，把该源在 `news.feeds[].name` 里的名字（大小写一致）加进 `news.cardFeeds` 即可，不用改代码。
@@ -484,7 +484,8 @@ CloudFront 拦截, 要么自己出口也被币安 451; 币安测试网 `testnet.
 2026-11-18 probe 实测 GitHub runner 出口访问该接口返回 **200**（run `44218267823`），云端可用已确认。
 
 **当前实际会有内容的素材源**: 行情异动、热搜榜、涨跌榜、形态突破、币安合约涨跌榜、资讯 RSS
-（2026-11-18 已开启, 4 个英文源 Cointelegraph / Decrypt / CoinDesk / BitcoinMagazine, `perFeed=2`）。
+（2026-11-18 已开启, 4 个英文源 Cointelegraph / Decrypt / CoinDesk / BitcoinMagazine + 1 个中文源 PANews
+`/rss.xml?lang=zh&type=NEWS`（加密垂直、中文正文完整、云端 probe 实测 200）, `perFeed=2`）。
 资金费率 / 持仓量 OI / 多空比 / 趋势快照 / 新币五个源因 451、低流量或字段失效已全部移除。
 新币源移除原因: `data-api.binance.vision` 的 `exchangeInfo` 不含 `onboardDate` 字段（0/3743），
 7 天内上线筛选永远为 false；币安公告接口虽可用但只有标题没有正文，内容撑不起一条帖子。

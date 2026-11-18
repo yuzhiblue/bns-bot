@@ -63,7 +63,8 @@
     "enabled": true,
     "perFeed": 2,
     "cardFeeds": [
-      "Cointelegraph"
+      "Cointelegraph",
+      "PANews"
     ],
     "skipWords": [
       "暴跌",
@@ -105,6 +106,10 @@
       {
         "name": "BitcoinMagazine",
         "url": "https://bitcoinmagazine.com/.rss/full/"
+      },
+      {
+        "name": "PANews",
+        "url": "https://www.panewslab.com/rss.xml?lang=zh&type=NEWS"
       }
     ],
     "quietHours": [
