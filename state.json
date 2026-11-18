@@ -136,19 +136,14 @@
     "news_1wcnc1b",
     "bmovers_2026-11-18_MMT104_PIPPIN71_BREV51_ICNT37_PIEVERSE26_HUMA-14_EVAA-9_AKE-8_ASTER-6_LIT-5",
     "news_sf29su",
-    "trending_2026-11-18_TRUMP_BTC_HYPE_MMT_SOL_PENGU"
+    "trending_2026-11-18_TRUMP_BTC_HYPE_MMT_SOL_PENGU",
+    "foresight_118043"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795010927490,
-  "todayPosted": 23,
+  "lastPostAt": 1795014508317,
+  "todayPosted": 24,
   "todayKey": "Wed Nov 18 2026",
   "postHistory": [
-    {
-      "id": 388858318416013,
-      "kind": "news",
-      "at": 1794827313008,
-      "text": "这事儿挺意外，新加坡和德国居然开始测试跨境数字货币外汇结算了。Simbolon 项目想通过这套机制降低成本和时间，顺便把支付和外汇的共同标准推起来。\n\n这个方向你们之前有留意吗？\n\n#加密资讯"
-    },
     {
       "id": 388873127028752,
       "kind": "news",
@@ -442,6 +437,12 @@
       "kind": "trending",
       "at": 1795010927490,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. TRUMP (-2.7%)\n2. BTC (-1.5%)\n3. HYPE (-2.2%)\n4. MMT (+111.0%)\n5. SOL (+0.8%)\n6. PENGU (+1.8%)\n\nMMT 以 24h 111% 的涨幅成为榜单中唯一的双位数涨幅项目，与 BTC -1.5% 及 TRUMP -2.7% 的下跌形成鲜明对比。榜单前列由主流币占据，"
+    },
+    {
+      "id": 389625070362833,
+      "kind": "news",
+      "at": 1795014508317,
+      "text": "有意思的是，Backpack 拿到了 NFA 批准的 FCM 资质，这下集齐了在美推衍生品业务的全套牌照。它现在手握交易所、清算所及中介三项资质，打算给美国用户提供共享全球统一流动性的杠杆永续合约。\n\n$NFA $FCM #加密资讯"
     }
   ],
   "timeline": [
@@ -472,10 +473,10 @@
   ],
   "timelineKey": "2026-11-18",
   "timelineIdx": 0,
-  "timelineSentCount": 23,
+  "timelineSentCount": 24,
   "timelineDay": "2026-11-18",
-  "lastRunAt": 1795010917343,
-  "lastFetchAt": 1795010917343,
+  "lastRunAt": 1795014502413,
+  "lastFetchAt": 1795014502413,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -498,7 +499,7 @@
   "lastPostAtByKind": {
     "movers": 1794996546611,
     "trending": 1795010927490,
-    "news": 1795007347523,
+    "news": 1795014508317,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1795003723827
