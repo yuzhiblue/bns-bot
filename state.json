@@ -124,19 +124,14 @@
     "movers_2026-11-18_ZEC_SOL",
     "trend_SOL_2026-11-18",
     "trend_XRP_2026-11-18",
-    "bmovers_2026-11-18_BREV87_BTW36_MMT26_龙虾22_ARIA9_BLESS-43_HUMA-21_EVAA-10_RARE-7_ANTHROPIC-6"
+    "bmovers_2026-11-18_BREV87_BTW36_MMT26_龙虾22_ARIA9_BLESS-43_HUMA-21_EVAA-10_RARE-7_ANTHROPIC-6",
+    "trending_2026-11-18_BREV_BTC_NEAR_ETH_PENGU_JUP"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794967724086,
-  "todayPosted": 11,
+  "lastPostAt": 1794971357397,
+  "todayPosted": 12,
   "todayKey": "Wed Nov 18 2026",
   "postHistory": [
-    {
-      "id": 388681377492951,
-      "kind": "trending",
-      "at": 1794784114508,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. MACCA (+302.1%)\n2. DACITYCOIN (+8.6%)\n3. GATO (+30.0%)\n4. BTC (+2.9%)\n5. PENGU (+6.3%)\n6. SOL (+5.4%)\n\nMeme与主题概念币占据了热搜榜的主导位置，其中MACCA以302.1%的涨幅领跑，显示出散户对高波动性小市值标的的强烈关注度。相比之下，比特币、"
-    },
     {
       "id": 388696100170958,
       "kind": "market",
@@ -430,6 +425,12 @@
       "kind": "binanceMovers",
       "at": 1794967724086,
       "text": "📊 币安合约 24h 涨跌榜\n\n领涨：BREV +87.3% / BTW +35.8% / MMT +25.9% / 龙虾 +21.6% / ARIA +9.0%\n领跌：BLESS -43.3% / HUMA -20.7% / EVAA -10.1% / RARE -6.9% / ANTHROPIC -6.0%\n\n领涨这边的波动更猛一些，不过合约带杠杆，涨得急的往往回撤也快，榜单只能当天的快照看"
+    },
+    {
+      "id": 389448324298248,
+      "kind": "trending",
+      "at": 1794971357397,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BREV (+104.2%)\n2. BTC (-0.5%)\n3. NEAR (+5.5%)\n4. ETH (-0.8%)\n5. PENGU (-1.7%)\n6. JUP (+6.3%)\n\n这份榜单涨跌各半（3 涨 / 3 跌），热度并没有指向一致方向。热搜排名反映的是注意力，不等于资金流向；注意力先到、资金未必跟。说白了就是个观察名单，别把它当信号。"
     }
   ],
   "timeline": [
@@ -460,10 +461,10 @@
   ],
   "timelineKey": "2026-11-18",
   "timelineIdx": 0,
-  "timelineSentCount": 11,
+  "timelineSentCount": 12,
   "timelineDay": "2026-11-18",
-  "lastRunAt": 1794967714564,
-  "lastFetchAt": 1794967714564,
+  "lastRunAt": 1794971347342,
+  "lastFetchAt": 1794971347342,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -485,7 +486,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1794956910892,
-    "trending": 1794953404939,
+    "trending": 1794971357397,
     "news": 1794830928391,
     "market": 1794841771320,
     "trend": 1794964121240,
