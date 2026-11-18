@@ -130,19 +130,14 @@
     "news_1i4f90r",
     "bmovers_2026-11-18_MMT88_BREV82_BTW10_CROSS10_NEAR5_HUMA-22_龙虾-18_ANTHROPIC-6_ASTER-5_EVAA-5",
     "news_1kf0c0",
-    "trending_2026-11-18_BTC_SOL_MMT_ETH_PEARL_PENGU"
+    "trending_2026-11-18_BTC_SOL_MMT_ETH_PEARL_PENGU",
+    "foresight_118008"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1794989327623,
-  "todayPosted": 17,
+  "lastPostAt": 1794992915949,
+  "todayPosted": 18,
   "todayKey": "Wed Nov 18 2026",
   "postHistory": [
-    {
-      "id": 388769829421261,
-      "kind": "news",
-      "at": 1794805709233,
-      "text": "英伟达三季度财报公布前，亚洲芯片股集体下挫，这轮区域股市的更广泛抛售让日经 225 指数下跌 2%，韩国综合指数也跟着下跌 2.6%。讲真，在正式数据出来之前，市场情绪被压得挺低，资金似乎在提前规避不确定性。\n\n#加密资讯"
-    },
     {
       "id": 388784644197478,
       "kind": "news",
@@ -436,6 +431,12 @@
       "kind": "trending",
       "at": 1794989327623,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BTC (+0.2%)\n2. SOL (+3.1%)\n3. MMT (+107.9%)\n4. ETH (-0.7%)\n5. PEARL (+13.9%)\n6. PENGU (-1.6%)\n\nMomentum单日大涨107.9%和Pearl上涨13.9%，显示中小市值币种在此榜单中占据了涨幅主力。主流币如Bitcoin和Ethereum表现平淡或微跌，"
+    },
+    {
+      "id": 389536628174774,
+      "kind": "news",
+      "at": 1794992915949,
+      "text": "日前新加坡区块链周 2026 上，孙宇晨以视频形式讲了波场 TRON 的最新情况，他提到链上账户已超过 4.1 亿，日均处理近 1200 万笔交易。有意思的是，2026 年第三季度稳定币转账额达 2.21 万亿美元，约占全链稳定币交易量的 73%，USDT 在波场 TRON 网络上的占比也相当可观，看得出机构金融和 AI 基础设施的布局正在加速。\n\n$TRON $USDT #加密资讯"
     }
   ],
   "timeline": [
@@ -466,10 +467,10 @@
   ],
   "timelineKey": "2026-11-18",
   "timelineIdx": 0,
-  "timelineSentCount": 17,
+  "timelineSentCount": 18,
   "timelineDay": "2026-11-18",
-  "lastRunAt": 1794989302951,
-  "lastFetchAt": 1794989302951,
+  "lastRunAt": 1794992905188,
+  "lastFetchAt": 1794992905188,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -492,7 +493,7 @@
   "lastPostAtByKind": {
     "movers": 1794956910892,
     "trending": 1794989327623,
-    "news": 1794985719659,
+    "news": 1794992915949,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1794982171675
