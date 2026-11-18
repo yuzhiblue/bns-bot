@@ -142,19 +142,14 @@
     "news_o3na43",
     "bmovers_2026-11-19_PIPPIN82_MMT71_PIEVERSE59_ICNT41_ZKC24_BREV-14_LIT-5_PUMP-5_ENA-3_INJ-2",
     "news_11msypl",
-    "trending_2026-11-19_WASTED_WSTAR_LUCIA_TRUMP_PENGU_PEARL"
+    "trending_2026-11-19_WASTED_WSTAR_LUCIA_TRUMP_PENGU_PEARL",
+    "bmovers_2026-11-19_PIEVERSE73_MMT70_PIPPIN64_EVAA21_ZKC20_BREV-23_ASTER-8_PUMP-8_FIL-5_ENA-5"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795036111166,
-  "todayPosted": 5,
+  "lastPostAt": 1795039729738,
+  "todayPosted": 6,
   "todayKey": "Thu Nov 19 2026",
   "postHistory": [
-    {
-      "id": 388946776266363,
-      "kind": "trend",
-      "at": 1794848909166,
-      "text": "📉 $PEPE 日线数据快照（30 天）\n\n现价 0.00000388，7 日 -24.2%，30 日 -3.2%。\n7 日波动不小，现价处在 10% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n这种快照看看就好，没什么结论。\n\n你更看重价格还是量能？\n\n$PEPE #行情分析\n\n以上只是数据记录和个人观察"
-    },
     {
       "id": 388961780864129,
       "kind": "trending",
@@ -448,6 +443,12 @@
       "kind": "trending",
       "at": 1795036111166,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. WASTED (+0.0%)\n2. WSTAR (+0.0%)\n3. LUCIA (+0.0%)\n4. TRUMP (-1.4%)\n5. PENGU (-0.2%)\n6. PEARL (+24.5%)\n\n榜单整体走势平淡，仅Pearl录得24h上涨24.5%，而TRUMP和PENGU小幅下跌，其余币种基本持平。从结构看，热搜榜被大量中小市值项目占据，"
+    },
+    {
+      "id": 389728377366976,
+      "kind": "binanceMovers",
+      "at": 1795039729738,
+      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：PIEVERSE +73.0% / MMT +70.1% / PIPPIN +64.2% / EVAA +21.1% / ZKC +20.5%\n领跌：BREV -23.2% / ASTER -7.8% / PUMP -7.6% / FIL -5.1% / ENA -4.8%\n\n领涨这边的波动更猛一些，不过合约带杠杆，涨得急的往往回撤也快，榜单只能当天的快照看"
     }
   ],
   "timeline": [
@@ -478,10 +479,10 @@
   ],
   "timelineKey": "2026-11-19",
   "timelineIdx": 0,
-  "timelineSentCount": 5,
+  "timelineSentCount": 6,
   "timelineDay": "2026-11-19",
-  "lastRunAt": 1795036101119,
-  "lastFetchAt": 1795036101119,
+  "lastRunAt": 1795039710371,
+  "lastFetchAt": 1795039710371,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -507,7 +508,7 @@
     "news": 1795028914734,
     "market": 1794841771320,
     "trend": 1794964121240,
-    "binanceMovers": 1795025314765,
+    "binanceMovers": 1795039729738,
     "breakout": 1795018143734
   }
 }
