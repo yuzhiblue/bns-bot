@@ -37,6 +37,7 @@
     "hashtags": [],
     "disclaimer": "",
     "imageCard": true,
+    "cta": false,
     "take": true,
     "kindCooldownMinutes": {
       "trending": 240,

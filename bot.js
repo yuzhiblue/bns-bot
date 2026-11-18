@@ -765,9 +765,10 @@ function takeLines(m, cfg) {
   const take = m.take || buildTake(m);
   return take ? ["", take] : [];
 }
-// 收尾话术本身已是提问时不再叠加 CTA, 避免连续两个问句
+// 收尾提问(CTA): 默认关闭——固定套路的"你们怎么看"用多了像尬聊、易被判机器模板。
+// 需要恢复时把 post.cta 设为 true 即可(同时恢复资讯帖的 newsQuestion)。
 function ctaLines(m, cfg, closer) {
-  if (cfg.post?.take === false || m.lang === "en") return [];
+  if (cfg.post?.cta !== true || cfg.post?.take === false || m.lang === "en") return [];
   const list = TPL.ctas?.[m.kind] ?? [];
   if (!list.length || /[？?]/.test(closer || "")) return [];
   return ["", pickFrom(list, "cta")];
@@ -838,7 +839,7 @@ function genBreakoutPost(m, cfg) {
   lines.push("", hi
     ? "价格摸到区间上沿，说明买盘确实推了一把，但能不能在这里站稳，单看今天这根线还不够，得后面几天确认。"
     : "价格探到区间下沿，卖压是有的，不过破位之后能不能延续，还得看接下来几天的成交能不能跟上。");
-  const closer = "这种位置你们一般怎么看？";
+  const closer = "这种位置，光看一根线判断不了什么";
   lines.push("", closer);
   lines.push(...ctaLines(m, cfg, closer));
   lines.push("", "#行情异动 #技术分析");
@@ -854,7 +855,7 @@ function genBinanceMoversPost(m, cfg) {
   lines.push("", Math.abs(lead) > Math.abs(lag)
     ? "领涨这边的波动更猛一些，不过合约带杠杆，涨得急的往往回撤也快，榜单只能当天的快照看。"
     : "领跌这边的幅度更极端，合约市场情绪起落都快，这种榜单看看就好，隔天可能就换一批。");
-  const closer = "看合约榜的时候你们会额外注意什么？";
+  const closer = "榜单看个热闹就行，背后的资金动向才是重点";
   lines.push("", closer);
   lines.push(...ctaLines(m, cfg, closer));
   lines.push("", "#涨跌榜单 #合约情绪");
@@ -890,7 +891,7 @@ function extractCashtags(text) {
 // 资讯帖的互动提问: 纯陈述帖 0 评论 → 平台算法不给量。以一条紧扣新闻的问题收尾。
 // 用开放式提问(不引导方向、不给买卖建议); 关闭 take 或英文原帖时不加(与旧行为一致)。
 function newsQuestion(m, cfg) {
-  if (cfg.post?.take === false || m.lang === "en") return "";
+  if (cfg.post?.cta !== true || cfg.post?.take === false || m.lang === "en") return "";
   return pickFrom(TPL.newsQuestions, "cta");
 }
 
