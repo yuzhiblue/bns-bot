@@ -135,19 +135,14 @@
     "movers_2026-11-18_XRP",
     "news_1wcnc1b",
     "bmovers_2026-11-18_MMT104_PIPPIN71_BREV51_ICNT37_PIEVERSE26_HUMA-14_EVAA-9_AKE-8_ASTER-6_LIT-5",
-    "news_sf29su"
+    "news_sf29su",
+    "trending_2026-11-18_TRUMP_BTC_HYPE_MMT_SOL_PENGU"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795007347523,
-  "todayPosted": 22,
+  "lastPostAt": 1795010927490,
+  "todayPosted": 23,
   "todayKey": "Wed Nov 18 2026",
   "postHistory": [
-    {
-      "id": 388843613002892,
-      "kind": "news",
-      "at": 1794823722813,
-      "text": "DBS和摩根大通旗下的Kinexys刚推了个全天候代币化存款转账服务，有意思的是蚂蚁国际成了第一个用的客户。这事儿让美元存款能直接在新加坡和美国之间转移，感觉传统银行和加密基础设施的结合又往前走了一步。\n\n你们看到这条消息的第一反应是什么？\n\n$DBS #加密资讯"
-    },
     {
       "id": 388858318416013,
       "kind": "news",
@@ -441,6 +436,12 @@
       "kind": "news",
       "at": 1795007347523,
       "text": "Bullish刚发布的三季度报告挺有意思，净亏损直接扩大到了5.763 亿美元，而上一年同期才亏1850 万美元。讲真，虽然现货交易那块有点疲软，但靠机构服务这块撑住了场面，算是把营收做超了。\n\n#加密资讯"
+    },
+    {
+      "id": 389610403396564,
+      "kind": "trending",
+      "at": 1795010927490,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. TRUMP (-2.7%)\n2. BTC (-1.5%)\n3. HYPE (-2.2%)\n4. MMT (+111.0%)\n5. SOL (+0.8%)\n6. PENGU (+1.8%)\n\nMMT 以 24h 111% 的涨幅成为榜单中唯一的双位数涨幅项目，与 BTC -1.5% 及 TRUMP -2.7% 的下跌形成鲜明对比。榜单前列由主流币占据，"
     }
   ],
   "timeline": [
@@ -471,10 +472,10 @@
   ],
   "timelineKey": "2026-11-18",
   "timelineIdx": 0,
-  "timelineSentCount": 22,
+  "timelineSentCount": 23,
   "timelineDay": "2026-11-18",
-  "lastRunAt": 1795007332571,
-  "lastFetchAt": 1795007332571,
+  "lastRunAt": 1795010917343,
+  "lastFetchAt": 1795010917343,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -496,7 +497,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1794996546611,
-    "trending": 1794989327623,
+    "trending": 1795010927490,
     "news": 1795007347523,
     "market": 1794841771320,
     "trend": 1794964121240,
