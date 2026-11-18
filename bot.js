@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * bns-bot — 币安广场自动发帖机器人（GitHub Actions 纯云端单次模式）
- * 抓取行情异动 / 热搜榜 / 涨跌榜 / 资讯 RSS / 形态突破 / 币安合约涨跌榜 → 生成带 $币种 的帖子 → 调官方 OpenAPI 发布
+ * 抓取行情异动 / 热搜榜 / 涨跌榜 / 资讯 RSS / Foresight / 形态突破 / 币安合约涨跌榜 → 生成带 $币种 的帖子 → 调官方 OpenAPI 发布
  *
  * 每次运行只跑一轮就退出, 由外部定时器(CNB, 每 15 分钟 POST workflow_dispatch)唤起;
  * 状态靠 state.json 持久化,
@@ -17,6 +17,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const zlib = require("zlib");
 const TPL = require("./templates");
 const { buildTake } = require("./takes");
 const { fetchSymbolPool, SHELL_BASES, DEFAULT_TOP_N, DEFAULT_MIN_USD } = require("./symbolPool");
@@ -648,6 +649,61 @@ async function fetchRssNews(cfg, state) {
   }
   log(`  资讯: ${out.length} 条候选(中文, ${feeds.map((f) => f.name).join("/")})`);
   return out;
+}
+
+// Foresight News: 官方 API(api.foresightnews.pro, 免 key), 数据用 base64 + zlib 压缩。
+// 解密: response.data.list -> base64 decode -> zlib.inflateSync -> JSON.parse(数组)。
+// 产出与 fetchRssNews 同构的 news 素材(中文正文现成, 无需翻译), 走同一条发帖/卡片/去重链路。
+async function fetchForesight(cfg) {
+  if (!cfg.foresight?.enabled) return [];
+  const url = cfg.foresight.api ?? "https://api.foresightnews.pro/v1/news";
+  const limit = cfg.foresight?.perFetch ?? 2;
+  const skipWords = cfg.news?.skipWords ?? [];
+  const skipRe = skipWords.length ? new RegExp(skipWords.map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")) : null;
+  const boostWords = cfg.news?.topicBoostWords ?? [];
+  const penaltyWords = cfg.news?.topicPenaltyWords ?? [];
+  const maxBoost = cfg.news?.topicMaxBoost ?? 20;
+  const maxPenalty = cfg.news?.topicMaxPenalty ?? 25;
+  try {
+    const j = await fetchJson(`${url}?size=50`, {}, 15000);
+    const packed = j?.data?.list ?? j?.data;
+    if (!packed) return [];
+    const inflated = zlib.inflateSync(Buffer.from(packed, "base64")).toString("utf8").trim();
+    const list = JSON.parse(inflated);
+    if (!Array.isArray(list)) return [];
+    const raw = [];
+    for (const x of list) {
+      const d = x[x.source_type] ?? x;
+      const title = String(d.title ?? "").trim();
+      const content = String(d.content ?? d.brief ?? "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+      const link = d.id ? `https://foresightnews.pro/news/detail/${d.id}` : "";
+      if (!title || !content) continue;
+      if (skipRe && skipRe.test(title)) { log(`  Foresight 过滤煽动/传言: ${title.slice(0, 30)}`); continue; }
+      if (mentionsCompetitor(`${title} ${content}`, link)) { log(`  Foresight 过滤竞品: ${title.slice(0, 30)}`); continue; }
+      const ts = d.published_at ? Number(d.published_at) * 1000 : Date.now();
+      // 选题打分与 RSS 资讯一致, 重要快讯额外加权
+      const text = `${title} ${content}`.toLowerCase();
+      const hits = (words) => words.filter((w) => text.includes(String(w).toLowerCase()));
+      const topicScore = Math.min(maxBoost, hits(boostWords).length * 8)
+        - Math.min(maxPenalty, hits(penaltyWords).length * 12)
+        + (d.is_important ? 8 : 0);
+      raw.push({
+        // 去重 id 用官方 id, 稳定不漂
+        id: `foresight_${d.id}`,
+        kind: "news", source: "Foresight",
+        title, titleEn: title, link,
+        image: d.img || "", summary: content, ts,
+        lang: "zh", topicScore,
+      });
+    }
+    raw.sort((a, b) => (b.ts - a.ts));
+    const out = raw.slice(0, limit);
+    log(`  Foresight: ${list.length} 条解密, 取 ${out.length} 条(中文加密垂直)`);
+    return out;
+  } catch (e) {
+    log(`  Foresight 拉取失败: ${e.message}`);
+    return [];
+  }
 }
 
 // ---------- 帖子生成(从 templates.js 读词库) ----------
@@ -1317,7 +1373,7 @@ async function runOnce() {
 
   // 2. 抓全部素材(并行拉)。所有抓取共享同一个 state 对象, 由本函数结尾统一落盘,
   //    避免并发写文件互相覆盖。
-  const [marketMoves, trending, movers, newsRss, breakout, binanceMovers] =
+  const [marketMoves, trending, movers, newsRss, breakout, binanceMovers, foresight] =
     await Promise.all([
       fetchMarketMove(config),
       fetchTrending(config),
@@ -1325,10 +1381,11 @@ async function runOnce() {
       fetchRssNews(config, state),
       fetchBreakout(config),
       fetchBinanceMovers(config),
+      fetchForesight(config),
     ]);
 
   const candidates = [
-    ...marketMoves, ...trending, ...movers, ...newsRss, ...breakout, ...binanceMovers,
+    ...marketMoves, ...trending, ...movers, ...newsRss, ...breakout, ...binanceMovers, ...foresight,
   ];
 
   // --force 模式: 没素材时用实时真实数据造一条行情帖(不用假数字, 避免虚假消息)
@@ -1352,7 +1409,7 @@ async function runOnce() {
   const seen = new Set(state.postedMaterialIds);
   const fresh = candidates.filter((c) => !seen.has(c.id));
   log(`素材: 行情 ${marketMoves.length} / 热搜 ${trending.length} / 涨跌 ${movers.length} / 资讯 ${newsRss.length}`
-    + ` / 形态 ${breakout.length} / 合约榜 ${binanceMovers.length} = 共 ${fresh.length} 条未发`);
+    + ` / 形态 ${breakout.length} / 合约榜 ${binanceMovers.length} / Foresight ${foresight.length} = 共 ${fresh.length} 条未发`);
 
   if (fresh.length === 0) {
     log("没有新素材, 本轮不发帖");

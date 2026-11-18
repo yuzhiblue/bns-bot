@@ -209,5 +209,10 @@
     "enabled": true,
     "topN": 5,
     "minUsd": 50000000
+  },
+  "foresight": {
+    "enabled": true,
+    "api": "https://api.foresightnews.pro/v1/news",
+    "perFetch": 2
   }
 }

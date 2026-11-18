@@ -486,7 +486,15 @@ CloudFront 拦截, 要么自己出口也被币安 451; 币安测试网 `testnet.
 **当前实际会有内容的素材源**: 行情异动、热搜榜、涨跌榜、形态突破、币安合约涨跌榜、资讯 RSS
 （2026-11-18 已开启, 4 个英文源 Cointelegraph / Decrypt / CoinDesk / BitcoinMagazine + 2 个中文源:
 PANews `/rss.xml?lang=zh&type=NEWS`、Odaily `rss.odaily.news/rss/newsflash`（官方 RSS, 无配图走纯文本,
-云端 probe 实测 200）, `perFeed=2`）。
+云端 probe 实测 200）, `perFeed=2`）、Foresight News 快讯。
+
+**Foresight News 源**: 走官方 API `api.foresightnews.pro/v1/news`（免 key, 云端 probe 实测 200,
+run `44230729367`）。数据用 **base64 + zlib 压缩**——`fetchForesight()` 里
+`response.data.list` → base64 decode → `zlib.inflateSync` → `JSON.parse` 解密（Node 自带 zlib, 无新增依赖）。
+产出与 RSS 资讯同构（`kind:"news"`/`lang:"zh"`, 中文正文现成无需翻译）, 复用发帖/卡片/去重链路;
+按官方 id 去重, `is_important` 快讯加权。竞品交易所/煽动词过滤与 RSS 资讯一致。配置在 `config.json` 的
+`foresight`（enabled / api / perFetch）。
+
 资金费率 / 持仓量 OI / 多空比 / 趋势快照 / 新币五个源因 451、低流量或字段失效已全部移除。
 新币源移除原因: `data-api.binance.vision` 的 `exchangeInfo` 不含 `onboardDate` 字段（0/3743），
 7 天内上线筛选永远为 false；币安公告接口虽可用但只有标题没有正文，内容撑不起一条帖子。
