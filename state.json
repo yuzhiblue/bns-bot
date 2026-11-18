@@ -138,19 +138,14 @@
     "news_sf29su",
     "trending_2026-11-18_TRUMP_BTC_HYPE_MMT_SOL_PENGU",
     "foresight_118043",
-    "breakout_2026-11-19_MMThigh"
+    "breakout_2026-11-19_MMThigh",
+    "news_o3na43"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795018143734,
-  "todayPosted": 1,
+  "lastPostAt": 1795021708303,
+  "todayPosted": 2,
   "todayKey": "Thu Nov 19 2026",
   "postHistory": [
-    {
-      "id": 388887813126606,
-      "kind": "movers",
-      "at": 1794834513860,
-      "text": "📊 24h 涨跌榜（全市场）\n\n领跌：ZEC -6.0% / HYPE -4.1%\n\n榜单显示跌幅榜由ZEC（-6.0%）和HYPE（-4.1%）占据，且两枚代币波动率均超4%。由于数据中未包含任何上涨资产，当前可见的市场情绪明显偏向空头主导。\n\n极端波动时更要注意风险，别追在尖上。\n\n这种同步波动你先看什么？\n\n#涨跌榜单 #行情异动"
-    },
     {
       "id": 388902550813516,
       "kind": "trending",
@@ -444,6 +439,12 @@
       "kind": "breakout",
       "at": 1795018143734,
       "text": "🔺 日线突破监控\n\nMMT 今天摸到 20 日新高，现价 0.2444\n\n价格摸到区间上沿，说明买盘确实推了一把，但能不能在这里站稳，单看今天这根线还不够，得后面几天确认。\n\n这种位置，光看一根线判断不了什么\n\n#行情异动 #技术分析"
+    },
+    {
+      "id": 389654561527929,
+      "kind": "news",
+      "at": 1795021708303,
+      "text": "沃勒释放激进加息信号，美元升至19个月新高\n\nOdaily星球日报讯 周三，美联储理事沃勒发表鹰派言论，叠加近期经济数据强化市场对下月加息的预期，美元升至 19 个月来新高。沃勒周三接受 CNBC 采访时表示，如果美联储希望降低通胀，就需要采取更具“进攻性”的行动，可以选择在 12 月会议上加息 50 个基点，也可以通过会后声明引导市场形成对进一步加息的预期。Monex USA 驻华盛顿交易业务高"
     }
   ],
   "timeline": [
@@ -474,10 +475,10 @@
   ],
   "timelineKey": "2026-11-19",
   "timelineIdx": 0,
-  "timelineSentCount": 1,
+  "timelineSentCount": 2,
   "timelineDay": "2026-11-19",
-  "lastRunAt": 1795018133563,
-  "lastFetchAt": 1795018133563,
+  "lastRunAt": 1795021702627,
+  "lastFetchAt": 1795021702627,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -500,7 +501,7 @@
   "lastPostAtByKind": {
     "movers": 1794996546611,
     "trending": 1795010927490,
-    "news": 1795014508317,
+    "news": 1795021708303,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1795003723827,
