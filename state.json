@@ -150,19 +150,14 @@
     "foresight_118070",
     "bmovers_2026-11-19_PIPPIN59_MMT52_IRYS48_PIEVERSE40_BTW26_BREV-25_INJ-4_ASTER-3_FIL-3_ZEC-2",
     "foresight_118080",
-    "trending_2026-11-19_BTC_PEARL_IRYS_PENGU_LIT_HYPE"
+    "trending_2026-11-19_BTC_PEARL_IRYS_PENGU_LIT_HYPE",
+    "foresight_118088"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795068535906,
-  "todayPosted": 13,
+  "lastPostAt": 1795072154973,
+  "todayPosted": 14,
   "todayKey": "Thu Nov 19 2026",
   "postHistory": [
-    {
-      "id": 389064890221877,
-      "kind": "trend",
-      "at": 1794877745549,
-      "text": "📉 $NEAR 日线数据快照（30 天）\n\n现价 3.135，7 日 -12.6%，30 日 -36.1%。\n7 日波动不小，现价处在 10% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n这种快照看看就好，没什么结论。\n\n你更看重价格还是量能？\n\n$NEAR #行情分析\n\n以上只是数据记录和个人观察，不构成"
-    },
     {
       "id": 389079509731478,
       "kind": "trend",
@@ -456,6 +451,12 @@
       "kind": "trending",
       "at": 1795068535906,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BTC (-2.1%)\n2. PEARL (+21.4%)\n3. IRYS (+61.9%)\n4. PENGU (-0.1%)\n5. LIT (-0.3%)\n6. HYPE (-1.4%)\n\nIrys(Irys) 24h上涨61.9%，Pearl(PEARL) 上涨21.4%，两者领涨明显。榜单中六只币里有四只上涨，但比特币作为主流币跌幅达2.1%且"
+    },
+    {
+      "id": 389861191220310,
+      "kind": "news",
+      "at": 1795072154973,
+      "text": "以太坊社区提交了「动态个人合并激励」EIP 草案，通过引入新的 BeaconState 字段 consolidation_force 来鼓励节点合并。这套机制会在每个 epoch 处理奖励 / 惩罚后，从每个活跃验证者余额中扣除合并激励，并让验证者数量目标按计划线性下降。有意思的是，当实际数量偏离目标时，机制会根据程度动态调整压力，高于目标时缓慢上升，低于时则更快下降。\n\n$EIP $ETH #加"
     }
   ],
   "timeline": [
@@ -486,10 +487,10 @@
   ],
   "timelineKey": "2026-11-19",
   "timelineIdx": 0,
-  "timelineSentCount": 13,
+  "timelineSentCount": 14,
   "timelineDay": "2026-11-19",
-  "lastRunAt": 1795068516208,
-  "lastFetchAt": 1795068516208,
+  "lastRunAt": 1795072142346,
+  "lastFetchAt": 1795072142346,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -512,7 +513,7 @@
   "lastPostAtByKind": {
     "movers": 1795050513203,
     "trending": 1795068535906,
-    "news": 1795064952959,
+    "news": 1795072154973,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1795061321676,
