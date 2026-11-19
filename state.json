@@ -153,19 +153,14 @@
     "trending_2026-11-19_BTC_PEARL_IRYS_PENGU_LIT_HYPE",
     "foresight_118088",
     "news_1iro3yz",
-    "trending_2026-11-19_WASTED_PEARL_LUCIA_IRYS_VVV_BTC"
+    "trending_2026-11-19_WASTED_PEARL_LUCIA_IRYS_VVV_BTC",
+    "news_1ngb8o9"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795086530304,
-  "todayPosted": 16,
+  "lastPostAt": 1795093728171,
+  "todayPosted": 17,
   "todayKey": "Thu Nov 19 2026",
   "postHistory": [
-    {
-      "id": 389109124311482,
-      "kind": "trending",
-      "at": 1794888544904,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BLESS (+39.1%)\n2. BTC (-0.0%)\n3. LIT (+8.5%)\n4. BP (+19.0%)\n5. HYPE (+5.6%)\n6. NEAR (+1.7%)\n\n榜单前列以Meme及新兴协议代币为主，BLESS和BP的涨幅显示短线资金正聚集于高弹性标的。BTC与NEAR等主流资产表现平稳，暗示当前市场热度更多集中在中小市值的新"
-    },
     {
       "id": 389123739945201,
       "kind": "movers",
@@ -459,6 +454,12 @@
       "kind": "trending",
       "at": 1795086530304,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. WASTED (+0.0%)\n2. PEARL (+32.4%)\n3. LUCIA (+292.6%)\n4. IRYS (+32.7%)\n5. VVV (+7.7%)\n6. BTC (-0.8%)\n\nLucia单日上涨292.6%的涨幅显著高于榜单内其他币种，与同期微涨或微跌的主流币形成鲜明对比。整个榜单由中小市值代币占据多数席位，热度高度集中在个别"
+    },
+    {
+      "id": 389949555002432,
+      "kind": "news",
+      "at": 1795093728171,
+      "text": "讲真，这事儿挺意外，BIT首席营销官Jack Derong在11月19日的新加坡活动上透露，他们旗下的BBIT在10月20日拿到了瑞士FINMA的批准，眼看就要上线了。作为目前欧洲唯一的现货比特币ETF，它采用瑞士集合投资计划结构，把基金资产和管理人在法律上彻底隔离开，投资者不用担发信用风险，这架构确实有点不一样。\n\n$BIT $BBIT #加密资讯"
     }
   ],
   "timeline": [
@@ -489,10 +490,10 @@
   ],
   "timelineKey": "2026-11-19",
   "timelineIdx": 0,
-  "timelineSentCount": 16,
+  "timelineSentCount": 17,
   "timelineDay": "2026-11-19",
-  "lastRunAt": 1795086504591,
-  "lastFetchAt": 1795086504591,
+  "lastRunAt": 1795093708481,
+  "lastFetchAt": 1795093708481,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -515,7 +516,7 @@
   "lastPostAtByKind": {
     "movers": 1795050513203,
     "trending": 1795086530304,
-    "news": 1795075726532,
+    "news": 1795093728171,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1795061321676,
