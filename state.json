@@ -143,19 +143,14 @@
     "bmovers_2026-11-19_PIPPIN82_MMT71_PIEVERSE59_ICNT41_ZKC24_BREV-14_LIT-5_PUMP-5_ENA-3_INJ-2",
     "news_11msypl",
     "trending_2026-11-19_WASTED_WSTAR_LUCIA_TRUMP_PENGU_PEARL",
-    "bmovers_2026-11-19_PIEVERSE73_MMT70_PIPPIN64_EVAA21_ZKC20_BREV-23_ASTER-8_PUMP-8_FIL-5_ENA-5"
+    "bmovers_2026-11-19_PIEVERSE73_MMT70_PIPPIN64_EVAA21_ZKC20_BREV-23_ASTER-8_PUMP-8_FIL-5_ENA-5",
+    "news_9hue41"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795039729738,
-  "todayPosted": 6,
+  "lastPostAt": 1795046921594,
+  "todayPosted": 7,
   "todayKey": "Thu Nov 19 2026",
   "postHistory": [
-    {
-      "id": 388961780864129,
-      "kind": "trending",
-      "at": 1794852572365,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. MACCA (+22.6%)\n2. DACITYCOIN (-17.7%)\n3. GATO (+16.8%)\n4. BTC (+0.5%)\n5. PENGU (-0.2%)\n6. LIT (-6.6%)\n\n这份榜单涨跌各半（3 涨 / 3 跌），热度并没有指向一致方向。热搜排名反映的是注意力，不等于资金流向；注意力先到、资金未必跟。说白了就是个观察名"
-    },
     {
       "id": 388976287360607,
       "kind": "trend",
@@ -449,6 +444,12 @@
       "kind": "binanceMovers",
       "at": 1795039729738,
       "text": "📊 币安合约 24h 涨跌榜\n\n领涨：PIEVERSE +73.0% / MMT +70.1% / PIPPIN +64.2% / EVAA +21.1% / ZKC +20.5%\n领跌：BREV -23.2% / ASTER -7.8% / PUMP -7.6% / FIL -5.1% / ENA -4.8%\n\n领涨这边的波动更猛一些，不过合约带杠杆，涨得急的往往回撤也快，榜单只能当天的快照看"
+    },
+    {
+      "id": 389757835156442,
+      "kind": "news",
+      "at": 1795046921594,
+      "text": "富途信托这波动作挺实在，直接把 BTC、ETH 等主流数字资产和港股、美股、ETF 都塞进了同一个“数字资产家族信托”架构里。这套方案专门给香港税务居民家庭和家族办公室准备的，主要解决跨代传承和托管衔接的问题，综合资产门槛定在了等值 300 万美元起。\n\n$BTC $ETH #加密资讯"
     }
   ],
   "timeline": [
@@ -479,10 +480,10 @@
   ],
   "timelineKey": "2026-11-19",
   "timelineIdx": 0,
-  "timelineSentCount": 6,
+  "timelineSentCount": 7,
   "timelineDay": "2026-11-19",
-  "lastRunAt": 1795039710371,
-  "lastFetchAt": 1795039710371,
+  "lastRunAt": 1795046910581,
+  "lastFetchAt": 1795046910581,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -505,7 +506,7 @@
   "lastPostAtByKind": {
     "movers": 1794996546611,
     "trending": 1795036111166,
-    "news": 1795028914734,
+    "news": 1795046921594,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1795039729738,
