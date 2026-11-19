@@ -144,19 +144,14 @@
     "news_11msypl",
     "trending_2026-11-19_WASTED_WSTAR_LUCIA_TRUMP_PENGU_PEARL",
     "bmovers_2026-11-19_PIEVERSE73_MMT70_PIPPIN64_EVAA21_ZKC20_BREV-23_ASTER-8_PUMP-8_FIL-5_ENA-5",
-    "news_9hue41"
+    "news_9hue41",
+    "movers_2026-11-19_ZEC"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795046921594,
-  "todayPosted": 7,
+  "lastPostAt": 1795050513203,
+  "todayPosted": 8,
   "todayKey": "Thu Nov 19 2026",
   "postHistory": [
-    {
-      "id": 388976287360607,
-      "kind": "trend",
-      "at": 1794856114002,
-      "text": "📉 $ZEC 日线数据快照（30 天）\n\n现价 891.43，7 日 -23.4%，30 日 -21.2%。\n7 日波动不小，现价处在 15% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n数字不会说谎，但也没法告诉你下一步。\n\n这类数据你们多久看一次？\n\n$ZEC #行情分析\n\n以上只是数据记录和个人观察，"
-    },
     {
       "id": 388991024760072,
       "kind": "trend",
@@ -450,6 +445,12 @@
       "kind": "news",
       "at": 1795046921594,
       "text": "富途信托这波动作挺实在，直接把 BTC、ETH 等主流数字资产和港股、美股、ETF 都塞进了同一个“数字资产家族信托”架构里。这套方案专门给香港税务居民家庭和家族办公室准备的，主要解决跨代传承和托管衔接的问题，综合资产门槛定在了等值 300 万美元起。\n\n$BTC $ETH #加密资讯"
+    },
+    {
+      "id": 389772546504693,
+      "kind": "movers",
+      "at": 1795050513203,
+      "text": "📊 24h 涨跌榜（全市场）\n\n领跌：ZEC -4.8%\n\nZcash（ZEC）以-4.8%的跌幅成为榜单上唯一达到波动阈值的币种，处于领跌位置。领涨榜暂无符合波动≥4%条件的币种，呈现单边下跌且集中度较高的市场结构。\n\n涨跌两头都拉得挺开，说明今天分歧不小；这种分化能维持多久，单看一天的榜单说不准。\n\n#涨跌榜单 #行情异动"
     }
   ],
   "timeline": [
@@ -480,10 +481,10 @@
   ],
   "timelineKey": "2026-11-19",
   "timelineIdx": 0,
-  "timelineSentCount": 7,
+  "timelineSentCount": 8,
   "timelineDay": "2026-11-19",
-  "lastRunAt": 1795046910581,
-  "lastFetchAt": 1795046910581,
+  "lastRunAt": 1795050503436,
+  "lastFetchAt": 1795050503436,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -504,7 +505,7 @@
     "updatedAt": 1794586106417
   },
   "lastPostAtByKind": {
-    "movers": 1794996546611,
+    "movers": 1795050513203,
     "trending": 1795036111166,
     "news": 1795046921594,
     "market": 1794841771320,
