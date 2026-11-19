@@ -155,19 +155,14 @@
     "news_1iro3yz",
     "trending_2026-11-19_WASTED_PEARL_LUCIA_IRYS_VVV_BTC",
     "news_1ngb8o9",
-    "bmovers_2026-11-19_NAORIS43_VELVET37_EVAA33_IRYS31_HUMA22_BREV-9_ZKC-7_ASTER-5_AKE-5_PIPPIN-4"
+    "bmovers_2026-11-19_NAORIS43_VELVET37_EVAA33_IRYS31_HUMA22_BREV-9_ZKC-7_ASTER-5_AKE-5_PIPPIN-4",
+    "foresight_118146"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795097334142,
-  "todayPosted": 18,
+  "lastPostAt": 1795100954541,
+  "todayPosted": 19,
   "todayKey": "Thu Nov 19 2026",
   "postHistory": [
-    {
-      "id": 389138584421072,
-      "kind": "trend",
-      "at": 1794895737339,
-      "text": "📉 $XRP 日线数据快照（30 天）\n\n现价 0.9622，7 日 -8.9%，30 日 -26.2%。\n7 日波动不小，现价处在 14% 分位（0 = 区间最低，100 = 最高）。\n\n价格贴着区间下沿，确实偏弱，但低位本身不代表什么，有没有资金接才是关键。\n\n这指标就当个参考，别当成答案。\n\n你们平时看日线数据吗？\n\n$XRP #行情分析\n\n以上只是数据记录和个人观察，不构成投资建议；市场"
-    },
     {
       "id": 389153226087721,
       "kind": "trend",
@@ -461,6 +456,12 @@
       "kind": "binanceMovers",
       "at": 1795097334143,
       "text": "📊 币安合约 24h 涨跌榜\n\n领涨：NAORIS +43.3% / VELVET +36.9% / EVAA +32.5% / IRYS +31.3% / HUMA +22.4%\n领跌：BREV -9.1% / ZKC -7.0% / ASTER -5.4% / AKE -4.9% / PIPPIN -3.7%\n\nNAORIS以+43.3%领涨，BREV以-9.1%领跌；NAORIS较第二名的"
+    },
+    {
+      "id": 389979154218195,
+      "kind": "news",
+      "at": 1795100954541,
+      "text": "Anthropic 今晚正式登陆纳斯达克，美东时间 11 月 19 日上午 9:50 开始报价。trade.xyz 上 ANT 合约暂报 103.3 美元，对比 83 美元的 IPO 发行价溢价约 24.46%。这次上市节奏倒是挺快，市场反应也算直接。\n\n$ANT #加密资讯"
     }
   ],
   "timeline": [
@@ -491,10 +492,10 @@
   ],
   "timelineKey": "2026-11-19",
   "timelineIdx": 0,
-  "timelineSentCount": 18,
+  "timelineSentCount": 19,
   "timelineDay": "2026-11-19",
-  "lastRunAt": 1795097320795,
-  "lastFetchAt": 1795097320795,
+  "lastRunAt": 1795100941919,
+  "lastFetchAt": 1795100941919,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -517,7 +518,7 @@
   "lastPostAtByKind": {
     "movers": 1795050513203,
     "trending": 1795086530304,
-    "news": 1795093728171,
+    "news": 1795100954541,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1795097334143,
