@@ -158,19 +158,14 @@
     "bmovers_2026-11-19_NAORIS43_VELVET37_EVAA33_IRYS31_HUMA22_BREV-9_ZKC-7_ASTER-5_AKE-5_PIPPIN-4",
     "foresight_118146",
     "trending_2026-11-20_WASTED_LUCIA_TRUMP_PEARL_SKY_EVAA",
-    "news_1tw9qp0"
+    "news_1tw9qp0",
+    "breakout_2026-11-20_NVDABlow_MMThigh"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795108113731,
-  "todayPosted": 2,
+  "lastPostAt": 1795111717965,
+  "todayPosted": 3,
   "todayKey": "Fri Nov 20 2026",
   "postHistory": [
-    {
-      "id": 389182964126722,
-      "kind": "trending",
-      "at": 1794906572189,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BP (+31.4%)\n2. SOL (+2.1%)\n3. BTC (-0.4%)\n4. ZEC (+2.9%)\n5. EVAA (+26.6%)\n6. NEAR (+1.7%)\n\n小市值代币 Backpack 和 EVAA Protocol 占据头部位置，显示短线资金正追逐高波动标的。头部资产中 Solana 与 Zcash 保持微涨，而 Bitc"
-    },
     {
       "id": 389197472089336,
       "kind": "movers",
@@ -464,6 +459,12 @@
       "kind": "news",
       "at": 1795108113732,
       "text": "Solana 官方在 X 上确认，ANT 由 @Backpack Securities 发行，并通过 @sunrise 在 Solana 上挂牌。讲真，这种发行方和渠道搭配在一起还挺直接的，没有多余的复杂结构。\n\n$ANT $SOL #加密资讯"
+    },
+    {
+      "id": 390023241120634,
+      "kind": "breakout",
+      "at": 1795111717966,
+      "text": "🔺 日线突破监控\n\nNVDAB 今天摸到 20 日新低，现价 148.63\nMMT 今天摸到 20 日新高，现价 0.2876\n\n价格摸到区间上沿，说明买盘确实推了一把，但能不能在这里站稳，单看今天这根线还不够，得后面几天确认。\n\n这种位置，光看一根线判断不了什么\n\n#行情异动 #技术分析"
     }
   ],
   "timeline": [
@@ -494,10 +495,10 @@
   ],
   "timelineKey": "2026-11-20",
   "timelineIdx": 0,
-  "timelineSentCount": 2,
+  "timelineSentCount": 3,
   "timelineDay": "2026-11-20",
-  "lastRunAt": 1795108103180,
-  "lastFetchAt": 1795108103180,
+  "lastRunAt": 1795111706209,
+  "lastFetchAt": 1795111706209,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -523,6 +524,6 @@
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1795097334143,
-    "breakout": 1795018143734
+    "breakout": 1795111717966
   }
 }
