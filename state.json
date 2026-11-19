@@ -159,19 +159,14 @@
     "foresight_118146",
     "trending_2026-11-20_WASTED_LUCIA_TRUMP_PEARL_SKY_EVAA",
     "news_1tw9qp0",
-    "breakout_2026-11-20_NVDABlow_MMThigh"
+    "breakout_2026-11-20_NVDABlow_MMThigh",
+    "news_v8mydh"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795111717965,
-  "todayPosted": 3,
+  "lastPostAt": 1795115321468,
+  "todayPosted": 4,
   "todayKey": "Fri Nov 20 2026",
   "postHistory": [
-    {
-      "id": 389197472089336,
-      "kind": "movers",
-      "at": 1794910114202,
-      "text": "📊 24h 涨跌榜（全市场）\n\n领涨：ZEC +5.0% / XMR +4.7%\n\n当前榜单仅呈现隐私币板块的集中上涨，缺乏跌方数据以观察多空力量对比。Zcash与Monero同步走强显示该细分领域内部波动幅度相对均衡。\n\n涨跌两头都拉得挺开，说明今天分歧不小；这种分化能维持多久，单看一天的榜单说不准。\n\n你更关注大盘还是个币差异？\n\n#涨跌榜单 #行情异动\n\n以上只是数据记录和个人观察，不构成"
-    },
     {
       "id": 389212190751658,
       "kind": "trend",
@@ -465,6 +460,12 @@
       "kind": "breakout",
       "at": 1795111717966,
       "text": "🔺 日线突破监控\n\nNVDAB 今天摸到 20 日新低，现价 148.63\nMMT 今天摸到 20 日新高，现价 0.2876\n\n价格摸到区间上沿，说明买盘确实推了一把，但能不能在这里站稳，单看今天这根线还不够，得后面几天确认。\n\n这种位置，光看一根线判断不了什么\n\n#行情异动 #技术分析"
+    },
+    {
+      "id": 390038001023076,
+      "kind": "news",
+      "at": 1795115321468,
+      "text": "以太坊Glamsterdam升级这事有点变数，开发人员联系至少 50 家受影响的公司后，正在考虑修改 Gas 定价提案，因为怕扰乱现有的智能合约。要是真因为兼容性担忧推迟至2027年5月，那节奏确实慢了不少，看来底层稳定性还是得放在前面考量。\n\n$ETH #加密资讯"
     }
   ],
   "timeline": [
@@ -495,10 +496,10 @@
   ],
   "timelineKey": "2026-11-20",
   "timelineIdx": 0,
-  "timelineSentCount": 3,
+  "timelineSentCount": 4,
   "timelineDay": "2026-11-20",
-  "lastRunAt": 1795111706209,
-  "lastFetchAt": 1795111706209,
+  "lastRunAt": 1795115303707,
+  "lastFetchAt": 1795115303707,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -520,7 +521,7 @@
   "lastPostAtByKind": {
     "movers": 1795050513203,
     "trending": 1795104521545,
-    "news": 1795108113732,
+    "news": 1795115321468,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1795097334143,
