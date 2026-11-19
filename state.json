@@ -152,19 +152,14 @@
     "foresight_118080",
     "trending_2026-11-19_BTC_PEARL_IRYS_PENGU_LIT_HYPE",
     "foresight_118088",
-    "news_1iro3yz"
+    "news_1iro3yz",
+    "trending_2026-11-19_WASTED_PEARL_LUCIA_IRYS_VVV_BTC"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795075726532,
-  "todayPosted": 15,
+  "lastPostAt": 1795086530304,
+  "todayPosted": 16,
   "todayKey": "Thu Nov 19 2026",
   "postHistory": [
-    {
-      "id": 389094242764328,
-      "kind": "trend",
-      "at": 1794884911725,
-      "text": "📉 $ASTER 日线数据快照（30 天）\n\n现价 0.5799，7 日 -9.2%，30 日 -17.7%。\n7 日波动不小，现价处在 40% 分位（0 = 区间最低，100 = 最高）。\n\n量能明显放大而价格没走多远，这种量价背离值得多留意几天，现在下结论还早。\n\n我一般把这种快照当背景，不当信号。\n\n你们平时看日线数据吗？\n\n$ASTER #行情分析\n\n以上只是数据记录和个人观察，不构成投"
-    },
     {
       "id": 389109124311482,
       "kind": "trending",
@@ -458,6 +453,12 @@
       "kind": "news",
       "at": 1795075726532,
       "text": "纳指期货走高，比特币再度测试6.2万美元， Anthropic上市在即\n\n比特币在本周第二次下跌至 62,000 美元后，又重新回到 63,500 美元上方，而 Anthropic 将其创纪录的 813 亿美元 IPO 定价为每股 83 美元。\n\n$BTC #加密资讯"
+    },
+    {
+      "id": 389920072490569,
+      "kind": "trending",
+      "at": 1795086530304,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. WASTED (+0.0%)\n2. PEARL (+32.4%)\n3. LUCIA (+292.6%)\n4. IRYS (+32.7%)\n5. VVV (+7.7%)\n6. BTC (-0.8%)\n\nLucia单日上涨292.6%的涨幅显著高于榜单内其他币种，与同期微涨或微跌的主流币形成鲜明对比。整个榜单由中小市值代币占据多数席位，热度高度集中在个别"
     }
   ],
   "timeline": [
@@ -488,10 +489,10 @@
   ],
   "timelineKey": "2026-11-19",
   "timelineIdx": 0,
-  "timelineSentCount": 15,
+  "timelineSentCount": 16,
   "timelineDay": "2026-11-19",
-  "lastRunAt": 1795075703402,
-  "lastFetchAt": 1795075703402,
+  "lastRunAt": 1795086504591,
+  "lastFetchAt": 1795086504591,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -513,7 +514,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1795050513203,
-    "trending": 1795068535906,
+    "trending": 1795086530304,
     "news": 1795075726532,
     "market": 1794841771320,
     "trend": 1794964121240,
