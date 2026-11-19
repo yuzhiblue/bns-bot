@@ -149,19 +149,14 @@
     "trending_2026-11-19_PEARL_BTC_HYPE_ETH_BP_PENGU",
     "foresight_118070",
     "bmovers_2026-11-19_PIPPIN59_MMT52_IRYS48_PIEVERSE40_BTW26_BREV-25_INJ-4_ASTER-3_FIL-3_ZEC-2",
-    "foresight_118080"
+    "foresight_118080",
+    "trending_2026-11-19_BTC_PEARL_IRYS_PENGU_LIT_HYPE"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795064952959,
-  "todayPosted": 12,
+  "lastPostAt": 1795068535906,
+  "todayPosted": 13,
   "todayKey": "Thu Nov 19 2026",
   "postHistory": [
-    {
-      "id": 389049992655227,
-      "kind": "trend",
-      "at": 1794874108468,
-      "text": "📉 $BNB 日线数据快照（30 天）\n\n现价 590.62，7 日 -13.2%，30 日 -19.3%。\n7 日波动不小，现价处在 13% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n这指标就当个参考，别当成答案。\n\n你们平时看日线数据吗？\n\n$BNB #行情分析\n\n以上只是数据记录和个人观察，不构成投"
-    },
     {
       "id": 389064890221877,
       "kind": "trend",
@@ -455,6 +450,12 @@
       "kind": "news",
       "at": 1795064952959,
       "text": "Nicholas Lo 在访谈里确认了币贝平台币即将推出，积分会与平台币挂钩，具体发行细节还得再等等看。讲真，这节奏挺紧凑的，11 月 4 日刚上线的币贝积分首期定跑 26 周，每周发 100 万积分，首周就有超 1.7 万名用户拿到了积分。\n\n#加密资讯"
+    },
+    {
+      "id": 389846367456976,
+      "kind": "trending",
+      "at": 1795068535906,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BTC (-2.1%)\n2. PEARL (+21.4%)\n3. IRYS (+61.9%)\n4. PENGU (-0.1%)\n5. LIT (-0.3%)\n6. HYPE (-1.4%)\n\nIrys(Irys) 24h上涨61.9%，Pearl(PEARL) 上涨21.4%，两者领涨明显。榜单中六只币里有四只上涨，但比特币作为主流币跌幅达2.1%且"
     }
   ],
   "timeline": [
@@ -485,10 +486,10 @@
   ],
   "timelineKey": "2026-11-19",
   "timelineIdx": 0,
-  "timelineSentCount": 12,
+  "timelineSentCount": 13,
   "timelineDay": "2026-11-19",
-  "lastRunAt": 1795064940618,
-  "lastFetchAt": 1795064940618,
+  "lastRunAt": 1795068516208,
+  "lastFetchAt": 1795068516208,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -510,7 +511,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1795050513203,
-    "trending": 1795054118176,
+    "trending": 1795068535906,
     "news": 1795064952959,
     "market": 1794841771320,
     "trend": 1794964121240,
