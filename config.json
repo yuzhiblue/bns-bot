@@ -63,6 +63,17 @@
   "news": {
     "enabled": true,
     "perFeed": 2,
+    "skipPlatformNotices": true,
+    "platformNames": [
+      "币安", "binance", "bithumb", "币贝", "bitbase", "backpack", "bullish",
+      "okx", "欧易", "bybit", "bitget", "gate.io", "upbit", "coinbase",
+      "kraken", "火币", "htx", "mexc", "抹茶", "kucoin", "库币"
+    ],
+    "platformActions": [
+      "上线", "下架", "移除", "新增", "开通", "交易对", "平台币", "积分", "维护", "升级", "暂停", "恢复", "提现", "充币", "闪兑",
+      "财报", "季报", "年报", "营收", "净亏损", "净利润", "亏损", "牌照", "资质", "许可", "批准", "ipo", "上市", "融资", "收购", "并购",
+      "listing", "delist", "trading pair", "platform token", "maintenance", "earnings", "quarterly", "revenue", "license", "approval", "funding", "acquisition"
+    ],
     "cardFeeds": [
       "Cointelegraph",
       "PANews"

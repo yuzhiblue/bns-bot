@@ -433,6 +433,19 @@ function mentionsCompetitor(text, link) {
   }
   return false;
 }
+// 平台公告/平台自身新闻过滤: 标题同时命中"平台主体"和"动作"才跳过。
+// 只拦平台自己发的操作(上线交易对/下架/平台币/财报/牌照等), 行情、链上数据、
+// 机构产品(如富途家族信托)、他方事件(如币安黑客钱包被转移)都不含平台主体+动作组合, 保留。
+// 开关与词表在 config.news: skipPlatformNotices / platformNames / platformActions。
+function isPlatformNotice(title, cfg) {
+  if (cfg.news?.skipPlatformNotices === false) return false;
+  const names = cfg.news?.platformNames ?? [];
+  const actions = cfg.news?.platformActions ?? [];
+  if (!names.length || !actions.length) return false;
+  const t = String(title ?? "").toLowerCase();
+  return names.some((w) => t.includes(String(w).toLowerCase()))
+      && actions.some((w) => t.includes(String(w).toLowerCase()));
+}
 // 免费 Google 翻译端点(无需 key); 失败回退原文
 async function translateText(text, to = "zh-CN") {
   const q = (text || "").trim();
@@ -650,6 +663,8 @@ async function fetchRssNews(cfg, state) {
     if (!zhT) continue; // 标题为空才跳过(翻译失败回退英文原文, 直接发英文帖)
     // 选题过滤: 资讯标题含强煽动词 / 未证实传闻时跳过, 平台易限流且易被打"需核查"标
     if (skipRe && skipRe.test(zhT)) { log(`  过滤煽动/传言标题: ${zhT.slice(0, 30)}`); continue; }
+    // 平台公告/平台自身新闻: 对中文标题判定(英文源此时已译成中文), 避免发平台自说自话的低质帖
+    if (isPlatformNotice(zhT, cfg)) { log(`  过滤平台公告: ${zhT.slice(0, 34)}`); continue; }
     // 英文规则没覆盖到、但翻译产物变成中文引流话术时在这里兜底跳过
     if (isPromoSummary(zhS)) { log(`  过滤空壳摘要: ${zhT.slice(0, 30)}`); continue; }
     // 只看英文源标题是否翻译失败: 标题是门面, 翻成中文就是中文帖(可加提问/cashtag/LLM 改写)。
@@ -715,6 +730,7 @@ async function fetchForesight(cfg) {
       const link = d.id ? `https://foresightnews.pro/news/detail/${d.id}` : "";
       if (!title || !content) continue;
       if (skipRe && skipRe.test(title)) { log(`  Foresight 过滤煽动/传言: ${title.slice(0, 30)}`); continue; }
+      if (isPlatformNotice(title, cfg)) { log(`  Foresight 过滤平台公告: ${title.slice(0, 34)}`); continue; }
       if (mentionsCompetitor(`${title} ${content}`, link)) { log(`  Foresight 过滤竞品: ${title.slice(0, 30)}`); continue; }
       const ts = d.published_at ? Number(d.published_at) * 1000 : Date.now();
       // 选题打分与 RSS 资讯一致, 重要快讯额外加权
@@ -935,10 +951,40 @@ function genNewsPost(m, cfg) {
   return lines.join("\n");
 }
 
+// 资讯的"盘面锚点"加分: 新闻里提到的币正好是当下热搜/榜单/监控池里的资产时,
+// 用户读完能立刻回去看盘, 比纯标题党/平台公告有流量。只认明确币种符号或已知全称,
+// 且必须在锚点集合内, 避免 extractCashtags 那种把 CEO/ETF 当币的误判。
+// 锚点来源: 本轮 trending/movers/binanceMovers 的币种 + state.symbols 池(按成交额刷新)。
+function marketAnchorSet(candidates, state) {
+  const set = new Set();
+  const add = (s) => { const v = String(s ?? "").toUpperCase().replace(/USDT$/, ""); if (v) set.add(v); };
+  for (const m of candidates) {
+    if (m.kind === "trending" || m.kind === "movers") for (const it of (m.items ?? [])) add(it.sym);
+    if (m.kind === "binanceMovers") { for (const it of (m.up ?? [])) add(it.sym); for (const it of (m.down ?? [])) add(it.sym); }
+  }
+  for (const s of (state?.symbols ?? [])) add(s);
+  return set;
+}
+function marketAnchorBonus(m, anchors) {
+  if (!anchors?.size) return 0;
+  const s = `${m.titleEn ?? ""} ${m.title ?? ""} ${m.summary ?? ""}`;
+  const mentioned = new Set();
+  for (const x of s.matchAll(/\b([A-Z]{2,12})\b/g)) mentioned.add(x[1].toUpperCase());
+  for (const [name, sym] of Object.entries(KNOWN_COINS)) {
+    if (new RegExp(`\\b${name}\\b`, "i").test(s)) mentioned.add(sym);
+  }
+  for (const [name, sym] of [["比特币", "BTC"], ["以太坊", "ETH"], ["索拉纳", "SOL"]]) {
+    if (s.includes(name)) mentioned.add(sym);
+  }
+  let hits = 0;
+  for (const sym of mentioned) if (anchors.has(sym)) hits++;
+  return Math.min(20, hits * 10);
+}
+
 // 热度评分: 事件强度 + 新鲜度, 只用于同一轮多条素材里挑一条发。
 // 类型优先级: 行情异动 > 热搜 > 涨跌榜 > 新闻; 各类一天可多条(按内容去重),
 // 相邻两条不能同类(选择逻辑见 runOnce)。
-function heatScore(m) {
+function heatScore(m, anchors) {
   const ageHours = Math.max(0, (Date.now() - (m.ts ?? Date.now())) / 3600000);
   const freshBonus = Math.max(0, 20 - ageHours); // 越新越高, 20 分封顶
   let base;
@@ -962,7 +1008,7 @@ function heatScore(m) {
     case "news":
       // P1: 选题价值分直接叠加到 base —— 交易相关帖能压过热搜榜, 政治监管冷门帖沉底。
       // 中文资讯加权: 走 LLM 整帖改写(质量更高), 英文仅机翻兜底; 同轮中文优先于英文。
-      base = 40 + (m.topicScore ?? 0) + (m.lang === "zh" ? 10 : 0);
+      base = 40 + (m.topicScore ?? 0) + (m.lang === "zh" ? 10 : 0) + marketAnchorBonus(m, anchors);
       break;
     default:
       base = 10;
@@ -1458,12 +1504,14 @@ async function runOnce() {
   }
 
   // 4. 热度排序: 多条候选只发热度最高的那一条
+  // 资讯的盘面锚点取"本轮榜单币种 + 当日监控池", 让新闻里提到的币正好在异动的那些优先发。
+  const anchors = marketAnchorSet(fresh, state);
   const scored = fresh
-    .map((m) => ({ m, score: heatScore(m) }))
+    .map((m) => ({ m, score: heatScore(m, anchors) }))
     .sort((a, b) => b.score - a.score);
   if (scored.length > 1) {
     log(`  本轮 ${scored.length} 条候选热度: ${scored.map(({ m, score }) =>
-      `${m.kind}${m.kind === "news" && m.topicScore ? `(选题${m.topicScore > 0 ? "+" : ""}${m.topicScore})` : ""}:${score.toFixed(1)}`
+      `${m.kind}${m.kind === "news" ? `(选题${m.topicScore ?? 0}${marketAnchorBonus(m, anchors) ? `+盘面${marketAnchorBonus(m, anchors)}` : ""})` : ""}:${score.toFixed(1)}`
     ).join(" / ")}`);
   }
   // 类型冷却: 榜单类(trending/movers)分数高(新鲜度加成每轮拿满)且榜单变化频繁,
