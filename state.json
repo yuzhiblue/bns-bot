@@ -147,19 +147,14 @@
     "news_9hue41",
     "movers_2026-11-19_ZEC",
     "trending_2026-11-19_PEARL_BTC_HYPE_ETH_BP_PENGU",
-    "foresight_118070"
+    "foresight_118070",
+    "bmovers_2026-11-19_PIPPIN59_MMT52_IRYS48_PIEVERSE40_BTW26_BREV-25_INJ-4_ASTER-3_FIL-3_ZEC-2"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795057720125,
-  "todayPosted": 10,
+  "lastPostAt": 1795061321675,
+  "todayPosted": 11,
   "todayKey": "Thu Nov 19 2026",
   "postHistory": [
-    {
-      "id": 389020521621787,
-      "kind": "trend",
-      "at": 1794866913384,
-      "text": "📉 $ETH 日线数据快照（30 天）\n\n现价 1,835.54，7 日 -14.0%，30 日 -23.8%。\n7 日波动不小，现价处在 15% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n说到底都是过去式，后面怎么走还得看盘面。\n\n你们会不会拿均线当参考？\n\n$ETH #行情分析\n\n以上只是数据记录和个"
-    },
     {
       "id": 389035282301047,
       "kind": "trending",
@@ -453,6 +448,12 @@
       "kind": "news",
       "at": 1795057720125,
       "text": "Bithumb那边突然公告要上线KNTQ韩元交易对，这动作有点意思。之前韩区用户对KNTQ的关注度一直不低，现在正式开通本地货币直充通道，流动性大概率会直接上一个台阶。\n\n$KNTQ #加密资讯"
+    },
+    {
+      "id": 389816817914338,
+      "kind": "binanceMovers",
+      "at": 1795061321676,
+      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：PIPPIN +59.0% / MMT +52.1% / IRYS +47.6% / PIEVERSE +39.6% / BTW +25.9%\n领跌：BREV -24.8% / INJ -3.8% / ASTER -3.2% / FIL -2.9% / ZEC -2.3%\n\n涨幅第一的PIPPIN上涨59.0%与跌幅第一的BREV下跌24.8%，显示出明显的"
     }
   ],
   "timeline": [
@@ -483,10 +484,10 @@
   ],
   "timelineKey": "2026-11-19",
   "timelineIdx": 0,
-  "timelineSentCount": 10,
+  "timelineSentCount": 11,
   "timelineDay": "2026-11-19",
-  "lastRunAt": 1795057709751,
-  "lastFetchAt": 1795057709751,
+  "lastRunAt": 1795061307209,
+  "lastFetchAt": 1795061307209,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -512,7 +513,7 @@
     "news": 1795057720125,
     "market": 1794841771320,
     "trend": 1794964121240,
-    "binanceMovers": 1795039729738,
+    "binanceMovers": 1795061321676,
     "breakout": 1795018143734
   }
 }
