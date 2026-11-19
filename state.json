@@ -148,19 +148,14 @@
     "movers_2026-11-19_ZEC",
     "trending_2026-11-19_PEARL_BTC_HYPE_ETH_BP_PENGU",
     "foresight_118070",
-    "bmovers_2026-11-19_PIPPIN59_MMT52_IRYS48_PIEVERSE40_BTW26_BREV-25_INJ-4_ASTER-3_FIL-3_ZEC-2"
+    "bmovers_2026-11-19_PIPPIN59_MMT52_IRYS48_PIEVERSE40_BTW26_BREV-25_INJ-4_ASTER-3_FIL-3_ZEC-2",
+    "foresight_118080"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795061321675,
-  "todayPosted": 11,
+  "lastPostAt": 1795064952959,
+  "todayPosted": 12,
   "todayKey": "Thu Nov 19 2026",
   "postHistory": [
-    {
-      "id": 389035282301047,
-      "kind": "trending",
-      "at": 1794870517096,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BP (+38.2%)\n2. SOL (-0.7%)\n3. BTC (+0.4%)\n4. TAO (-1.4%)\n5. AERO (+0.1%)\n6. PENGU (-1.1%)\n\n榜单前列由单币种大幅异动（Backpack 24小时上涨38.2%）与主流资产（BTC、SOL）的微幅震荡并存，显示市场注意力向个别高波动项目集中而非全板块普涨。主流币价"
-    },
     {
       "id": 389049992655227,
       "kind": "trend",
@@ -454,6 +449,12 @@
       "kind": "binanceMovers",
       "at": 1795061321676,
       "text": "📊 币安合约 24h 涨跌榜\n\n领涨：PIPPIN +59.0% / MMT +52.1% / IRYS +47.6% / PIEVERSE +39.6% / BTW +25.9%\n领跌：BREV -24.8% / INJ -3.8% / ASTER -3.2% / FIL -2.9% / ZEC -2.3%\n\n涨幅第一的PIPPIN上涨59.0%与跌幅第一的BREV下跌24.8%，显示出明显的"
+    },
+    {
+      "id": 389831691629640,
+      "kind": "news",
+      "at": 1795064952959,
+      "text": "Nicholas Lo 在访谈里确认了币贝平台币即将推出，积分会与平台币挂钩，具体发行细节还得再等等看。讲真，这节奏挺紧凑的，11 月 4 日刚上线的币贝积分首期定跑 26 周，每周发 100 万积分，首周就有超 1.7 万名用户拿到了积分。\n\n#加密资讯"
     }
   ],
   "timeline": [
@@ -484,10 +485,10 @@
   ],
   "timelineKey": "2026-11-19",
   "timelineIdx": 0,
-  "timelineSentCount": 11,
+  "timelineSentCount": 12,
   "timelineDay": "2026-11-19",
-  "lastRunAt": 1795061307209,
-  "lastFetchAt": 1795061307209,
+  "lastRunAt": 1795064940618,
+  "lastFetchAt": 1795064940618,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -510,7 +511,7 @@
   "lastPostAtByKind": {
     "movers": 1795050513203,
     "trending": 1795054118176,
-    "news": 1795057720125,
+    "news": 1795064952959,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1795061321676,
