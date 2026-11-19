@@ -1106,24 +1106,35 @@ async function tryImageForMaterial(material, cfg) {
       log(`  配图: ${material.kind} 卡片上传成功 ${url}`);
       return [url];
     }
-    // 资讯帖: news.cardFeeds 列出的源(当前 Cointelegraph)改用自己的生成卡片,
-    // 不搬第三方封面上的媒体水印/标识; 其余源仍沿用 RSS 自带配图。
-    // 以后发现别的源也有水印, 只需把源名加进 news.cardFeeds, 不用改代码。
+    // 资讯帖: news.cardFeeds 列出的源强制用自生成卡片(避开第三方封面水印);
+    // 其余源优先用 RSS 自带配图, 没有图 / 图格式不支持 / 下载上传失败时, 自动补一张资讯卡片,
+    // 避免 Odaily 等无图源的资讯帖裸奔。总开关仍是 post.imageCard。
     if (material.kind === "news") {
-      if ((cfg.news?.cardFeeds ?? []).includes(material.source)) {
+      const newsCard = async () => {
         const buf = makeNewsCard({ titleZh: material.title, titleEn: material.titleEn, at: material.ts });
         const url = await uploadImage(cfg.openApiKey, buf, "png");
         log(`  配图: news 卡片上传成功 ${url}`);
         return [url];
-      }
+      };
+      if ((cfg.news?.cardFeeds ?? []).includes(material.source)) return await newsCard();
       if (material.image) {
         const ext = imageExt(material.image);
-        if (!ext) { log("  配图: 非 jpg/png, 跳过"); return null; }
-        const buf = await downloadImage(material.image);
-        const url = await uploadImage(cfg.openApiKey, buf, ext);
-        log(`  配图: 远程图上传成功 ${url}`);
-        return [url];
+        if (!ext) {
+          log("  配图: 非 jpg/png, 改用 news 卡片");
+        } else {
+          try {
+            const buf = await downloadImage(material.image);
+            const url = await uploadImage(cfg.openApiKey, buf, ext);
+            log(`  配图: 远程图上传成功 ${url}`);
+            return [url];
+          } catch (e) {
+            log(`  配图: 远程图失败(${e.message}), 改用 news 卡片`);
+          }
+        }
+      } else {
+        log("  配图: RSS 无图, 改用 news 卡片");
       }
+      return await newsCard();
     }
   } catch (e) {
     log(`  配图失败, 降级纯文本: ${e.message}`);

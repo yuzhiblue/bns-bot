@@ -63,7 +63,7 @@ GitHub 自带 `schedule` 已移除, 仅 CNB 触发）:
 | `post.disclaimer` | 帖子结尾追加的免责声明；当前**留空**（2026-11-18 移除，固定每帖同一句声明易被判机器模板、触发降权）；留空即不追加 |
 | `post.take` | 是否在帖子里加**数据解读段**, 默认 `true`; 设 `false` 可一键退回纯短文案 |
 | `post.cta` | 结尾**开放式提问**（"你们怎么看？"这类），默认 `false` 关闭（2026-11-18 移除：固定套路像尬聊、易判机器模板降权）；设 `true` 可恢复（含资讯帖的提问） |
-| `news.cardFeeds` | 哪些资讯源改用**自生成卡片**；填 `news.feeds[].name` 的原值、大小写需一致（当前 `["Cointelegraph","PANews"]`，不是 URL）；其余源仍用 RSS 自带配图 |
+| `news.cardFeeds` | 哪些资讯源**强制用自生成卡片**（避开第三方水印）；填 `news.feeds[].name` 的原值、大小写需一致（当前 `["Cointelegraph","PANews"]`，不是 URL）；其余源优先 RSS 自带配图，**无图 / 图格式不支持 / 下载失败时自动补一张资讯卡片** |
 | `news.skipWords` | 资讯标题含这些强情绪 / 传言词（暴跌、崩盘、狂潮、据传、rumor…）时**直接跳过该条**，规避平台限流与「需核查」标记 |
 | `llm` | 资讯 / 热搜榜 / 涨跌榜的解读由 LLM 生成（`enabled` / `baseURL` / `model` / `apiKeyEnv` / `apiKey`）；默认走 Agnes（`apiKeyEnv` 指向仓库 Secret `AGNES_API_KEY`，本地调试可在 `config.local.json` 的 `llm.apiKey` 填明文）；资讯失败时走 A 兜底，热搜 / 涨跌榜失败时回退 takes.js 规则推导 |
 
@@ -186,8 +186,9 @@ GitHub 自带 `schedule` 已移除, 仅 CNB 触发）:
 以上卡片共用同一套视觉规格（1080×1080 深色底、绿涨红跌、CST 时间、底部免责条）。
 `news.cardFeeds` 里的源（当前 Cointelegraph / PANews）用自生成卡片，不再下载第三方封面——
 其封面左上角有半透明媒体 logo，抹掉别家水印比带水印转载更不合适；
-其余资讯源仍按 RSS 自带 jpg/png 配图随帖发一张；都不满足时发纯文本。
-若以后发现其它源也有水印，把该源在 `news.feeds[].name` 里的名字（大小写一致）加进 `news.cardFeeds` 即可，不用改代码。
+其余资讯源仍优先用 RSS 自带 jpg/png 配图。**RSS 无图（如 Odaily）、图格式不支持或下载上传失败时，
+自动补一张同样的资讯卡片**，不再裸奔发纯文本；只有卡片生成/上传本身失败才降级纯文本。
+若以后发现其它源封面有水印，把该源在 `news.feeds[].name` 里的名字（大小写一致）加进 `news.cardFeeds` 即可，不用改代码。
 
 - **图从哪来**：在 GitHub Actions runner 本地用 `@napi-rs/canvas` 生成 PNG，再走币安自己的
   接口上传，**不依赖图床、不占 Cloudflare / GitHub 私有库额度、不新增账号**，也不消耗发帖额度。
@@ -498,8 +499,8 @@ CloudFront 拦截, 要么自己出口也被币安 451; 币安测试网 `testnet.
 
 **当前实际会有内容的素材源**: 行情异动、热搜榜、涨跌榜、形态突破、币安合约涨跌榜、资讯 RSS
 （2026-11-18 已开启, 4 个英文源 Cointelegraph / Decrypt / CoinDesk / BitcoinMagazine + 2 个中文源:
-PANews `/rss.xml?lang=zh&type=NEWS`、Odaily `rss.odaily.news/rss/newsflash`（官方 RSS, 无配图走纯文本,
-云端 probe 实测 200）, `perFeed=2`）、Foresight News 快讯。
+PANews `/rss.xml?lang=zh&type=NEWS`、Odaily `rss.odaily.news/rss/newsflash`（官方 RSS, 本身无配图,
+会自动补一张资讯卡片, 云端 probe 实测 200）, `perFeed=2`）、Foresight News 快讯。
 
 **Foresight News 源**: 走官方 API `api.foresightnews.pro/v1/news`（免 key, 云端 probe 实测 200,
 run `44230729367`）。数据用 **base64 + zlib 压缩**——`fetchForesight()` 里
