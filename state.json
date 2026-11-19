@@ -151,19 +151,14 @@
     "bmovers_2026-11-19_PIPPIN59_MMT52_IRYS48_PIEVERSE40_BTW26_BREV-25_INJ-4_ASTER-3_FIL-3_ZEC-2",
     "foresight_118080",
     "trending_2026-11-19_BTC_PEARL_IRYS_PENGU_LIT_HYPE",
-    "foresight_118088"
+    "foresight_118088",
+    "news_1iro3yz"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795072154973,
-  "todayPosted": 14,
+  "lastPostAt": 1795075726532,
+  "todayPosted": 15,
   "todayKey": "Thu Nov 19 2026",
   "postHistory": [
-    {
-      "id": 389079509731478,
-      "kind": "trend",
-      "at": 1794881314794,
-      "text": "📉 $BTC 日线数据快照（30 天）\n\n现价 64,800.01，7 日 -12.2%，30 日 -20.9%。\n7 日波动不小，现价处在 12% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n数据摆这儿了，怎么解读看各自的系统。\n\n这类数据你们多久看一次？\n\n$BTC #行情分析\n\n以上只是数据记录和个人"
-    },
     {
       "id": 389094242764328,
       "kind": "trend",
@@ -457,6 +452,12 @@
       "kind": "news",
       "at": 1795072154973,
       "text": "以太坊社区提交了「动态个人合并激励」EIP 草案，通过引入新的 BeaconState 字段 consolidation_force 来鼓励节点合并。这套机制会在每个 epoch 处理奖励 / 惩罚后，从每个活跃验证者余额中扣除合并激励，并让验证者数量目标按计划线性下降。有意思的是，当实际数量偏离目标时，机制会根据程度动态调整压力，高于目标时缓慢上升，低于时则更快下降。\n\n$EIP $ETH #加"
+    },
+    {
+      "id": 389875820088942,
+      "kind": "news",
+      "at": 1795075726532,
+      "text": "纳指期货走高，比特币再度测试6.2万美元， Anthropic上市在即\n\n比特币在本周第二次下跌至 62,000 美元后，又重新回到 63,500 美元上方，而 Anthropic 将其创纪录的 813 亿美元 IPO 定价为每股 83 美元。\n\n$BTC #加密资讯"
     }
   ],
   "timeline": [
@@ -487,10 +488,10 @@
   ],
   "timelineKey": "2026-11-19",
   "timelineIdx": 0,
-  "timelineSentCount": 14,
+  "timelineSentCount": 15,
   "timelineDay": "2026-11-19",
-  "lastRunAt": 1795072142346,
-  "lastFetchAt": 1795072142346,
+  "lastRunAt": 1795075703402,
+  "lastFetchAt": 1795075703402,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -513,7 +514,7 @@
   "lastPostAtByKind": {
     "movers": 1795050513203,
     "trending": 1795068535906,
-    "news": 1795072154973,
+    "news": 1795075726532,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1795061321676,
