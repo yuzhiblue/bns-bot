@@ -160,19 +160,14 @@
     "trending_2026-11-20_WASTED_LUCIA_TRUMP_PEARL_SKY_EVAA",
     "news_1tw9qp0",
     "breakout_2026-11-20_NVDABlow_MMThigh",
-    "news_v8mydh"
+    "news_v8mydh",
+    "bmovers_2026-11-20_NAORIS51_ICNT32_IRYS27_EVAA25_BTW21_PIEVERSE-14_ZKC-13_BREV-11_SKY-9_ASTER-6"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795115321468,
-  "todayPosted": 4,
+  "lastPostAt": 1795118918219,
+  "todayPosted": 5,
   "todayKey": "Fri Nov 20 2026",
   "postHistory": [
-    {
-      "id": 389212190751658,
-      "kind": "trend",
-      "at": 1794913707609,
-      "text": "📉 $MUB 日线数据快照（30 天）\n\n现价 717.31，7 日 -2.1%，30 日 -20.8%。\n死叉排列，现价在 两条均线之下，区间位置 20%。\n\n价格贴着区间下沿，确实偏弱，但低位本身不代表什么，有没有资金接才是关键。\n\n这指标就当个参考，别当成答案。\n\n这类数据你们多久看一次？\n\n$MUB #行情分析\n\n以上只是数据记录和个人观察，不构成投资建议；市场变化快，请自行判断、DYO"
-    },
     {
       "id": 389256452493046,
       "kind": "trending",
@@ -466,6 +461,12 @@
       "kind": "news",
       "at": 1795115321468,
       "text": "以太坊Glamsterdam升级这事有点变数，开发人员联系至少 50 家受影响的公司后，正在考虑修改 Gas 定价提案，因为怕扰乱现有的智能合约。要是真因为兼容性担忧推迟至2027年5月，那节奏确实慢了不少，看来底层稳定性还是得放在前面考量。\n\n$ETH #加密资讯"
+    },
+    {
+      "id": 390052733411389,
+      "kind": "binanceMovers",
+      "at": 1795118918219,
+      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：NAORIS +51.3% / ICNT +32.3% / IRYS +27.1% / EVAA +25.3% / BTW +20.5%\n领跌：PIEVERSE -13.9% / ZKC -12.9% / BREV -10.8% / SKY -8.8% / ASTER -5.7%\n\nNAORIS以+51.3%领涨，PIEVERSE以-13.9%领跌，两者间存"
     }
   ],
   "timeline": [
@@ -496,10 +497,10 @@
   ],
   "timelineKey": "2026-11-20",
   "timelineIdx": 0,
-  "timelineSentCount": 4,
+  "timelineSentCount": 5,
   "timelineDay": "2026-11-20",
-  "lastRunAt": 1795115303707,
-  "lastFetchAt": 1795115303707,
+  "lastRunAt": 1795118903957,
+  "lastFetchAt": 1795118903957,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -524,7 +525,7 @@
     "news": 1795115321468,
     "market": 1794841771320,
     "trend": 1794964121240,
-    "binanceMovers": 1795097334143,
+    "binanceMovers": 1795118918219,
     "breakout": 1795111717966
   }
 }
