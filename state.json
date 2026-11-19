@@ -145,19 +145,14 @@
     "trending_2026-11-19_WASTED_WSTAR_LUCIA_TRUMP_PENGU_PEARL",
     "bmovers_2026-11-19_PIEVERSE73_MMT70_PIPPIN64_EVAA21_ZKC20_BREV-23_ASTER-8_PUMP-8_FIL-5_ENA-5",
     "news_9hue41",
-    "movers_2026-11-19_ZEC"
+    "movers_2026-11-19_ZEC",
+    "trending_2026-11-19_PEARL_BTC_HYPE_ETH_BP_PENGU"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795050513203,
-  "todayPosted": 8,
+  "lastPostAt": 1795054118176,
+  "todayPosted": 9,
   "todayKey": "Thu Nov 19 2026",
   "postHistory": [
-    {
-      "id": 388991024760072,
-      "kind": "trend",
-      "at": 1794859712015,
-      "text": "📉 $SOL 日线数据快照（30 天）\n\n现价 71.61，7 日 -17.4%，30 日 -31.2%。\n7 日波动不小，现价处在 10% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n数字不会说谎，但也没法告诉你下一步。\n\n这种横盘/波动你们一般怎么看？\n\n$SOL #行情分析\n\n以上只是数据记录和个人观"
-    },
     {
       "id": 389005978958222,
       "kind": "trend",
@@ -451,6 +446,12 @@
       "kind": "movers",
       "at": 1795050513203,
       "text": "📊 24h 涨跌榜（全市场）\n\n领跌：ZEC -4.8%\n\nZcash（ZEC）以-4.8%的跌幅成为榜单上唯一达到波动阈值的币种，处于领跌位置。领涨榜暂无符合波动≥4%条件的币种，呈现单边下跌且集中度较高的市场结构。\n\n涨跌两头都拉得挺开，说明今天分歧不小；这种分化能维持多久，单看一天的榜单说不准。\n\n#涨跌榜单 #行情异动"
+    },
+    {
+      "id": 389787312441442,
+      "kind": "trending",
+      "at": 1795054118176,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. PEARL (+24.0%)\n2. BTC (-2.3%)\n3. HYPE (-2.4%)\n4. ETH (-1.3%)\n5. BP (+2.3%)\n6. PENGU (-1.8%)\n\nPearl（PEARL）以24小时24.0%的涨幅领跑榜单，而比特币（BTC）与以太坊（ETH）分别录得2.3%和1.3%的跌幅。榜单中涨幅主要由中小市值币种贡献，主"
     }
   ],
   "timeline": [
@@ -481,10 +482,10 @@
   ],
   "timelineKey": "2026-11-19",
   "timelineIdx": 0,
-  "timelineSentCount": 8,
+  "timelineSentCount": 9,
   "timelineDay": "2026-11-19",
-  "lastRunAt": 1795050503436,
-  "lastFetchAt": 1795050503436,
+  "lastRunAt": 1795054108328,
+  "lastFetchAt": 1795054108328,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -506,7 +507,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1795050513203,
-    "trending": 1795036111166,
+    "trending": 1795054118176,
     "news": 1795046921594,
     "market": 1794841771320,
     "trend": 1794964121240,
