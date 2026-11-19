@@ -572,16 +572,21 @@ async function genNewsRewrite(m, cfg) {
     return null;
   }
   // 确定性校验: 只校验"事实数字"——百分比 / 金额 / 带数量词的数字, 防止 LLM 改写时丢或改关键事实。
-  // 先剥掉日期(11月18日/2026年)、时间(11:00)、代号(EWJB 里的数字)再抽, 否则公告类新闻
-  // 数字极密集(日期+时间+代码+数量), LLM 口语化后必然触发缺失、100% 走 A 兜底发搬运帖。
+  // 先剥掉日期(11月18日/2026年)、时间(11:00)、时长(19个月/24小时)、代号(EWJB 里的数字)再抽,
+  // 否则公告类新闻数字极密集(日期+时间+代码+数量), LLM 口语化后必然触发缺失、100% 走 A 兜底发搬运帖。
+  // 注: "19个月"若被正则切出"19个"会误杀改写, 时长属可口语化的时间表述, 一并剥掉。
   const src = `${m.title} ${m.summary}`;
   const factNums = src
     .replace(/\d{4}年\d{1,2}月\d{1,2}日/g, " ")
     .replace(/\d{1,2}月\d{1,2}日/g, " ")
     .replace(/\d{4}年/g, " ")
+    .replace(/\d+(?:\.\d+)?\s*(?:个月|小时|天|分钟)/g, " ")
     .replace(/\d{1,2}:\d{2}(:\d{2})?/g, " ")
     .match(/\d[\d,.]*(?:%|亿|万|美元|个|枚|只|家|笔|次|倍|种|项|对|天|小时)/g) ?? [];
-  const missing = factNums.filter((n) => !text.includes(n));
+  // LLM 中文输出常在数字与单位间留空格(如"5000 万美元"、"19 个"), 比对时忽略空白,
+  // 但数字本身仍必须逐字一致, 改错(5000万→6000万)照样拦截。
+  const compact = text.replace(/\s+/g, "");
+  const missing = factNums.filter((n) => !compact.includes(n));
   if (missing.length) {
     log(`  LLM 改写丢失关键数字(${missing.join(", ")}), 走 A 兜底`);
     return null;
