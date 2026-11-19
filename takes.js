@@ -5,7 +5,7 @@
  * 无网络、不编造数据; 档内随机二选一增加变化(不联网、不耗 LLM 额度)。
  *
  * 注: 资讯(news)的解读不在这里——资讯帖整帖由 LLM 改写(见 bot.js genNewsRewrite), 失败走 A 兜底;
- *     热搜/涨跌榜由 LLM 点评优先(m.take), 本文件只作为 LLM 失败时的规则回退。
+ *     热搜/涨跌榜/币安合约榜由 LLM 点评优先(m.take), 本文件只作为 LLM 失败时的规则回退。
  */
 
 function p1(n) {
@@ -112,11 +112,49 @@ function moversTake(m) {
   return lead + "真要琢磨，先看大盘和杠杆清算，一个个找理由反而容易想多。";
 }
 
+// 币安合约榜: 回退也要点名币种并做数字比较, 不再写"合约带杠杆""看个热闹"这类通用句。
+function binanceMoversTake(m) {
+  const clean = (arr) => (arr ?? [])
+    .map((x) => ({ sym: x.sym, pct: Number(x.pct) }))
+    .filter((x) => x.sym && Number.isFinite(x.pct));
+  const up = clean(m.up).sort((a, b) => b.pct - a.pct);
+  const down = clean(m.down).sort((a, b) => a.pct - b.pct);
+  if (!up.length && !down.length) return "这份合约榜没有可用的涨跌数据。";
+
+  const topUp = up[0], topDown = down[0], secondUp = up[1];
+  const parts = [];
+  if (topUp) {
+    let s = `领涨 ${topUp.sym} +${p1(topUp.pct)}%`;
+    if (secondUp && topUp.pct > 0 && secondUp.pct > 0) {
+      const ratio = topUp.pct / secondUp.pct;
+      if (ratio >= 1.4) s += `，是第二名 ${secondUp.sym} +${p1(secondUp.pct)}% 的 ${ratio.toFixed(1)} 倍，断层领先`;
+      else if (ratio <= 1.15) s += `，和第二名 ${secondUp.sym} +${p1(secondUp.pct)}% 咬得很近`;
+      else s += `，后面 ${secondUp.sym} +${p1(secondUp.pct)}% 也跟得不慢`;
+    }
+    parts.push(s);
+  } else parts.push("领涨端没有达到波动门槛的币");
+
+  if (topDown) parts.push(`领跌 ${topDown.sym} -${p1(topDown.pct)}%`);
+  else parts.push("领跌端没有达到波动门槛的币");
+
+  let compare;
+  if (topUp && topDown) {
+    const a = topUp.pct, b = Math.abs(topDown.pct);
+    compare = a > b * 1.5 ? "涨幅端波动比跌幅端猛得多"
+      : b > a * 1.5 ? "跌幅端波动比涨幅端猛得多"
+      : "涨跌两端波动幅度接近";
+  } else if (topUp) compare = "跌幅端没有达标标的，属于单边上涨";
+  else compare = "涨幅端没有达标标的，属于单边下跌";
+
+  return `${parts.join("；")}。${compare}；${up.length} 涨对 ${down.length} 跌。`;
+}
+
 function buildTake(m) {
   switch (m.kind) {
     case "market": return marketTake(m);
     case "trending": return trendingTake(m);
     case "movers": return moversTake(m);
+    case "binanceMovers": return binanceMoversTake(m);
     default: return "";
   }
 }

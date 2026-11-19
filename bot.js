@@ -528,10 +528,17 @@ async function genTake(m, cfg) {
   } else if (m.kind === "movers") {
     const list = m.items.map((x) => `${x.name}(${x.sym}) 24h ${x.pct >= 0 ? "+" : ""}${(x.pct ?? 0).toFixed(1)}%`).join("\n");
     user = `24h 领涨/领跌榜(波动≥4%):\n${list}\n\n点评榜单结构: 点名领涨和领跌各 1 个具体币种及涨跌幅, 再说双方数量对比和集中度。只基于榜单数据, 不猜原因、不给买卖建议; 2-3 句, 不用空泛套话, 不要以问号结尾。`;
+  } else if (m.kind === "binanceMovers") {
+    const fmt = (x) => `${x.sym} ${(x.pct ?? 0) >= 0 ? "+" : ""}${(x.pct ?? 0).toFixed(1)}%`;
+    const ups = (m.up ?? []).map(fmt).join(" / ");
+    const downs = (m.down ?? []).map(fmt).join(" / ");
+    user = `币安永续合约 24h 涨跌榜(仅币安, 已排除其他交易所):\n领涨: ${ups || "无"}\n领跌: ${downs || "无"}\n\n点评这份榜单, 必须给出能从数字核对的具体关系, 不要写感想:\n1. 点名涨幅第一和跌幅第一的币种及具体涨跌幅;\n2. 比较领涨第一和第二的差距——是断层领先还是咬得很近;\n3. 比较领涨端和领跌端谁的波动更极端;\n4. 指出是否单边(某一端没有币达到波动门槛)。\n只陈述榜单里有的数据, 不猜原因、不给买卖建议、不预测价格; 2-3 句; 不要以问号结尾。\n严禁写"合约带杠杆""涨得急回撤也快""榜单只是快照""看个热闹""背后的资金动向才是重点""市场情绪起落快"这类能套到任何一天的通用句。`;
   } else {
     return null;
   }
-  const opts = { temperature: 0.6, maxTokens: 200 };
+  // 合约榜要点名多个数字、做两侧比较, 130 字容易截断, 单独放宽字数与 token 预算
+  const deep = m.kind === "binanceMovers";
+  const opts = { temperature: 0.6, maxTokens: deep ? 280 : 200 };
   let text = await llmChat(cfg, system, user, { ...opts, label: "LLM 解读" });
   if (!text) {
     log("  LLM 解读首次失败, 重试一次");
@@ -540,7 +547,7 @@ async function genTake(m, cfg) {
   if (!text) return null;
   const clean = text.replace(/\s+/g, " ");
   log(`  LLM 解读 OK(${clean.length}字)`);
-  return clean.slice(0, cfg.llm?.maxChars ?? 130);
+  return clean.slice(0, deep ? 190 : (cfg.llm?.maxChars ?? 130));
 }
 
 // LLM 整帖改写: 把新闻标题+摘要改写成口语化的个人分享帖, 降低"搬运"判定风险。
@@ -854,13 +861,8 @@ function genBinanceMoversPost(m, cfg) {
   lines.push("");
   if (m.up.length) lines.push("领涨：" + m.up.map((i) => `${i.sym} ${pct1(i.pct)}`).join(" / "));
   if (m.down.length) lines.push("领跌：" + m.down.map((i) => `${i.sym} ${pct1(i.pct)}`).join(" / "));
-  const lead = m.up[0]?.pct ?? 0, lag = m.down[0]?.pct ?? 0;
-  lines.push("", Math.abs(lead) > Math.abs(lag)
-    ? "领涨这边的波动更猛一些，不过合约带杠杆，涨得急的往往回撤也快，榜单只能当天的快照看。"
-    : "领跌这边的幅度更极端，合约市场情绪起落都快，这种榜单看看就好，隔天可能就换一批。");
-  const closer = "榜单看个热闹就行，背后的资金动向才是重点";
-  lines.push("", closer);
-  lines.push(...ctaLines(m, cfg, closer));
+  lines.push(...takeLines(m, cfg));
+  lines.push(...ctaLines(m, cfg, ""));
   lines.push("", "#涨跌榜单 #合约情绪");
   return lines.join("\n");
 }
@@ -1490,10 +1492,11 @@ async function runOnce() {
     const alt = eligible.find(({ m }) => m.kind !== lastKind);
     if (alt) material = alt.m;
   }
-  // 中文资讯/热搜/涨跌榜在真实发帖前调 LLM; 行情异动/合约榜不用 LLM(数字即信息, 硬凑观点只会是套话)。
+  // 中文资讯/热搜/涨跌榜/合约榜在真实发帖前调 LLM; 行情异动不用 LLM(数字即信息, 硬凑观点只会是套话)。
   // 资讯: 整帖改写成口语化分享帖(m.rewrite, 降低搬运判定), 失败走 A 兜底;
-  // 热搜/涨跌榜: 榜单结构点评(m.take), 失败回退规则推导。
-  const TAKE_KINDS = ["news", "trending", "movers"];
+  // 榜单类: 结构点评(m.take), 失败回退 takes.js 规则推导。合约榜原来只有固定文案,
+  // 连续多条一字不差, 现同样走点评, prompt 要求做数字比较(断层/两侧力量), 不用通用感想。
+  const TAKE_KINDS = ["news", "trending", "movers", "binanceMovers"];
   if (TAKE_KINDS.includes(material.kind)
       && (material.kind !== "news" || material.lang === "zh")
       && config.post?.take !== false && !config.dryRun) {
