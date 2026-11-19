@@ -163,19 +163,14 @@
     "news_v8mydh",
     "bmovers_2026-11-20_NAORIS51_ICNT32_IRYS27_EVAA25_BTW21_PIEVERSE-14_ZKC-13_BREV-11_SKY-9_ASTER-6",
     "news_110vo7e",
-    "trending_2026-11-20_WASTED_LUCIA_TRUMP_BTC_PENGU_MON"
+    "trending_2026-11-20_WASTED_LUCIA_TRUMP_BTC_PENGU_MON",
+    "news_ym5kmv"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795126139952,
-  "todayPosted": 7,
+  "lastPostAt": 1795129730728,
+  "todayPosted": 8,
   "todayKey": "Fri Nov 20 2026",
   "postHistory": [
-    {
-      "id": 389285953009947,
-      "kind": "trend",
-      "at": 1794931715986,
-      "text": "📉 $UNI 日线数据快照（30 天）\n\n现价 5.337，7 日 -20.0%，30 日 -27.1%。\n7 日波动不小，现价处在 22% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n说到底都是过去式，后面怎么走还得看盘面。\n\n这种快照你会重点看哪几项？\n\n$UNI #行情分析\n\n以上只是数据记录和个人观"
-    },
     {
       "id": 389300684132476,
       "kind": "trend",
@@ -469,6 +464,12 @@
       "kind": "trending",
       "at": 1795126139952,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. WASTED (+11.4%)\n2. LUCIA (+22.7%)\n3. TRUMP (-0.5%)\n4. BTC (-1.2%)\n5. PENGU (-3.3%)\n6. MON (-6.4%)\n\nLucia（LUCIA）上涨22.7%与WASTED（WASTED）上涨11.4%显示资金明显流向中小市值代币，而主流币BTC下跌1.2%、MON下跌6."
+    },
+    {
+      "id": 390097021411198,
+      "kind": "news",
+      "at": 1795129730728,
+      "text": "币安拿到了法院命令，把10月份黑客攻击里被盗的资产给冻结了，这下65亿美元冻结令算是落地了。有意思的是，港方那边对HYPE直接持“可疑”态度，还向公民发出了有关超液体的警告。同期泰国警方也动作挺快，逮捕了四名跟加密货币诈骗有关的外国人。\n\n$HYPE #加密资讯"
     }
   ],
   "timeline": [
@@ -499,10 +500,10 @@
   ],
   "timelineKey": "2026-11-20",
   "timelineIdx": 0,
-  "timelineSentCount": 7,
+  "timelineSentCount": 8,
   "timelineDay": "2026-11-20",
-  "lastRunAt": 1795126116513,
-  "lastFetchAt": 1795126116513,
+  "lastRunAt": 1795129716707,
+  "lastFetchAt": 1795129716707,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -524,7 +525,7 @@
   "lastPostAtByKind": {
     "movers": 1795050513203,
     "trending": 1795126139952,
-    "news": 1795122557626,
+    "news": 1795129730728,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1795118918219,
