@@ -161,19 +161,14 @@
     "news_1tw9qp0",
     "breakout_2026-11-20_NVDABlow_MMThigh",
     "news_v8mydh",
-    "bmovers_2026-11-20_NAORIS51_ICNT32_IRYS27_EVAA25_BTW21_PIEVERSE-14_ZKC-13_BREV-11_SKY-9_ASTER-6"
+    "bmovers_2026-11-20_NAORIS51_ICNT32_IRYS27_EVAA25_BTW21_PIEVERSE-14_ZKC-13_BREV-11_SKY-9_ASTER-6",
+    "news_110vo7e"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795118918219,
-  "todayPosted": 5,
+  "lastPostAt": 1795122557625,
+  "todayPosted": 6,
   "todayKey": "Fri Nov 20 2026",
   "postHistory": [
-    {
-      "id": 389256452493046,
-      "kind": "trending",
-      "at": 1794924513693,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. GATO (-1.1%)\n2. BP (+30.4%)\n3. BTC (+1.2%)\n4. SOL (+3.9%)\n5. PEARL (+6.8%)\n6. INJ (+11.5%)\n\n榜单前两名出现小市值代币与主流公链钱包，显示资金关注度正在向长尾项目与基础设施层分散。排名靠后的主流资产BTC和SOL涨幅相对温和，表明当前市场热点并非由顶级蓝筹单一主"
-    },
     {
       "id": 389271335941262,
       "kind": "movers",
@@ -467,6 +462,12 @@
       "kind": "binanceMovers",
       "at": 1795118918219,
       "text": "📊 币安合约 24h 涨跌榜\n\n领涨：NAORIS +51.3% / ICNT +32.3% / IRYS +27.1% / EVAA +25.3% / BTW +20.5%\n领跌：PIEVERSE -13.9% / ZKC -12.9% / BREV -10.8% / SKY -8.8% / ASTER -5.7%\n\nNAORIS以+51.3%领涨，PIEVERSE以-13.9%领跌，两者间存"
+    },
+    {
+      "id": 390067640488752,
+      "kind": "news",
+      "at": 1795122557626,
+      "text": "Galaxy Research说13F filers在Q3通过U.S. spot bitcoin ETPs增持了49,229 BTC，把机构持仓推到了356,491 BTC的历史新高。Wells Fargo现在成了最大持仓方，这数据确实挺有意思。\n\n$BTC #加密资讯"
     }
   ],
   "timeline": [
@@ -497,10 +498,10 @@
   ],
   "timelineKey": "2026-11-20",
   "timelineIdx": 0,
-  "timelineSentCount": 5,
+  "timelineSentCount": 6,
   "timelineDay": "2026-11-20",
-  "lastRunAt": 1795118903957,
-  "lastFetchAt": 1795118903957,
+  "lastRunAt": 1795122541096,
+  "lastFetchAt": 1795122541096,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -522,7 +523,7 @@
   "lastPostAtByKind": {
     "movers": 1795050513203,
     "trending": 1795104521545,
-    "news": 1795115321468,
+    "news": 1795122557626,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1795118918219,
