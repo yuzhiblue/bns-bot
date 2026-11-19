@@ -154,19 +154,14 @@
     "foresight_118088",
     "news_1iro3yz",
     "trending_2026-11-19_WASTED_PEARL_LUCIA_IRYS_VVV_BTC",
-    "news_1ngb8o9"
+    "news_1ngb8o9",
+    "bmovers_2026-11-19_NAORIS43_VELVET37_EVAA33_IRYS31_HUMA22_BREV-9_ZKC-7_ASTER-5_AKE-5_PIPPIN-4"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795093728171,
-  "todayPosted": 17,
+  "lastPostAt": 1795097334142,
+  "todayPosted": 18,
   "todayKey": "Thu Nov 19 2026",
   "postHistory": [
-    {
-      "id": 389123739945201,
-      "kind": "movers",
-      "at": 1794892113202,
-      "text": "📊 24h 涨跌榜（全市场）\n\n领涨：HYPE +5.9% / ZEC +4.5%\n\n本轮领涨榜单由去中心化衍生品HYPE和隐私币ZEC领衔，显示出市场流动性正流向新兴交易赛道及隐私叙事资产。由于榜单中缺乏显著跌幅标的，短期多头力量明显占优，市场情绪偏向积极修复。\n\n涨跌两头都拉得挺开，说明今天分歧不小；这种分化能维持多久，单看一天的榜单说不准。\n\n这种同步波动你先看什么？\n\n#涨跌榜单 #行情"
-    },
     {
       "id": 389138584421072,
       "kind": "trend",
@@ -460,6 +455,12 @@
       "kind": "news",
       "at": 1795093728171,
       "text": "讲真，这事儿挺意外，BIT首席营销官Jack Derong在11月19日的新加坡活动上透露，他们旗下的BBIT在10月20日拿到了瑞士FINMA的批准，眼看就要上线了。作为目前欧洲唯一的现货比特币ETF，它采用瑞士集合投资计划结构，把基金资产和管理人在法律上彻底隔离开，投资者不用担发信用风险，这架构确实有点不一样。\n\n$BIT $BBIT #加密资讯"
+    },
+    {
+      "id": 389964325036081,
+      "kind": "binanceMovers",
+      "at": 1795097334143,
+      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：NAORIS +43.3% / VELVET +36.9% / EVAA +32.5% / IRYS +31.3% / HUMA +22.4%\n领跌：BREV -9.1% / ZKC -7.0% / ASTER -5.4% / AKE -4.9% / PIPPIN -3.7%\n\nNAORIS以+43.3%领涨，BREV以-9.1%领跌；NAORIS较第二名的"
     }
   ],
   "timeline": [
@@ -490,10 +491,10 @@
   ],
   "timelineKey": "2026-11-19",
   "timelineIdx": 0,
-  "timelineSentCount": 17,
+  "timelineSentCount": 18,
   "timelineDay": "2026-11-19",
-  "lastRunAt": 1795093708481,
-  "lastFetchAt": 1795093708481,
+  "lastRunAt": 1795097320795,
+  "lastFetchAt": 1795097320795,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -519,7 +520,7 @@
     "news": 1795093728171,
     "market": 1794841771320,
     "trend": 1794964121240,
-    "binanceMovers": 1795061321676,
+    "binanceMovers": 1795097334143,
     "breakout": 1795018143734
   }
 }
