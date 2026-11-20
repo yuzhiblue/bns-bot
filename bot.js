@@ -446,6 +446,20 @@ function isPlatformNotice(title, cfg) {
   return names.some((w) => t.includes(String(w).toLowerCase()))
       && actions.some((w) => t.includes(String(w).toLowerCase()));
 }
+// 低价值题材过滤: 一条规则里的词全部命中才跳过(规则间 OR), 比单关键词更不容易误伤。
+// 拦的是"看不懂/跟交易无关"的资讯: 协议技术细节(EIP/Gas 提案)、机构持仓披露、
+// 娱乐八卦。与 skipWords(情绪词)、skipPlatformNotices(平台公告) 互补, 都只看资讯标题。
+// 开关与规则在 config.news: skipLowValueTopics / skipTopicRules。
+function isLowValueTopic(title, cfg) {
+  if (cfg.news?.skipLowValueTopics === false) return false;
+  const rules = cfg.news?.skipTopicRules ?? [];
+  if (!rules.length) return false;
+  const t = String(title ?? "").toLowerCase();
+  return rules.some((rule) => {
+    const words = (Array.isArray(rule) ? rule : []).map((w) => String(w).toLowerCase());
+    return words.length > 0 && words.every((w) => t.includes(w));
+  });
+}
 // 免费 Google 翻译端点(无需 key); 失败回退原文
 async function translateText(text, to = "zh-CN") {
   const q = (text || "").trim();
@@ -665,6 +679,8 @@ async function fetchRssNews(cfg, state) {
     if (skipRe && skipRe.test(zhT)) { log(`  过滤煽动/传言标题: ${zhT.slice(0, 30)}`); continue; }
     // 平台公告/平台自身新闻: 对中文标题判定(英文源此时已译成中文), 避免发平台自说自话的低质帖
     if (isPlatformNotice(zhT, cfg)) { log(`  过滤平台公告: ${zhT.slice(0, 34)}`); continue; }
+    // 低价值题材(协议细节/机构持仓披露/娱乐八卦): 同样只看标题, 避免误伤行情帖
+    if (isLowValueTopic(zhT, cfg)) { log(`  过滤低价值题材: ${zhT.slice(0, 34)}`); continue; }
     // 英文规则没覆盖到、但翻译产物变成中文引流话术时在这里兜底跳过
     if (isPromoSummary(zhS)) { log(`  过滤空壳摘要: ${zhT.slice(0, 30)}`); continue; }
     // 只看英文源标题是否翻译失败: 标题是门面, 翻成中文就是中文帖(可加提问/cashtag/LLM 改写)。
@@ -731,6 +747,7 @@ async function fetchForesight(cfg) {
       if (!title || !content) continue;
       if (skipRe && skipRe.test(title)) { log(`  Foresight 过滤煽动/传言: ${title.slice(0, 30)}`); continue; }
       if (isPlatformNotice(title, cfg)) { log(`  Foresight 过滤平台公告: ${title.slice(0, 34)}`); continue; }
+      if (isLowValueTopic(title, cfg)) { log(`  Foresight 过滤低价值题材: ${title.slice(0, 34)}`); continue; }
       if (mentionsCompetitor(`${title} ${content}`, link)) { log(`  Foresight 过滤竞品: ${title.slice(0, 30)}`); continue; }
       const ts = d.published_at ? Number(d.published_at) * 1000 : Date.now();
       // 选题打分与 RSS 资讯一致, 重要快讯额外加权
@@ -955,6 +972,8 @@ function genNewsPost(m, cfg) {
 // 用户读完能立刻回去看盘, 比纯标题党/平台公告有流量。只认明确币种符号或已知全称,
 // 且必须在锚点集合内, 避免 extractCashtags 那种把 CEO/ETF 当币的误判。
 // 锚点来源: 本轮 trending/movers/binanceMovers 的币种 + state.symbols 池(按成交额刷新)。
+// 交易相关性: 提到锚点但通篇没有价格/资金/成交信号时按 noSignalFactor 打折,
+// 避免"$BTC 挂在 120 万美元股票持仓"这种也拿满盘面分。词表在 config.news.anchorRelevance。
 function marketAnchorSet(candidates, state) {
   const set = new Set();
   const add = (s) => { const v = String(s ?? "").toUpperCase().replace(/USDT$/, ""); if (v) set.add(v); };
@@ -965,7 +984,13 @@ function marketAnchorSet(candidates, state) {
   for (const s of (state?.symbols ?? [])) add(s);
   return set;
 }
-function marketAnchorBonus(m, anchors) {
+function anchorHasTradeSignal(m, cfg) {
+  const words = cfg?.news?.anchorRelevance?.tradeWords ?? [];
+  if (!words.length) return false;
+  const s = `${m.titleEn ?? ""} ${m.title ?? ""} ${m.summary ?? ""}`.toLowerCase();
+  return words.some((w) => s.includes(String(w).toLowerCase()));
+}
+function marketAnchorBonus(m, anchors, cfg) {
   if (!anchors?.size) return 0;
   const s = `${m.titleEn ?? ""} ${m.title ?? ""} ${m.summary ?? ""}`;
   const mentioned = new Set();
@@ -978,13 +1003,19 @@ function marketAnchorBonus(m, anchors) {
   }
   let hits = 0;
   for (const sym of mentioned) if (anchors.has(sym)) hits++;
-  return Math.min(20, hits * 10);
+  if (!hits) return 0;
+  const full = Math.min(20, hits * 10);
+  const rel = cfg?.news?.anchorRelevance;
+  if (rel?.enabled === false || !(rel?.tradeWords?.length) || anchorHasTradeSignal(m, cfg)) return full;
+  const raw = Number(rel?.noSignalFactor);
+  const factor = Number.isFinite(raw) ? Math.min(1, Math.max(0, raw)) : 0.4;
+  return Math.round(full * factor);
 }
 
 // 热度评分: 事件强度 + 新鲜度, 只用于同一轮多条素材里挑一条发。
 // 类型优先级: 行情异动 > 热搜 > 涨跌榜 > 新闻; 各类一天可多条(按内容去重),
 // 相邻两条不能同类(选择逻辑见 runOnce)。
-function heatScore(m, anchors) {
+function heatScore(m, anchors, cfg) {
   const ageHours = Math.max(0, (Date.now() - (m.ts ?? Date.now())) / 3600000);
   const freshBonus = Math.max(0, 20 - ageHours); // 越新越高, 20 分封顶
   let base;
@@ -1008,7 +1039,7 @@ function heatScore(m, anchors) {
     case "news":
       // P1: 选题价值分直接叠加到 base —— 交易相关帖能压过热搜榜, 政治监管冷门帖沉底。
       // 中文资讯加权: 走 LLM 整帖改写(质量更高), 英文仅机翻兜底; 同轮中文优先于英文。
-      base = 40 + (m.topicScore ?? 0) + (m.lang === "zh" ? 10 : 0) + marketAnchorBonus(m, anchors);
+      base = 40 + (m.topicScore ?? 0) + (m.lang === "zh" ? 10 : 0) + marketAnchorBonus(m, anchors, cfg);
       break;
     default:
       base = 10;
@@ -1507,12 +1538,15 @@ async function runOnce() {
   // 资讯的盘面锚点取"本轮榜单币种 + 当日监控池", 让新闻里提到的币正好在异动的那些优先发。
   const anchors = marketAnchorSet(fresh, state);
   const scored = fresh
-    .map((m) => ({ m, score: heatScore(m, anchors) }))
+    .map((m) => ({ m, score: heatScore(m, anchors, cfg) }))
     .sort((a, b) => b.score - a.score);
   if (scored.length > 1) {
-    log(`  本轮 ${scored.length} 条候选热度: ${scored.map(({ m, score }) =>
-      `${m.kind}${m.kind === "news" ? `(选题${m.topicScore ?? 0}${marketAnchorBonus(m, anchors) ? `+盘面${marketAnchorBonus(m, anchors)}` : ""})` : ""}:${score.toFixed(1)}`
-    ).join(" / ")}`);
+    log(`  本轮 ${scored.length} 条候选热度: ${scored.map(({ m, score }) => {
+      if (m.kind !== "news") return `${m.kind}:${score.toFixed(1)}`;
+      const ab = marketAnchorBonus(m, anchors, cfg);
+      const weak = ab && !anchorHasTradeSignal(m, cfg) ? "(弱相关)" : "";
+      return `news(选题${m.topicScore ?? 0}${ab ? `+盘面${ab}${weak}` : ""}):${score.toFixed(1)}`;
+    }).join(" / ")}`);
   }
   // 类型冷却: 榜单类(trending/movers)分数高(新鲜度加成每轮拿满)且榜单变化频繁,
   // 不节流会来回刷屏、把新闻挤没。发帖成功后按类型记时间戳, 冷却期内该类不参选;

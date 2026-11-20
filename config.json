@@ -74,6 +74,37 @@
       "财报", "季报", "年报", "营收", "净亏损", "净利润", "亏损", "牌照", "资质", "许可", "批准", "ipo", "上市", "融资", "收购", "并购",
       "listing", "delist", "trading pair", "platform token", "maintenance", "earnings", "quarterly", "revenue", "license", "approval", "funding", "acquisition"
     ],
+    "skipLowValueTopics": true,
+    "skipTopicRules": [
+      ["eip", "草案"],
+      ["eip", "draft"],
+      ["eip", "提案"],
+      ["gas", "定价"],
+      ["gas", "pricing"],
+      ["consolidation_force"],
+      ["beaconstate"],
+      ["验证者", "epoch"],
+      ["13f"],
+      ["filers"],
+      ["增持", "股"],
+      ["持仓", "股"],
+      ["家族信托"],
+      ["netflix"],
+      ["剧评"],
+      ["影评"],
+      ["anthropic"]
+    ],
+    "anchorRelevance": {
+      "enabled": true,
+      "noSignalFactor": 0.4,
+      "tradeWords": [
+        "涨", "跌", "涨幅", "跌幅", "上涨", "下跌", "突破", "跌破", "站上", "失守",
+        "创新高", "创新低", "新高", "新低", "反弹", "回调", "拉升", "跳水", "测试", "回撤",
+        "成交额", "成交量", "净流入", "净流出", "持仓量", "未平仓", "爆仓", "资金费率", "多空比",
+        "现货", "合约", "永续", "净买入", "净卖出", "交易量", "溢价", "折价",
+        "%", "％", "关口", "点位", "增持", "减持", "买入", "卖出", "清算", "巨鲸"
+      ]
+    },
     "cardFeeds": [
       "Cointelegraph",
       "PANews"
