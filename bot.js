@@ -1058,7 +1058,9 @@ function heatScore(m, anchors, cfg) {
     case "news":
       // P1: 选题价值分直接叠加到 base —— 交易相关帖能压过热搜榜, 政治监管冷门帖沉底。
       // 中文资讯加权: 走 LLM 整帖改写(质量更高), 英文仅机翻兜底; 同轮中文优先于英文。
-      base = 40 + (m.topicScore ?? 0) + (m.lang === "zh" ? 10 : 0) + marketAnchorBonus(m, anchors, cfg);
+      // news.baseScore 控制资讯相对其它类型的优先级(原硬编码 40, 已下调); 只有选题分+盘面
+      // 锚点都高的资讯才能压过榜单, 普通资讯沉底。可在 config.news.baseScore 继续微调。
+      base = (cfg.news?.baseScore ?? 25) + (m.topicScore ?? 0) + (m.lang === "zh" ? 10 : 0) + marketAnchorBonus(m, anchors, cfg);
       break;
     default:
       base = 10;

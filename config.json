@@ -30,7 +30,7 @@
   "schedule": {
     "enabled": true,
     "evenSpread": true,
-    "maxPerDay": 24,
+    "maxPerDay": 8,
     "timezone": "Asia/Shanghai"
   },
   "post": {
@@ -63,6 +63,7 @@
   "news": {
     "enabled": true,
     "perFeed": 2,
+    "baseScore": 25,
     "skipPlatformNotices": true,
     "platformNames": [
       "币安", "binance", "bithumb", "币贝", "bitbase", "backpack", "bullish",

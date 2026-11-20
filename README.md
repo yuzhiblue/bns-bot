@@ -53,7 +53,7 @@ GitHub 自带 `schedule` 已移除, 仅 CNB 触发）:
 | `minIntervalMinutes` | 两帖最小间隔(非时间线模式用) |
 | `schedule.enabled` | `true` 走时间线排期 |
 | `schedule.evenSpread` | **`true` = 全天 24 小时均分, 无静默期**; 详见下节 |
-| `schedule.maxPerDay` | 一天几个 slot(均分间隔 = `1440 / maxPerDay`) |
+| `schedule.maxPerDay` | 一天几个 slot(均分间隔 = `1440 / maxPerDay`); 当前 `8` = 每 3 小时一条 |
 | `schedule.startHour` / `intervalMinutes` / `quiet` | 仅 `evenSpread=false` 时生效 |
 | `market.symbols` | 初始监控币种; **每天按成交额自动覆盖**(结果存 `state.json`) |
 | `market.symbolPool` | 可选: 自动刷新的 `topN` / `minUsd` / `autoRefresh`; 不写用默认 16 个 / 3000 万 USDT |
@@ -64,6 +64,7 @@ GitHub 自带 `schedule` 已移除, 仅 CNB 触发）:
 | `post.take` | 是否在帖子里加**数据解读段**, 默认 `true`; 设 `false` 可一键退回纯短文案 |
 | `post.cta` | 结尾**开放式提问**（"你们怎么看？"这类），默认 `false` 关闭（2026-11-18 移除：固定套路像尬聊、易判机器模板降权）；设 `true` 可恢复（含资讯帖的提问） |
 | `news.cardFeeds` | 哪些资讯源**强制用自生成卡片**（避开第三方水印）；填 `news.feeds[].name` 的原值、大小写需一致（当前 `["Cointelegraph","PANews"]`，不是 URL）；其余源优先 RSS 自带配图，**无图 / 图格式不支持 / 下载失败时自动补一张资讯卡片** |
+| `news.baseScore` | 资讯在热度排序里的基础分，默认 `25`（原先硬编码 40，已下调）；只有选题分 + 盘面锚点都高的资讯才会压过榜单，普通资讯沉底。数值越低资讯越少被选中 |
 | `news.skipWords` | 资讯标题含这些强情绪 / 传言词（暴跌、崩盘、狂潮、据传、rumor…）时**直接跳过该条**，规避平台限流与「需核查」标记 |
 | `news.skipPlatformNotices` | 默认 `true`：**过滤平台自身公告 / 公司动作**（上线交易对、下架、平台币、财报、牌照等），标题同时命中 `platformNames`（平台名）和 `platformActions`（动作词）才拦；行情、链上数据、机构产品、他方事件不受影响。设 `false` 可恢复。词表在两个同名数组里增删 |
 | `news.skipLowValueTopics` | 默认 `true`：**过滤低价值题材**（协议技术细节、机构持仓披露、娱乐八卦、Anthropic 相关）。标题同时命中 `skipTopicRules` 某条规则的**全部词**才拦（规则间 OR，如 `["eip","草案"]`）；默认只查标题，写成 `{ "words": [...], "scope": "all" }` 可连摘要一起查（Anthropic 用这条，因为它常在摘要里出现）。设 `false` 可恢复 |
@@ -94,7 +95,7 @@ GitHub 自带 `schedule` 已移除, 仅 CNB 触发）:
 - 实际约 **150–350 字符**，远低于 2,100 上限；`buildPost` 里 950 的截断只是兜底。
 - **资讯不设静默时段**（`news.quietHours=[]`，2026-11-18 起）：原先 `[0-7]` 让凌晨 8 个 slot 无资讯可发、
   而榜单类有 240min 冷却 + 确定性兜底源（trend）已移除，导致凌晨大量空轮、日发帖数掉到 14-18。
-  清空后资讯 24h 均可参选，支撑 `maxPerDay=24` 满速；代价是凌晨资讯帖互动较低（实测浏览 30-50），
+  清空后资讯 24h 均可参选（配合当前 `maxPerDay=8`）；代价是凌晨资讯帖互动较低（实测浏览 30-50），
   这是「发满数量」与「单帖质量」的取舍。若想恢复低谷过滤，把不想发的小时填回 `quietHours` 即可。
 - **资讯标题翻译走三层降级链**：LLM（术语地道、语气中性、结果稳定）→ 免费 Google 机翻 → 英文 A 兜底。
   **只对英文源翻译**；中文源（`news.feeds[].lang="zh"`，当前 PANews / Odaily）正文已是中文，直接原文、不调 LLM/机翻
@@ -151,13 +152,13 @@ GitHub 自带 `schedule` 已移除, 仅 CNB 触发）:
 "schedule": {
   "enabled": true,
   "evenSpread": true,
-  "maxPerDay": 15,
+  "maxPerDay": 8,
   "timezone": "Asia/Shanghai"
 }
 ```
 
-间隔 = `1440 / maxPerDay` 分钟。当前 24 帖即 **60 分钟一个 slot**, 从本地 0:00 铺到 24:00
-（每小时整点一发）。**没有静默期**; 改 `maxPerDay` 会自动重算间隔, 不用手动改别处。
+间隔 = `1440 / maxPerDay` 分钟。当前 8 帖即 **180 分钟一个 slot**（每 3 小时一条）,
+从本地 0:00 铺到 24:00。**没有静默期**; 改 `maxPerDay` 会自动重算间隔, 不用手动改别处。
 把 `evenSpread` 设成 `false` 就回到旧的 `startHour` + `intervalMinutes` + `quiet` 写法。
 
 > 配置分两份: 仓库里的 **`config.json`** 是入库的基准配置（不含 Key, 所有可调参数如 market 阈值、
@@ -168,7 +169,7 @@ GitHub 自带 `schedule` 已移除, 仅 CNB 触发）:
 ## 限流
 
 币安广场官方上限 100 帖/天。当前默认走 `schedule.evenSpread` 时间线模式,
-实际每日上限是 **`schedule.maxPerDay`**（默认 15）; `postsPerDay` / `minIntervalMinutes`
+实际每日上限是 **`schedule.maxPerDay`**（当前 8）; `postsPerDay` / `minIntervalMinutes`
 只在 `schedule.enabled=false` 的非时间线模式下生效。
 新号建议把 `maxPerDay` 降到 10 起步, 一周没被限流再往 15-20 提。
 
@@ -442,7 +443,7 @@ Token name 填 `bns-bot-cron-job-org`, 其余相同（只勾 `bns-bot`、`Action
 - **抓取节奏**: bot 先判断时间线 slot, 没到点就**零请求退出、不改 `state.json`、不产生 commit**;
   只有每个 slot 才抓一次接口, 并用 `state.lastFetchAt` 的时间冷却（一个间隔减 20 分钟余量）保证
   同一 slot 不重复抓、连续没素材也会按周期继续尝试。接口调用量约从 96 次/天降到
-  `maxPerDay` 次/天（当前 24 次/天, 币种池刷新另加 1 次/天）; 代价是两次 slot 之间发生的异动要等到下个 slot 才看。
+  `maxPerDay` 次/天（当前 8 次/天, 币种池刷新另加 1 次/天）; 代价是两次 slot 之间发生的异动要等到下个 slot 才看。
 - **选帖**: 每轮最多发 1 条。多条素材按热度评分取最高的一条（行情看涨跌幅与量比,
   热搜榜 / 涨跌榜 / 资讯 / 形态突破 / 合约榜按类型给基础分, 全部叠加新鲜度加权）。
   **类型优先级**: 行情异动 > 热搜榜 > 涨跌榜 > 资讯。资讯内部**中文加权 +10**（中文走 LLM 整帖改写、
