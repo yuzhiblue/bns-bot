@@ -186,19 +186,14 @@
     "news_1xked7j",
     "trending_2026-11-21_WASTED_CHUNKEE_TRUMP_BTC_LUCIA_HYPE",
     "news_faqg9g",
-    "bmovers_2026-11-21_KERNEL17_CYBER16_EVAA13_BLESS12_BARD5_AKE-40_LIT-15_ZEC-15_NEAR-10_APT-10"
+    "bmovers_2026-11-21_KERNEL17_CYBER16_EVAA13_BLESS12_BARD5_AKE-40_LIT-15_ZEC-15_NEAR-10_APT-10",
+    "news_i13c04"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795212547823,
-  "todayPosted": 7,
+  "lastPostAt": 1795216115977,
+  "todayPosted": 8,
   "todayKey": "Sat Nov 21 2026",
   "postHistory": [
-    {
-      "id": 389625070362833,
-      "kind": "news",
-      "at": 1795014508317,
-      "text": "有意思的是，Backpack 拿到了 NFA 批准的 FCM 资质，这下集齐了在美推衍生品业务的全套牌照。它现在手握交易所、清算所及中介三项资质，打算给美国用户提供共享全球统一流动性的杠杆永续合约。\n\n$NFA $FCM #加密资讯"
-    },
     {
       "id": 389639961060880,
       "kind": "breakout",
@@ -492,6 +487,12 @@
       "kind": "binanceMovers",
       "at": 1795212547823,
       "text": "📊 币安合约 24h 涨跌榜\n\n领涨：KERNEL +17.2% / CYBER +16.3% / EVAA +13.1% / BLESS +11.9% / BARD +5.4%\n领跌：AKE -39.9% / LIT -15.5% / ZEC -15.4% / NEAR -10.1% / APT -9.7%\n\n领涨的KERNEL（+17.2%）与领跌的AKE（-39.9%）分列两端，领跌端的绝"
+    },
+    {
+      "id": 390450855305572,
+      "kind": "news",
+      "at": 1795216115977,
+      "text": "Strategy 投资者关系主管 Chaitanya“CJ”Jain 刚上了 Bitcoin Magazine TV，聊了聊比特币价格低于 Strategy 平均成本后的股票表现。之前币价跌穿这条线的时候，市场情绪有点紧，他这次出来正面回应了回调期间的股价波动。\n\n$MSTR $CJ #加密资讯"
     }
   ],
   "timeline": [
@@ -522,10 +523,10 @@
   ],
   "timelineKey": "2026-11-21",
   "timelineIdx": 0,
-  "timelineSentCount": 7,
+  "timelineSentCount": 8,
   "timelineDay": "2026-11-21",
-  "lastRunAt": 1795212527320,
-  "lastFetchAt": 1795212527320,
+  "lastRunAt": 1795216099865,
+  "lastFetchAt": 1795216099865,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -553,7 +554,7 @@
   "lastPostAtByKind": {
     "movers": 1795169338256,
     "trending": 1795205322534,
-    "news": 1795208940030,
+    "news": 1795216115977,
     "market": 1795180160915,
     "trend": 1794964121240,
     "binanceMovers": 1795212547823,
