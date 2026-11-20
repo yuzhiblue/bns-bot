@@ -181,19 +181,14 @@
     "trending_2026-11-20_WASTED_TRUMP_CHUNKEE_BTC_LUCIA_PEARL",
     "foresight_118233",
     "breakout_2026-11-21_BTClow_ETHlow_ZEClow",
-    "news_ozd5gm"
+    "news_ozd5gm",
+    "bmovers_2026-11-21_KERNEL23_BLESS14_HUMA13_CYBER13_BTW13_AKE-35_YB-18_ZEC-17_LIT-16_NEAR-14"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795194548492,
-  "todayPosted": 2,
+  "lastPostAt": 1795198120532,
+  "todayPosted": 3,
   "todayKey": "Sat Nov 21 2026",
   "postHistory": [
-    {
-      "id": 389551499265738,
-      "kind": "movers",
-      "at": 1794996546611,
-      "text": "📊 24h 涨跌榜（全市场）\n\n领涨：XRP +4.6%\n\nXRP以24小时4.6%的涨幅独占领涨榜，而该时段波动幅度超过4%的币种中未见领跌标的。榜单呈现出显著的长尾缺失，仅单一标的具备显著波动特征，显示出市场短线交投的极度分散与低活跃度。这种结构反映出当前缺乏明确的板块轮动或共振效应。\n\n涨跌两头都拉得挺开，说明今天分歧不小；这种分化能维持多久，单看一天的榜单说不准。\n\n#涨跌榜单 #行情异"
-    },
     {
       "id": 389566098253260,
       "kind": "news",
@@ -487,6 +482,12 @@
       "kind": "news",
       "at": 1795194548492,
       "text": "比特币跌了近6%，这是7月以来首次跌破6万美元。美股那边也在同步回调，纳斯达克指数跌了超过2%，Anthropic股价更是掉了将近10%。\n\n$BTC #加密资讯"
+    },
+    {
+      "id": 390377146041290,
+      "kind": "binanceMovers",
+      "at": 1795198120532,
+      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：KERNEL +23.2% / BLESS +13.5% / HUMA +12.9% / CYBER +12.9% / BTW +12.7%\n领跌：AKE -35.3% / YB -17.7% / ZEC -17.0% / LIT -16.3% / NEAR -13.9%\n\nKERNEL以+23.2%领涨与AKE以-35.3%领跌分别占据涨跌榜首，其中领跌端"
     }
   ],
   "timeline": [
@@ -517,10 +518,10 @@
   ],
   "timelineKey": "2026-11-21",
   "timelineIdx": 0,
-  "timelineSentCount": 2,
+  "timelineSentCount": 3,
   "timelineDay": "2026-11-21",
-  "lastRunAt": 1795194535518,
-  "lastFetchAt": 1795194535518,
+  "lastRunAt": 1795198105937,
+  "lastFetchAt": 1795198105937,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -551,7 +552,7 @@
     "news": 1795194548492,
     "market": 1795180160915,
     "trend": 1794964121240,
-    "binanceMovers": 1795154950988,
+    "binanceMovers": 1795198120532,
     "breakout": 1795190959150
   }
 }
