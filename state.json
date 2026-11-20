@@ -173,19 +173,14 @@
     "news_z0fucz",
     "bmovers_2026-11-20_EVAA37_NAORIS30_ICNT30_PIPPIN20_BARD18_IRYS-13_NEAR-11_LIT-10_ZEC-9_1000LUNC-8",
     "news_1ntivkc",
-    "trending_2026-11-20_BTC_PEARL_CARDS_XMR_QTC_MON"
+    "trending_2026-11-20_BTC_PEARL_CARDS_XMR_QTC_MON",
+    "foresight_118217"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795163206282,
-  "todayPosted": 17,
+  "lastPostAt": 1795165731070,
+  "todayPosted": 18,
   "todayKey": "Fri Nov 20 2026",
   "postHistory": [
-    {
-      "id": 389433442054940,
-      "kind": "binanceMovers",
-      "at": 1794967724086,
-      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：BREV +87.3% / BTW +35.8% / MMT +25.9% / 龙虾 +21.6% / ARIA +9.0%\n领跌：BLESS -43.3% / HUMA -20.7% / EVAA -10.1% / RARE -6.9% / ANTHROPIC -6.0%\n\n领涨这边的波动更猛一些，不过合约带杠杆，涨得急的往往回撤也快，榜单只能当天的快照看"
-    },
     {
       "id": 389448324298248,
       "kind": "trending",
@@ -479,6 +474,12 @@
       "kind": "trending",
       "at": 1795163206282,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BTC (-3.0%)\n2. PEARL (-15.8%)\n3. CARDS (+0.6%)\n4. XMR (-3.9%)\n5. QTC (-7.9%)\n6. MON (-3.8%)\n\nPearl 24小时下跌15.8%是榜单中波动最大的品种，而Bitcoin仅回撤3.0%，显示出主流币的相对稳定性。整体结构上，除Collector Crypt外其余"
+    },
+    {
+      "id": 390244478823398,
+      "kind": "news",
+      "at": 1795165731070,
+      "text": "Etherscan 数据显示，被标记为 Binance Hot Wallet Exploiter 8 的地址刚刚向 17 个不同地址转出了合计约 19.75 万枚以太坊，价值约 3.46 亿美元。其中 16 笔转账的数量都是 1.2 万枚。这种分批小额转出的动作，像是在为后续的大额归集做前期清理。\n\n$BNB $ETH #加密资讯"
     }
   ],
   "timeline": [
@@ -509,10 +510,10 @@
   ],
   "timelineKey": "2026-11-20",
   "timelineIdx": 0,
-  "timelineSentCount": 17,
+  "timelineSentCount": 18,
   "timelineDay": "2026-11-20",
-  "lastRunAt": 1795163188248,
-  "lastFetchAt": 1795163188248,
+  "lastRunAt": 1795165709364,
+  "lastFetchAt": 1795165709364,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -534,7 +535,7 @@
   "lastPostAtByKind": {
     "movers": 1795050513203,
     "trending": 1795163206282,
-    "news": 1795158514021,
+    "news": 1795165731070,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1795154950988,
