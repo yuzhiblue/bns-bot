@@ -170,19 +170,14 @@
     "breakout_2026-11-20_BTClow_NVDABlow_PEPElow",
     "news_41764q",
     "trending_2026-11-20_BTC_PEARL_NEAR_ANTHROPIC_XRP_HYPE",
-    "news_z0fucz"
+    "news_z0fucz",
+    "bmovers_2026-11-20_EVAA37_NAORIS30_ICNT30_PIPPIN20_BARD18_IRYS-13_NEAR-11_LIT-10_ZEC-9_1000LUNC-8"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795151316008,
-  "todayPosted": 14,
+  "lastPostAt": 1795154950988,
+  "todayPosted": 15,
   "todayKey": "Fri Nov 20 2026",
   "postHistory": [
-    {
-      "id": 389389151368894,
-      "kind": "movers",
-      "at": 1794956910892,
-      "text": "📊 24h 涨跌榜（全市场）\n\n领涨：ZEC +4.6% / SOL +4.2%\n\nZcash和Solana均录得超4%的正收益，表明当前领涨榜由隐私币与高性能公链共同驱动。榜单中缺失明确的领跌数据，反映出市场短线内多头发力明显，且缺乏同量级的做空对冲。这种结构显示资金正集中在特定板块内轮动，而非全面普涨。\n\n涨跌两头都拉得挺开，说明今天分歧不小；这种分化能维持多久，单看一天的榜单说不准。\n\n你"
-    },
     {
       "id": 389403909476806,
       "kind": "trend",
@@ -476,6 +471,12 @@
       "kind": "news",
       "at": 1795151316008,
       "text": "日前看到消息说加拿大皇家银行披露了对比特币储备公司 Strive 的持仓情况，增持比例达到了 58%，持股总数达到 74,035 股，价值 120 万美元。Bitcoin Treasuries 在 X 平台发文确认了这些细节，看来传统大行对这类公司的关注确实很具体。\n\n$BTC #加密资讯"
+    },
+    {
+      "id": 390200323557284,
+      "kind": "binanceMovers",
+      "at": 1795154950988,
+      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：EVAA +36.8% / NAORIS +30.4% / ICNT +29.5% / PIPPIN +20.0% / BARD +18.3%\n领跌：IRYS -12.8% / NEAR -10.5% / LIT -9.7% / ZEC -9.4% / 1000LUNC -8.3%\n\n领涨榜首EVAA涨幅+36.8%显著高于领跌榜首IRYS跌幅-12.8%，"
     }
   ],
   "timeline": [
@@ -506,10 +507,10 @@
   ],
   "timelineKey": "2026-11-20",
   "timelineIdx": 0,
-  "timelineSentCount": 14,
+  "timelineSentCount": 15,
   "timelineDay": "2026-11-20",
-  "lastRunAt": 1795151305128,
-  "lastFetchAt": 1795151305128,
+  "lastRunAt": 1795154933638,
+  "lastFetchAt": 1795154933638,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -534,7 +535,7 @@
     "news": 1795151316008,
     "market": 1794841771320,
     "trend": 1794964121240,
-    "binanceMovers": 1795133383666,
+    "binanceMovers": 1795154950988,
     "breakout": 1795140529925
   }
 }
