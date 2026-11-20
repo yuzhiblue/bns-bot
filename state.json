@@ -164,19 +164,14 @@
     "bmovers_2026-11-20_NAORIS51_ICNT32_IRYS27_EVAA25_BTW21_PIEVERSE-14_ZKC-13_BREV-11_SKY-9_ASTER-6",
     "news_110vo7e",
     "trending_2026-11-20_WASTED_LUCIA_TRUMP_BTC_PENGU_MON",
-    "news_ym5kmv"
+    "news_ym5kmv",
+    "bmovers_2026-11-20_IRYS33_NAORIS30_EVAA30_ICNT29_BTW22_PIEVERSE-13_SKY-6_ENA-6_BREV-5_UNI-4"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795129730728,
-  "todayPosted": 8,
+  "lastPostAt": 1795133383665,
+  "todayPosted": 9,
   "todayKey": "Fri Nov 20 2026",
   "postHistory": [
-    {
-      "id": 389300684132476,
-      "kind": "trend",
-      "at": 1794935312469,
-      "text": "📉 $ASTER 日线数据快照（30 天）\n\n现价 0.5423，7 日 -15.1%，30 日 -23.1%。\n7 日波动不小，现价处在 25% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n这指标就当个参考，别当成答案。\n\n你们平时看日线数据吗？\n\n$ASTER #行情分析\n\n以上只是数据记录和个人观察，"
-    },
     {
       "id": 389315534705368,
       "kind": "trending",
@@ -470,6 +465,12 @@
       "kind": "news",
       "at": 1795129730728,
       "text": "币安拿到了法院命令，把10月份黑客攻击里被盗的资产给冻结了，这下65亿美元冻结令算是落地了。有意思的是，港方那边对HYPE直接持“可疑”态度，还向公民发出了有关超液体的警告。同期泰国警方也动作挺快，逮捕了四名跟加密货币诈骗有关的外国人。\n\n$HYPE #加密资讯"
+    },
+    {
+      "id": 390111983785290,
+      "kind": "binanceMovers",
+      "at": 1795133383666,
+      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：IRYS +32.5% / NAORIS +30.2% / EVAA +29.6% / ICNT +28.6% / BTW +22.3%\n领跌：PIEVERSE -13.1% / SKY -6.5% / ENA -6.3% / BREV -5.1% / UNI -4.5%\n\n领涨榜首位的IRYS上涨32.5%，比第二名NAORIS高出2.3个百分点，呈现出断"
     }
   ],
   "timeline": [
@@ -500,10 +501,10 @@
   ],
   "timelineKey": "2026-11-20",
   "timelineIdx": 0,
-  "timelineSentCount": 8,
+  "timelineSentCount": 9,
   "timelineDay": "2026-11-20",
-  "lastRunAt": 1795129716707,
-  "lastFetchAt": 1795129716707,
+  "lastRunAt": 1795133369450,
+  "lastFetchAt": 1795133369450,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -528,7 +529,7 @@
     "news": 1795129730728,
     "market": 1794841771320,
     "trend": 1794964121240,
-    "binanceMovers": 1795118918219,
+    "binanceMovers": 1795133383666,
     "breakout": 1795111717966
   }
 }
