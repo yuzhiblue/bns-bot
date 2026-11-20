@@ -174,19 +174,14 @@
     "bmovers_2026-11-20_EVAA37_NAORIS30_ICNT30_PIPPIN20_BARD18_IRYS-13_NEAR-11_LIT-10_ZEC-9_1000LUNC-8",
     "news_1ntivkc",
     "trending_2026-11-20_BTC_PEARL_CARDS_XMR_QTC_MON",
-    "foresight_118217"
+    "foresight_118217",
+    "movers_2026-11-20_ZEC_XMR_HYPE"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795165731070,
-  "todayPosted": 18,
+  "lastPostAt": 1795169338256,
+  "todayPosted": 19,
   "todayKey": "Fri Nov 20 2026",
   "postHistory": [
-    {
-      "id": 389448324298248,
-      "kind": "trending",
-      "at": 1794971357397,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BREV (+104.2%)\n2. BTC (-0.5%)\n3. NEAR (+5.5%)\n4. ETH (-0.8%)\n5. PENGU (-1.7%)\n6. JUP (+6.3%)\n\n这份榜单涨跌各半（3 涨 / 3 跌），热度并没有指向一致方向。热搜排名反映的是注意力，不等于资金流向；注意力先到、资金未必跟。说白了就是个观察名单，别把它当信号。"
-    },
     {
       "id": 389462974462521,
       "kind": "news",
@@ -480,6 +475,12 @@
       "kind": "news",
       "at": 1795165731070,
       "text": "Etherscan 数据显示，被标记为 Binance Hot Wallet Exploiter 8 的地址刚刚向 17 个不同地址转出了合计约 19.75 万枚以太坊，价值约 3.46 亿美元。其中 16 笔转账的数量都是 1.2 万枚。这种分批小额转出的动作，像是在为后续的大额归集做前期清理。\n\n$BNB $ETH #加密资讯"
+    },
+    {
+      "id": 390259253680541,
+      "kind": "movers",
+      "at": 1795169338256,
+      "text": "📊 24h 涨跌榜（全市场）\n\n领跌：ZEC -11.7% / XMR -5.3% / HYPE -5.0%\n\nZcash领跌11.7%，Hyperliquid领跌5.0%，榜单呈现单边下行结构。三个上榜币种全部为跌幅居前品种，无领涨标的，显示当前波动集中在抛售端。\n\n涨跌两头都拉得挺开，说明今天分歧不小；这种分化能维持多久，单看一天的榜单说不准。\n\n#涨跌榜单 #行情异动"
     }
   ],
   "timeline": [
@@ -510,10 +511,10 @@
   ],
   "timelineKey": "2026-11-20",
   "timelineIdx": 0,
-  "timelineSentCount": 18,
+  "timelineSentCount": 19,
   "timelineDay": "2026-11-20",
-  "lastRunAt": 1795165709364,
-  "lastFetchAt": 1795165709364,
+  "lastRunAt": 1795169309419,
+  "lastFetchAt": 1795169309419,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -533,7 +534,7 @@
     "updatedAt": 1794586106417
   },
   "lastPostAtByKind": {
-    "movers": 1795050513203,
+    "movers": 1795169338256,
     "trending": 1795163206282,
     "news": 1795165731070,
     "market": 1794841771320,
