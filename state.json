@@ -167,19 +167,14 @@
     "news_ym5kmv",
     "bmovers_2026-11-20_IRYS33_NAORIS30_EVAA30_ICNT29_BTW22_PIEVERSE-13_SKY-6_ENA-6_BREV-5_UNI-4",
     "news_1dwgkca",
-    "breakout_2026-11-20_BTClow_NVDABlow_PEPElow"
+    "breakout_2026-11-20_BTClow_NVDABlow_PEPElow",
+    "news_41764q"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795140529925,
-  "todayPosted": 11,
+  "lastPostAt": 1795144125863,
+  "todayPosted": 12,
   "todayKey": "Fri Nov 20 2026",
   "postHistory": [
-    {
-      "id": 389345049050005,
-      "kind": "trend",
-      "at": 1794946143698,
-      "text": "📉 $BTC 日线数据快照（30 天）\n\n现价 63,784.78，7 日 -13.6%，30 日 -22.2%。\n7 日波动不小，现价处在 8% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n说到底都是过去式，后面怎么走还得看盘面。\n\n你更看重价格还是量能？\n\n$BTC #行情分析\n\n以上只是数据记录和个人"
-    },
     {
       "id": 389359820688220,
       "kind": "trend",
@@ -473,6 +468,12 @@
       "kind": "breakout",
       "at": 1795140529925,
       "text": "🔺 日线突破监控\n\nBTC 今天摸到 20 日新低，现价 61,400.52\nNVDAB 今天摸到 20 日新低，现价 143.79\nPEPE 今天摸到 20 日新低，现价 0.00000358\n\n价格探到区间下沿，卖压是有的，不过破位之后能不能延续，还得看接下来几天的成交能不能跟上。\n\n这种位置，光看一根线判断不了什么\n\n#行情异动 #技术分析"
+    },
+    {
+      "id": 390155983951530,
+      "kind": "news",
+      "at": 1795144125863,
+      "text": "日前 SoSoValue 数据显示，美东时间 11 月 19 日 美国 NEAR、ZEC 现货 ETF 单日合计净流出 138.82 万美元，其中 NEAR 净流出 68.03 万美元，ZEC 净流出 70.79 万美元。讲真，虽然 Bitwise NEAR ETF（NRR） 当日录得 68.03 万美元 的净流出，但它的历史累计净流入仍达 7774.83 万美元，且截至发稿前 NEAR 现货 E"
     }
   ],
   "timeline": [
@@ -503,10 +504,10 @@
   ],
   "timelineKey": "2026-11-20",
   "timelineIdx": 0,
-  "timelineSentCount": 11,
+  "timelineSentCount": 12,
   "timelineDay": "2026-11-20",
-  "lastRunAt": 1795140513745,
-  "lastFetchAt": 1795140513745,
+  "lastRunAt": 1795144113898,
+  "lastFetchAt": 1795144113898,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -528,7 +529,7 @@
   "lastPostAtByKind": {
     "movers": 1795050513203,
     "trending": 1795126139952,
-    "news": 1795136921998,
+    "news": 1795144125863,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1795133383666,
