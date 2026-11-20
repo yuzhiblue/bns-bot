@@ -178,19 +178,14 @@
     "movers_2026-11-20_ZEC_XMR_HYPE",
     "news_xpnbbq",
     "market_MMTUSDT_2026-11-20T12",
-    "trending_2026-11-20_WASTED_TRUMP_CHUNKEE_BTC_LUCIA_PEARL"
+    "trending_2026-11-20_WASTED_TRUMP_CHUNKEE_BTC_LUCIA_PEARL",
+    "foresight_118233"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795183727999,
-  "todayPosted": 22,
+  "lastPostAt": 1795187360605,
+  "todayPosted": 23,
   "todayKey": "Fri Nov 20 2026",
   "postHistory": [
-    {
-      "id": 389507152111483,
-      "kind": "news",
-      "at": 1794985719659,
-      "text": "滚仓交易员AguilaTrades加仓约543万美元BTC多单，持仓价值增至1.29亿美元\n\nOdaily星球日报讯 据 Odaily 监测，2026 年 11 月 18 日 14:17 至 14:58，滚仓交易员 AguilaTrades 增持 84.01 枚 BTC 多单，净增仓估值约 543 万美元，当前持有 2,000 枚 BTC 多单，价值约 1.29 亿美元。 地址：0x1f250df"
-    },
     {
       "id": 389521930294813,
       "kind": "trending",
@@ -484,6 +479,12 @@
       "kind": "trending",
       "at": 1795183727999,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. WASTED (+9.5%)\n2. TRUMP (-10.2%)\n3. CHUNKEE (+137.4%)\n4. BTC (-3.4%)\n5. LUCIA (-10.2%)\n6. PEARL (-12.1%)\n\nCHUNKEE单日大涨137.4%与TRUMP下跌10.2%形成鲜明对比，显示热度高度集中在个别中小市值代币上。榜单整体跌多涨少，主流币BT"
+    },
+    {
+      "id": 390333073387485,
+      "kind": "news",
+      "at": 1795187360606,
+      "text": "Wagyu 核心成员 PerpetualCow.hl 发推确认，XMR1 增发是因为托管商 1984.hosting 遭黑客攻击，导致数据泄露。他解释说，XMR1 的部署密钥存放在一台已删除的旧服务器上，但日志和文件意外保留了下来。PerpetualCow.hl 承诺会赔偿用户所有损失，并表示 Wagyu 稍后重新上线。\n\n#加密资讯"
     }
   ],
   "timeline": [
@@ -514,10 +515,10 @@
   ],
   "timelineKey": "2026-11-20",
   "timelineIdx": 0,
-  "timelineSentCount": 22,
+  "timelineSentCount": 23,
   "timelineDay": "2026-11-20",
-  "lastRunAt": 1795183713256,
-  "lastFetchAt": 1795183713256,
+  "lastRunAt": 1795187340000,
+  "lastFetchAt": 1795187340000,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -539,7 +540,7 @@
   "lastPostAtByKind": {
     "movers": 1795169338256,
     "trending": 1795183727999,
-    "news": 1795176517670,
+    "news": 1795187360605,
     "market": 1795180160915,
     "trend": 1794964121240,
     "binanceMovers": 1795154950988,
