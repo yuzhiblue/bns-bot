@@ -425,6 +425,8 @@ const COMPETITOR_DOMAINS = [
 function mentionsCompetitor(text, link) {
   const t = (text || "").toLowerCase();
   for (const c of COMPETITOR_NAMES) if (t.includes(c)) return true;
+  // 独立词 "Gate": 用单词边界而非子串, 否则会误伤 aggregate / gateway / navigate 等正常词
+  if (/\bgate\b/.test(t)) return true;
   if (link) {
     try {
       const host = new URL(link).hostname.toLowerCase();
