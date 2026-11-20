@@ -180,19 +180,14 @@
     "market_MMTUSDT_2026-11-20T12",
     "trending_2026-11-20_WASTED_TRUMP_CHUNKEE_BTC_LUCIA_PEARL",
     "foresight_118233",
-    "breakout_2026-11-21_BTClow_ETHlow_ZEClow"
+    "breakout_2026-11-21_BTClow_ETHlow_ZEClow",
+    "news_ozd5gm"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795190959150,
-  "todayPosted": 1,
+  "lastPostAt": 1795194548492,
+  "todayPosted": 2,
   "todayKey": "Sat Nov 21 2026",
   "postHistory": [
-    {
-      "id": 389536628174774,
-      "kind": "news",
-      "at": 1794992915949,
-      "text": "日前新加坡区块链周 2026 上，孙宇晨以视频形式讲了波场 TRON 的最新情况，他提到链上账户已超过 4.1 亿，日均处理近 1200 万笔交易。有意思的是，2026 年第三季度稳定币转账额达 2.21 万亿美元，约占全链稳定币交易量的 73%，USDT 在波场 TRON 网络上的占比也相当可观，看得出机构金融和 AI 基础设施的布局正在加速。\n\n$TRON $USDT #加密资讯"
-    },
     {
       "id": 389551499265738,
       "kind": "movers",
@@ -486,6 +481,12 @@
       "kind": "breakout",
       "at": 1795190959150,
       "text": "🔺 日线突破监控\n\nBTC 今天摸到 20 日新低，现价 59,401.37\nETH 今天摸到 20 日新低，现价 1,648.15\nZEC 今天摸到 20 日新低，现价 785.19\n\n价格探到区间下沿，卖压是有的，不过破位之后能不能延续，还得看接下来几天的成交能不能跟上。\n\n这种位置，光看一根线判断不了什么\n\n#行情异动 #技术分析"
+    },
+    {
+      "id": 390362515003408,
+      "kind": "news",
+      "at": 1795194548492,
+      "text": "比特币跌了近6%，这是7月以来首次跌破6万美元。美股那边也在同步回调，纳斯达克指数跌了超过2%，Anthropic股价更是掉了将近10%。\n\n$BTC #加密资讯"
     }
   ],
   "timeline": [
@@ -516,10 +517,10 @@
   ],
   "timelineKey": "2026-11-21",
   "timelineIdx": 0,
-  "timelineSentCount": 1,
+  "timelineSentCount": 2,
   "timelineDay": "2026-11-21",
-  "lastRunAt": 1795190941713,
-  "lastFetchAt": 1795190941713,
+  "lastRunAt": 1795194535518,
+  "lastFetchAt": 1795194535518,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -547,7 +548,7 @@
   "lastPostAtByKind": {
     "movers": 1795169338256,
     "trending": 1795183727999,
-    "news": 1795187360605,
+    "news": 1795194548492,
     "market": 1795180160915,
     "trend": 1794964121240,
     "binanceMovers": 1795154950988,
