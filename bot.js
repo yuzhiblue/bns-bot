@@ -1551,13 +1551,13 @@ async function runOnce() {
   // 资讯的盘面锚点取"本轮榜单币种 + 当日监控池", 让新闻里提到的币正好在异动的那些优先发。
   const anchors = marketAnchorSet(fresh, state);
   const scored = fresh
-    .map((m) => ({ m, score: heatScore(m, anchors, cfg) }))
+    .map((m) => ({ m, score: heatScore(m, anchors, config) }))
     .sort((a, b) => b.score - a.score);
   if (scored.length > 1) {
     log(`  本轮 ${scored.length} 条候选热度: ${scored.map(({ m, score }) => {
       if (m.kind !== "news") return `${m.kind}:${score.toFixed(1)}`;
-      const ab = marketAnchorBonus(m, anchors, cfg);
-      const weak = ab && !anchorHasTradeSignal(m, cfg) ? "(弱相关)" : "";
+      const ab = marketAnchorBonus(m, anchors, config);
+      const weak = ab && !anchorHasTradeSignal(m, config) ? "(弱相关)" : "";
       return `news(选题${m.topicScore ?? 0}${ab ? `+盘面${ab}${weak}` : ""}):${score.toFixed(1)}`;
     }).join(" / ")}`);
   }
