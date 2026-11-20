@@ -183,19 +183,14 @@
     "breakout_2026-11-21_BTClow_ETHlow_ZEClow",
     "news_ozd5gm",
     "bmovers_2026-11-21_KERNEL23_BLESS14_HUMA13_CYBER13_BTW13_AKE-35_YB-18_ZEC-17_LIT-16_NEAR-14",
-    "news_1xked7j"
+    "news_1xked7j",
+    "trending_2026-11-21_WASTED_CHUNKEE_TRUMP_BTC_LUCIA_HYPE"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795201737551,
-  "todayPosted": 4,
+  "lastPostAt": 1795205322534,
+  "todayPosted": 5,
   "todayKey": "Sat Nov 21 2026",
   "postHistory": [
-    {
-      "id": 389580897165613,
-      "kind": "binanceMovers",
-      "at": 1795003723827,
-      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：MMT +103.6% / PIPPIN +71.1% / BREV +51.4% / ICNT +37.1% / PIEVERSE +26.3%\n领跌：HUMA -14.4% / EVAA -8.5% / AKE -8.3% / ASTER -5.7% / LIT -5.4%\n\n领涨这边的波动更猛一些，不过合约带杠杆，涨得急的往往回撤也快，榜单只能当天的快"
-    },
     {
       "id": 389595739851206,
       "kind": "news",
@@ -489,6 +484,12 @@
       "kind": "news",
       "at": 1795201737551,
       "text": "1.49 亿美元被盗资产里，至少有 2310 枚 BTC 跑进了 CoinJoin 混币交易。Elliptic 监测到，约 90% 的这类混币活动集中在 11 月 17 日之后，源头是 48.8 万枚 ETH 通过 THORChain 兑换而来，其中约 7000 万美元在数小时内完成了混币。\n\n$BTC $ETH #加密资讯"
+    },
+    {
+      "id": 390406645473562,
+      "kind": "trending",
+      "at": 1795205322534,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. WASTED (-11.8%)\n2. CHUNKEE (+85.4%)\n3. TRUMP (-10.8%)\n4. BTC (-6.0%)\n5. LUCIA (-10.9%)\n6. HYPE (-10.2%)\n\nCHUNKEE 24小时大涨85.4%与TRUMP 24小时下跌10.8%形成剧烈反差，两者占据榜单前列显示情绪极端分化。榜单中六只代币里四只"
     }
   ],
   "timeline": [
@@ -519,10 +520,10 @@
   ],
   "timelineKey": "2026-11-21",
   "timelineIdx": 0,
-  "timelineSentCount": 4,
+  "timelineSentCount": 5,
   "timelineDay": "2026-11-21",
-  "lastRunAt": 1795201715678,
-  "lastFetchAt": 1795201715678,
+  "lastRunAt": 1795205312471,
+  "lastFetchAt": 1795205312471,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -549,7 +550,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1795169338256,
-    "trending": 1795183727999,
+    "trending": 1795205322534,
     "news": 1795201737551,
     "market": 1795180160915,
     "trend": 1794964121240,
