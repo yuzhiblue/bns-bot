@@ -185,19 +185,14 @@
     "bmovers_2026-11-21_KERNEL23_BLESS14_HUMA13_CYBER13_BTW13_AKE-35_YB-18_ZEC-17_LIT-16_NEAR-14",
     "news_1xked7j",
     "trending_2026-11-21_WASTED_CHUNKEE_TRUMP_BTC_LUCIA_HYPE",
-    "news_faqg9g"
+    "news_faqg9g",
+    "bmovers_2026-11-21_KERNEL17_CYBER16_EVAA13_BLESS12_BARD5_AKE-40_LIT-15_ZEC-15_NEAR-10_APT-10"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795208940030,
-  "todayPosted": 6,
+  "lastPostAt": 1795212547823,
+  "todayPosted": 7,
   "todayKey": "Sat Nov 21 2026",
   "postHistory": [
-    {
-      "id": 389610403396564,
-      "kind": "trending",
-      "at": 1795010927490,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. TRUMP (-2.7%)\n2. BTC (-1.5%)\n3. HYPE (-2.2%)\n4. MMT (+111.0%)\n5. SOL (+0.8%)\n6. PENGU (+1.8%)\n\nMMT 以 24h 111% 的涨幅成为榜单中唯一的双位数涨幅项目，与 BTC -1.5% 及 TRUMP -2.7% 的下跌形成鲜明对比。榜单前列由主流币占据，"
-    },
     {
       "id": 389625070362833,
       "kind": "news",
@@ -491,6 +486,12 @@
       "kind": "news",
       "at": 1795208940030,
       "text": "周五下午，纳斯达克指数因芯片主导的抛售下跌约 5%，直接拖累加密股票和矿商走低。受此影响，比特币价格跌至 58,300 美元附近，短暂跌破了夏季低点。这波回调让币价回到了 2024 年以来的最低水平。盘面看着确实有点冷清。\n\n$BTC #加密资讯"
+    },
+    {
+      "id": 390436240169467,
+      "kind": "binanceMovers",
+      "at": 1795212547823,
+      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：KERNEL +17.2% / CYBER +16.3% / EVAA +13.1% / BLESS +11.9% / BARD +5.4%\n领跌：AKE -39.9% / LIT -15.5% / ZEC -15.4% / NEAR -10.1% / APT -9.7%\n\n领涨的KERNEL（+17.2%）与领跌的AKE（-39.9%）分列两端，领跌端的绝"
     }
   ],
   "timeline": [
@@ -521,10 +522,10 @@
   ],
   "timelineKey": "2026-11-21",
   "timelineIdx": 0,
-  "timelineSentCount": 6,
+  "timelineSentCount": 7,
   "timelineDay": "2026-11-21",
-  "lastRunAt": 1795208911962,
-  "lastFetchAt": 1795208911962,
+  "lastRunAt": 1795212527320,
+  "lastFetchAt": 1795212527320,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -555,7 +556,7 @@
     "news": 1795208940030,
     "market": 1795180160915,
     "trend": 1794964121240,
-    "binanceMovers": 1795198120532,
+    "binanceMovers": 1795212547823,
     "breakout": 1795190959150
   }
 }
