@@ -92,7 +92,7 @@
       ["netflix"],
       ["剧评"],
       ["影评"],
-      ["anthropic"]
+      { "words": ["anthropic"], "scope": "all" }
     ],
     "anchorRelevance": {
       "enabled": true,

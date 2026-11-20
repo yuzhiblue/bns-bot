@@ -66,7 +66,7 @@ GitHub 自带 `schedule` 已移除, 仅 CNB 触发）:
 | `news.cardFeeds` | 哪些资讯源**强制用自生成卡片**（避开第三方水印）；填 `news.feeds[].name` 的原值、大小写需一致（当前 `["Cointelegraph","PANews"]`，不是 URL）；其余源优先 RSS 自带配图，**无图 / 图格式不支持 / 下载失败时自动补一张资讯卡片** |
 | `news.skipWords` | 资讯标题含这些强情绪 / 传言词（暴跌、崩盘、狂潮、据传、rumor…）时**直接跳过该条**，规避平台限流与「需核查」标记 |
 | `news.skipPlatformNotices` | 默认 `true`：**过滤平台自身公告 / 公司动作**（上线交易对、下架、平台币、财报、牌照等），标题同时命中 `platformNames`（平台名）和 `platformActions`（动作词）才拦；行情、链上数据、机构产品、他方事件不受影响。设 `false` 可恢复。词表在两个同名数组里增删 |
-| `news.skipLowValueTopics` | 默认 `true`：**过滤低价值题材**（协议技术细节、机构持仓披露、娱乐八卦、Anthropic 相关）。标题同时命中 `skipTopicRules` 某条规则的**全部词**才拦（规则间 OR，如 `["eip","草案"]`）；行情 / 链上数据 / 他方事件不受影响。设 `false` 可恢复，规则在 `skipTopicRules` 增删 |
+| `news.skipLowValueTopics` | 默认 `true`：**过滤低价值题材**（协议技术细节、机构持仓披露、娱乐八卦、Anthropic 相关）。标题同时命中 `skipTopicRules` 某条规则的**全部词**才拦（规则间 OR，如 `["eip","草案"]`）；默认只查标题，写成 `{ "words": [...], "scope": "all" }` 可连摘要一起查（Anthropic 用这条，因为它常在摘要里出现）。设 `false` 可恢复 |
 | `news.anchorRelevance` | 默认 `enabled:true`：**锚点加分要求交易相关**——资讯提到锚点币种时，标题 / 摘要命中 `tradeWords`（涨跌、突破、成交额、净流入、现货 / 合约…任一）才给满分，否则按 `noSignalFactor`（默认 `0.4`，即 10 分折成 4 分）打折；设 `enabled:false` 恢复旧行为，因子和词表都可改 |
 | `llm` | 资讯 / 热搜榜 / 涨跌榜的解读由 LLM 生成（`enabled` / `baseURL` / `model` / `apiKeyEnv` / `apiKey`）；默认走 Agnes（`apiKeyEnv` 指向仓库 Secret `AGNES_API_KEY`，本地调试可在 `config.local.json` 的 `llm.apiKey` 填明文）；资讯失败时走 A 兜底，热搜 / 涨跌榜失败时回退 takes.js 规则推导 |
 

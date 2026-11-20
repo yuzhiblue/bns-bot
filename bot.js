@@ -449,17 +449,21 @@ function isPlatformNotice(title, cfg) {
       && actions.some((w) => t.includes(String(w).toLowerCase()));
 }
 // 低价值题材过滤: 一条规则里的词全部命中才跳过(规则间 OR), 比单关键词更不容易误伤。
-// 拦的是"看不懂/跟交易无关"的资讯: 协议技术细节(EIP/Gas 提案)、机构持仓披露、
-// 娱乐八卦。与 skipWords(情绪词)、skipPlatformNotices(平台公告) 互补, 都只看资讯标题。
+// 拦的是"看不懂/跟交易无关"的资讯: 协议技术细节(EIP/Gas 提案)、机构持仓披露、娱乐八卦。
+// 规则默认只查标题; 对象形式 { words, scope: "all" } 可让它连摘要一起查——
+// 有些词(如 Anthropic)常在摘要里出现、LLM 改写时又被带进正文, 只查标题会漏。
 // 开关与规则在 config.news: skipLowValueTopics / skipTopicRules。
-function isLowValueTopic(title, cfg) {
+function isLowValueTopic(title, summary, cfg) {
   if (cfg.news?.skipLowValueTopics === false) return false;
   const rules = cfg.news?.skipTopicRules ?? [];
   if (!rules.length) return false;
   const t = String(title ?? "").toLowerCase();
+  const all = `${t} ${String(summary ?? "").toLowerCase()}`;
   return rules.some((rule) => {
-    const words = (Array.isArray(rule) ? rule : []).map((w) => String(w).toLowerCase());
-    return words.length > 0 && words.every((w) => t.includes(w));
+    const words = (rule?.words ?? (Array.isArray(rule) ? rule : [])).map((w) => String(w).toLowerCase());
+    if (!words.length) return false;
+    const text = rule?.scope === "all" ? all : t;
+    return words.every((w) => text.includes(w));
   });
 }
 // 免费 Google 翻译端点(无需 key); 失败回退原文
@@ -695,7 +699,7 @@ async function fetchRssNews(cfg, state) {
     // 平台公告/平台自身新闻: 对中文标题判定(英文源此时已译成中文), 避免发平台自说自话的低质帖
     if (isPlatformNotice(zhT, cfg)) { log(`  过滤平台公告: ${zhT.slice(0, 34)}`); continue; }
     // 低价值题材(协议细节/机构持仓披露/娱乐八卦): 同样只看标题, 避免误伤行情帖
-    if (isLowValueTopic(zhT, cfg)) { log(`  过滤低价值题材: ${zhT.slice(0, 34)}`); continue; }
+    if (isLowValueTopic(zhT, zhS, cfg)) { log(`  过滤低价值题材: ${zhT.slice(0, 34)}`); continue; }
     // 英文规则没覆盖到、但翻译产物变成中文引流话术时在这里兜底跳过
     if (isPromoSummary(zhS)) { log(`  过滤空壳摘要: ${zhT.slice(0, 30)}`); continue; }
     // 只看英文源标题是否翻译失败: 标题是门面, 翻成中文就是中文帖(可加提问/cashtag/LLM 改写)。
@@ -762,7 +766,7 @@ async function fetchForesight(cfg) {
       if (!title || !content) continue;
       if (skipRe && skipRe.test(title)) { log(`  Foresight 过滤煽动/传言: ${title.slice(0, 30)}`); continue; }
       if (isPlatformNotice(title, cfg)) { log(`  Foresight 过滤平台公告: ${title.slice(0, 34)}`); continue; }
-      if (isLowValueTopic(title, cfg)) { log(`  Foresight 过滤低价值题材: ${title.slice(0, 34)}`); continue; }
+      if (isLowValueTopic(title, content, cfg)) { log(`  Foresight 过滤低价值题材: ${title.slice(0, 34)}`); continue; }
       if (mentionsCompetitor(`${title} ${content}`, link)) { log(`  Foresight 过滤竞品: ${title.slice(0, 30)}`); continue; }
       const ts = d.published_at ? Number(d.published_at) * 1000 : Date.now();
       // 选题打分与 RSS 资讯一致, 重要快讯额外加权
