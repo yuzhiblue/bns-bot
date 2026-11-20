@@ -177,19 +177,14 @@
     "foresight_118217",
     "movers_2026-11-20_ZEC_XMR_HYPE",
     "news_xpnbbq",
-    "market_MMTUSDT_2026-11-20T12"
+    "market_MMTUSDT_2026-11-20T12",
+    "trending_2026-11-20_WASTED_TRUMP_CHUNKEE_BTC_LUCIA_PEARL"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795180160915,
-  "todayPosted": 21,
+  "lastPostAt": 1795183727999,
+  "todayPosted": 22,
   "todayKey": "Fri Nov 20 2026",
   "postHistory": [
-    {
-      "id": 389492619632031,
-      "kind": "binanceMovers",
-      "at": 1794982171675,
-      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：MMT +88.0% / BREV +82.3% / BTW +10.2% / CROSS +10.0% / NEAR +5.4%\n领跌：HUMA -22.3% / 龙虾 -17.8% / ANTHROPIC -6.0% / ASTER -5.2% / EVAA -5.1%\n\n领涨这边的波动更猛一些，不过合约带杠杆，涨得急的往往回撤也快，榜单只能当天的快照看"
-    },
     {
       "id": 389507152111483,
       "kind": "news",
@@ -483,6 +478,12 @@
       "kind": "market",
       "at": 1795180160915,
       "text": "📊 $MMT 30 分钟涨 2.0%\n刚还在横着，突然就拉了，现在 0.2512，成交量放大到 2.5 倍。\n\n涨 2.0% 不算大，但量能明显比平时活跃，有点资金在试探的意思。当然，短时间说明不了太多，继续看着就是。\n\n买盘一股脑涌上来了\n\n$MMT #行情异动"
+    },
+    {
+      "id": 390318194125136,
+      "kind": "trending",
+      "at": 1795183727999,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. WASTED (+9.5%)\n2. TRUMP (-10.2%)\n3. CHUNKEE (+137.4%)\n4. BTC (-3.4%)\n5. LUCIA (-10.2%)\n6. PEARL (-12.1%)\n\nCHUNKEE单日大涨137.4%与TRUMP下跌10.2%形成鲜明对比，显示热度高度集中在个别中小市值代币上。榜单整体跌多涨少，主流币BT"
     }
   ],
   "timeline": [
@@ -513,10 +514,10 @@
   ],
   "timelineKey": "2026-11-20",
   "timelineIdx": 0,
-  "timelineSentCount": 21,
+  "timelineSentCount": 22,
   "timelineDay": "2026-11-20",
-  "lastRunAt": 1795180151915,
-  "lastFetchAt": 1795180151915,
+  "lastRunAt": 1795183713256,
+  "lastFetchAt": 1795183713256,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -537,7 +538,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1795169338256,
-    "trending": 1795163206282,
+    "trending": 1795183727999,
     "news": 1795176517670,
     "market": 1795180160915,
     "trend": 1794964121240,
