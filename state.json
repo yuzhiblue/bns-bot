@@ -176,19 +176,14 @@
     "trending_2026-11-20_BTC_PEARL_CARDS_XMR_QTC_MON",
     "foresight_118217",
     "movers_2026-11-20_ZEC_XMR_HYPE",
-    "news_xpnbbq"
+    "news_xpnbbq",
+    "market_MMTUSDT_2026-11-20T12"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795176517670,
-  "todayPosted": 20,
+  "lastPostAt": 1795180160915,
+  "todayPosted": 21,
   "todayKey": "Fri Nov 20 2026",
   "postHistory": [
-    {
-      "id": 389477705061167,
-      "kind": "news",
-      "at": 1794978530455,
-      "text": "币安将于11月20日移除GAS/TRY、HBAR/BNB等5个现货交易对\n\nPANews 11月18日消息，据币安公告，根据近期审核结果，将于2026年11月20日11:00（东八区时间）移除GAS/TRY、HBAR/BNB、HIVE/TRY、KSM/TRY和ZAMA/TRY现货交易对并停止交易。币安表示会定期审核所有上线现货交易对，可能因流动性、交易量不佳等多种因素下架部分交易对，以保护用户并维"
-    },
     {
       "id": 389492619632031,
       "kind": "binanceMovers",
@@ -482,6 +477,12 @@
       "kind": "news",
       "at": 1795176517670,
       "text": "贝莱德的现货比特币 ETF 录得自两年多前推出以来最大的单日资金流出。这波流出主要受亚洲科技股下跌影响，比特币已经连跌三日，投资者正在持续逃离这个行业。\n\n$BTC #加密资讯"
+    },
+    {
+      "id": 390303583478855,
+      "kind": "market",
+      "at": 1795180160915,
+      "text": "📊 $MMT 30 分钟涨 2.0%\n刚还在横着，突然就拉了，现在 0.2512，成交量放大到 2.5 倍。\n\n涨 2.0% 不算大，但量能明显比平时活跃，有点资金在试探的意思。当然，短时间说明不了太多，继续看着就是。\n\n买盘一股脑涌上来了\n\n$MMT #行情异动"
     }
   ],
   "timeline": [
@@ -512,10 +513,10 @@
   ],
   "timelineKey": "2026-11-20",
   "timelineIdx": 0,
-  "timelineSentCount": 20,
+  "timelineSentCount": 21,
   "timelineDay": "2026-11-20",
-  "lastRunAt": 1795176504276,
-  "lastFetchAt": 1795176504276,
+  "lastRunAt": 1795180151915,
+  "lastFetchAt": 1795180151915,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -538,7 +539,7 @@
     "movers": 1795169338256,
     "trending": 1795163206282,
     "news": 1795176517670,
-    "market": 1794841771320,
+    "market": 1795180160915,
     "trend": 1794964121240,
     "binanceMovers": 1795154950988,
     "breakout": 1795140529925
