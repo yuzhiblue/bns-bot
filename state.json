@@ -168,19 +168,14 @@
     "bmovers_2026-11-20_IRYS33_NAORIS30_EVAA30_ICNT29_BTW22_PIEVERSE-13_SKY-6_ENA-6_BREV-5_UNI-4",
     "news_1dwgkca",
     "breakout_2026-11-20_BTClow_NVDABlow_PEPElow",
-    "news_41764q"
+    "news_41764q",
+    "trending_2026-11-20_BTC_PEARL_NEAR_ANTHROPIC_XRP_HYPE"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795144125863,
-  "todayPosted": 12,
+  "lastPostAt": 1795147755867,
+  "todayPosted": 13,
   "todayKey": "Fri Nov 20 2026",
   "postHistory": [
-    {
-      "id": 389359820688220,
-      "kind": "trend",
-      "at": 1794949750063,
-      "text": "📉 $ETH 日线数据快照（30 天）\n\n现价 1,798.66，7 日 -12.4%，30 日 -25.3%。\n7 日波动不小，现价处在 11% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n这种快照看看就好，没什么结论。\n\n这种快照你会重点看哪几项？\n\n$ETH #行情分析\n\n以上只是数据记录和个人观察，"
-    },
     {
       "id": 389374791059833,
       "kind": "trending",
@@ -474,6 +469,12 @@
       "kind": "news",
       "at": 1795144125863,
       "text": "日前 SoSoValue 数据显示，美东时间 11 月 19 日 美国 NEAR、ZEC 现货 ETF 单日合计净流出 138.82 万美元，其中 NEAR 净流出 68.03 万美元，ZEC 净流出 70.79 万美元。讲真，虽然 Bitwise NEAR ETF（NRR） 当日录得 68.03 万美元 的净流出，但它的历史累计净流入仍达 7774.83 万美元，且截至发稿前 NEAR 现货 E"
+    },
+    {
+      "id": 390170852427780,
+      "kind": "trending",
+      "at": 1795147755867,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BTC (-1.6%)\n2. PEARL (-8.8%)\n3. NEAR (-9.9%)\n4. ANTHROPIC (-25.2%)\n5. XRP (-0.5%)\n6. HYPE (-1.9%)\n\nNEAR Protocol 24小时下跌9.9%，Pearl 下跌8.8%，两者跌幅显著大于榜单平均。六只代币全部为负收益，其中主流币如 Bitcoin "
     }
   ],
   "timeline": [
@@ -504,10 +505,10 @@
   ],
   "timelineKey": "2026-11-20",
   "timelineIdx": 0,
-  "timelineSentCount": 12,
+  "timelineSentCount": 13,
   "timelineDay": "2026-11-20",
-  "lastRunAt": 1795144113898,
-  "lastFetchAt": 1795144113898,
+  "lastRunAt": 1795147742549,
+  "lastFetchAt": 1795147742549,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -528,7 +529,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1795050513203,
-    "trending": 1795126139952,
+    "trending": 1795147755867,
     "news": 1795144125863,
     "market": 1794841771320,
     "trend": 1794964121240,
