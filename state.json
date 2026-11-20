@@ -169,19 +169,14 @@
     "news_1dwgkca",
     "breakout_2026-11-20_BTClow_NVDABlow_PEPElow",
     "news_41764q",
-    "trending_2026-11-20_BTC_PEARL_NEAR_ANTHROPIC_XRP_HYPE"
+    "trending_2026-11-20_BTC_PEARL_NEAR_ANTHROPIC_XRP_HYPE",
+    "news_z0fucz"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795147755867,
-  "todayPosted": 13,
+  "lastPostAt": 1795151316008,
+  "todayPosted": 14,
   "todayKey": "Fri Nov 20 2026",
   "postHistory": [
-    {
-      "id": 389374791059833,
-      "kind": "trending",
-      "at": 1794953404939,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BP (+17.8%)\n2. BTC (-1.8%)\n3. PEARL (+11.3%)\n4. SOL (+1.9%)\n5. VVV (-1.1%)\n6. LIT (+0.6%)\n\n榜单前列由Backpack和Pearl等中小市值代币占据，显示短线资金正集中于特定高波动标的。传统主流币种如BTC和SOL虽在列但涨幅有限，反映出市场注意力目前更偏向于具"
-    },
     {
       "id": 389389151368894,
       "kind": "movers",
@@ -475,6 +470,12 @@
       "kind": "trending",
       "at": 1795147755867,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BTC (-1.6%)\n2. PEARL (-8.8%)\n3. NEAR (-9.9%)\n4. ANTHROPIC (-25.2%)\n5. XRP (-0.5%)\n6. HYPE (-1.9%)\n\nNEAR Protocol 24小时下跌9.9%，Pearl 下跌8.8%，两者跌幅显著大于榜单平均。六只代币全部为负收益，其中主流币如 Bitcoin "
+    },
+    {
+      "id": 390185434764643,
+      "kind": "news",
+      "at": 1795151316008,
+      "text": "日前看到消息说加拿大皇家银行披露了对比特币储备公司 Strive 的持仓情况，增持比例达到了 58%，持股总数达到 74,035 股，价值 120 万美元。Bitcoin Treasuries 在 X 平台发文确认了这些细节，看来传统大行对这类公司的关注确实很具体。\n\n$BTC #加密资讯"
     }
   ],
   "timeline": [
@@ -505,10 +506,10 @@
   ],
   "timelineKey": "2026-11-20",
   "timelineIdx": 0,
-  "timelineSentCount": 13,
+  "timelineSentCount": 14,
   "timelineDay": "2026-11-20",
-  "lastRunAt": 1795147742549,
-  "lastFetchAt": 1795147742549,
+  "lastRunAt": 1795151305128,
+  "lastFetchAt": 1795151305128,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -530,7 +531,7 @@
   "lastPostAtByKind": {
     "movers": 1795050513203,
     "trending": 1795147755867,
-    "news": 1795144125863,
+    "news": 1795151316008,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1795133383666,
