@@ -165,19 +165,14 @@
     "news_110vo7e",
     "trending_2026-11-20_WASTED_LUCIA_TRUMP_BTC_PENGU_MON",
     "news_ym5kmv",
-    "bmovers_2026-11-20_IRYS33_NAORIS30_EVAA30_ICNT29_BTW22_PIEVERSE-13_SKY-6_ENA-6_BREV-5_UNI-4"
+    "bmovers_2026-11-20_IRYS33_NAORIS30_EVAA30_ICNT29_BTW22_PIEVERSE-13_SKY-6_ENA-6_BREV-5_UNI-4",
+    "news_1dwgkca"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795133383665,
-  "todayPosted": 9,
+  "lastPostAt": 1795136921997,
+  "todayPosted": 10,
   "todayKey": "Fri Nov 20 2026",
   "postHistory": [
-    {
-      "id": 389315534705368,
-      "kind": "trending",
-      "at": 1794938938088,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BP (+22.0%)\n2. BTC (-1.7%)\n3. PEARL (+4.0%)\n4. HYPE (+2.6%)\n5. SOL (+1.6%)\n6. BREV (+81.3%)\n\n榜单头部由Brevis(BREV)和Backpack(BP)等高涨幅代币占据，显示短线热点向特定项目集中。主流币方面，Bitcoin(BTC)微跌与Solana(SO"
-    },
     {
       "id": 389330203517246,
       "kind": "trend",
@@ -471,6 +466,12 @@
       "kind": "binanceMovers",
       "at": 1795133383666,
       "text": "📊 币安合约 24h 涨跌榜\n\n领涨：IRYS +32.5% / NAORIS +30.2% / EVAA +29.6% / ICNT +28.6% / BTW +22.3%\n领跌：PIEVERSE -13.1% / SKY -6.5% / ENA -6.3% / BREV -5.1% / UNI -4.5%\n\n领涨榜首位的IRYS上涨32.5%，比第二名NAORIS高出2.3个百分点，呈现出断"
+    },
+    {
+      "id": 390126476756923,
+      "kind": "news",
+      "at": 1795136921998,
+      "text": "CZ 直接转发了《福布斯》对 Netflix 新剧《The Altruists》的影评，指出剧里把他写成了“邦德电影式反派”，还编造剧情让他通过社交活动给 FTX 创始人 Sam Bankman-Fried（SBF）施压。有意思的是，《福布斯》在文中明确提到，目前没有公开证据表明 CZ 曾有过此类行为。该剧定于 11 月 19 日上线，主要围绕 SBF 与 Alameda Research 前联席"
     }
   ],
   "timeline": [
@@ -501,10 +502,10 @@
   ],
   "timelineKey": "2026-11-20",
   "timelineIdx": 0,
-  "timelineSentCount": 9,
+  "timelineSentCount": 10,
   "timelineDay": "2026-11-20",
-  "lastRunAt": 1795133369450,
-  "lastFetchAt": 1795133369450,
+  "lastRunAt": 1795136906878,
+  "lastFetchAt": 1795136906878,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -526,7 +527,7 @@
   "lastPostAtByKind": {
     "movers": 1795050513203,
     "trending": 1795126139952,
-    "news": 1795129730728,
+    "news": 1795136921998,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1795133383666,
