@@ -166,19 +166,14 @@
     "trending_2026-11-20_WASTED_LUCIA_TRUMP_BTC_PENGU_MON",
     "news_ym5kmv",
     "bmovers_2026-11-20_IRYS33_NAORIS30_EVAA30_ICNT29_BTW22_PIEVERSE-13_SKY-6_ENA-6_BREV-5_UNI-4",
-    "news_1dwgkca"
+    "news_1dwgkca",
+    "breakout_2026-11-20_BTClow_NVDABlow_PEPElow"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795136921997,
-  "todayPosted": 10,
+  "lastPostAt": 1795140529925,
+  "todayPosted": 11,
   "todayKey": "Fri Nov 20 2026",
   "postHistory": [
-    {
-      "id": 389330203517246,
-      "kind": "trend",
-      "at": 1794942519337,
-      "text": "📉 $BNB 日线数据快照（30 天）\n\n现价 588.04，7 日 -13.6%，30 日 -19.7%。\n7 日波动不小，现价处在 11% 分位（0 = 区间最低，100 = 最高）。\n\n一路跌到这个位置，抛压是实打实的，但跌得急不等于会一直跌，后面有没有承接还得观察。\n\n数据摆这儿了，怎么解读看各自的系统。\n\n你们平时看日线数据吗？\n\n$BNB #行情分析\n\n以上只是数据记录和个人观察，不"
-    },
     {
       "id": 389345049050005,
       "kind": "trend",
@@ -472,6 +467,12 @@
       "kind": "news",
       "at": 1795136921998,
       "text": "CZ 直接转发了《福布斯》对 Netflix 新剧《The Altruists》的影评，指出剧里把他写成了“邦德电影式反派”，还编造剧情让他通过社交活动给 FTX 创始人 Sam Bankman-Fried（SBF）施压。有意思的是，《福布斯》在文中明确提到，目前没有公开证据表明 CZ 曾有过此类行为。该剧定于 11 月 19 日上线，主要围绕 SBF 与 Alameda Research 前联席"
+    },
+    {
+      "id": 390141254989933,
+      "kind": "breakout",
+      "at": 1795140529925,
+      "text": "🔺 日线突破监控\n\nBTC 今天摸到 20 日新低，现价 61,400.52\nNVDAB 今天摸到 20 日新低，现价 143.79\nPEPE 今天摸到 20 日新低，现价 0.00000358\n\n价格探到区间下沿，卖压是有的，不过破位之后能不能延续，还得看接下来几天的成交能不能跟上。\n\n这种位置，光看一根线判断不了什么\n\n#行情异动 #技术分析"
     }
   ],
   "timeline": [
@@ -502,10 +503,10 @@
   ],
   "timelineKey": "2026-11-20",
   "timelineIdx": 0,
-  "timelineSentCount": 10,
+  "timelineSentCount": 11,
   "timelineDay": "2026-11-20",
-  "lastRunAt": 1795136906878,
-  "lastFetchAt": 1795136906878,
+  "lastRunAt": 1795140513745,
+  "lastFetchAt": 1795140513745,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -531,6 +532,6 @@
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1795133383666,
-    "breakout": 1795111717966
+    "breakout": 1795140529925
   }
 }
