@@ -184,19 +184,14 @@
     "news_ozd5gm",
     "bmovers_2026-11-21_KERNEL23_BLESS14_HUMA13_CYBER13_BTW13_AKE-35_YB-18_ZEC-17_LIT-16_NEAR-14",
     "news_1xked7j",
-    "trending_2026-11-21_WASTED_CHUNKEE_TRUMP_BTC_LUCIA_HYPE"
+    "trending_2026-11-21_WASTED_CHUNKEE_TRUMP_BTC_LUCIA_HYPE",
+    "news_faqg9g"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795205322534,
-  "todayPosted": 5,
+  "lastPostAt": 1795208940030,
+  "todayPosted": 6,
   "todayKey": "Sat Nov 21 2026",
   "postHistory": [
-    {
-      "id": 389595739851206,
-      "kind": "news",
-      "at": 1795007347523,
-      "text": "Bullish刚发布的三季度报告挺有意思，净亏损直接扩大到了5.763 亿美元，而上一年同期才亏1850 万美元。讲真，虽然现货交易那块有点疲软，但靠机构服务这块撑住了场面，算是把营收做超了。\n\n#加密资讯"
-    },
     {
       "id": 389610403396564,
       "kind": "trending",
@@ -490,6 +485,12 @@
       "kind": "trending",
       "at": 1795205322534,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. WASTED (-11.8%)\n2. CHUNKEE (+85.4%)\n3. TRUMP (-10.8%)\n4. BTC (-6.0%)\n5. LUCIA (-10.9%)\n6. HYPE (-10.2%)\n\nCHUNKEE 24小时大涨85.4%与TRUMP 24小时下跌10.8%形成剧烈反差，两者占据榜单前列显示情绪极端分化。榜单中六只代币里四只"
+    },
+    {
+      "id": 390421462651152,
+      "kind": "news",
+      "at": 1795208940030,
+      "text": "周五下午，纳斯达克指数因芯片主导的抛售下跌约 5%，直接拖累加密股票和矿商走低。受此影响，比特币价格跌至 58,300 美元附近，短暂跌破了夏季低点。这波回调让币价回到了 2024 年以来的最低水平。盘面看着确实有点冷清。\n\n$BTC #加密资讯"
     }
   ],
   "timeline": [
@@ -520,10 +521,10 @@
   ],
   "timelineKey": "2026-11-21",
   "timelineIdx": 0,
-  "timelineSentCount": 5,
+  "timelineSentCount": 6,
   "timelineDay": "2026-11-21",
-  "lastRunAt": 1795205312471,
-  "lastFetchAt": 1795205312471,
+  "lastRunAt": 1795208911962,
+  "lastFetchAt": 1795208911962,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -551,7 +552,7 @@
   "lastPostAtByKind": {
     "movers": 1795169338256,
     "trending": 1795205322534,
-    "news": 1795201737551,
+    "news": 1795208940030,
     "market": 1795180160915,
     "trend": 1794964121240,
     "binanceMovers": 1795198120532,
