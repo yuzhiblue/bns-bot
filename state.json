@@ -171,19 +171,14 @@
     "news_41764q",
     "trending_2026-11-20_BTC_PEARL_NEAR_ANTHROPIC_XRP_HYPE",
     "news_z0fucz",
-    "bmovers_2026-11-20_EVAA37_NAORIS30_ICNT30_PIPPIN20_BARD18_IRYS-13_NEAR-11_LIT-10_ZEC-9_1000LUNC-8"
+    "bmovers_2026-11-20_EVAA37_NAORIS30_ICNT30_PIPPIN20_BARD18_IRYS-13_NEAR-11_LIT-10_ZEC-9_1000LUNC-8",
+    "news_1ntivkc"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795154950988,
-  "todayPosted": 15,
+  "lastPostAt": 1795158514021,
+  "todayPosted": 16,
   "todayKey": "Fri Nov 20 2026",
   "postHistory": [
-    {
-      "id": 389403909476806,
-      "kind": "trend",
-      "at": 1794960513950,
-      "text": "📉 $SOL 日线数据快照（30 天）\n\n现价 75.12，7 日 -9.8%，30 日 -29.5%。\n7 日波动不小，现价处在 18% 分位（0 = 区间最低，100 = 最高）。\n\n量能明显放大而价格没走多远，这种量价背离值得多留意几天，现在下结论还早。\n\n这种快照看看就好，没什么结论。\n\n这种横盘/波动你们一般怎么看？\n\n$SOL #行情分析\n\n以上只是数据记录和个人观察，不构成投资建议"
-    },
     {
       "id": 389418685008241,
       "kind": "trend",
@@ -477,6 +472,12 @@
       "kind": "binanceMovers",
       "at": 1795154950988,
       "text": "📊 币安合约 24h 涨跌榜\n\n领涨：EVAA +36.8% / NAORIS +30.4% / ICNT +29.5% / PIPPIN +20.0% / BARD +18.3%\n领跌：IRYS -12.8% / NEAR -10.5% / LIT -9.7% / ZEC -9.4% / 1000LUNC -8.3%\n\n领涨榜首EVAA涨幅+36.8%显著高于领跌榜首IRYS跌幅-12.8%，"
+    },
+    {
+      "id": 390214917760304,
+      "kind": "news",
+      "at": 1795158514021,
+      "text": "Direxion半导体3倍做空ETF涨超13%，Gate gStocks支持7×24小时交易\n\nOdaily星球日报讯 11 月 20 日，据 Gate 行情数据，SOXSG、QCOMG 与 HDG 位列 gStocks 24 小时涨幅榜前三。Direxion 半导体 3 倍做空 ETF（SOXSG/USDT）上涨 13.19%，报 65.75 美元；高通（QCOMG/USDT）上涨 0.34%，"
     }
   ],
   "timeline": [
@@ -507,10 +508,10 @@
   ],
   "timelineKey": "2026-11-20",
   "timelineIdx": 0,
-  "timelineSentCount": 15,
+  "timelineSentCount": 16,
   "timelineDay": "2026-11-20",
-  "lastRunAt": 1795154933638,
-  "lastFetchAt": 1795154933638,
+  "lastRunAt": 1795158500524,
+  "lastFetchAt": 1795158500524,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -532,7 +533,7 @@
   "lastPostAtByKind": {
     "movers": 1795050513203,
     "trending": 1795147755867,
-    "news": 1795151316008,
+    "news": 1795158514021,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1795154950988,
