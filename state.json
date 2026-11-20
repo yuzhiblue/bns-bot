@@ -175,19 +175,14 @@
     "news_1ntivkc",
     "trending_2026-11-20_BTC_PEARL_CARDS_XMR_QTC_MON",
     "foresight_118217",
-    "movers_2026-11-20_ZEC_XMR_HYPE"
+    "movers_2026-11-20_ZEC_XMR_HYPE",
+    "news_xpnbbq"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795169338256,
-  "todayPosted": 19,
+  "lastPostAt": 1795176517670,
+  "todayPosted": 20,
   "todayKey": "Fri Nov 20 2026",
   "postHistory": [
-    {
-      "id": 389462974462521,
-      "kind": "news",
-      "at": 1794974934126,
-      "text": "币安现货和闪兑交易平台新增7个bStocks交易对\n\nPANews 11月18日消息，据币安公告，币安现货和闪兑交易平台将上线bStocks代币化证券交易对，包括iShares MSCI Japan ETF（EWJB）、iShares MSCI Taiwan ETF（EWTB）、iShares MSCI Brazil ETF（EWZB）、iShares MSCI Brazil Small-Cap "
-    },
     {
       "id": 389477705061167,
       "kind": "news",
@@ -481,6 +476,12 @@
       "kind": "movers",
       "at": 1795169338256,
       "text": "📊 24h 涨跌榜（全市场）\n\n领跌：ZEC -11.7% / XMR -5.3% / HYPE -5.0%\n\nZcash领跌11.7%，Hyperliquid领跌5.0%，榜单呈现单边下行结构。三个上榜币种全部为跌幅居前品种，无领涨标的，显示当前波动集中在抛售端。\n\n涨跌两头都拉得挺开，说明今天分歧不小；这种分化能维持多久，单看一天的榜单说不准。\n\n#涨跌榜单 #行情异动"
+    },
+    {
+      "id": 390288660774861,
+      "kind": "news",
+      "at": 1795176517670,
+      "text": "贝莱德的现货比特币 ETF 录得自两年多前推出以来最大的单日资金流出。这波流出主要受亚洲科技股下跌影响，比特币已经连跌三日，投资者正在持续逃离这个行业。\n\n$BTC #加密资讯"
     }
   ],
   "timeline": [
@@ -511,10 +512,10 @@
   ],
   "timelineKey": "2026-11-20",
   "timelineIdx": 0,
-  "timelineSentCount": 19,
+  "timelineSentCount": 20,
   "timelineDay": "2026-11-20",
-  "lastRunAt": 1795169309419,
-  "lastFetchAt": 1795169309419,
+  "lastRunAt": 1795176504276,
+  "lastFetchAt": 1795176504276,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -536,7 +537,7 @@
   "lastPostAtByKind": {
     "movers": 1795169338256,
     "trending": 1795163206282,
-    "news": 1795165731070,
+    "news": 1795176517670,
     "market": 1794841771320,
     "trend": 1794964121240,
     "binanceMovers": 1795154950988,
