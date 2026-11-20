@@ -182,19 +182,14 @@
     "foresight_118233",
     "breakout_2026-11-21_BTClow_ETHlow_ZEClow",
     "news_ozd5gm",
-    "bmovers_2026-11-21_KERNEL23_BLESS14_HUMA13_CYBER13_BTW13_AKE-35_YB-18_ZEC-17_LIT-16_NEAR-14"
+    "bmovers_2026-11-21_KERNEL23_BLESS14_HUMA13_CYBER13_BTW13_AKE-35_YB-18_ZEC-17_LIT-16_NEAR-14",
+    "news_1xked7j"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795198120532,
-  "todayPosted": 3,
+  "lastPostAt": 1795201737551,
+  "todayPosted": 4,
   "todayKey": "Sat Nov 21 2026",
   "postHistory": [
-    {
-      "id": 389566098253260,
-      "kind": "news",
-      "at": 1795000110819,
-      "text": "币安黑客相关钱包集群过去24小时转移约5000万美元BTC，资金经由Chainflip和WabiSabi CoinJoin洗钱\n\nOdaily星球日报讯 据 Onchain Lens 监测，币安黑客相关钱包集群在过去 24 小时内还转移了约 5000 万美元的 BTC，资金经由 Chainflip 和 WabiSabi CoinJoin 进行洗钱。约 2 小时前，该钱包集群通过 7 笔转账将 7."
-    },
     {
       "id": 389580897165613,
       "kind": "binanceMovers",
@@ -488,6 +483,12 @@
       "kind": "binanceMovers",
       "at": 1795198120532,
       "text": "📊 币安合约 24h 涨跌榜\n\n领涨：KERNEL +23.2% / BLESS +13.5% / HUMA +12.9% / CYBER +12.9% / BTW +12.7%\n领跌：AKE -35.3% / YB -17.7% / ZEC -17.0% / LIT -16.3% / NEAR -13.9%\n\nKERNEL以+23.2%领涨与AKE以-35.3%领跌分别占据涨跌榜首，其中领跌端"
+    },
+    {
+      "id": 390391961349451,
+      "kind": "news",
+      "at": 1795201737551,
+      "text": "1.49 亿美元被盗资产里，至少有 2310 枚 BTC 跑进了 CoinJoin 混币交易。Elliptic 监测到，约 90% 的这类混币活动集中在 11 月 17 日之后，源头是 48.8 万枚 ETH 通过 THORChain 兑换而来，其中约 7000 万美元在数小时内完成了混币。\n\n$BTC $ETH #加密资讯"
     }
   ],
   "timeline": [
@@ -518,10 +519,10 @@
   ],
   "timelineKey": "2026-11-21",
   "timelineIdx": 0,
-  "timelineSentCount": 3,
+  "timelineSentCount": 4,
   "timelineDay": "2026-11-21",
-  "lastRunAt": 1795198105937,
-  "lastFetchAt": 1795198105937,
+  "lastRunAt": 1795201715678,
+  "lastFetchAt": 1795201715678,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -549,7 +550,7 @@
   "lastPostAtByKind": {
     "movers": 1795169338256,
     "trending": 1795183727999,
-    "news": 1795194548492,
+    "news": 1795201737551,
     "market": 1795180160915,
     "trend": 1794964121240,
     "binanceMovers": 1795198120532,
