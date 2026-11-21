@@ -188,19 +188,14 @@
     "news_faqg9g",
     "bmovers_2026-11-21_KERNEL17_CYBER16_EVAA13_BLESS12_BARD5_AKE-40_LIT-15_ZEC-15_NEAR-10_APT-10",
     "news_i13c04",
-    "trending_2026-11-22_BP_ZEC_DOGE_WASTED_PENGU_WSTAR"
+    "trending_2026-11-22_BP_ZEC_DOGE_WASTED_PENGU_WSTAR",
+    "breakout_2026-11-22_BTClow_ETHlow_SOLlow"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795277322478,
-  "todayPosted": 1,
+  "lastPostAt": 1795288119400,
+  "todayPosted": 2,
   "todayKey": "Sun Nov 22 2026",
   "postHistory": [
-    {
-      "id": 389654561527929,
-      "kind": "news",
-      "at": 1795021708303,
-      "text": "沃勒释放激进加息信号，美元升至19个月新高\n\nOdaily星球日报讯 周三，美联储理事沃勒发表鹰派言论，叠加近期经济数据强化市场对下月加息的预期，美元升至 19 个月来新高。沃勒周三接受 CNBC 采访时表示，如果美联储希望降低通胀，就需要采取更具“进攻性”的行动，可以选择在 12 月会议上加息 50 个基点，也可以通过会后声明引导市场形成对进一步加息的预期。Monex USA 驻华盛顿交易业务高"
-    },
     {
       "id": 389669333728179,
       "kind": "binanceMovers",
@@ -494,6 +489,12 @@
       "kind": "trending",
       "at": 1795277322478,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BP (+11.0%)\n2. ZEC (+1.6%)\n3. DOGE (+2.4%)\n4. WASTED (-4.7%)\n5. PENGU (+3.1%)\n6. WSTAR (+3404.0%)\n\nWanted Star (WSTAR) 24h涨幅达3404.0%，Backpack (BP) 上涨11.0%，榜单前六中五只币种为中小市值项目，仅Zca"
+    },
+    {
+      "id": 390745781514533,
+      "kind": "breakout",
+      "at": 1795288119400,
+      "text": "🔺 日线突破监控\n\nBTC 今天摸到 20 日新低，现价 60,373.74\nETH 今天摸到 20 日新低，现价 1,686.41\nSOL 今天摸到 20 日新低，现价 70.76\n\n价格探到区间下沿，卖压是有的，不过破位之后能不能延续，还得看接下来几天的成交能不能跟上。\n\n这种位置，光看一根线判断不了什么\n\n#行情异动 #技术分析"
     }
   ],
   "timeline": [
@@ -508,10 +509,10 @@
   ],
   "timelineKey": "2026-11-22",
   "timelineIdx": 0,
-  "timelineSentCount": 1,
+  "timelineSentCount": 2,
   "timelineDay": "2026-11-22",
-  "lastRunAt": 1795277307595,
-  "lastFetchAt": 1795277307595,
+  "lastRunAt": 1795288111264,
+  "lastFetchAt": 1795288111264,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -546,6 +547,6 @@
     "market": 1795180160915,
     "trend": 1794964121240,
     "binanceMovers": 1795212547823,
-    "breakout": 1795190959150
+    "breakout": 1795288119400
   }
 }
