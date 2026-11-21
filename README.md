@@ -1,17 +1,17 @@
 # bns-bot — 币安广场自动发帖（GitHub Actions 纯云端）
 
 抓取行情异动 / 热搜榜 / 涨跌榜 / 资讯 RSS / 形态突破 / 币安合约涨跌榜 → 生成带 `$币种` 的帖子 → 调广场 OpenAPI 发布。
-**只跑云端**: CNB 定时流水线每小时 POST `workflow_dispatch`, 由 GitHub Actions
+**只跑云端**: CNB 定时流水线每 3 小时 POST `workflow_dispatch`, 由 GitHub Actions
 唤起一个短进程, 跑一轮就退出; 没有常驻服务、没有长连接, 本机不留启动脚本和计划任务。
 **执行端留在 GitHub Actions**（CNB runner 实测连不上发帖域名, 见「外部定时器」一节）;
-主触发是 CNB 定时器（每小时 POST `workflow_dispatch`）; GitHub 自带 `schedule` 已移除（best-effort、时好时坏, 且与 CNB 节奏重叠纯属冗余）。`cron-job.org` 是可选的境外冗余（尚未配置）。
+主触发是 CNB 定时器（每 3 小时 POST `workflow_dispatch`）; GitHub 自带 `schedule` 已移除（best-effort、时好时坏, 且与 CNB 节奏重叠纯属冗余）。`cron-job.org` 是可选的境外冗余（尚未配置）。
 配置分两份: 仓库里的 `config.json`（入库的基准配置, 不含 OpenAPI Key, 所有可调参数都在这里）和 Secret `BNS_CONFIG`, 状态靠 `state.json` 持久化。
 
 ## 文件
 
 | 文件 | 说明 |
 |---|---|
-| `.github/workflows/bot.yml` | 云端**执行端**: 由 CNB 定时器每小时触发, 把 Secret 里的 Key 注入 config.json、跑一轮 bot、提交 `state.json` |
+| `.github/workflows/bot.yml` | 云端**执行端**: 由 CNB 定时器每 3 小时触发, 把 Secret 里的 Key 注入 config.json、跑一轮 bot、提交 `state.json` |
 | `.cnb.yml` | CNB 触发器配置: `crontab` 定时 + `web_trigger` 手动触发 |
 | `trigger-workflow.mjs` | CNB 流水线执行的脚本: POST `workflow_dispatch`, 带重试与失败标红 |
 | `.github/workflows/probe.yml` | `probe-binance` 只读网络诊断(手动触发, 不发帖) |
@@ -224,10 +224,10 @@ GitHub 自带 `schedule` 已移除, 仅 CNB 触发）:
 
 ## 部署到 GitHub Actions（公开仓库）
 
-CNB 定时器每小时触发一次, GitHub Actions 才跑一轮 `node bot.js --once`
-（`--once` 只是兼容参数, 不写也是跑一轮就退出）; `bot.yml` 由 CNB 定时器每小时触发（手动 Run workflow 亦可）。
+CNB 定时器每 3 小时触发一次, GitHub Actions 才跑一轮 `node bot.js --once`
+（`--once` 只是兼容参数, 不写也是跑一轮就退出）; `bot.yml` 由 CNB 定时器每 3 小时触发（手动 Run workflow 亦可）。
 **仓库必须是 Public**: 公开仓库的标准 runner 免费且不限分钟数, 不消耗私有库每月 2000 分钟额度;
-私有库按这个频率约 **2880 次运行/月**（96 次/天 × 30 天）, 即便每轮只有几十秒,
+私有库按这个频率约 **240 次运行/月**（8 次/天 × 30 天）, 即便每轮只有几十秒,
 累计也很容易打爆额度并拖停其他 workflow。
 
 > ⚠️ 公开仓库里**代码、`templates.js` 词库、`state.json`、运行日志（含帖子全文）、`config.json`
@@ -275,7 +275,7 @@ CNB 定时器每小时触发一次, GitHub Actions 才跑一轮 `node bot.js --o
 
 GitHub 自带的 `schedule` 是 best-effort 投递: 2026-11-11 曾连续 9 小时不触发、恢复时成批补发,
 11-12 又断了 5 小时 41 分; 官方文档也明确「高负载时可能延迟甚至丢弃」。
-`bot.yml` 的 `on.schedule` 整段已删除; 主触发是 CNB 定时流水线每小时 POST
+`bot.yml` 的 `on.schedule` 整段已删除; 主触发是 CNB 定时流水线每 3 小时 POST
 `workflow_dispatch`（2026-11-12 已验证: CNB 日志 `HTTP 204`, GitHub Actions 约 9 秒后起跑）。
 `cron-job.org` 是**可选的境外冗余, 目前尚未配置**, 配置清单见第 5 节。
 
@@ -313,19 +313,19 @@ GitHub 自带的 `schedule` 是 best-effort 投递: 2026-11-11 曾连续 9 小�
 | Header `Accept` | `application/vnd.github+json` |
 | Header `Content-Type` | `application/json` |
 | Body | `{"ref":"main","inputs":{"source":"cnb"}}`（`cron-job.org` 那条填 `cron-job.org`） |
-| 频率 | 每小时, `:08`（与 CNB `crontab` 分钟对齐） |
+| 频率 | 每 3 小时, `:08`（0/3/6/9/12/15/18/21 点, 与 CNB `crontab` 分钟对齐） |
 
 `inputs.source` 只用于辨识来源: 运行列表标题分别是
 `cycle · cnb`（CNB 定时器）、`cycle · cron-job.org`（境外冗余）、
 `cycle · manual`（手动跑）。
 不传 `test_post`（默认 `false`）, 走 `node bot.js --once`。
 
-外部每小时敲一次门是安全的: bot 内部 `evenSpread` / `maxPerDay=24` 自己判断到不到发帖 slot,
-没到点就零请求退出, 重复或提前触发都不会超额发帖。
+外部每 3 小时敲一次门与 bot 内部 `evenSpread` / `maxPerDay=8` 的 slot 对齐:
+到点才抓接口发帖, 万一触发提前/延迟, bot 内部仍会判断, 不会超额发帖。
 
 ### 3. 落地 CNB 触发器（主方案, 2026-11-12 已配置并验证）
 
-`.cnb.yml` 与 `trigger-workflow.mjs` 已在仓库里: `crontab: 8 * * * *` 按
+`.cnb.yml` 与 `trigger-workflow.mjs` 已在仓库里: `crontab: 8 */3 * * *` 按
 `Asia/Shanghai` 触发, 脚本带 3 次重试、4xx 快速失败、失败 `exit 1` 让构建标红。
 **这套链路已跑通**: CNB 日志 `HTTP 204`（约 1.9s）, `Actions → bns-bot` 随即出现
 `cycle · cnb` 并执行 `node bot.js --once`。以下是已完成的配置, 供重建 / 排障对照。
@@ -398,9 +398,9 @@ Token name 填 `bns-bot-cron-job-org`, 其余相同（只勾 `bns-bot`、`Action
 | Title | `bns-bot dispatch` |
 | URL | `https://api.github.com/repos/yuzhiblue/bns-bot/actions/workflows/bot.yml/dispatches` |
 
-**④ 执行计划**: 选自定义 schedule, 分钟填 `8, 23, 38, 53`; 小时 / 日 / 月 / 星期都选
-「每小时 / 每天 / 每月 / 每天」（REST API 里即 `hours: [-1]` 等）,
-与 CNB `crontab` 的分钟对齐。
+**④ 执行计划**: 选自定义 schedule, 分钟填 `8`; 小时选 `0,3,6,9,12,15,18,21`,
+日 / 月 / 星期选「每天 / 每月 / 每天」,
+与 CNB `crontab: 8 */3 * * *` 对齐。
 
 **⑤ 展开 Advanced（高级）**, 填:
 
@@ -437,7 +437,7 @@ Token name 填 `bns-bot-cron-job-org`, 其余相同（只勾 `bns-bot`、`Action
 
 ### 运行机制
 
-- 主触发是 **CNB 定时流水线** POST `workflow_dispatch`（每小时, 见上节）;
+- 主触发是 **CNB 定时流水线** POST `workflow_dispatch`（每 3 小时, 见上节）;
   GitHub 自带 `schedule` 已移除（best-effort、时好时坏且与 CNB 重叠）。
   定时调度常延迟甚至整段漏跑, 时间线排期的「只追发最近 1 个 slot」逻辑能容错。
 - **抓取节奏**: bot 先判断时间线 slot, 没到点就**零请求退出、不改 `state.json`、不产生 commit**;
