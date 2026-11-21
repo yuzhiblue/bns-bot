@@ -22,58 +22,6 @@ const CJK_BOLD = GlobalFonts.families.some((f) => f.family === "CJKBold") ? '"CJ
 const BG = "#0b0e11", CARD = "#181a20", FG = "#eaecef", SUB = "#848e9c";
 const GREEN = "#0ecb81", RED = "#f6465d";
 
-// ---------- 视觉框架: 渐变背景 + 顶部主题光晕 + 圆角内容面板 ----------
-const PANEL = "#1c2129", PANEL_ALT = "#222833", BORDER = "#2b3139";
-
-function hex2rgb(hex) {
-  const h = hex.replace("#", "");
-  return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
-}
-function rgba(hex, a) {
-  const [r, g, b] = hex2rgb(hex);
-  return `rgba(${r},${g},${b},${a})`;
-}
-// 整卡背景: 深色底 + 顶部主题色柔光晕, 让纯文字卡也有层次
-function drawBackground(ctx, accent) {
-  const g = ctx.createLinearGradient(0, 0, 0, 1080);
-  g.addColorStop(0, "#121820");
-  g.addColorStop(1, BG);
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, 1080, 1080);
-  const glow = ctx.createRadialGradient(300, 0, 0, 300, 0, 760);
-  glow.addColorStop(0, rgba(accent, 0.16));
-  glow.addColorStop(1, rgba(accent, 0));
-  ctx.fillStyle = glow;
-  ctx.fillRect(0, 0, 1080, 620);
-}
-// 顶部渐变主题条
-function drawTopBar(ctx, accent) {
-  const g = ctx.createLinearGradient(0, 0, 1080, 0);
-  g.addColorStop(0, rgba(accent, 0.35));
-  g.addColorStop(0.5, accent);
-  g.addColorStop(1, rgba(accent, 0.35));
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, 1080, 8);
-}
-// 圆角面板
-function roundPanel(ctx, x, y, w, h, r = 28) {
-  ctx.beginPath();
-  ctx.roundRect(x, y, w, h, r);
-  ctx.fillStyle = PANEL;
-  ctx.fill();
-  ctx.strokeStyle = BORDER;
-  ctx.lineWidth = 2;
-  ctx.stroke();
-}
-// 底部免责条: 与背景融合, 用细分隔线代替硬切色块
-function drawFooter(ctx) {
-  ctx.fillStyle = BORDER;
-  ctx.fillRect(90, 1080 - 92, 900, 2);
-  ctx.fillStyle = SUB;
-  ctx.font = '28px "DejaVuSans", sans-serif';
-  ctx.fillText("Not financial advice", 90, 1080 - 42);
-}
-
 function fmtPrice(p) {
   const n = Number(p);
   if (!Number.isFinite(n) || n === 0) return "0";
@@ -88,55 +36,44 @@ function makeMarketCard({ baseSymbol, pct, price, volMultiple, windowMinutes, at
   const canvas = createCanvas(W, H);
   const ctx = canvas.getContext("2d");
 
+  ctx.fillStyle = BG;
+  ctx.fillRect(0, 0, W, H);
+
   const up = Number(pct) >= 0;
   const accent = up ? GREEN : RED;
   const sign = up ? "+" : "";
 
-  drawBackground(ctx, accent);
-  drawTopBar(ctx, accent);
-
   // 币种
   ctx.fillStyle = FG;
   ctx.font = 'bold 84px "DejaVuSansBold", sans-serif';
-  ctx.fillText(`$${baseSymbol}`, 90, 180);
+  ctx.fillText(`$${baseSymbol}`, 90, 175);
 
   // 副标题: 窗口 + 时间(CST)
   ctx.fillStyle = SUB;
   ctx.font = '34px "DejaVuSans", sans-serif';
   const t = at ? new Date(at) : new Date();
   const ts = `${t.toLocaleString("en-GB", { timeZone: "Asia/Shanghai", hour12: false })} CST`;
-  ctx.fillText(`${windowMinutes}min ${up ? "gain" : "drop"} · ${ts}`, 90, 234);
+  ctx.fillText(`${windowMinutes}min ${up ? "gain" : "drop"} · ${ts}`, 90, 230);
 
-  // 涨跌幅大字 + 主题色柔光面板
-  ctx.fillStyle = rgba(accent, 0.10);
-  ctx.beginPath();
-  ctx.roundRect(70, 280, 940, 300, 32);
-  ctx.fill();
-  ctx.strokeStyle = rgba(accent, 0.30);
-  ctx.lineWidth = 2;
-  ctx.stroke();
+  // 涨跌幅大字
   ctx.fillStyle = accent;
-  ctx.font = 'bold 210px "DejaVuSansBold", sans-serif';
-  ctx.fillText(`${sign}${Number(pct).toFixed(1)}%`, 110, 490);
+  ctx.font = 'bold 220px "DejaVuSansBold", sans-serif';
+  ctx.fillText(`${sign}${Number(pct).toFixed(1)}%`, 90, 480);
 
-  // 现价 / 量比: 两个小面板
-  ctx.fillStyle = PANEL;
-  ctx.beginPath();
-  ctx.roundRect(70, 620, 450, 150, 24);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.roundRect(560, 620, 450, 150, 24);
-  ctx.fill();
-  ctx.fillStyle = SUB;
-  ctx.font = '26px "DejaVuSans", sans-serif';
-  ctx.fillText("PRICE", 100, 672);
-  ctx.fillText("VOLUME", 590, 672);
+  // 现价
   ctx.fillStyle = FG;
-  ctx.font = 'bold 46px "DejaVuSans", sans-serif';
-  ctx.fillText(fmtPrice(price), 100, 730);
-  ctx.fillText(`×${Number(volMultiple).toFixed(1)}`, 590, 730);
+  ctx.font = '52px "DejaVuSans", sans-serif';
+  ctx.fillText(`Price   ${fmtPrice(price)}`, 90, 600);
 
-  drawFooter(ctx);
+  // 量比
+  ctx.fillText(`Volume  ×${Number(volMultiple).toFixed(1)}`, 90, 680);
+
+  // 底部免责条
+  ctx.fillStyle = CARD;
+  ctx.fillRect(0, H - 96, W, 96);
+  ctx.fillStyle = SUB;
+  ctx.font = '30px "DejaVuSans", sans-serif';
+  ctx.fillText("Not financial advice", 90, H - 40);
 
   return canvas.toBuffer("image/png");
 }
@@ -158,17 +95,23 @@ function timeText(at) {
   const t = at ? new Date(at) : new Date();
   return `${t.toLocaleString("en-GB", { timeZone: "Asia/Shanghai", hour12: false })} CST`;
 }
-// 公共框架: 渐变背景 + 顶部主题条 + 标题 + 时间 + 底部免责条
+// 公共框架: 背景 + 顶部主题色细条 + 标题 + 时间 + 底部免责条
 function drawChrome(ctx, { title, subtitle, accent, at }) {
-  drawBackground(ctx, accent || GOLD);
-  drawTopBar(ctx, accent || GOLD);
+  ctx.fillStyle = BG;
+  ctx.fillRect(0, 0, 1080, 1080);
+  ctx.fillStyle = accent;
+  ctx.fillRect(0, 0, 1080, 10);
   ctx.fillStyle = FG;
   ctx.font = 'bold 64px "DejaVuSansBold", sans-serif';
-  ctx.fillText(title, 90, 140);
+  ctx.fillText(title, 90, 135);
   ctx.fillStyle = SUB;
   ctx.font = '32px "DejaVuSans", sans-serif';
-  ctx.fillText(`${subtitle} · ${timeText(at)}`, 90, 194);
-  drawFooter(ctx);
+  ctx.fillText(`${subtitle} · ${timeText(at)}`, 90, 190);
+  ctx.fillStyle = CARD;
+  ctx.fillRect(0, 1080 - 96, 1080, 96);
+  ctx.fillStyle = SUB;
+  ctx.font = '30px "DejaVuSans", sans-serif';
+  ctx.fillText("Not financial advice", 90, 1080 - 40);
 }
 function makeCard(draw) {
   const canvas = createCanvas(1080, 1080);
@@ -188,31 +131,24 @@ function makeTrendingCard({ items = [], at }) {
       return;
     }
     rows.forEach((it, i) => {
-      const y = 280 + i * 108;
-      ctx.fillStyle = i % 2 === 0 ? PANEL : PANEL_ALT;
-      ctx.beginPath();
-      ctx.roundRect(70, y - 52, 940, 92, 18);
-      ctx.fill();
+      const y = 310 + i * 105;
       ctx.fillStyle = SUB;
       ctx.font = '34px "DejaVuSans", sans-serif';
-      ctx.fillText(`#${i + 1}`, 100, y);
+      ctx.fillText(`#${i + 1}`, 90, y);
       ctx.fillStyle = FG;
       ctx.font = 'bold 52px "DejaVuSansBold", sans-serif';
-      ctx.fillText(`$${ascii(it.sym, 8)}`, 210, y);
+      ctx.fillText(`$${ascii(it.sym, 8)}`, 200, y);
       const pct = it.data?.price_change_percentage_24h?.usd;
       const label = fmtPct(pct);
       if (label) {
-        const up = Number(pct) >= 0;
-        ctx.fillStyle = rgba(up ? GREEN : RED, 0.14);
-        ctx.beginPath();
-        ctx.roundRect(800, y - 44, 180, 66, 14);
-        ctx.fill();
-        ctx.fillStyle = up ? GREEN : RED;
-        ctx.font = 'bold 42px "DejaVuSansBold", sans-serif';
-        ctx.textAlign = "center";
-        ctx.fillText(label, 890, y + 2);
+        ctx.fillStyle = Number(pct) >= 0 ? GREEN : RED;
+        ctx.font = 'bold 44px "DejaVuSansBold", sans-serif';
+        ctx.textAlign = "right";
+        ctx.fillText(label, 990, y);
         ctx.textAlign = "left";
       }
+      ctx.fillStyle = CARD;
+      ctx.fillRect(90, y + 30, 900, 2);
     });
   });
 }
@@ -228,17 +164,16 @@ function makeMoversCard({ items = [], at }) {
       { x: 560, label: "LOSERS", color: RED, rows: losers },
     ];
     for (const col of cols) {
-      roundPanel(ctx, col.x - 20, 250, 440, 640, 24);
       ctx.fillStyle = col.color;
       ctx.font = 'bold 36px "DejaVuSansBold", sans-serif';
-      ctx.fillText(col.label, col.x, 306);
+      ctx.fillText(col.label, col.x, 290);
       if (!col.rows.length) {
         ctx.fillStyle = SUB;
         ctx.font = '32px "DejaVuSans", sans-serif';
-        ctx.fillText("none", col.x, 386);
+        ctx.fillText("none", col.x, 370);
       }
       col.rows.forEach((it, i) => {
-        const y = 386 + i * 110;
+        const y = 370 + i * 110;
         ctx.fillStyle = FG;
         ctx.font = 'bold 46px "DejaVuSansBold", sans-serif';
         ctx.fillText(`$${ascii(it.sym, 8)}`, col.x, y);
@@ -307,22 +242,14 @@ function makeNewsCard({ titleZh, titleEn, at }) {
     // 有中文字体 + 有中文标题 → 渲染中文(实测英文标题卡对中文用户是劝退项);
     // 否则回退英文原题(无 CJK 字体的环境仍可用)。
     const useZh = HAS_CJK && titleZh && /[\u4e00-\u9fff]/.test(titleZh);
-    const panelTop = 270, panelH = 640, panelMid = panelTop + panelH / 2;
-    roundPanel(ctx, 70, panelTop, 940, panelH, 28);
     ctx.fillStyle = FG;
     if (useZh) {
-      const lh = 96;
       ctx.font = `54px ${CJK_FONT}, sans-serif`;
-      const lines = wrapCjk(ctx, String(titleZh).replace(/\s+/g, " "), 880, 6);
-      const startY = panelMid - (lines.length - 1) * lh / 2 + 18;
-      lines.forEach((line, i) => ctx.fillText(line, 100, startY + i * lh));
+      wrapCjk(ctx, String(titleZh).replace(/\s+/g, " "), 910, 6).forEach((line, i) => ctx.fillText(line, 90, 400 + i * 100));
     } else {
-      const lh = 92;
       const title = asciiTitle(titleEn) || "No headline available";
       ctx.font = 'bold 60px "DejaVuSansBold", sans-serif';
-      const lines = wrapAscii(ctx, title, 880, 5);
-      const startY = panelMid - (lines.length - 1) * lh / 2 + 20;
-      lines.forEach((line, i) => ctx.fillText(line, 100, startY + i * lh));
+      wrapAscii(ctx, title, 900, 5).forEach((line, i) => ctx.fillText(line, 90, 430 + i * 92));
     }
   });
 }
@@ -332,18 +259,11 @@ function makeNewsCard({ titleZh, titleEn, at }) {
 function makeDataCard({ title, subtitle, rows = [], accent = GOLD, at }) {
   return makeCard((ctx) => {
     drawChrome(ctx, { title: ascii(title, 24), subtitle: ascii(subtitle, 40), accent, at });
-    roundPanel(ctx, 70, 270, 940, 640, 28);
+    ctx.font = 'bold 44px "DejaVuSansBold", sans-serif';
     rows.slice(0, 8).forEach((row, i) => {
-      const y = 344 + i * 76;
-      if (i % 2 === 0) {
-        ctx.fillStyle = PANEL_ALT;
-        ctx.beginPath();
-        ctx.roundRect(88, y - 46, 904, 66, 12);
-        ctx.fill();
-      }
+      const y = 320 + i * 88;
       ctx.fillStyle = i % 2 === 0 ? FG : SUB;
-      ctx.font = 'bold 44px "DejaVuSansBold", sans-serif';
-      ctx.fillText(ascii(row, 42), 108, y);
+      ctx.fillText(ascii(row, 42), 90, y);
     });
   });
 }
