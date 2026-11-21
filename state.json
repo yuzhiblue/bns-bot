@@ -189,19 +189,14 @@
     "bmovers_2026-11-21_KERNEL17_CYBER16_EVAA13_BLESS12_BARD5_AKE-40_LIT-15_ZEC-15_NEAR-10_APT-10",
     "news_i13c04",
     "trending_2026-11-22_BP_ZEC_DOGE_WASTED_PENGU_WSTAR",
-    "breakout_2026-11-22_BTClow_ETHlow_SOLlow"
+    "breakout_2026-11-22_BTClow_ETHlow_SOLlow",
+    "trending_2026-11-22_WASTED_PIPI_ZEC_CHUNKEE_WSTAR_BTC"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795288119400,
-  "todayPosted": 2,
+  "lastPostAt": 1795298923651,
+  "todayPosted": 3,
   "todayKey": "Sun Nov 22 2026",
   "postHistory": [
-    {
-      "id": 389669333728179,
-      "kind": "binanceMovers",
-      "at": 1795025314765,
-      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：PIPPIN +82.3% / MMT +71.4% / PIEVERSE +58.9% / ICNT +40.7% / ZKC +23.9%\n领跌：BREV -13.5% / LIT -4.7% / PUMP -4.5% / ENA -3.3% / INJ -2.2%\n\n领涨这边的波动更猛一些，不过合约带杠杆，涨得急的往往回撤也快，榜单只能当天的快照看。\n"
-    },
     {
       "id": 389684079145985,
       "kind": "news",
@@ -495,6 +490,12 @@
       "kind": "breakout",
       "at": 1795288119400,
       "text": "🔺 日线突破监控\n\nBTC 今天摸到 20 日新低，现价 60,373.74\nETH 今天摸到 20 日新低，现价 1,686.41\nSOL 今天摸到 20 日新低，现价 70.76\n\n价格探到区间下沿，卖压是有的，不过破位之后能不能延续，还得看接下来几天的成交能不能跟上。\n\n这种位置，光看一根线判断不了什么\n\n#行情异动 #技术分析"
+    },
+    {
+      "id": 390790035641920,
+      "kind": "trending",
+      "at": 1795298923651,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. WASTED (-5.0%)\n2. PIPI (+791.2%)\n3. ZEC (+6.5%)\n4. CHUNKEE (+4.4%)\n5. WSTAR (+2828.7%)\n6. BTC (+2.5%)\n\n榜单被 PIPI（+791.2%）和 Wanted Star（+2828.7%）等中小市值币占据主导，其巨大涨幅远高于比特币（+2.5%）等主流资"
     }
   ],
   "timeline": [
@@ -509,10 +510,10 @@
   ],
   "timelineKey": "2026-11-22",
   "timelineIdx": 0,
-  "timelineSentCount": 2,
+  "timelineSentCount": 3,
   "timelineDay": "2026-11-22",
-  "lastRunAt": 1795288111264,
-  "lastFetchAt": 1795288111264,
+  "lastRunAt": 1795298908288,
+  "lastFetchAt": 1795298908288,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -542,7 +543,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1795169338256,
-    "trending": 1795277322478,
+    "trending": 1795298923651,
     "news": 1795216115977,
     "market": 1795180160915,
     "trend": 1794964121240,
