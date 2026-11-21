@@ -175,11 +175,13 @@ function makeMoversCard({ items = [], at }) {
       col.rows.forEach((it, i) => {
         const y = 370 + i * 110;
         ctx.fillStyle = FG;
-        ctx.font = 'bold 46px "DejaVuSansBold", sans-serif';
+        ctx.font = 'bold 54px "DejaVuSansBold", sans-serif';
         ctx.fillText(`$${ascii(it.sym, 8)}`, col.x, y);
         ctx.fillStyle = col.color;
-        ctx.font = '34px "DejaVuSans", sans-serif';
-        ctx.fillText(fmtPct(it.pct), col.x, y + 42);
+        ctx.font = '38px "DejaVuSans", sans-serif';
+        ctx.textAlign = "right";
+        ctx.fillText(fmtPct(it.pct), col.x + 410, y);
+        ctx.textAlign = "left";
       });
     }
   });
@@ -244,26 +246,43 @@ function makeNewsCard({ titleZh, titleEn, at }) {
     const useZh = HAS_CJK && titleZh && /[\u4e00-\u9fff]/.test(titleZh);
     ctx.fillStyle = FG;
     if (useZh) {
-      ctx.font = `54px ${CJK_FONT}, sans-serif`;
-      wrapCjk(ctx, String(titleZh).replace(/\s+/g, " "), 910, 6).forEach((line, i) => ctx.fillText(line, 90, 400 + i * 100));
+      ctx.font = `62px ${CJK_FONT}, sans-serif`;
+      wrapCjk(ctx, String(titleZh).replace(/\s+/g, " "), 910, 6).forEach((line, i) => ctx.fillText(line, 90, 400 + i * 112));
     } else {
       const title = asciiTitle(titleEn) || "No headline available";
-      ctx.font = 'bold 60px "DejaVuSansBold", sans-serif';
-      wrapAscii(ctx, title, 900, 5).forEach((line, i) => ctx.fillText(line, 90, 430 + i * 92));
+      ctx.font = 'bold 68px "DejaVuSansBold", sans-serif';
+      wrapAscii(ctx, title, 900, 5).forEach((line, i) => ctx.fillText(line, 90, 430 + i * 104));
     }
   });
 }
 
 // 通用数据卡: 给资金费率/持仓/多空/形态/合约榜五类新素材共用。
 // 只渲染 ASCII(币种+数字), 中文说明放正文; 行内容由 bot.js 传纯文本, 不渲染中文。
+// 交易对放大加粗作主体, 数值按方向着色: 正/涨/新高=绿, 负/跌/新低=红, 无方向=灰。
+function dataRowColor(row) {
+  if (/\bNEW HIGH\b/i.test(row)) return GREEN;
+  if (/\bNEW LOW\b/i.test(row)) return RED;
+  const m = row.match(/([+-])\s*\d/);
+  return m ? (m[1] === "+" ? GREEN : RED) : SUB;
+}
 function makeDataCard({ title, subtitle, rows = [], accent = GOLD, at }) {
   return makeCard((ctx) => {
     drawChrome(ctx, { title: ascii(title, 24), subtitle: ascii(subtitle, 40), accent, at });
-    ctx.font = 'bold 44px "DejaVuSansBold", sans-serif';
     rows.slice(0, 8).forEach((row, i) => {
       const y = 320 + i * 88;
-      ctx.fillStyle = i % 2 === 0 ? FG : SUB;
-      ctx.fillText(ascii(row, 42), 90, y);
+      const parts = ascii(row, 42).split(/\s+/);
+      const sym = parts.shift() || "";
+      const rest = parts.join(" ");
+      ctx.font = 'bold 64px "DejaVuSansBold", sans-serif';
+      ctx.fillStyle = FG;
+      ctx.fillText(sym, 90, y);
+      if (rest) {
+        ctx.font = 'bold 46px "DejaVuSansBold", sans-serif';
+        ctx.fillStyle = dataRowColor(row);
+        ctx.textAlign = "right";
+        ctx.fillText(rest, 990, y);
+        ctx.textAlign = "left";
+      }
     });
   });
 }
