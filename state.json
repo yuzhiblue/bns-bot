@@ -192,19 +192,14 @@
     "breakout_2026-11-22_BTClow_ETHlow_SOLlow",
     "trending_2026-11-22_WASTED_PIPI_ZEC_CHUNKEE_WSTAR_BTC",
     "breakout_2026-11-22_Uhigh",
-    "trending_2026-11-23_WSTAR_POPO_TRUMP_PEARL_PENGU_BTC"
+    "trending_2026-11-23_WSTAR_POPO_TRUMP_PEARL_PENGU_BTC",
+    "breakout_2026-11-23_Uhigh"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795363725216,
-  "todayPosted": 1,
+  "lastPostAt": 1795385332651,
+  "todayPosted": 2,
   "todayKey": "Mon Nov 23 2026",
   "postHistory": [
-    {
-      "id": 389728377366976,
-      "kind": "binanceMovers",
-      "at": 1795039729738,
-      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：PIEVERSE +73.0% / MMT +70.1% / PIPPIN +64.2% / EVAA +21.1% / ZKC +20.5%\n领跌：BREV -23.2% / ASTER -7.8% / PUMP -7.6% / FIL -5.1% / ENA -4.8%\n\n领涨这边的波动更猛一些，不过合约带杠杆，涨得急的往往回撤也快，榜单只能当天的快照看"
-    },
     {
       "id": 389757835156442,
       "kind": "news",
@@ -498,6 +493,12 @@
       "kind": "trending",
       "at": 1795363725216,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. WSTAR (+6.8%)\n2. POPO (+106.8%)\n3. TRUMP (+3.0%)\n4. PEARL (+11.2%)\n5. PENGU (-0.9%)\n6. BTC (+1.7%)\n\n榜单前两名中，POPO 以 24h+106.8% 的涨幅远超其他币种，成为热度最集中的标的；主流币 BTC 仅微涨 1.7%，而 PENGU 为 -0."
+    },
+    {
+      "id": 391143966919998,
+      "kind": "breakout",
+      "at": 1795385332651,
+      "text": "🔺 日线突破监控\n\nU 今天摸到 20 日新高，现价 1.0019\n\n价格摸到区间上沿，说明买盘确实推了一把，但能不能在这里站稳，单看今天这根线还不够，得后面几天确认。\n\n这种位置，光看一根线判断不了什么\n\n#行情异动 #技术分析"
     }
   ],
   "timeline": [
@@ -508,10 +509,10 @@
   ],
   "timelineKey": "2026-11-23",
   "timelineIdx": 0,
-  "timelineSentCount": 1,
+  "timelineSentCount": 2,
   "timelineDay": "2026-11-23",
-  "lastRunAt": 1795363712245,
-  "lastFetchAt": 1795363712245,
+  "lastRunAt": 1795385325039,
+  "lastFetchAt": 1795385325039,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -536,6 +537,6 @@
     "market": 1795180160915,
     "trend": 1794964121240,
     "binanceMovers": 1795212547823,
-    "breakout": 1795309717090
+    "breakout": 1795385332651
   }
 }
