@@ -190,19 +190,14 @@
     "news_i13c04",
     "trending_2026-11-22_BP_ZEC_DOGE_WASTED_PENGU_WSTAR",
     "breakout_2026-11-22_BTClow_ETHlow_SOLlow",
-    "trending_2026-11-22_WASTED_PIPI_ZEC_CHUNKEE_WSTAR_BTC"
+    "trending_2026-11-22_WASTED_PIPI_ZEC_CHUNKEE_WSTAR_BTC",
+    "breakout_2026-11-22_Uhigh"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795298923651,
-  "todayPosted": 3,
+  "lastPostAt": 1795309717090,
+  "todayPosted": 4,
   "todayKey": "Sun Nov 22 2026",
   "postHistory": [
-    {
-      "id": 389684079145985,
-      "kind": "news",
-      "at": 1795028914734,
-      "text": "分析师：比特币跌破7万美元是市场馈赠\n\nK33 Research 表示，比特币在每周下跌 14% 后已进入“深度价值区域”，因为 ETF 流出、清算和对冲需求达到接近过去底部的水平。\n\n$BTC #加密资讯"
-    },
     {
       "id": 389713555652458,
       "kind": "trending",
@@ -496,6 +491,12 @@
       "kind": "trending",
       "at": 1795298923651,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. WASTED (-5.0%)\n2. PIPI (+791.2%)\n3. ZEC (+6.5%)\n4. CHUNKEE (+4.4%)\n5. WSTAR (+2828.7%)\n6. BTC (+2.5%)\n\n榜单被 PIPI（+791.2%）和 Wanted Star（+2828.7%）等中小市值币占据主导，其巨大涨幅远高于比特币（+2.5%）等主流资"
+    },
+    {
+      "id": 390834245515857,
+      "kind": "breakout",
+      "at": 1795309717090,
+      "text": "🔺 日线突破监控\n\nU 今天摸到 20 日新高，现价 1.0014\n\n价格摸到区间上沿，说明买盘确实推了一把，但能不能在这里站稳，单看今天这根线还不够，得后面几天确认。\n\n这种位置，光看一根线判断不了什么\n\n#行情异动 #技术分析"
     }
   ],
   "timeline": [
@@ -510,10 +511,10 @@
   ],
   "timelineKey": "2026-11-22",
   "timelineIdx": 0,
-  "timelineSentCount": 3,
+  "timelineSentCount": 4,
   "timelineDay": "2026-11-22",
-  "lastRunAt": 1795298908288,
-  "lastFetchAt": 1795298908288,
+  "lastRunAt": 1795309702608,
+  "lastFetchAt": 1795309702608,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -548,6 +549,6 @@
     "market": 1795180160915,
     "trend": 1794964121240,
     "binanceMovers": 1795212547823,
-    "breakout": 1795288119400
+    "breakout": 1795309717090
   }
 }
