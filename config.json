@@ -30,7 +30,7 @@
   "schedule": {
     "enabled": true,
     "evenSpread": true,
-    "maxPerDay": 8,
+    "maxPerDay": 4,
     "timezone": "Asia/Shanghai"
   },
   "post": {
