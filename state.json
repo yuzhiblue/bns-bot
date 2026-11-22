@@ -191,19 +191,14 @@
     "trending_2026-11-22_BP_ZEC_DOGE_WASTED_PENGU_WSTAR",
     "breakout_2026-11-22_BTClow_ETHlow_SOLlow",
     "trending_2026-11-22_WASTED_PIPI_ZEC_CHUNKEE_WSTAR_BTC",
-    "breakout_2026-11-22_Uhigh"
+    "breakout_2026-11-22_Uhigh",
+    "trending_2026-11-23_WSTAR_POPO_TRUMP_PEARL_PENGU_BTC"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795309717090,
-  "todayPosted": 4,
-  "todayKey": "Sun Nov 22 2026",
+  "lastPostAt": 1795363725216,
+  "todayPosted": 1,
+  "todayKey": "Mon Nov 23 2026",
   "postHistory": [
-    {
-      "id": 389713555652458,
-      "kind": "trending",
-      "at": 1795036111166,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. WASTED (+0.0%)\n2. WSTAR (+0.0%)\n3. LUCIA (+0.0%)\n4. TRUMP (-1.4%)\n5. PENGU (-0.2%)\n6. PEARL (+24.5%)\n\n榜单整体走势平淡，仅Pearl录得24h上涨24.5%，而TRUMP和PENGU小幅下跌，其余币种基本持平。从结构看，热搜榜被大量中小市值项目占据，"
-    },
     {
       "id": 389728377366976,
       "kind": "binanceMovers",
@@ -497,46 +492,38 @@
       "kind": "breakout",
       "at": 1795309717090,
       "text": "🔺 日线突破监控\n\nU 今天摸到 20 日新高，现价 1.0014\n\n价格摸到区间上沿，说明买盘确实推了一把，但能不能在这里站稳，单看今天这根线还不够，得后面几天确认。\n\n这种位置，光看一根线判断不了什么\n\n#行情异动 #技术分析"
+    },
+    {
+      "id": 391055462752201,
+      "kind": "trending",
+      "at": 1795363725216,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. WSTAR (+6.8%)\n2. POPO (+106.8%)\n3. TRUMP (+3.0%)\n4. PEARL (+11.2%)\n5. PENGU (-0.9%)\n6. BTC (+1.7%)\n\n榜单前两名中，POPO 以 24h+106.8% 的涨幅远超其他币种，成为热度最集中的标的；主流币 BTC 仅微涨 1.7%，而 PENGU 为 -0."
     }
   ],
   "timeline": [
-    1795276800000,
-    1795287600000,
-    1795298400000,
-    1795309200000,
-    1795320000000,
-    1795330800000,
-    1795341600000,
-    1795352400000
+    1795363200000,
+    1795384800000,
+    1795406400000,
+    1795428000000
   ],
-  "timelineKey": "2026-11-22",
+  "timelineKey": "2026-11-23",
   "timelineIdx": 0,
-  "timelineSentCount": 4,
-  "timelineDay": "2026-11-22",
-  "lastRunAt": 1795309702608,
-  "lastFetchAt": 1795309702608,
+  "timelineSentCount": 1,
+  "timelineDay": "2026-11-23",
+  "lastRunAt": 1795363712245,
+  "lastFetchAt": 1795363712245,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
     "SOLUSDT",
     "ZECUSDT",
+    "NEARUSDT",
     "XRPUSDT",
     "BNBUSDT",
-    "NEARUSDT",
-    "HYPEUSDT",
-    "NVDABUSDT",
     "UUSDT",
-    "DOGEUSDT",
-    "RWUSDUSDT",
-    "UNIUSDT",
-    "SUIUSDT",
-    "ENAUSDT",
-    "PEPEUSDT",
-    "TRXUSDT",
-    "ADAUSDT",
-    "LINKUSDT"
+    "RWUSDUSDT"
   ],
-  "symbolsUpdatedAt": "2026-11-22",
+  "symbolsUpdatedAt": "2026-11-23",
   "symbolsMeta": {
     "topN": 16,
     "minUsd": 30000000,
@@ -544,7 +531,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1795169338256,
-    "trending": 1795298923651,
+    "trending": 1795363725216,
     "news": 1795216115977,
     "market": 1795180160915,
     "trend": 1794964121240,
