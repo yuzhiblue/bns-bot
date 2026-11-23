@@ -195,19 +195,14 @@
     "trending_2026-11-23_WSTAR_POPO_TRUMP_PEARL_PENGU_BTC",
     "breakout_2026-11-23_Uhigh",
     "trending_2026-11-23_HYPE_PENGU_BTC_PI_TRUMP_VVV",
-    "news_1dz9lkn"
+    "news_1dz9lkn",
+    "market_PROMUSDT_2026-11-23T15"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795428512131,
-  "todayPosted": 4,
-  "todayKey": "Mon Nov 23 2026",
+  "lastPostAt": 1795450139374,
+  "todayPosted": 1,
+  "todayKey": "Tue Nov 24 2026",
   "postHistory": [
-    {
-      "id": 389787312441442,
-      "kind": "trending",
-      "at": 1795054118176,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. PEARL (+24.0%)\n2. BTC (-2.3%)\n3. HYPE (-2.4%)\n4. ETH (-1.3%)\n5. BP (+2.3%)\n6. PENGU (-1.8%)\n\nPearl（PEARL）以24小时24.0%的涨幅领跑榜单，而比特币（BTC）与以太坊（ETH）分别录得2.3%和1.3%的跌幅。榜单中涨幅主要由中小市值币种贡献，主"
-    },
     {
       "id": 389802066006530,
       "kind": "news",
@@ -501,32 +496,44 @@
       "kind": "news",
       "at": 1795428512131,
       "text": "Cyber（原 CyberConnect）团队说已经拦截了漏洞利用，国库会全额承担攻击中增发的 CYBER。之前 11 月 21 日 Solana 上确实出了事，16:13（UTC）左右 521.3 万枚 CYBER 异常增发，不到两分钟就有同数量的币从以太坊锁仓合约转出。现在交易所正在配合恢复充提，跨链桥暂停并接受安全审查，等结果出来再说。\n\n$CYBER $UTC #加密资讯"
+    },
+    {
+      "id": 391409415213245,
+      "kind": "market",
+      "at": 1795450139374,
+      "text": "📊 $PROM 30 分钟跌 6.1%\n开始往下砸了，现在 6.365，成交量放大到 2.8 倍。\n\n一下跌了 6.1%，卖盘跟着放大，这次的下跌有量。不过就这几十分钟的事，先别急着下结论。\n\n跌幅不小，情绪一下就冷下来了\n\n$PROM #行情异动"
     }
   ],
   "timeline": [
-    1795363200000,
-    1795384800000,
-    1795406400000,
-    1795428000000
+    1795449600000,
+    1795471200000,
+    1795492800000,
+    1795514400000
   ],
-  "timelineKey": "2026-11-23",
+  "timelineKey": "2026-11-24",
   "timelineIdx": 0,
-  "timelineSentCount": 4,
-  "timelineDay": "2026-11-23",
-  "lastRunAt": 1795428501702,
-  "lastFetchAt": 1795428501702,
+  "timelineSentCount": 1,
+  "timelineDay": "2026-11-24",
+  "lastRunAt": 1795450125418,
+  "lastFetchAt": 1795450125418,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
     "SOLUSDT",
+    "NVDABUSDT",
     "ZECUSDT",
-    "NEARUSDT",
     "XRPUSDT",
+    "NEARUSDT",
     "BNBUSDT",
+    "PEPEUSDT",
+    "HYPEUSDT",
     "UUSDT",
-    "RWUSDUSDT"
+    "DOGEUSDT",
+    "SUIUSDT",
+    "ENAUSDT",
+    "PROMUSDT"
   ],
-  "symbolsUpdatedAt": "2026-11-23",
+  "symbolsUpdatedAt": "2026-11-24",
   "symbolsMeta": {
     "topN": 16,
     "minUsd": 30000000,
@@ -536,7 +543,7 @@
     "movers": 1795169338256,
     "trending": 1795406916814,
     "news": 1795428512131,
-    "market": 1795180160915,
+    "market": 1795450139374,
     "trend": 1794964121240,
     "binanceMovers": 1795212547823,
     "breakout": 1795385332651
