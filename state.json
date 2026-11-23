@@ -194,19 +194,14 @@
     "breakout_2026-11-22_Uhigh",
     "trending_2026-11-23_WSTAR_POPO_TRUMP_PEARL_PENGU_BTC",
     "breakout_2026-11-23_Uhigh",
-    "trending_2026-11-23_HYPE_PENGU_BTC_PI_TRUMP_VVV"
+    "trending_2026-11-23_HYPE_PENGU_BTC_PI_TRUMP_VVV",
+    "news_1dz9lkn"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795406916814,
-  "todayPosted": 3,
+  "lastPostAt": 1795428512131,
+  "todayPosted": 4,
   "todayKey": "Mon Nov 23 2026",
   "postHistory": [
-    {
-      "id": 389772546504693,
-      "kind": "movers",
-      "at": 1795050513203,
-      "text": "📊 24h 涨跌榜（全市场）\n\n领跌：ZEC -4.8%\n\nZcash（ZEC）以-4.8%的跌幅成为榜单上唯一达到波动阈值的币种，处于领跌位置。领涨榜暂无符合波动≥4%条件的币种，呈现单边下跌且集中度较高的市场结构。\n\n涨跌两头都拉得挺开，说明今天分歧不小；这种分化能维持多久，单看一天的榜单说不准。\n\n#涨跌榜单 #行情异动"
-    },
     {
       "id": 389787312441442,
       "kind": "trending",
@@ -500,6 +495,12 @@
       "kind": "trending",
       "at": 1795406916814,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. HYPE (+4.3%)\n2. PENGU (+2.1%)\n3. BTC (+3.3%)\n4. PI (+6.0%)\n5. TRUMP (+0.1%)\n6. VVV (+7.6%)\n\nVenice Token（VVV）以24小时7.6%的涨幅领跑，Pi Network（PI）紧随其后上涨6.0%。榜单前列清一色呈现上涨态势，其中中小市值项目占据多数席"
+    },
+    {
+      "id": 391320830058465,
+      "kind": "news",
+      "at": 1795428512131,
+      "text": "Cyber（原 CyberConnect）团队说已经拦截了漏洞利用，国库会全额承担攻击中增发的 CYBER。之前 11 月 21 日 Solana 上确实出了事，16:13（UTC）左右 521.3 万枚 CYBER 异常增发，不到两分钟就有同数量的币从以太坊锁仓合约转出。现在交易所正在配合恢复充提，跨链桥暂停并接受安全审查，等结果出来再说。\n\n$CYBER $UTC #加密资讯"
     }
   ],
   "timeline": [
@@ -510,10 +511,10 @@
   ],
   "timelineKey": "2026-11-23",
   "timelineIdx": 0,
-  "timelineSentCount": 3,
+  "timelineSentCount": 4,
   "timelineDay": "2026-11-23",
-  "lastRunAt": 1795406906327,
-  "lastFetchAt": 1795406906327,
+  "lastRunAt": 1795428501702,
+  "lastFetchAt": 1795428501702,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -534,7 +535,7 @@
   "lastPostAtByKind": {
     "movers": 1795169338256,
     "trending": 1795406916814,
-    "news": 1795216115977,
+    "news": 1795428512131,
     "market": 1795180160915,
     "trend": 1794964121240,
     "binanceMovers": 1795212547823,
