@@ -193,19 +193,14 @@
     "trending_2026-11-22_WASTED_PIPI_ZEC_CHUNKEE_WSTAR_BTC",
     "breakout_2026-11-22_Uhigh",
     "trending_2026-11-23_WSTAR_POPO_TRUMP_PEARL_PENGU_BTC",
-    "breakout_2026-11-23_Uhigh"
+    "breakout_2026-11-23_Uhigh",
+    "trending_2026-11-23_HYPE_PENGU_BTC_PI_TRUMP_VVV"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795385332651,
-  "todayPosted": 2,
+  "lastPostAt": 1795406916814,
+  "todayPosted": 3,
   "todayKey": "Mon Nov 23 2026",
   "postHistory": [
-    {
-      "id": 389757835156442,
-      "kind": "news",
-      "at": 1795046921594,
-      "text": "富途信托这波动作挺实在，直接把 BTC、ETH 等主流数字资产和港股、美股、ETF 都塞进了同一个“数字资产家族信托”架构里。这套方案专门给香港税务居民家庭和家族办公室准备的，主要解决跨代传承和托管衔接的问题，综合资产门槛定在了等值 300 万美元起。\n\n$BTC $ETH #加密资讯"
-    },
     {
       "id": 389772546504693,
       "kind": "movers",
@@ -499,6 +494,12 @@
       "kind": "breakout",
       "at": 1795385332651,
       "text": "🔺 日线突破监控\n\nU 今天摸到 20 日新高，现价 1.0019\n\n价格摸到区间上沿，说明买盘确实推了一把，但能不能在这里站稳，单看今天这根线还不够，得后面几天确认。\n\n这种位置，光看一根线判断不了什么\n\n#行情异动 #技术分析"
+    },
+    {
+      "id": 391232375617086,
+      "kind": "trending",
+      "at": 1795406916814,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. HYPE (+4.3%)\n2. PENGU (+2.1%)\n3. BTC (+3.3%)\n4. PI (+6.0%)\n5. TRUMP (+0.1%)\n6. VVV (+7.6%)\n\nVenice Token（VVV）以24小时7.6%的涨幅领跑，Pi Network（PI）紧随其后上涨6.0%。榜单前列清一色呈现上涨态势，其中中小市值项目占据多数席"
     }
   ],
   "timeline": [
@@ -509,10 +510,10 @@
   ],
   "timelineKey": "2026-11-23",
   "timelineIdx": 0,
-  "timelineSentCount": 2,
+  "timelineSentCount": 3,
   "timelineDay": "2026-11-23",
-  "lastRunAt": 1795385325039,
-  "lastFetchAt": 1795385325039,
+  "lastRunAt": 1795406906327,
+  "lastFetchAt": 1795406906327,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -532,7 +533,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1795169338256,
-    "trending": 1795363725216,
+    "trending": 1795406916814,
     "news": 1795216115977,
     "market": 1795180160915,
     "trend": 1794964121240,
