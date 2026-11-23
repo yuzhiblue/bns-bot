@@ -196,19 +196,14 @@
     "breakout_2026-11-23_Uhigh",
     "trending_2026-11-23_HYPE_PENGU_BTC_PI_TRUMP_VVV",
     "news_1dz9lkn",
-    "market_PROMUSDT_2026-11-23T15"
+    "market_PROMUSDT_2026-11-23T15",
+    "trending_2026-11-24_DRV_PEARL_PENGU_BTC_VVV_SOL"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795450139374,
-  "todayPosted": 1,
+  "lastPostAt": 1795471746599,
+  "todayPosted": 2,
   "todayKey": "Tue Nov 24 2026",
   "postHistory": [
-    {
-      "id": 389802066006530,
-      "kind": "news",
-      "at": 1795057720125,
-      "text": "Bithumb那边突然公告要上线KNTQ韩元交易对，这动作有点意思。之前韩区用户对KNTQ的关注度一直不低，现在正式开通本地货币直充通道，流动性大概率会直接上一个台阶。\n\n$KNTQ #加密资讯"
-    },
     {
       "id": 389816817914338,
       "kind": "binanceMovers",
@@ -502,6 +497,12 @@
       "kind": "market",
       "at": 1795450139374,
       "text": "📊 $PROM 30 分钟跌 6.1%\n开始往下砸了，现在 6.365，成交量放大到 2.8 倍。\n\n一下跌了 6.1%，卖盘跟着放大，这次的下跌有量。不过就这几十分钟的事，先别急着下结论。\n\n跌幅不小，情绪一下就冷下来了\n\n$PROM #行情异动"
+    },
+    {
+      "id": 391497918384697,
+      "kind": "trending",
+      "at": 1795471746599,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. DRV (-7.7%)\n2. PEARL (+23.7%)\n3. PENGU (+4.5%)\n4. BTC (+0.8%)\n5. VVV (-6.0%)\n6. SOL (+2.9%)\n\nPearl（PEARL）领涨24小时涨幅达23.7%，而Derive（DRV）和Venice Token（VVV）分别下跌7.7%和6.0%，显示中小市值代币波动剧烈"
     }
   ],
   "timeline": [
@@ -512,10 +513,10 @@
   ],
   "timelineKey": "2026-11-24",
   "timelineIdx": 0,
-  "timelineSentCount": 1,
+  "timelineSentCount": 2,
   "timelineDay": "2026-11-24",
-  "lastRunAt": 1795450125418,
-  "lastFetchAt": 1795450125418,
+  "lastRunAt": 1795471736652,
+  "lastFetchAt": 1795471736652,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -541,7 +542,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1795169338256,
-    "trending": 1795406916814,
+    "trending": 1795471746599,
     "news": 1795428512131,
     "market": 1795450139374,
     "trend": 1794964121240,
