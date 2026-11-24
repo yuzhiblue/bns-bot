@@ -197,19 +197,14 @@
     "trending_2026-11-23_HYPE_PENGU_BTC_PI_TRUMP_VVV",
     "news_1dz9lkn",
     "market_PROMUSDT_2026-11-23T15",
-    "trending_2026-11-24_DRV_PEARL_PENGU_BTC_VVV_SOL"
+    "trending_2026-11-24_DRV_PEARL_PENGU_BTC_VVV_SOL",
+    "bmovers_2026-11-24_AIOT46_INX21_LISTA19_CYS9_MUBARAK6_EVAA-27_AKE-25_PIEVERSE-10_BULLA-8_ZEC-6"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795471746599,
-  "todayPosted": 2,
+  "lastPostAt": 1795514918559,
+  "todayPosted": 3,
   "todayKey": "Tue Nov 24 2026",
   "postHistory": [
-    {
-      "id": 389816817914338,
-      "kind": "binanceMovers",
-      "at": 1795061321676,
-      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：PIPPIN +59.0% / MMT +52.1% / IRYS +47.6% / PIEVERSE +39.6% / BTW +25.9%\n领跌：BREV -24.8% / INJ -3.8% / ASTER -3.2% / FIL -2.9% / ZEC -2.3%\n\n涨幅第一的PIPPIN上涨59.0%与跌幅第一的BREV下跌24.8%，显示出明显的"
-    },
     {
       "id": 389831691629640,
       "kind": "news",
@@ -503,6 +498,12 @@
       "kind": "trending",
       "at": 1795471746599,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. DRV (-7.7%)\n2. PEARL (+23.7%)\n3. PENGU (+4.5%)\n4. BTC (+0.8%)\n5. VVV (-6.0%)\n6. SOL (+2.9%)\n\nPearl（PEARL）领涨24小时涨幅达23.7%，而Derive（DRV）和Venice Token（VVV）分别下跌7.7%和6.0%，显示中小市值代币波动剧烈"
+    },
+    {
+      "id": 391674750736839,
+      "kind": "binanceMovers",
+      "at": 1795514918559,
+      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：AIOT +45.6% / INX +21.4% / LISTA +18.7% / CYS +9.1% / MUBARAK +6.5%\n领跌：EVAA -26.6% / AKE -24.8% / PIEVERSE -9.8% / BULLA -8.4% / ZEC -6.5%\n\nAIOT以+45.6%领涨，EVAA以-26.6%领跌。领涨首位AIOT较第二名"
     }
   ],
   "timeline": [
@@ -513,10 +514,10 @@
   ],
   "timelineKey": "2026-11-24",
   "timelineIdx": 0,
-  "timelineSentCount": 2,
+  "timelineSentCount": 3,
   "timelineDay": "2026-11-24",
-  "lastRunAt": 1795471736652,
-  "lastFetchAt": 1795471736652,
+  "lastRunAt": 1795514907725,
+  "lastFetchAt": 1795514907725,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -546,7 +547,7 @@
     "news": 1795428512131,
     "market": 1795450139374,
     "trend": 1794964121240,
-    "binanceMovers": 1795212547823,
+    "binanceMovers": 1795514918559,
     "breakout": 1795385332651
   }
 }
