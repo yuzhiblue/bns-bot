@@ -1,6 +1,5 @@
 {
   "postedMaterialIds": [
-    "force_1793784251295",
     "whale_BTCUSDT_2026-11-05",
     "whale_XRPUSDT_2026-11-05",
     "ann_289730",
@@ -199,19 +198,14 @@
     "market_PROMUSDT_2026-11-23T15",
     "trending_2026-11-24_DRV_PEARL_PENGU_BTC_VVV_SOL",
     "bmovers_2026-11-24_AIOT46_INX21_LISTA19_CYS9_MUBARAK6_EVAA-27_AKE-25_PIEVERSE-10_BULLA-8_ZEC-6",
-    "trending_2026-11-25_VAR_PEI_MON_BTC_PEARL_ZEC"
+    "trending_2026-11-25_VAR_PEI_MON_BTC_PEARL_ZEC",
+    "bmovers_2026-11-25_GUA50_BLESS27_AIOT19_SAHARA16_LISTA13_EVAA-28_ELSA-26_MON-17_AKE-16_CYS-16"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795536540234,
-  "todayPosted": 1,
+  "lastPostAt": 1795558113598,
+  "todayPosted": 2,
   "todayKey": "Wed Nov 25 2026",
   "postHistory": [
-    {
-      "id": 389846367456976,
-      "kind": "trending",
-      "at": 1795068535906,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. BTC (-2.1%)\n2. PEARL (+21.4%)\n3. IRYS (+61.9%)\n4. PENGU (-0.1%)\n5. LIT (-0.3%)\n6. HYPE (-1.4%)\n\nIrys(Irys) 24h上涨61.9%，Pearl(PEARL) 上涨21.4%，两者领涨明显。榜单中六只币里有四只上涨，但比特币作为主流币跌幅达2.1%且"
-    },
     {
       "id": 389861191220310,
       "kind": "news",
@@ -505,6 +499,12 @@
       "kind": "trending",
       "at": 1795536540234,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. VAR (+635.2%)\n2. PEI (+9.7%)\n3. MON (-17.3%)\n4. BTC (-4.9%)\n5. PEARL (-11.5%)\n6. ZEC (-16.9%)\n\n榜单结构呈现显著的中小市值主导特征，热度高度集中在个别币种，如 Variational X 单日上涨635.2%而 Pepe Intelligence 仅上涨9."
+    },
+    {
+      "id": 391851677726726,
+      "kind": "binanceMovers",
+      "at": 1795558113598,
+      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：GUA +50.4% / BLESS +26.9% / AIOT +18.8% / SAHARA +16.1% / LISTA +13.3%\n领跌：EVAA -28.5% / ELSA -25.7% / MON -16.8% / AKE -16.3% / CYS -16.2%\n\nGUA以+50.4%领涨，EVAA以-28.5%领跌，二者差距达21.9个百分点"
     }
   ],
   "timeline": [
@@ -515,10 +515,10 @@
   ],
   "timelineKey": "2026-11-25",
   "timelineIdx": 0,
-  "timelineSentCount": 1,
+  "timelineSentCount": 2,
   "timelineDay": "2026-11-25",
-  "lastRunAt": 1795536529969,
-  "lastFetchAt": 1795536529969,
+  "lastRunAt": 1795558103420,
+  "lastFetchAt": 1795558103420,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -544,7 +544,7 @@
     "news": 1795428512131,
     "market": 1795450139374,
     "trend": 1794964121240,
-    "binanceMovers": 1795514918559,
+    "binanceMovers": 1795558113598,
     "breakout": 1795385332651
   }
 }
