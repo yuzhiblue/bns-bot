@@ -198,19 +198,14 @@
     "news_1dz9lkn",
     "market_PROMUSDT_2026-11-23T15",
     "trending_2026-11-24_DRV_PEARL_PENGU_BTC_VVV_SOL",
-    "bmovers_2026-11-24_AIOT46_INX21_LISTA19_CYS9_MUBARAK6_EVAA-27_AKE-25_PIEVERSE-10_BULLA-8_ZEC-6"
+    "bmovers_2026-11-24_AIOT46_INX21_LISTA19_CYS9_MUBARAK6_EVAA-27_AKE-25_PIEVERSE-10_BULLA-8_ZEC-6",
+    "trending_2026-11-25_VAR_PEI_MON_BTC_PEARL_ZEC"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795514918559,
-  "todayPosted": 3,
-  "todayKey": "Tue Nov 24 2026",
+  "lastPostAt": 1795536540234,
+  "todayPosted": 1,
+  "todayKey": "Wed Nov 25 2026",
   "postHistory": [
-    {
-      "id": 389831691629640,
-      "kind": "news",
-      "at": 1795064952959,
-      "text": "Nicholas Lo 在访谈里确认了币贝平台币即将推出，积分会与平台币挂钩，具体发行细节还得再等等看。讲真，这节奏挺紧凑的，11 月 4 日刚上线的币贝积分首期定跑 26 周，每周发 100 万积分，首周就有超 1.7 万名用户拿到了积分。\n\n#加密资讯"
-    },
     {
       "id": 389846367456976,
       "kind": "trending",
@@ -504,38 +499,40 @@
       "kind": "binanceMovers",
       "at": 1795514918559,
       "text": "📊 币安合约 24h 涨跌榜\n\n领涨：AIOT +45.6% / INX +21.4% / LISTA +18.7% / CYS +9.1% / MUBARAK +6.5%\n领跌：EVAA -26.6% / AKE -24.8% / PIEVERSE -9.8% / BULLA -8.4% / ZEC -6.5%\n\nAIOT以+45.6%领涨，EVAA以-26.6%领跌。领涨首位AIOT较第二名"
+    },
+    {
+      "id": 391763312826845,
+      "kind": "trending",
+      "at": 1795536540234,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. VAR (+635.2%)\n2. PEI (+9.7%)\n3. MON (-17.3%)\n4. BTC (-4.9%)\n5. PEARL (-11.5%)\n6. ZEC (-16.9%)\n\n榜单结构呈现显著的中小市值主导特征，热度高度集中在个别币种，如 Variational X 单日上涨635.2%而 Pepe Intelligence 仅上涨9."
     }
   ],
   "timeline": [
-    1795449600000,
-    1795471200000,
-    1795492800000,
-    1795514400000
+    1795536000000,
+    1795557600000,
+    1795579200000,
+    1795600800000
   ],
-  "timelineKey": "2026-11-24",
+  "timelineKey": "2026-11-25",
   "timelineIdx": 0,
-  "timelineSentCount": 3,
-  "timelineDay": "2026-11-24",
-  "lastRunAt": 1795514907725,
-  "lastFetchAt": 1795514907725,
+  "timelineSentCount": 1,
+  "timelineDay": "2026-11-25",
+  "lastRunAt": 1795536529969,
+  "lastFetchAt": 1795536529969,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
     "SOLUSDT",
-    "NVDABUSDT",
     "ZECUSDT",
     "XRPUSDT",
+    "NVDABUSDT",
     "NEARUSDT",
     "BNBUSDT",
     "PEPEUSDT",
     "HYPEUSDT",
-    "UUSDT",
-    "DOGEUSDT",
-    "SUIUSDT",
-    "ENAUSDT",
-    "PROMUSDT"
+    "DOGEUSDT"
   ],
-  "symbolsUpdatedAt": "2026-11-24",
+  "symbolsUpdatedAt": "2026-11-25",
   "symbolsMeta": {
     "topN": 16,
     "minUsd": 30000000,
@@ -543,7 +540,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1795169338256,
-    "trending": 1795471746599,
+    "trending": 1795536540234,
     "news": 1795428512131,
     "market": 1795450139374,
     "trend": 1794964121240,
