@@ -1,6 +1,5 @@
 {
   "postedMaterialIds": [
-    "whale_BTCUSDT_2026-11-05",
     "whale_XRPUSDT_2026-11-05",
     "ann_289730",
     "fng_2026-11-12",
@@ -199,19 +198,14 @@
     "trending_2026-11-24_DRV_PEARL_PENGU_BTC_VVV_SOL",
     "bmovers_2026-11-24_AIOT46_INX21_LISTA19_CYS9_MUBARAK6_EVAA-27_AKE-25_PIEVERSE-10_BULLA-8_ZEC-6",
     "trending_2026-11-25_VAR_PEI_MON_BTC_PEARL_ZEC",
-    "bmovers_2026-11-25_GUA50_BLESS27_AIOT19_SAHARA16_LISTA13_EVAA-28_ELSA-26_MON-17_AKE-16_CYS-16"
+    "bmovers_2026-11-25_GUA50_BLESS27_AIOT19_SAHARA16_LISTA13_EVAA-28_ELSA-26_MON-17_AKE-16_CYS-16",
+    "trending_2026-11-25_PEARL_SOL_BTC_ZEC_MON_VVV"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795558113598,
-  "todayPosted": 2,
+  "lastPostAt": 1795579716180,
+  "todayPosted": 3,
   "todayKey": "Wed Nov 25 2026",
   "postHistory": [
-    {
-      "id": 389861191220310,
-      "kind": "news",
-      "at": 1795072154973,
-      "text": "以太坊社区提交了「动态个人合并激励」EIP 草案，通过引入新的 BeaconState 字段 consolidation_force 来鼓励节点合并。这套机制会在每个 epoch 处理奖励 / 惩罚后，从每个活跃验证者余额中扣除合并激励，并让验证者数量目标按计划线性下降。有意思的是，当实际数量偏离目标时，机制会根据程度动态调整压力，高于目标时缓慢上升，低于时则更快下降。\n\n$EIP $ETH #加"
-    },
     {
       "id": 389875820088942,
       "kind": "news",
@@ -505,6 +499,12 @@
       "kind": "binanceMovers",
       "at": 1795558113598,
       "text": "📊 币安合约 24h 涨跌榜\n\n领涨：GUA +50.4% / BLESS +26.9% / AIOT +18.8% / SAHARA +16.1% / LISTA +13.3%\n领跌：EVAA -28.5% / ELSA -25.7% / MON -16.8% / AKE -16.3% / CYS -16.2%\n\nGUA以+50.4%领涨，EVAA以-28.5%领跌，二者差距达21.9个百分点"
+    },
+    {
+      "id": 391940161811283,
+      "kind": "trending",
+      "at": 1795579716181,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. PEARL (-4.8%)\n2. SOL (-3.0%)\n3. BTC (-1.6%)\n4. ZEC (-3.7%)\n5. MON (-21.2%)\n6. VVV (+0.7%)\n\n榜单上六只币中五只下跌，其中Monad（MON）以24小时-21.2%的跌幅领跌，Solana（SOL）则下跌3.0%。整体结构显示主流币与中小市值币均出现回调，热度相对"
     }
   ],
   "timeline": [
@@ -515,10 +515,10 @@
   ],
   "timelineKey": "2026-11-25",
   "timelineIdx": 0,
-  "timelineSentCount": 2,
+  "timelineSentCount": 3,
   "timelineDay": "2026-11-25",
-  "lastRunAt": 1795558103420,
-  "lastFetchAt": 1795558103420,
+  "lastRunAt": 1795579705539,
+  "lastFetchAt": 1795579705539,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -540,7 +540,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1795169338256,
-    "trending": 1795536540234,
+    "trending": 1795579716181,
     "news": 1795428512131,
     "market": 1795450139374,
     "trend": 1794964121240,
