@@ -1,6 +1,5 @@
 {
   "postedMaterialIds": [
-    "fng_2026-11-13",
     "market_PEPEUSDT_2026-11-13",
     "news_1di4l73",
     "news_vb4fgf",
@@ -199,19 +198,14 @@
     "bmovers_2026-11-25_BIGTIME61_GUA46_BTW28_OPG25_PHAROS21_DOS-38_MON-19_AKE-18_BLESS-13_PIEVERSE-9",
     "trending_2026-11-26_TRX_PENGU_VVV_PEARL_BTC_ATOM",
     "foresight_118576",
-    "trending_2026-11-26_VVV_BTC_PENGU_PEARL_SOL_HYPE"
+    "trending_2026-11-26_VVV_BTC_PENGU_PEARL_SOL_HYPE",
+    "breakout_2026-11-27_ZEClow"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795687722044,
-  "todayPosted": 3,
-  "todayKey": "Thu Nov 26 2026",
+  "lastPostAt": 1795709335504,
+  "todayPosted": 1,
+  "todayKey": "Fri Nov 27 2026",
   "postHistory": [
-    {
-      "id": 389979154218195,
-      "kind": "news",
-      "at": 1795100954541,
-      "text": "Anthropic 今晚正式登陆纳斯达克，美东时间 11 月 19 日上午 9:50 开始报价。trade.xyz 上 ANT 合约暂报 103.3 美元，对比 83 美元的 IPO 发行价溢价约 24.46%。这次上市节奏倒是挺快，市场反应也算直接。\n\n$ANT #加密资讯"
-    },
     {
       "id": 389993764573253,
       "kind": "trending",
@@ -505,34 +499,40 @@
       "kind": "trending",
       "at": 1795687722044,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. VVV (+9.8%)\n2. BTC (+3.2%)\n3. PENGU (+5.8%)\n4. PEARL (+1.3%)\n5. SOL (+5.1%)\n6. HYPE (+6.1%)\n\nVenice Token 24小时上涨9.8%领跑，Hyperliquid以6.1%紧随其后。榜单中主流币占比过半，Solana和比特币均录得正收益。整体热度分散在多"
+    },
+    {
+      "id": 392471082506564,
+      "kind": "breakout",
+      "at": 1795709335504,
+      "text": "🔺 日线突破监控\n\nZEC 今天摸到 20 日新低，现价 708.81\n\n价格探到区间下沿，卖压是有的，不过破位之后能不能延续，还得看接下来几天的成交能不能跟上。\n\n这种位置，光看一根线判断不了什么\n\n#行情异动 #技术分析"
     }
   ],
   "timeline": [
-    1795622400000,
-    1795644000000,
-    1795665600000,
-    1795687200000
+    1795708800000,
+    1795730400000,
+    1795752000000,
+    1795773600000
   ],
-  "timelineKey": "2026-11-26",
+  "timelineKey": "2026-11-27",
   "timelineIdx": 0,
-  "timelineSentCount": 3,
-  "timelineDay": "2026-11-26",
-  "lastRunAt": 1795687709323,
-  "lastFetchAt": 1795687709323,
+  "timelineSentCount": 1,
+  "timelineDay": "2026-11-27",
+  "lastRunAt": 1795709303981,
+  "lastFetchAt": 1795709303981,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
-    "SOLUSDT",
     "ZECUSDT",
+    "SOLUSDT",
     "XRPUSDT",
-    "NVDABUSDT",
-    "UUSDT",
     "NEARUSDT",
+    "NVDABUSDT",
     "BNBUSDT",
-    "HYPEUSDT",
+    "UUSDT",
+    "MMTUSDT",
     "PEPEUSDT"
   ],
-  "symbolsUpdatedAt": "2026-11-26",
+  "symbolsUpdatedAt": "2026-11-27",
   "symbolsMeta": {
     "topN": 16,
     "minUsd": 30000000,
@@ -545,6 +545,6 @@
     "market": 1795450139374,
     "trend": 1794964121240,
     "binanceMovers": 1795601317318,
-    "breakout": 1795385332651
+    "breakout": 1795709335504
   }
 }
