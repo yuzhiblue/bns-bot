@@ -1,6 +1,5 @@
 {
   "postedMaterialIds": [
-    "fng_2026-11-12",
     "ann_290037",
     "fng_2026-11-13",
     "market_PEPEUSDT_2026-11-13",
@@ -199,19 +198,14 @@
     "bmovers_2026-11-25_GUA50_BLESS27_AIOT19_SAHARA16_LISTA13_EVAA-28_ELSA-26_MON-17_AKE-16_CYS-16",
     "trending_2026-11-25_PEARL_SOL_BTC_ZEC_MON_VVV",
     "bmovers_2026-11-25_BIGTIME61_GUA46_BTW28_OPG25_PHAROS21_DOS-38_MON-19_AKE-18_BLESS-13_PIEVERSE-9",
-    "trending_2026-11-26_TRX_PENGU_VVV_PEARL_BTC_ATOM"
+    "trending_2026-11-26_TRX_PENGU_VVV_PEARL_BTC_ATOM",
+    "foresight_118576"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795644524655,
-  "todayPosted": 1,
+  "lastPostAt": 1795666113073,
+  "todayPosted": 2,
   "todayKey": "Thu Nov 26 2026",
   "postHistory": [
-    {
-      "id": 389949555002432,
-      "kind": "news",
-      "at": 1795093728171,
-      "text": "讲真，这事儿挺意外，BIT首席营销官Jack Derong在11月19日的新加坡活动上透露，他们旗下的BBIT在10月20日拿到了瑞士FINMA的批准，眼看就要上线了。作为目前欧洲唯一的现货比特币ETF，它采用瑞士集合投资计划结构，把基金资产和管理人在法律上彻底隔离开，投资者不用担发信用风险，这架构确实有点不一样。\n\n$BIT $BBIT #加密资讯"
-    },
     {
       "id": 389964325036081,
       "kind": "binanceMovers",
@@ -505,6 +499,12 @@
       "kind": "trending",
       "at": 1795644524655,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. TRX (-1.6%)\n2. PENGU (+2.6%)\n3. VVV (+19.7%)\n4. PEARL (+6.6%)\n5. BTC (+0.7%)\n6. ATOM (-0.9%)\n\nVenice Token (VVV) 大涨19.7%与TRON(TRX) 微跌1.6%形成明显反差，显示资金并未集中在单一标的。榜单中中小市值币种如Pudgy Pe"
+    },
+    {
+      "id": 392294043485308,
+      "kind": "news",
+      "at": 1795666113073,
+      "text": "Lookonchain 监测到一个大户在 14 小时前干了票大的，通过 Aster 开了 20 倍杠杆做多。具体是买入了 100 枚 BTC（约 607 万美元）和 1.1 万枚 ETH（约 1866 万美元）。目前这个仓位浮盈 82.8 万美元，行情走得还挺顺。\n\n$BTC $ETH #加密资讯"
     }
   ],
   "timeline": [
@@ -515,10 +515,10 @@
   ],
   "timelineKey": "2026-11-26",
   "timelineIdx": 0,
-  "timelineSentCount": 1,
+  "timelineSentCount": 2,
   "timelineDay": "2026-11-26",
-  "lastRunAt": 1795644504604,
-  "lastFetchAt": 1795644504604,
+  "lastRunAt": 1795666102610,
+  "lastFetchAt": 1795666102610,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -541,7 +541,7 @@
   "lastPostAtByKind": {
     "movers": 1795169338256,
     "trending": 1795644524655,
-    "news": 1795428512131,
+    "news": 1795666113073,
     "market": 1795450139374,
     "trend": 1794964121240,
     "binanceMovers": 1795601317318,
