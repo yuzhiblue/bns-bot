@@ -1,6 +1,5 @@
 {
   "postedMaterialIds": [
-    "market_PEPEUSDT_2026-11-13",
     "news_1di4l73",
     "news_vb4fgf",
     "news_nc8jc2",
@@ -199,19 +198,14 @@
     "trending_2026-11-26_TRX_PENGU_VVV_PEARL_BTC_ATOM",
     "foresight_118576",
     "trending_2026-11-26_VVV_BTC_PENGU_PEARL_SOL_HYPE",
-    "breakout_2026-11-27_ZEClow"
+    "breakout_2026-11-27_ZEClow",
+    "trending_2026-11-27_PENGU_XTZ_ZYLO_XMR_SOL_VVV"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795709335504,
-  "todayPosted": 1,
+  "lastPostAt": 1795730921805,
+  "todayPosted": 2,
   "todayKey": "Fri Nov 27 2026",
   "postHistory": [
-    {
-      "id": 389993764573253,
-      "kind": "trending",
-      "at": 1795104521545,
-      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. WASTED (+81.8%)\n2. LUCIA (+451.5%)\n3. TRUMP (+1.6%)\n4. PEARL (+12.2%)\n5. SKY (-18.6%)\n6. EVAA (+34.8%)\n\nLUCIA 24h 涨幅 451.5% 与 WASTED 的 81.8% 构成了榜单中显著的异动核心，而 SKY 以 -18.6% 的跌幅成为前"
-    },
     {
       "id": 390008478163204,
       "kind": "news",
@@ -505,6 +499,12 @@
       "kind": "breakout",
       "at": 1795709335504,
       "text": "🔺 日线突破监控\n\nZEC 今天摸到 20 日新低，现价 708.81\n\n价格探到区间下沿，卖压是有的，不过破位之后能不能延续，还得看接下来几天的成交能不能跟上。\n\n这种位置，光看一根线判断不了什么\n\n#行情异动 #技术分析"
+    },
+    {
+      "id": 392559500061448,
+      "kind": "trending",
+      "at": 1795730921805,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. PENGU (+1.8%)\n2. XTZ (+2.5%)\n3. ZYLO (+9.2%)\n4. XMR (-13.7%)\n5. SOL (+1.4%)\n6. VVV (-7.6%)\n\nPudgy Penguins (PENGU) 和 Tezos (XTZ) 分别录得 1.8% 和 2.5% 的温和上涨，而 Monero (XMR) 则大幅下跌 13."
     }
   ],
   "timeline": [
@@ -515,10 +515,10 @@
   ],
   "timelineKey": "2026-11-27",
   "timelineIdx": 0,
-  "timelineSentCount": 1,
+  "timelineSentCount": 2,
   "timelineDay": "2026-11-27",
-  "lastRunAt": 1795709303981,
-  "lastFetchAt": 1795709303981,
+  "lastRunAt": 1795730904149,
+  "lastFetchAt": 1795730904149,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -540,7 +540,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1795169338256,
-    "trending": 1795687722044,
+    "trending": 1795730921805,
     "news": 1795666113073,
     "market": 1795450139374,
     "trend": 1794964121240,
