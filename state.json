@@ -1,6 +1,5 @@
 {
   "postedMaterialIds": [
-    "ann_290037",
     "fng_2026-11-13",
     "market_PEPEUSDT_2026-11-13",
     "news_1di4l73",
@@ -199,19 +198,14 @@
     "trending_2026-11-25_PEARL_SOL_BTC_ZEC_MON_VVV",
     "bmovers_2026-11-25_BIGTIME61_GUA46_BTW28_OPG25_PHAROS21_DOS-38_MON-19_AKE-18_BLESS-13_PIEVERSE-9",
     "trending_2026-11-26_TRX_PENGU_VVV_PEARL_BTC_ATOM",
-    "foresight_118576"
+    "foresight_118576",
+    "trending_2026-11-26_VVV_BTC_PENGU_PEARL_SOL_HYPE"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795666113073,
-  "todayPosted": 2,
+  "lastPostAt": 1795687722044,
+  "todayPosted": 3,
   "todayKey": "Thu Nov 26 2026",
   "postHistory": [
-    {
-      "id": 389964325036081,
-      "kind": "binanceMovers",
-      "at": 1795097334143,
-      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：NAORIS +43.3% / VELVET +36.9% / EVAA +32.5% / IRYS +31.3% / HUMA +22.4%\n领跌：BREV -9.1% / ZKC -7.0% / ASTER -5.4% / AKE -4.9% / PIPPIN -3.7%\n\nNAORIS以+43.3%领涨，BREV以-9.1%领跌；NAORIS较第二名的"
-    },
     {
       "id": 389979154218195,
       "kind": "news",
@@ -505,6 +499,12 @@
       "kind": "news",
       "at": 1795666113073,
       "text": "Lookonchain 监测到一个大户在 14 小时前干了票大的，通过 Aster 开了 20 倍杠杆做多。具体是买入了 100 枚 BTC（约 607 万美元）和 1.1 万枚 ETH（约 1866 万美元）。目前这个仓位浮盈 82.8 万美元，行情走得还挺顺。\n\n$BTC $ETH #加密资讯"
+    },
+    {
+      "id": 392382553804522,
+      "kind": "trending",
+      "at": 1795687722044,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. VVV (+9.8%)\n2. BTC (+3.2%)\n3. PENGU (+5.8%)\n4. PEARL (+1.3%)\n5. SOL (+5.1%)\n6. HYPE (+6.1%)\n\nVenice Token 24小时上涨9.8%领跑，Hyperliquid以6.1%紧随其后。榜单中主流币占比过半，Solana和比特币均录得正收益。整体热度分散在多"
     }
   ],
   "timeline": [
@@ -515,10 +515,10 @@
   ],
   "timelineKey": "2026-11-26",
   "timelineIdx": 0,
-  "timelineSentCount": 2,
+  "timelineSentCount": 3,
   "timelineDay": "2026-11-26",
-  "lastRunAt": 1795666102610,
-  "lastFetchAt": 1795666102610,
+  "lastRunAt": 1795687709323,
+  "lastFetchAt": 1795687709323,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -540,7 +540,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1795169338256,
-    "trending": 1795644524655,
+    "trending": 1795687722044,
     "news": 1795666113073,
     "market": 1795450139374,
     "trend": 1794964121240,
