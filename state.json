@@ -1,6 +1,5 @@
 {
   "postedMaterialIds": [
-    "news_vb4fgf",
     "news_nc8jc2",
     "news_90cmbz",
     "news_1gkgtjr",
@@ -199,19 +198,14 @@
     "trending_2026-11-26_VVV_BTC_PENGU_PEARL_SOL_HYPE",
     "breakout_2026-11-27_ZEClow",
     "trending_2026-11-27_PENGU_XTZ_ZYLO_XMR_SOL_VVV",
-    "bmovers_2026-11-27_BULLA81_INIT61_BIGTIME17_AIOT16_SSV11_MMT-38_LISTA-25_EVAA-20_ELSA-15_XMR-10"
+    "bmovers_2026-11-27_BULLA81_INIT61_BIGTIME17_AIOT16_SSV11_MMT-38_LISTA-25_EVAA-20_ELSA-15_XMR-10",
+    "news_1r5ox82"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795752535368,
-  "todayPosted": 3,
+  "lastPostAt": 1795774125168,
+  "todayPosted": 4,
   "todayKey": "Fri Nov 27 2026",
   "postHistory": [
-    {
-      "id": 390023241120634,
-      "kind": "breakout",
-      "at": 1795111717966,
-      "text": "🔺 日线突破监控\n\nNVDAB 今天摸到 20 日新低，现价 148.63\nMMT 今天摸到 20 日新高，现价 0.2876\n\n价格摸到区间上沿，说明买盘确实推了一把，但能不能在这里站稳，单看今天这根线还不够，得后面几天确认。\n\n这种位置，光看一根线判断不了什么\n\n#行情异动 #技术分析"
-    },
     {
       "id": 390038001023076,
       "kind": "news",
@@ -505,6 +499,12 @@
       "kind": "binanceMovers",
       "at": 1795752535368,
       "text": "📊 币安合约 24h 涨跌榜\n\n领涨：BULLA +81.4% / INIT +61.5% / BIGTIME +17.2% / AIOT +16.2% / SSV +11.2%\n领跌：MMT -37.7% / LISTA -24.6% / EVAA -20.4% / ELSA -15.4% / XMR -10.4%\n\nBULLA以+81.4%领涨，MMT以-37.7%领跌，前者涨幅约为后者跌幅"
+    },
+    {
+      "id": 392736460995309,
+      "kind": "news",
+      "at": 1795774125168,
+      "text": "比特币站上61000美元，同时美国股指期货在感恩节休市后继续延续周三的反弹势头。其中人工智能基础设施股在盘前领涨，撑起了这轮反弹的主要涨幅。\n\n$BTC #加密资讯"
     }
   ],
   "timeline": [
@@ -515,10 +515,10 @@
   ],
   "timelineKey": "2026-11-27",
   "timelineIdx": 0,
-  "timelineSentCount": 3,
+  "timelineSentCount": 4,
   "timelineDay": "2026-11-27",
-  "lastRunAt": 1795752504505,
-  "lastFetchAt": 1795752504505,
+  "lastRunAt": 1795774101712,
+  "lastFetchAt": 1795774101712,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -541,7 +541,7 @@
   "lastPostAtByKind": {
     "movers": 1795169338256,
     "trending": 1795730921805,
-    "news": 1795666113073,
+    "news": 1795774125168,
     "market": 1795450139374,
     "trend": 1794964121240,
     "binanceMovers": 1795752535368,
