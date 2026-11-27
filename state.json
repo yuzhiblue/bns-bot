@@ -1,6 +1,5 @@
 {
   "postedMaterialIds": [
-    "news_1di4l73",
     "news_vb4fgf",
     "news_nc8jc2",
     "news_90cmbz",
@@ -199,19 +198,14 @@
     "foresight_118576",
     "trending_2026-11-26_VVV_BTC_PENGU_PEARL_SOL_HYPE",
     "breakout_2026-11-27_ZEClow",
-    "trending_2026-11-27_PENGU_XTZ_ZYLO_XMR_SOL_VVV"
+    "trending_2026-11-27_PENGU_XTZ_ZYLO_XMR_SOL_VVV",
+    "bmovers_2026-11-27_BULLA81_INIT61_BIGTIME17_AIOT16_SSV11_MMT-38_LISTA-25_EVAA-20_ELSA-15_XMR-10"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795730921805,
-  "todayPosted": 2,
+  "lastPostAt": 1795752535368,
+  "todayPosted": 3,
   "todayKey": "Fri Nov 27 2026",
   "postHistory": [
-    {
-      "id": 390008478163204,
-      "kind": "news",
-      "at": 1795108113732,
-      "text": "Solana 官方在 X 上确认，ANT 由 @Backpack Securities 发行，并通过 @sunrise 在 Solana 上挂牌。讲真，这种发行方和渠道搭配在一起还挺直接的，没有多余的复杂结构。\n\n$ANT $SOL #加密资讯"
-    },
     {
       "id": 390023241120634,
       "kind": "breakout",
@@ -505,6 +499,12 @@
       "kind": "trending",
       "at": 1795730921805,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. PENGU (+1.8%)\n2. XTZ (+2.5%)\n3. ZYLO (+9.2%)\n4. XMR (-13.7%)\n5. SOL (+1.4%)\n6. VVV (-7.6%)\n\nPudgy Penguins (PENGU) 和 Tezos (XTZ) 分别录得 1.8% 和 2.5% 的温和上涨，而 Monero (XMR) 则大幅下跌 13."
+    },
+    {
+      "id": 392648029221858,
+      "kind": "binanceMovers",
+      "at": 1795752535368,
+      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：BULLA +81.4% / INIT +61.5% / BIGTIME +17.2% / AIOT +16.2% / SSV +11.2%\n领跌：MMT -37.7% / LISTA -24.6% / EVAA -20.4% / ELSA -15.4% / XMR -10.4%\n\nBULLA以+81.4%领涨，MMT以-37.7%领跌，前者涨幅约为后者跌幅"
     }
   ],
   "timeline": [
@@ -515,10 +515,10 @@
   ],
   "timelineKey": "2026-11-27",
   "timelineIdx": 0,
-  "timelineSentCount": 2,
+  "timelineSentCount": 3,
   "timelineDay": "2026-11-27",
-  "lastRunAt": 1795730904149,
-  "lastFetchAt": 1795730904149,
+  "lastRunAt": 1795752504505,
+  "lastFetchAt": 1795752504505,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -544,7 +544,7 @@
     "news": 1795666113073,
     "market": 1795450139374,
     "trend": 1794964121240,
-    "binanceMovers": 1795601317318,
+    "binanceMovers": 1795752535368,
     "breakout": 1795709335504
   }
 }
