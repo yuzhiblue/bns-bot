@@ -1,6 +1,5 @@
 {
   "postedMaterialIds": [
-    "news_90cmbz",
     "news_1gkgtjr",
     "news_5sm9jv",
     "news_1m1nhmx",
@@ -199,19 +198,14 @@
     "trending_2026-11-27_PENGU_XTZ_ZYLO_XMR_SOL_VVV",
     "bmovers_2026-11-27_BULLA81_INIT61_BIGTIME17_AIOT16_SSV11_MMT-38_LISTA-25_EVAA-20_ELSA-15_XMR-10",
     "news_1r5ox82",
-    "trending_2026-11-28_PENGU_BTC_PORTAL_ZYLO_SOL_PEARL"
+    "trending_2026-11-28_PENGU_BTC_PORTAL_ZYLO_SOL_PEARL",
+    "news_1pobq7q"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795795727666,
-  "todayPosted": 1,
+  "lastPostAt": 1795817323746,
+  "todayPosted": 2,
   "todayKey": "Sat Nov 28 2026",
   "postHistory": [
-    {
-      "id": 390052733411389,
-      "kind": "binanceMovers",
-      "at": 1795118918219,
-      "text": "📊 币安合约 24h 涨跌榜\n\n领涨：NAORIS +51.3% / ICNT +32.3% / IRYS +27.1% / EVAA +25.3% / BTW +20.5%\n领跌：PIEVERSE -13.9% / ZKC -12.9% / BREV -10.8% / SKY -8.8% / ASTER -5.7%\n\nNAORIS以+51.3%领涨，PIEVERSE以-13.9%领跌，两者间存"
-    },
     {
       "id": 390067640488752,
       "kind": "news",
@@ -505,6 +499,12 @@
       "kind": "trending",
       "at": 1795795727666,
       "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. PENGU (+0.5%)\n2. BTC (-0.8%)\n3. PORTAL (+118.4%)\n4. ZYLO (+1.5%)\n5. SOL (+1.5%)\n6. PEARL (-8.7%)\n\nPortal（PORTAL）在24小时内飙升118.4%，显著高于榜单中其他币种如Pearl（PEARL）的-8.7%表现。主流币如比特币和索拉纳的波动相对"
+    },
+    {
+      "id": 392913402512769,
+      "kind": "news",
+      "at": 1795817323746,
+      "text": "CryptoQuant 的数据显示，尽管市场低迷，比特币鲸鱼正在打破第四季度历史销售模式。这和以往的季节性规律不太一样，大家盯着盘面看就行。\n\n$BTC #加密资讯"
     }
   ],
   "timeline": [
@@ -515,10 +515,10 @@
   ],
   "timelineKey": "2026-11-28",
   "timelineIdx": 0,
-  "timelineSentCount": 1,
+  "timelineSentCount": 2,
   "timelineDay": "2026-11-28",
-  "lastRunAt": 1795795711615,
-  "lastFetchAt": 1795795711615,
+  "lastRunAt": 1795817313303,
+  "lastFetchAt": 1795817313303,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -542,7 +542,7 @@
   "lastPostAtByKind": {
     "movers": 1795169338256,
     "trending": 1795795727666,
-    "news": 1795774125168,
+    "news": 1795817323746,
     "market": 1795450139374,
     "trend": 1794964121240,
     "binanceMovers": 1795752535368,
