@@ -1,6 +1,5 @@
 {
   "postedMaterialIds": [
-    "news_nc8jc2",
     "news_90cmbz",
     "news_1gkgtjr",
     "news_5sm9jv",
@@ -199,19 +198,14 @@
     "breakout_2026-11-27_ZEClow",
     "trending_2026-11-27_PENGU_XTZ_ZYLO_XMR_SOL_VVV",
     "bmovers_2026-11-27_BULLA81_INIT61_BIGTIME17_AIOT16_SSV11_MMT-38_LISTA-25_EVAA-20_ELSA-15_XMR-10",
-    "news_1r5ox82"
+    "news_1r5ox82",
+    "trending_2026-11-28_PENGU_BTC_PORTAL_ZYLO_SOL_PEARL"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795774125168,
-  "todayPosted": 4,
-  "todayKey": "Fri Nov 27 2026",
+  "lastPostAt": 1795795727666,
+  "todayPosted": 1,
+  "todayKey": "Sat Nov 28 2026",
   "postHistory": [
-    {
-      "id": 390038001023076,
-      "kind": "news",
-      "at": 1795115321468,
-      "text": "以太坊Glamsterdam升级这事有点变数，开发人员联系至少 50 家受影响的公司后，正在考虑修改 Gas 定价提案，因为怕扰乱现有的智能合约。要是真因为兼容性担忧推迟至2027年5月，那节奏确实慢了不少，看来底层稳定性还是得放在前面考量。\n\n$ETH #加密资讯"
-    },
     {
       "id": 390052733411389,
       "kind": "binanceMovers",
@@ -505,20 +499,26 @@
       "kind": "news",
       "at": 1795774125168,
       "text": "比特币站上61000美元，同时美国股指期货在感恩节休市后继续延续周三的反弹势头。其中人工智能基础设施股在盘前领涨，撑起了这轮反弹的主要涨幅。\n\n$BTC #加密资讯"
+    },
+    {
+      "id": 392824944849753,
+      "kind": "trending",
+      "at": 1795795727666,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. PENGU (+0.5%)\n2. BTC (-0.8%)\n3. PORTAL (+118.4%)\n4. ZYLO (+1.5%)\n5. SOL (+1.5%)\n6. PEARL (-8.7%)\n\nPortal（PORTAL）在24小时内飙升118.4%，显著高于榜单中其他币种如Pearl（PEARL）的-8.7%表现。主流币如比特币和索拉纳的波动相对"
     }
   ],
   "timeline": [
-    1795708800000,
-    1795730400000,
-    1795752000000,
-    1795773600000
+    1795795200000,
+    1795816800000,
+    1795838400000,
+    1795860000000
   ],
-  "timelineKey": "2026-11-27",
+  "timelineKey": "2026-11-28",
   "timelineIdx": 0,
-  "timelineSentCount": 4,
-  "timelineDay": "2026-11-27",
-  "lastRunAt": 1795774101712,
-  "lastFetchAt": 1795774101712,
+  "timelineSentCount": 1,
+  "timelineDay": "2026-11-28",
+  "lastRunAt": 1795795711615,
+  "lastFetchAt": 1795795711615,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -526,13 +526,14 @@
     "SOLUSDT",
     "XRPUSDT",
     "NEARUSDT",
-    "NVDABUSDT",
     "BNBUSDT",
+    "HYPEUSDT",
+    "UNIUSDT",
+    "NVDABUSDT",
     "UUSDT",
-    "MMTUSDT",
     "PEPEUSDT"
   ],
-  "symbolsUpdatedAt": "2026-11-27",
+  "symbolsUpdatedAt": "2026-11-28",
   "symbolsMeta": {
     "topN": 16,
     "minUsd": 30000000,
@@ -540,7 +541,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1795169338256,
-    "trending": 1795730921805,
+    "trending": 1795795727666,
     "news": 1795774125168,
     "market": 1795450139374,
     "trend": 1794964121240,
