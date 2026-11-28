@@ -1,6 +1,5 @@
 {
   "postedMaterialIds": [
-    "news_1gkgtjr",
     "news_5sm9jv",
     "news_1m1nhmx",
     "news_rsz88i",
@@ -199,19 +198,14 @@
     "bmovers_2026-11-27_BULLA81_INIT61_BIGTIME17_AIOT16_SSV11_MMT-38_LISTA-25_EVAA-20_ELSA-15_XMR-10",
     "news_1r5ox82",
     "trending_2026-11-28_PENGU_BTC_PORTAL_ZYLO_SOL_PEARL",
-    "news_1pobq7q"
+    "news_1pobq7q",
+    "trending_2026-11-28_PORTAL_TAO_HYPE_BTC_NEAR_VVV"
   ],
   "lastMarketSnap": {},
-  "lastPostAt": 1795817323746,
-  "todayPosted": 2,
+  "lastPostAt": 1795838945108,
+  "todayPosted": 3,
   "todayKey": "Sat Nov 28 2026",
   "postHistory": [
-    {
-      "id": 390067640488752,
-      "kind": "news",
-      "at": 1795122557626,
-      "text": "Galaxy Research说13F filers在Q3通过U.S. spot bitcoin ETPs增持了49,229 BTC，把机构持仓推到了356,491 BTC的历史新高。Wells Fargo现在成了最大持仓方，这数据确实挺有意思。\n\n$BTC #加密资讯"
-    },
     {
       "id": 390082313658179,
       "kind": "trending",
@@ -505,6 +499,12 @@
       "kind": "news",
       "at": 1795817323746,
       "text": "CryptoQuant 的数据显示，尽管市场低迷，比特币鲸鱼正在打破第四季度历史销售模式。这和以往的季节性规律不太一样，大家盯着盘面看就行。\n\n$BTC #加密资讯"
+    },
+    {
+      "id": 393001963556276,
+      "kind": "trending",
+      "at": 1795838945108,
+      "text": "🔥 24 小时热搜币种（大家都在看）\n\n1. PORTAL (+29.0%)\n2. TAO (+0.5%)\n3. HYPE (-2.4%)\n4. BTC (-2.1%)\n5. NEAR (-1.3%)\n6. VVV (-4.3%)\n\n榜单结构由中小市值币主导，Portal单日大涨29.0%占据热度顶端，而Venice Token下跌4.3%垫底。主流币中比特币微跌2.1%，多数中小项目处于阴跌状"
     }
   ],
   "timeline": [
@@ -515,10 +515,10 @@
   ],
   "timelineKey": "2026-11-28",
   "timelineIdx": 0,
-  "timelineSentCount": 2,
+  "timelineSentCount": 3,
   "timelineDay": "2026-11-28",
-  "lastRunAt": 1795817313303,
-  "lastFetchAt": 1795817313303,
+  "lastRunAt": 1795838924008,
+  "lastFetchAt": 1795838924008,
   "symbols": [
     "BTCUSDT",
     "ETHUSDT",
@@ -541,7 +541,7 @@
   },
   "lastPostAtByKind": {
     "movers": 1795169338256,
-    "trending": 1795795727666,
+    "trending": 1795838945108,
     "news": 1795817323746,
     "market": 1795450139374,
     "trend": 1794964121240,
